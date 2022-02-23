@@ -1,0 +1,7 @@
+data/org.ampr.ct1enq.gtat.desktop.in
+data/org.ampr.ct1enq.gtat.appdata.xml.in
+data/org.ampr.ct1enq.gtat.gschema.xml
+src/window.ui
+src/main.vala
+src/window.vala
+

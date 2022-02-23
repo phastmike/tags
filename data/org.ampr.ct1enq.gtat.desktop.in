@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=gtat
+Exec=gtat
+Icon=org.ampr.ct1enq.gtat
+Terminal=false
+Type=Application
+Categories=GTK;
+StartupNotify=true
