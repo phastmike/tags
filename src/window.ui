@@ -15,6 +15,7 @@
       </object>
     </child>
     <child>
+		<!--
       <object class="GtkLabel" id="label">
         <property name="label">Hello, World!</property>
         <attributes>
@@ -22,6 +23,7 @@
           <attribute name="scale" value="2"/>
         </attributes>
       </object>
+		-->
     </child>
   </template>
 

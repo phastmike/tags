@@ -2,6 +2,8 @@
 <gresources>
   <gresource prefix="/org/ampr/ct1enq/gtat">
     <file>window.ui</file>
+    <file>lines_tree_view.ui</file>
+    <file>filters_tree_view.ui</file>
     <file>gtk/help-overlay.ui</file>
   </gresource>
 </gresources>

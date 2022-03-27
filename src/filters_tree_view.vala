@@ -1,4 +1,4 @@
-/* application.vala
+/* tree_view_main.vala
  *
  * Copyright 2022 Jose Miguel Fonte
  *
@@ -28,50 +28,30 @@
  */
 
 namespace Gtat {
-	public class Application : Gtk.Application {
-		private ActionEntry[] APP_ACTIONS = {
-			{ "about", on_about_action },
-			{ "preferences", on_preferences_action },
-			{ "quit", quit }
-		};
+	[GtkTemplate (ui = "/org/ampr/ct1enq/gtat/filters_tree_view.ui")]
+	public class FiltersTreeView : Gtk.TreeView {
+		[GtkChild]
+		unowned Gtk.ListStore filter_store;
 
-
-		public Application () {
-			Object (application_id: "org.ampr.ct1enq.gtat", flags: ApplicationFlags.FLAGS_NONE);
-
-			this.add_action_entries(this.APP_ACTIONS, this);
-			this.set_accels_for_action("app.quit", {"<primary>q"});
-		}
-
-		public override void activate () {
-			base.activate();
-			var win = this.active_window;
-			if (win == null) {
-				win = new Gtat.Window (this);
-			}
-			win.present ();
-		}
-
-		private void on_about_action () {
-			string[] authors = {
-                "Jose Miguel Fonte"
-            };
-
-            string[] artists = {
-                "MD Badsha Meah on freeicons.io (App Icon)",
-                "www.wishforge.games on freeicons.io (Symbolic Icon)"
-            };
-
-			Gtk.show_about_dialog(this.active_window,
-				                  "program-name", "gtat",
-				                  "authors", authors,
-                                  "artists", artists,
-                                  "logo-icon-name", "org.ampr.ct1enq.gtat",
-				                  "version", "0.1.0");
-		}
-
-		private void on_preferences_action () {
-			message("app.preferences action activated");
-		}
-	}
+		public FiltersTreeView (Gtk.Application app) {
+            Gtk.TreeIter iter;
+            string contents;
+            try {
+                if (FileUtils.get_contents("example.log", out contents, null)) {
+                    var nr = 0;
+                    var lines = contents.split ("\n");
+                    /*
+                    foreach (var line in lines) {
+                        filter_store.append (out iter);
+                        filter_store.@set (iter, 0, ++nr, 1, line);
+                    }
+                    */
+                } else {
+                    print("Error opening file [%s]\n", "example.log");
+                }
+            } catch (FileError err) {
+                print("Error: %s\n", err.message);
+            } 
+        }
+    }
 }

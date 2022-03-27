@@ -1,7 +1,10 @@
 gtat_sources = [
   'main.vala',
   'window.vala',
-    'application.vala',
+  'lines_tree_view.vala',
+  'filters_tree_view.vala',
+  'line_filter.vala',
+  'application.vala',
   ]
 
 gtat_deps = [

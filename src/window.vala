@@ -30,11 +30,34 @@
 namespace Gtat {
 	[GtkTemplate (ui = "/org/ampr/ct1enq/gtat/window.ui")]
 	public class Window : Gtk.ApplicationWindow {
-		[GtkChild]
-		unowned Gtk.Label label;
+        [GtkChild]
+        unowned Gtk.HeaderBar header_bar;
 
 		public Window (Gtk.Application app) {
 			Object (application: app);
+            header_bar.set_title_widget(new Gtk.Label("Text Analysis Tool"));
+
+            var paned = new Gtk.Paned (Gtk.Orientation.VERTICAL);
+            set_child (paned);
+
+            var scrolled_lines = new Gtk.ScrolledWindow ();
+            scrolled_lines.set_kinetic_scrolling (true);
+            scrolled_lines.set_placement (Gtk.CornerType.TOP_LEFT);
+            scrolled_lines.set_overlay_scrolling (true);
+            scrolled_lines.set_child (new LinesTreeView (app));
+
+            var scrolled_filters = new Gtk.ScrolledWindow ();
+            scrolled_filters.set_kinetic_scrolling (true);
+            scrolled_filters.set_placement (Gtk.CornerType.TOP_LEFT);
+            scrolled_filters.set_overlay_scrolling (true);
+            scrolled_filters.set_child (new FiltersTreeView (app));
+
+            paned.set_start_child (scrolled_lines);
+            paned.set_end_child (scrolled_filters);
+            paned.set_resize_start_child (true);
+            paned.set_resize_end_child (true);
+            paned.set_position (210);
+            paned.set_wide_handle (true);
 		}
 	}
 }
