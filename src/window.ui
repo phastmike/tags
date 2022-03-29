@@ -11,6 +11,32 @@
             <property name="icon-name">open-menu-symbolic</property>
             <property name="menu-model">primary_menu</property>
           </object>
+		  </child>
+		  <child type="start">
+		    <object class="GtkButton" id="button_open_file">
+			   <property name="visible">True</property>
+			   <property name="icon_name">document-open-symbolic</property>
+			 </object>
+        </child>
+		  <child type="start">
+		    <object class="GtkButton">
+			   <property name="visible">True</property>
+			   <property name="icon_name">document-save-symbolic</property>
+			 </object>
+        </child>
+		  <child type="start">
+		    <object class="GtkMenuButton">
+			   <property name="visible">True</property>
+			   <property name="tooltip_text" translatable="yes">Open a file</property>
+			   <property name="valign">GTK_ALIGN_CENTER</property>
+			   <property name="popover">file_popover</property>
+			 </object>
+        </child>
+		  <child type="end">
+		    <object class="GtkButton">
+			   <property name="visible">True</property>
+			   <property name="label">Save</property>
+			 </object>
         </child>
       </object>
     </child>
@@ -27,12 +53,68 @@
     </child>
   </template>
 
+  <object class="GtkPopover" id="fpop">
+	 <child>
+	            <object class="GtkBox" id="open_button_box">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkLabel" id="open_button_name">
+                        <property name="label" translatable="yes">_Open</property>
+                        <property name="use-underline">True</property>
+                        <property name="visible">True</property>
+                        <property name="valign">baseline</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="open_button_arrow">
+                        <property name="visible">True</property>
+                        <property name="valign">baseline</property>
+                        <property name="icon_name">pan-down-symbolic</property>
+                      </object>
+                    </child>
+					 </object>
+	</child>
+  </object>
+
+  <object class="GtkPopoverMenu" id="file_popover">
+	 <property name="menu-model">file_menu</property>
+  </object>
+
+  <menu id="file_menu">
+    <section>
+	   <item>
+        <attribute name="label" translatable="yes">_Preferences</attribute>
+        <attribute name="action">app.preferences</attribute>
+		</item>
+    </section>
+	 <section>
+	 <attribute name="display-hint">horizontal-buttons</attribute>
+	   <item>
+		  <attribute name="label">Cut</attribute>
+		  <attribute name="action">app.cut</attribute>
+		  <attribute name="verb-icon">edit-cut-symbolic</attribute>
+		</item>
+		<item>
+		  <attribute name="label">Copy</attribute>
+		  <attribute name="action">app.copy</attribute>
+		  <attribute name="verb-icon">edit-copy-symbolic</attribute>
+		</item>
+		<item>
+		  <attribute name="label">Paste</attribute>
+		  <attribute name="action">app.paste</attribute>
+		  <attribute name="verb-icon">edit-paste-symbolic</attribute>
+	   </item>
+    </section>
+  </menu>
+
   <menu id="primary_menu">
     <section>
       <item>
         <attribute name="label" translatable="yes">_Preferences</attribute>
         <attribute name="action">app.preferences</attribute>
       </item>
+	</section>	
+	 <section>	
       <item>
         <attribute name="label" translatable="yes">_Keyboard Shortcuts</attribute>
         <attribute name="action">win.show-help-overlay</attribute>

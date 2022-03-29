@@ -12,19 +12,16 @@
 namespace Gtat {
 
     public class LineFilter : Object {
-        bool enabled;
-        string pattern;
-        string description;
-        uint hits; // Should be here?
+        public bool enabled;
+        public string pattern;
+        public string description;
+        public uint hits; // Should be here?
+        public ColorScheme colors;
         
-        Gdk.RGBA? fg_color;
-        Gdk.RGBA? bg_color;
-
-        public LineFilter (string pattern, string description, Gdk.RGBA? fg_color = null, Gdk.RGBA? bg_color = null) {
+        public LineFilter (string pattern, string description, ColorScheme colors) {
             this.pattern = pattern;
             this.description = description;
-            this.fg_color = fg_color;
-            this.bg_color = bg_color;
+            this.colors = colors;
 
             hits = 0;
             enabled = true;

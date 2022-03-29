@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.38.2 -->
+<interface>
+  <requires lib="gtk+" version="3.0"/>
+  <object class="GtkListStore" id="filter_store">
+    <columns>
+      <!-- column-name filter -->
+      <column type="GObject"/>
+    </columns>
+  </object>
+  <template class="GtatFiltersTreeView" parent="GtkTreeView">
+    <property name="visible">True</property>
+    <property name="can-focus">True</property>
+    <property name="hscroll-policy">natural</property>
+    <property name="vscroll-policy">natural</property>
+    <property name="model">filter_store</property>
+    <property name="headers-clickable">False</property>
+    <property name="enable-search">False</property>
+    <property name="search-column">1</property>
+    <property name="show-expanders">False</property>
+    <property name="enable-grid-lines">vertical</property>
+    <child internal-child="selection">
+      <object class="GtkTreeSelection" id="selection"/>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="col_filter_checkbox">
+        <property name="title"> </property>
+        <child>
+          <object class="GtkCellRendererToggle" id="renderer_filter_checkbox"/>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="col_filter_pattern">
+        <property name="title">Pattern</property>
+        <property name="expand">True</property>
+        <child>
+          <object class="GtkCellRendererText" id="renderer_filter_pattern"/>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="col_filter_description">
+        <property name="min-width">100</property>
+        <property name="title">Description</property>
+        <child>
+          <object class="GtkCellRendererText" id="renderer_filter_description"/>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="col_filter_hits">
+        <property name="title">Hits</property>
+        <child>
+          <object class="GtkCellRendererText" id="renderer_filter_hits"/>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

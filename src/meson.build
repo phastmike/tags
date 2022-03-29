@@ -1,9 +1,10 @@
 gtat_sources = [
   'main.vala',
   'window.vala',
-  'lines_tree_view.vala',
-  'filters_tree_view.vala',
-  'line_filter.vala',
+  'lines-tree-view.vala',
+  'filters-tree-view.vala',
+  'line-filter.vala',
+  'color-scheme.vala',
   'application.vala',
   ]
 

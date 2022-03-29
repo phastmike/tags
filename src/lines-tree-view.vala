@@ -28,7 +28,7 @@
  */
 
 namespace Gtat {
-	[GtkTemplate (ui = "/org/ampr/ct1enq/gtat/lines_tree_view.ui")]
+	[GtkTemplate (ui = "/org/ampr/ct1enq/gtat/lines-tree-view.ui")]
 	public class LinesTreeView : Gtk.TreeView {
 		[GtkChild]
 		unowned Gtk.ListStore line_store;
@@ -40,6 +40,30 @@ namespace Gtat {
                 if (FileUtils.get_contents("example.log", out contents, null)) {
                     var nr = 0;
                     var lines = contents.split ("\n");
+                    lines.resize (lines.length - 1);
+                    foreach (var line in lines) {
+                        line_store.append (out iter);
+                        line_store.@set (iter, 0, ++nr, 1, line);
+                    }
+                } else {
+                    print("Error opening file [%s]\n", "example.log");
+                }
+            } catch (FileError err) {
+                print("Error: %s\n", err.message);
+            } 
+        }
+
+        public void set_file (string file) {
+            Gtk.TreeIter iter;
+            string contents;
+
+            line_store.clear ();
+
+            try {
+                if (FileUtils.get_contents(file, out contents, null)) {
+                    var nr = 0;
+                    var lines = contents.split ("\n");
+                    lines.resize (lines.length - 1);
                     foreach (var line in lines) {
                         line_store.append (out iter);
                         line_store.@set (iter, 0, ++nr, 1, line);
