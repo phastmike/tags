@@ -5,6 +5,7 @@ gtat_sources = [
   'filters-tree-view.vala',
   'line-filter.vala',
   'color-scheme.vala',
+  'filter-dialog-window.vala',
   'application.vala',
   ]
 

@@ -2,10 +2,15 @@
 <interface>
   <requires lib="gtk" version="4.0"/>
   <template class="GtatWindow" parent="GtkApplicationWindow">
-    <property name="default-width">600</property>
-    <property name="default-height">300</property>
+    <property name="title" translatable="yes">Tagger</property>
+    <property name="default-width">800</property>
+    <property name="default-height">600</property>
     <child type="titlebar">
       <object class="GtkHeaderBar" id="header_bar">
+			<style>
+		     <class name="flat"/>
+		     <class name="devel"/>
+		   </style>
         <child type="end">
           <object class="GtkMenuButton">
             <property name="icon-name">open-menu-symbolic</property>
@@ -19,12 +24,6 @@
 			 </object>
         </child>
 		  <child type="start">
-		    <object class="GtkButton">
-			   <property name="visible">True</property>
-			   <property name="icon_name">document-save-symbolic</property>
-			 </object>
-        </child>
-		  <child type="start">
 		    <object class="GtkMenuButton">
 			   <property name="visible">True</property>
 			   <property name="tooltip_text" translatable="yes">Open a file</property>
@@ -33,9 +32,10 @@
 			 </object>
         </child>
 		  <child type="end">
-		    <object class="GtkButton">
+		    <object class="GtkButton" id="button_tags">
 			   <property name="visible">True</property>
-			   <property name="label">Save</property>
+			   <property name="label">Markers</property>
+			   <property name="icon_name">user-bookmarks-symbolic</property>
 			 </object>
         </child>
       </object>

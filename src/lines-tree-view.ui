@@ -48,5 +48,8 @@
         </child>
       </object>
     </child>
+    <style>
+      <class name="monospace"/>
+    </style>
   </template>
 </interface>

@@ -50,22 +50,6 @@ namespace Gtat {
         private unowned Gtk.CellRendererText renderer_filter_hits;
 
 		public FiltersTreeView (Gtk.Application app) {
-            Gtk.TreeIter iter;
-            
-            Gdk.RGBA red = { 1.0f, 0.1f, 0.1f, 1.0f};
-            Gdk.RGBA white = { 1.0f, 1.0f, 1.0f, 1.0f };
-            var filter1 = new LineFilter ("serIF0->", "IOC", new ColorScheme ("Default", white, red));
-            var filter2 = new LineFilter ("serIF1->", "CPA", new ColorScheme ("Default", null, null));
-            var filter3 = new LineFilter ("serIF2->", "CPV", new ColorScheme ("Default", null, null));
-            var filter4 = new LineFilter ("serIF3->", "MMX", new ColorScheme ("Default", null, null));
-            filter_store.append (out iter);
-            filter_store.@set (iter, 0, filter1);
-            filter_store.append (out iter);
-            filter_store.@set (iter, 0, filter2);
-            filter_store.append (out iter);
-            filter_store.@set (iter, 0, filter3);
-            filter_store.append (out iter);
-            filter_store.@set (iter, 0, filter4);
             setup_cell_renderers ();
             
             renderer_filter_checkbox.toggled.connect ((path) => {
@@ -76,7 +60,7 @@ namespace Gtat {
                 filter.enabled = !filter.enabled;
             });
         }
-
+        
         private void setup_cell_renderers () {
             col_filter_checkbox.set_cell_data_func (renderer_filter_checkbox, (column, cell, model, iter) => {
                 LineFilter filter;
@@ -103,15 +87,21 @@ namespace Gtat {
             col_filter_description.set_cell_data_func (renderer_filter_description, (column, cell, model, iter) => {
                 LineFilter filter;
                 model.@get (iter, 0, out filter);
-                (cell as Gtk.CellRendererText?).text = filter.description != null ? filter.description : "";
+                (cell as Gtk.CellRendererText).text = filter.description != null ? filter.description : "";
             });
 
             col_filter_hits.set_cell_data_func (renderer_filter_hits, (column, cell, model, iter) => {
                 LineFilter filter;
                 model.@get (iter, 0, out filter);
-                (cell as Gtk.CellRendererText?).text = "%u".printf(filter.hits);
+                (cell as Gtk.CellRendererText).text = "%u".printf(filter.hits);
             });
             
+        }
+
+        public void add_filter (LineFilter filter) {
+            Gtk.TreeIter iter;
+            filter_store.append (out iter);
+            filter_store.@set (iter, 0, filter);
         }
 
     }

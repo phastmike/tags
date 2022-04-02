@@ -34,19 +34,21 @@ namespace Gtat {
         unowned Gtk.HeaderBar header_bar;
         [GtkChild]
         unowned Gtk.Button button_open_file;
+        [GtkChild]
+        unowned Gtk.Button button_tags;
+        
+        private LinesTreeView lines_treeview;
+        private FiltersTreeView filters_treeview;
 
 		public Window (Gtk.Application app) {
 			Object (application: app);
 
-            this.default_width = 640;
-            this.default_height = 480;
-
-            header_bar.set_title_widget(new Gtk.Label("Text Analysis Tool"));
+            lines_treeview = new LinesTreeView (app);
+            filters_treeview = new FiltersTreeView (app);
 
             var paned = new Gtk.Paned (Gtk.Orientation.VERTICAL);
             set_child (paned);
 
-            LinesTreeView lines_treeview = new LinesTreeView (app);
 
             var scrolled_lines = new Gtk.ScrolledWindow ();
             scrolled_lines.set_kinetic_scrolling (true);
@@ -58,7 +60,7 @@ namespace Gtat {
             scrolled_filters.set_kinetic_scrolling (true);
             scrolled_filters.set_placement (Gtk.CornerType.TOP_LEFT);
             scrolled_filters.set_overlay_scrolling (true);
-            scrolled_filters.set_child (new FiltersTreeView (app));
+            scrolled_filters.set_child (filters_treeview);
 
             paned.set_start_child (scrolled_lines);
             paned.set_end_child (scrolled_filters);
@@ -67,17 +69,26 @@ namespace Gtat {
             paned.set_position (360);
             paned.set_wide_handle (true);
 
-            button_open_file.clicked.connect (() => {
+            button_open_file.clicked.connect ( () => {
                 var file_chooser_dialog = new Gtk.FileChooserDialog ("Open File", this, Gtk.FileChooserAction.OPEN, "Open", Gtk.ResponseType.ACCEPT, "Cancel", Gtk.ResponseType.CANCEL, null);
                 file_chooser_dialog.set_modal (true);
                 file_chooser_dialog.response.connect ( (response_id) => {
                     if (response_id == Gtk.ResponseType.ACCEPT) {
-                        print ("Should open file: \n");
                         lines_treeview.set_file(file_chooser_dialog.get_file ().get_path ());
                     }
                     file_chooser_dialog.destroy ();
                 });
                 file_chooser_dialog.show ();
+            });
+
+            button_tags.clicked.connect ( () => {
+                var filter_dialog_window = new FilterDialogWindow (app, this);
+                filter_dialog_window.show ();
+                filter_dialog_window.added.connect ((filter) => {
+                    filters_treeview.add_filter (filter);
+                    print ("Should add filter for text: %s | name: %s | cs: %s\n",
+                            filter.pattern, filter.description, filter.colors.name);
+                });
             });
 		}
 	}
