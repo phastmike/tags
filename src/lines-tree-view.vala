@@ -33,8 +33,14 @@ namespace Gtat {
 		[GtkChild]
 		unowned Gtk.ListStore line_store;
 
-		public LinesTreeView (Gtk.Application app) {
+        private Gtk.TreeModelFilter line_store_filter;
 
+		public LinesTreeView (Gtk.Application app) {
+            line_store_filter = new Gtk.TreeModelFilter (line_store, new Gtk.TreePath.first ());
+            line_store_filter.set_visible_func ((model, iter) => {
+                
+                return true;
+            });
         }
 
         public void set_file (string file) {

@@ -63,7 +63,7 @@ namespace Gtat {
             };
 
 			Gtk.show_about_dialog(this.active_window,
-				                  "program-name", "gtat",
+				                  "program-name", "Tagger",
 				                  "authors", authors,
                                   "artists", artists,
                                   "title", "About Tagger",
