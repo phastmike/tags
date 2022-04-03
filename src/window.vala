@@ -46,9 +46,35 @@ namespace Gtat {
             lines_treeview = new LinesTreeView (app);
             filters_treeview = new FiltersTreeView (app);
 
+            filters_treeview.row_activated.connect ((path, column) => {
+                LineFilter filter;
+                Gtk.TreeIter iter;
+
+                filters_treeview.get_selection ().get_selected (null, out iter);
+
+                filters_treeview.get_model ().@get (iter, 0, out filter);
+                var filter_dialog = new FilterDialogWindow (app, filter);
+                filter_dialog.show ();
+                filter_dialog.added.connect ((filter) => {
+                    this.queue_draw ();
+                });
+                
+                filter_dialog.deleted.connect ((filter) => {
+                    filters_treeview.get_model ().foreach ((model, path, iter) => {
+                        LineFilter lf;
+                        model.@get (iter, 0, out lf);
+                        if (lf == filter) {
+                            (model as Gtk.ListStore).remove (ref iter);
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    });
+                });
+            });
+
             var paned = new Gtk.Paned (Gtk.Orientation.VERTICAL);
             set_child (paned);
-
 
             var scrolled_lines = new Gtk.ScrolledWindow ();
             scrolled_lines.set_kinetic_scrolling (true);

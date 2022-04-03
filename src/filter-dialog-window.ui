@@ -194,6 +194,33 @@
             <property name="receives_default">True</property>
           </object>
         </child>
+        <child type="end">
+          <object class="GtkButton" id="button_delete">
+            <style>
+              <class name="destructive-action"/>
+            </style>
+            <property name="label">Delete</property>
+            <property name="visible">false</property>
+            <property name="icon_name">app-remove-symbolic</property>
+            <child>
+              <object class="GtkBox">
+                <property name="orientation">horizontal</property>
+                <property name="spacing">6</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="icon_name">app-remove-symbolic</property>
+                    <property name="opacity">0.75</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="label">Delete</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
       </object>
     </child>
   </template>

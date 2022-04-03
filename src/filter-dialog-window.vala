@@ -17,6 +17,8 @@ namespace Gtat {
         [GtkChild]
         private unowned Gtk.Button button_cancel;
         [GtkChild]
+        private unowned Gtk.Button button_delete;
+        [GtkChild]
         private unowned Gtk.ColorButton button_fg_color;
         [GtkChild]
         private unowned Gtk.ColorButton button_bg_color;
@@ -30,6 +32,7 @@ namespace Gtat {
         public const string example_text = " Lorem ipsum dolor sit amet... ";
 
         public signal void added (LineFilter filter);
+        public signal void deleted (LineFilter filter);
 
         public FilterDialogWindow (Gtk.Application app, LineFilter? filter = null) {
             Object(application: app, transient_for: app.active_window, modal: true);
@@ -56,6 +59,8 @@ namespace Gtat {
                 button_bg_color.set_rgba (filter.colors.bg);
 
                 button_ok.set_label ("Edit");
+
+                button_delete.set_visible (true);
                 
                 button_ok.clicked.connect (() => { 
                     filter.pattern = entry_tag_filter.get_text ();
@@ -63,6 +68,11 @@ namespace Gtat {
                     filter.colors.fg = button_fg_color.get_rgba ();
                     filter.colors.bg = button_bg_color.get_rgba ();
                     added (filter);
+                    this.destroy ();
+                });
+                
+                button_delete.clicked.connect (() => {
+                    deleted(filter);
                     this.destroy ();
                 });
             } else {

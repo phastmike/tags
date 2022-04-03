@@ -67,6 +67,7 @@ namespace Gtat {
                 }
             });
             
+            /*
             this.row_activated.connect ((path, column) => {
                 LineFilter filter;
                 Gtk.TreeIter iter;
@@ -80,6 +81,7 @@ namespace Gtat {
                     this.queue_draw ();
                 });
             });
+            */
         }
         
         private void setup_cell_renderers () {
