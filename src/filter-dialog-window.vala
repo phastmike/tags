@@ -31,35 +31,52 @@ namespace Gtat {
 
         public signal void added (LineFilter filter);
 
-        public FilterDialogWindow (Gtk.Application app, Gtk.Window parent) {
-            Object(application: app, transient_for: parent, modal: true);
+        public FilterDialogWindow (Gtk.Application app, LineFilter? filter = null) {
+            Object(application: app, transient_for: app.active_window, modal: true);
+
+            if_is_edit (filter);
             
             entry_tag_filter.changed.connect (validate_entries);
             entry_tag_name.changed.connect (validate_entries);
             set_label_example_colors ();
+            
+            button_cancel.clicked.connect (this.destroy);
+            button_fg_color.color_set.connect (set_label_example_colors);
+            button_bg_color.color_set.connect (set_label_example_colors);
+        }
 
-            button_ok.clicked.connect (() => {
-                var pattern = entry_tag_filter.get_text ();
-                var description = entry_tag_name.get_text ();
-                var fg_color = button_fg_color.get_rgba ();
-                var bg_color = button_bg_color.get_rgba ();
+        private void if_is_edit (LineFilter? filter) {
+            if (filter != null) {
+
+                button_ok.set_sensitive (true);
+
+                entry_tag_filter.set_text (filter.pattern); 
+                entry_tag_name.set_text (filter.description);
+                button_fg_color.set_rgba (filter.colors.fg);
+                button_bg_color.set_rgba (filter.colors.bg);
+
+                button_ok.set_label ("Edit");
                 
-                LineFilter filter = new LineFilter (pattern, description, new ColorScheme ("default", fg_color, bg_color));
-                added (filter);
-                this.destroy ();
-            });
-            
-            button_cancel.clicked.connect (() => {
-                this.destroy ();
-            });
-            
-            button_fg_color.color_set.connect (()=> {
-                set_label_example_colors ();
-            });
-            
-            button_bg_color.color_set.connect (()=> {
-                set_label_example_colors ();
-            });
+                button_ok.clicked.connect (() => { 
+                    filter.pattern = entry_tag_filter.get_text ();
+                    filter.description = entry_tag_name.get_text ();
+                    filter.colors.fg = button_fg_color.get_rgba ();
+                    filter.colors.bg = button_bg_color.get_rgba ();
+                    added (filter);
+                    this.destroy ();
+                });
+            } else {
+                button_ok.clicked.connect (() => {
+                    var pattern = entry_tag_filter.get_text ();
+                    var description = entry_tag_name.get_text ();
+                    var fg_color = button_fg_color.get_rgba ();
+                    var bg_color = button_bg_color.get_rgba ();
+                    
+                    var new_filter = new LineFilter (pattern, description, new ColorScheme ("default", fg_color, bg_color));
+                    added (new_filter);
+                    this.destroy ();
+                });
+            }
         }
 
         private void set_label_example_colors () {

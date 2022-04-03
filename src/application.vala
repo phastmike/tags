@@ -66,7 +66,13 @@ namespace Gtat {
 				                  "program-name", "gtat",
 				                  "authors", authors,
                                   "artists", artists,
+                                  "title", "About Tagger",
+                                  "license-type", Gtk.License.MIT_X11,
+                                  "wrap-license", true,
+                                  "comments", "Tag lines to a given color scheme.\nPaint for logs ftw!",
                                   "logo-icon-name", "org.ampr.ct1enq.gtat",
+                                  "website", "https://github.com/phastmike/gtat",
+                                  "website-label", "https://github.com/phastmike/gtat",
 				                  "version", "0.1.0");
 		}
 

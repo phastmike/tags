@@ -59,6 +59,27 @@ namespace Gtat {
                 filter_store.@get (i, 0, out filter);
                 filter.enabled = !filter.enabled;
             });
+
+            /* Unselects rows on leaving the object*/
+            this.state_flags_changed.connect ((flags) => {
+                if ((flags & Gtk.StateFlags.PRELIGHT) == 0) {
+                    this.get_selection ().unselect_all ();
+                }
+            });
+            
+            this.row_activated.connect ((path, column) => {
+                LineFilter filter;
+                Gtk.TreeIter iter;
+
+                get_selection ().get_selected (null, out iter);
+
+                filter_store.@get (iter, 0, out filter);
+                var filter_dialog = new FilterDialogWindow (app, filter);
+                filter_dialog.show ();
+                filter_dialog.added.connect ((filter) => {
+                    this.queue_draw ();
+                });
+            });
         }
         
         private void setup_cell_renderers () {

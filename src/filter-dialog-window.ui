@@ -155,6 +155,7 @@
                             <property name="halign">start</property>
                             <property name="valign">center</property>
                             <property name="hexpand">0</property>
+                            <property name="vexpand">1</property>
                             <property name="justify">right</property>
                           </object>
                         </child>

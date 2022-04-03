@@ -82,12 +82,10 @@ namespace Gtat {
             });
 
             button_tags.clicked.connect ( () => {
-                var filter_dialog_window = new FilterDialogWindow (app, this);
+                var filter_dialog_window = new FilterDialogWindow (app);
                 filter_dialog_window.show ();
                 filter_dialog_window.added.connect ((filter) => {
                     filters_treeview.add_filter (filter);
-                    print ("Should add filter for text: %s | name: %s | cs: %s\n",
-                            filter.pattern, filter.description, filter.colors.name);
                 });
             });
 		}
