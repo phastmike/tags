@@ -177,6 +177,7 @@
     </child>
     <child type="titlebar">
       <object class="GtkHeaderBar" id="header_bar">
+        <property name="show_title_buttons">false</property>
         <child>
           <object class="GtkButton" id="button_cancel">
             <property name="label">Cancel</property>
