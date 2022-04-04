@@ -32,6 +32,8 @@ namespace Gtat {
 	public class LinesTreeView : Gtk.TreeView {
 		[GtkChild]
 		unowned Gtk.ListStore line_store;
+		[GtkChild]
+		unowned Gtk.CellRendererText renderer_line_text;
 
         private Gtk.TreeModelFilter line_store_filter;
 
@@ -64,6 +66,34 @@ namespace Gtat {
             } catch (FileError err) {
                 print("Error: %s\n", err.message);
             } 
+        }
+
+        public void tag_lines (Gtk.ListStore filters) {
+            line_store.foreach ((lmodel, lpath, liter) => {
+                string line;
+                lmodel.@get (liter, 1, out line);
+                filters.foreach ((fmodel, fpath, fiter) => {
+                    LineFilter filter;
+                    fmodel.@get (fiter, 0, out filter);
+                    
+                    if (line.contains (filter.pattern)) {
+                        if (filter.colors.fg != null) {
+                            renderer_line_text.foreground_rgba = filter.colors.fg;
+                        } else {
+                            renderer_line_text.foreground = null;
+                        }
+                        if (filter.colors.bg != null) {
+                            renderer_line_text.background_rgba = filter.colors.bg;
+                        } else {
+                            renderer_line_text.background = null;
+                        }
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+                return false;
+            });
         }
     }
 }

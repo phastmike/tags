@@ -8,15 +8,17 @@
       <column type="gint"/>
       <!-- column-name line_text -->
       <column type="gchararray"/>
+      <!-- column-name line_filter -->
+      <column type="GObject"/>
     </columns>
   </object>
   <template class="GtatLinesTreeView" parent="GtkTreeView">
     <property name="visible">True</property>
     <property name="can-focus">True</property>
     <property name="model">line_store</property>
-    <property name="headers-visible">False</property>
-    <property name="headers-clickable">False</property>
-    <property name="enable-search">False</property>
+    <property name="headers-visible">false</property>
+    <property name="headers-clickable">false</property>
+    <property name="enable-search">false</property>
     <property name="search-column">1</property>
     <property name="enable-grid-lines">vertical</property>
     <child internal-child="selection">

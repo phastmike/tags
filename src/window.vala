@@ -42,9 +42,26 @@ namespace Gtat {
 
 		public Window (Gtk.Application app) {
 			Object (application: app);
-
+            
             lines_treeview = new LinesTreeView (app);
             filters_treeview = new FiltersTreeView (app);
+            
+            lines_treeview.row_activated.connect ((path, column) => {
+                string line_text;
+                Gtk.TreeIter iter;
+
+                lines_treeview.get_selection ().get_selected (null, out iter);
+                lines_treeview.get_model ().@get (iter, 1, out line_text);
+                
+                var filter_dialog = new FilterDialogWindow (app, line_text);
+                filter_dialog.show ();
+                filter_dialog.added.connect ((filter) => {
+                    filters_treeview.add_filter (filter);
+                    lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
+                });
+                 
+            });
+
 
             filters_treeview.row_activated.connect ((path, column) => {
                 LineFilter filter;
@@ -53,10 +70,10 @@ namespace Gtat {
                 filters_treeview.get_selection ().get_selected (null, out iter);
 
                 filters_treeview.get_model ().@get (iter, 0, out filter);
-                var filter_dialog = new FilterDialogWindow (app, filter);
+                var filter_dialog = new FilterDialogWindow.for_editing (app, filter);
                 filter_dialog.show ();
                 filter_dialog.added.connect ((filter) => {
-                    this.queue_draw ();
+                    filters_treeview.queue_draw ();
                 });
                 
                 filter_dialog.deleted.connect ((filter) => {
@@ -70,6 +87,7 @@ namespace Gtat {
                             return false;
                         }
                     });
+                    lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
                 });
             });
 
@@ -112,6 +130,7 @@ namespace Gtat {
                 filter_dialog_window.show ();
                 filter_dialog_window.added.connect ((filter) => {
                     filters_treeview.add_filter (filter);
+                    lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
                 });
             });
 		}
