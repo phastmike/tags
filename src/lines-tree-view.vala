@@ -33,6 +33,8 @@ namespace Gtat {
 		[GtkChild]
 		unowned Gtk.ListStore line_store;
 		[GtkChild]
+		unowned Gtk.TreeViewColumn col_line_text;
+		[GtkChild]
 		unowned Gtk.CellRendererText renderer_line_text;
 
         private Gtk.TreeModelFilter line_store_filter;
@@ -42,6 +44,26 @@ namespace Gtat {
             line_store_filter.set_visible_func ((model, iter) => {
                 
                 return true;
+            });
+
+            col_line_text.set_cell_data_func (renderer_line_text, (column, cell, model, iter) => {
+                LineFilter filter;
+                model.@get (iter, 2, out filter);
+                if (filter != null) {
+                    if (filter.colors.fg != null) {
+                        (cell as Gtk.CellRendererText).foreground_rgba = filter.colors.fg;
+                    } else {
+                        (cell as Gtk.CellRendererText).foreground = null;
+                    }
+                    if (filter.colors.bg != null) {
+                        (cell as Gtk.CellRendererText).background_rgba = filter.colors.bg;
+                    } else {
+                        (cell as Gtk.CellRendererText).background = null;
+                    }
+                } else {
+                    (cell as Gtk.CellRendererText).foreground = null;
+                    (cell as Gtk.CellRendererText).background = null;
+                }
             });
         }
 
@@ -58,7 +80,7 @@ namespace Gtat {
                     lines.resize (lines.length - 1);
                     foreach (var line in lines) {
                         line_store.append (out iter);
-                        line_store.@set (iter, 0, ++nr, 1, line);
+                        line_store.@set (iter, 0, ++nr, 1, line, 2, null, -1);
                     }
                 } else {
                     print("Error opening file [%s]\n", "example.log");
@@ -71,22 +93,18 @@ namespace Gtat {
         public void tag_lines (Gtk.ListStore filters) {
             line_store.foreach ((lmodel, lpath, liter) => {
                 string line;
+
                 lmodel.@get (liter, 1, out line);
+
+                renderer_line_text.foreground = null;
+                renderer_line_text.background = null;
+
                 filters.foreach ((fmodel, fpath, fiter) => {
                     LineFilter filter;
                     fmodel.@get (fiter, 0, out filter);
-                    
+                     
                     if (line.contains (filter.pattern)) {
-                        if (filter.colors.fg != null) {
-                            renderer_line_text.foreground_rgba = filter.colors.fg;
-                        } else {
-                            renderer_line_text.foreground = null;
-                        }
-                        if (filter.colors.bg != null) {
-                            renderer_line_text.background_rgba = filter.colors.bg;
-                        } else {
-                            renderer_line_text.background = null;
-                        }
+                        line_store.@set (liter, 2, filter);
                         return true;
                     } else {
                         return false;
