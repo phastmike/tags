@@ -96,8 +96,7 @@ namespace Gtat {
 
                 lmodel.@get (liter, 1, out line);
 
-                renderer_line_text.foreground = null;
-                renderer_line_text.background = null;
+                line_store.@set (liter, 2, null);
 
                 filters.foreach ((fmodel, fpath, fiter) => {
                     LineFilter filter;
