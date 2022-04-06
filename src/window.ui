@@ -24,7 +24,7 @@
          <property name="tooltip_text" translatable="yes">Open a file</property>
        </object>
         </child>
-      <child type="start">
+      <child type="end">
         <object class="GtkMenuButton">
          <property name="visible">true</property>
          <property name="valign">center</property>
