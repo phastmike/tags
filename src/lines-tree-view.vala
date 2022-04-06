@@ -91,19 +91,27 @@ namespace Gtat {
         }
 
         public void tag_lines (Gtk.ListStore filters) {
-            line_store.foreach ((lmodel, lpath, liter) => {
+            /* Clear Filter Hit Counter */
+            filters.foreach ((filters_model, filter_path, filter_iter) => {
+                LineFilter filter;
+                filters_model.@get (filter_iter, 0, out filter);
+                filter.hits = 0;
+                return false;
+            });
+
+            line_store.foreach ((lines_model, lines_path, lines_iter) => {
                 string line;
 
-                lmodel.@get (liter, 1, out line);
+                lines_model.@get (lines_iter, 1, out line);
+                line_store.@set (lines_iter, 2, null);
 
-                line_store.@set (liter, 2, null);
-
-                filters.foreach ((fmodel, fpath, fiter) => {
+                filters.foreach ((filters_model, filter_path, filter_iter) => {
                     LineFilter filter;
-                    fmodel.@get (fiter, 0, out filter);
+                    filters_model.@get (filter_iter, 0, out filter);
                      
                     if (line.contains (filter.pattern)) {
-                        line_store.@set (liter, 2, filter);
+                        line_store.@set (lines_iter, 2, filter);
+                        filter.hits += 1;
                         return true;
                     } else {
                         return false;

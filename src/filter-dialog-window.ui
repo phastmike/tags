@@ -209,7 +209,7 @@
                 <child>
                   <object class="GtkImage">
                     <property name="icon_name">app-remove-symbolic</property>
-                    <property name="opacity">0.75</property>
+                    <property name="opacity">0.65</property>
                   </object>
                 </child>
                 <child>

@@ -54,12 +54,19 @@ namespace Gtat {
                 lines_treeview.get_model ().@get (iter, 1, out line_text);
                 
                 var filter_dialog = new FilterDialogWindow (app, line_text);
-                filter_dialog.show ();
                 filter_dialog.added.connect ((filter) => {
                     filters_treeview.add_filter (filter);
                     lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
                 });
-                 
+                filter_dialog.show ();
+                
+                /* Possible if FilterDialogWindow invokes show () method */
+                /*
+                new FilterDialogWindow (app, line_text).added.connect ((filter) => {
+                    filters_treeview.add_filter (filter);
+                    lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
+                });
+                */
             });
 
 
