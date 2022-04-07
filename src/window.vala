@@ -39,9 +39,15 @@ namespace Gtat {
         
         private LinesTreeView lines_treeview;
         private FiltersTreeView filters_treeview;
+		private ActionEntry[] WINDOW_ACTIONS = {
+			{ "add_tag", add_tag },
+			{ "hide_untagged", hide_untagged_lines }
+		};
 
 		public Window (Gtk.Application app) {
 			Object (application: app);
+
+			this.add_action_entries(this.WINDOW_ACTIONS, this);
             
             lines_treeview = new LinesTreeView (app);
             filters_treeview = new FiltersTreeView (app);
@@ -59,14 +65,6 @@ namespace Gtat {
                     lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
                 });
                 filter_dialog.show ();
-                
-                /* Possible if FilterDialogWindow invokes show () method */
-                /*
-                new FilterDialogWindow (app, line_text).added.connect ((filter) => {
-                    filters_treeview.add_filter (filter);
-                    lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
-                });
-                */
             });
 
 
@@ -137,9 +135,21 @@ namespace Gtat {
                 filter_dialog_window.show ();
                 filter_dialog_window.added.connect ((filter) => {
                     filters_treeview.add_filter (filter);
+                    filter.enable_changed.connect ((enabled) => {
+                        lines_treeview.line_store_filter.refilter ();
+                    });
                     lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
                 });
             });
+		}
+
+		private void add_tag () {
+			message("window.add_tag action activated");
+		}
+
+		private void hide_untagged_lines () {
+            lines_treeview.hide_untagged = !lines_treeview.hide_untagged; 
+            lines_treeview.line_store_filter.refilter ();
 		}
 	}
 }

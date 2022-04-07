@@ -33,18 +33,31 @@ namespace Gtat {
 		[GtkChild]
 		unowned Gtk.ListStore line_store;
 		[GtkChild]
+		public unowned Gtk.TreeModelFilter line_store_filter;
+		[GtkChild]
 		unowned Gtk.TreeViewColumn col_line_text;
 		[GtkChild]
 		unowned Gtk.CellRendererText renderer_line_text;
 
-        private Gtk.TreeModelFilter line_store_filter;
+        public bool hide_untagged;
 
 		public LinesTreeView (Gtk.Application app) {
-            line_store_filter = new Gtk.TreeModelFilter (line_store, new Gtk.TreePath.first ());
+            hide_untagged = false;
+
             line_store_filter.set_visible_func ((model, iter) => {
-                
-                return true;
+                if (hide_untagged == false) {
+                    return true;
+                } else {
+                    LineFilter? filter; 
+                    model.@get (iter, 2, out filter);
+                    if (filter != null) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
             });
+            this.model = line_store_filter;
 
             col_line_text.set_cell_data_func (renderer_line_text, (column, cell, model, iter) => {
                 LineFilter filter;
@@ -108,7 +121,7 @@ namespace Gtat {
                 filters.foreach ((filters_model, filter_path, filter_iter) => {
                     LineFilter filter;
                     filters_model.@get (filter_iter, 0, out filter);
-                     
+                    if (filter.enabled == false) return false; 
                     if (line.contains (filter.pattern)) {
                         line_store.@set (lines_iter, 2, filter);
                         filter.hits += 1;
