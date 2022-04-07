@@ -23,22 +23,22 @@
          <property name="icon_name">document-open-symbolic</property>
          <property name="tooltip_text" translatable="yes">Open a file</property>
        </object>
-        </child>
+      </child>
       <child type="end">
         <object class="GtkMenuButton">
-         <property name="visible">true</property>
-         <property name="valign">center</property>
-         <property name="popover">file_popover</property>
-       </object>
-        </child>
+          <property name="visible">true</property>
+          <property name="valign">center</property>
+          <property name="popover">file_popover</property>
+        </object>
+      </child>
       <child type="end">
         <object class="GtkButton" id="button_tags">
-         <property name="visible">true</property>
-         <property name="label">Tags</property>
-			<!--<property name="icon_name">user-bookmarks-symbolic</property>-->
-         <property name="icon_name">bookmark-new-symbolic</property>
-       </object>
-        </child>
+          <property name="visible">true</property>
+          <property name="label">Tags</property>
+          <!--<property name="icon_name">user-bookmarks-symbolic</property>-->
+          <property name="icon_name">bookmark-new-symbolic</property>
+        </object>
+      </child>
       </object>
     </child>
     <child>
@@ -46,26 +46,26 @@
   </template>
 
   <object class="GtkPopover" id="fpop">
-   <child>
-    <object class="GtkBox" id="open_button_box">
-      <property name="visible">true</property>
-      <child>
-        <object class="GtkLabel" id="open_button_name">
-          <property name="label" translatable="yes">_Open</property>
-          <property name="use-underline">true</property>
-          <property name="visible">true</property>
-          <property name="valign">baseline</property>
-        </object>
-      </child>
-      <child>
-        <object class="GtkImage" id="open_button_arrow">
-          <property name="visible">true</property>
-          <property name="valign">baseline</property>
-          <property name="icon_name">pan-down-symbolic</property>
-        </object>
-      </child>
-   </object>
-  </child>
+    <child>
+      <object class="GtkBox" id="open_button_box">
+        <property name="visible">true</property>
+        <child>
+          <object class="GtkLabel" id="open_button_name">
+            <property name="label" translatable="yes">_Open</property>
+            <property name="use-underline">true</property>
+            <property name="visible">true</property>
+            <property name="valign">baseline</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkImage" id="open_button_arrow">
+            <property name="visible">true</property>
+            <property name="valign">baseline</property>
+            <property name="icon_name">pan-down-symbolic</property>
+          </object>
+        </child>
+      </object>
+    </child>
   </object>
 
   <object class="GtkPopoverMenu" id="file_popover">
