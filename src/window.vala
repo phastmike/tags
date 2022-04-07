@@ -41,13 +41,14 @@ namespace Gtat {
         private FiltersTreeView filters_treeview;
 		private ActionEntry[] WINDOW_ACTIONS = {
 			{ "add_tag", add_tag },
-			{ "hide_untagged", hide_untagged_lines }
+			{ "hide_untagged_lines", hide_untagged_lines }
 		};
 
 		public Window (Gtk.Application app) {
 			Object (application: app);
 
 			this.add_action_entries(this.WINDOW_ACTIONS, this);
+			app.set_accels_for_action("win.hide_untagged_lines", {"<primary>h"});
             
             lines_treeview = new LinesTreeView (app);
             filters_treeview = new FiltersTreeView (app);
@@ -79,6 +80,7 @@ namespace Gtat {
                 filter_dialog.show ();
                 filter_dialog.added.connect ((filter) => {
                     filters_treeview.queue_draw ();
+                    //lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
                 });
                 
                 filter_dialog.deleted.connect ((filter) => {
@@ -133,11 +135,16 @@ namespace Gtat {
             button_tags.clicked.connect ( () => {
                 var filter_dialog_window = new FilterDialogWindow (app);
                 filter_dialog_window.show ();
+
                 filter_dialog_window.added.connect ((filter) => {
+
                     filters_treeview.add_filter (filter);
+
                     filter.enable_changed.connect ((enabled) => {
                         lines_treeview.line_store_filter.refilter ();
+                        lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
                     });
+
                     lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
                 });
             });
@@ -150,6 +157,7 @@ namespace Gtat {
 		private void hide_untagged_lines () {
             lines_treeview.hide_untagged = !lines_treeview.hide_untagged; 
             lines_treeview.line_store_filter.refilter ();
+            lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
 		}
 	}
 }

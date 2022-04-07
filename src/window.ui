@@ -104,8 +104,8 @@
         <attribute name="action">win.add_tag</attribute>
     </item>
      <item>
-        <attribute name="label" translatable="yes">_Hide Untagged</attribute>
-        <attribute name="action">win.hide_untagged</attribute>
+        <attribute name="label" translatable="yes">Hide Untagged</attribute>
+        <attribute name="action">win.hide_untagged_lines</attribute>
     </item>
     </section>
    <section>
