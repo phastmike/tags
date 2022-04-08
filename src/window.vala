@@ -175,7 +175,14 @@ namespace Gtat {
 
         private void toggle_filters_view () {
             var view_height = paned.get_allocated_height ();
-            paned.set_position (paned.get_position () >= view_height - 5 ? view_height - 160 : view_height - 5);
+            //paned.set_position (paned.get_position () >= view_height - 5 ? view_height - 160 : view_height - 5);
+
+            if (paned.get_position () >= view_height - 5) {
+                paned.set_position (paned_last_position);
+            } else {
+                paned_last_position = paned.get_position ();
+                paned.set_position (view_height - 5);
+            }
         }
 	}
 }
