@@ -44,6 +44,7 @@
               <property name="visible">true</property>
               <property name="valign">center</property>
               <property name="popover">file_popover</property>
+              <property name="tooltip_text" translatable="yes">Tags menu</property>
             </object>
           </child>
         </object>
@@ -100,11 +101,11 @@
   <menu id="file_menu">
     <section>
      <item>
-		  <attribute name="label" translatable="yes">Show/Hide TagList</attribute>
+		  <attribute name="label" translatable="yes">Toggle Tag List</attribute>
         <attribute name="action">win.toggle_filters_view</attribute>
     </item>
      <item>
-        <attribute name="label" translatable="yes">Hide Untagged</attribute>
+        <attribute name="label" translatable="yes">Toggle Untagged</attribute>
         <attribute name="action">win.hide_untagged_lines</attribute>
     </item>
     </section>
