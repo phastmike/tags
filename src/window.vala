@@ -53,6 +53,7 @@ namespace Gtat {
 			Object (application: app);
 
 			this.add_action_entries(this.WINDOW_ACTIONS, this);
+			app.set_accels_for_action("win.add_tag", {"<primary>n"});
 			app.set_accels_for_action("win.hide_untagged_lines", {"<primary>h"});
 			app.set_accels_for_action("win.toggle_filters_view", {"<primary>f"});
             
@@ -86,7 +87,7 @@ namespace Gtat {
                 filter_dialog.show ();
                 filter_dialog.added.connect ((filter) => {
                     filters_treeview.queue_draw ();
-                    //lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
+                    lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
                 });
                 
                 filter_dialog.deleted.connect ((filter) => {
@@ -123,15 +124,21 @@ namespace Gtat {
             paned.set_end_child (scrolled_filters);
             paned.set_resize_start_child (true);
             paned.set_resize_end_child (true);
-            paned.set_position (360);
             paned.set_wide_handle (true);
+            paned.set_position (this.default_height - 47 - 160);
+            paned.queue_draw ();
 
             button_open_file.clicked.connect ( () => {
-                var file_chooser_dialog = new Gtk.FileChooserDialog ("Open File", this, Gtk.FileChooserAction.OPEN, "Open", Gtk.ResponseType.ACCEPT, "Cancel", Gtk.ResponseType.CANCEL, null);
+                var file_chooser_dialog = new Gtk.FileChooserDialog (
+                    "Open File", this, Gtk.FileChooserAction.OPEN, 
+                    "Open", Gtk.ResponseType.ACCEPT, 
+                    "Cancel", Gtk.ResponseType.CANCEL, 
+                    null);
                 file_chooser_dialog.set_modal (true);
                 file_chooser_dialog.response.connect ( (response_id) => {
                     if (response_id == Gtk.ResponseType.ACCEPT) {
                         lines_treeview.set_file(file_chooser_dialog.get_file ().get_path ());
+                        lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
                     }
                     file_chooser_dialog.destroy ();
                 });
@@ -139,25 +146,25 @@ namespace Gtat {
             });
 
             button_tags.clicked.connect ( () => {
-                var filter_dialog_window = new FilterDialogWindow (app);
-                filter_dialog_window.show ();
-
-                filter_dialog_window.added.connect ((filter) => {
-
-                    filters_treeview.add_filter (filter);
-
-                    filter.enable_changed.connect ((enabled) => {
-                        lines_treeview.line_store_filter.refilter ();
-                        lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
-                    });
-
-                    lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
-                });
+                add_tag ();
             });
 		}
 
 		private void add_tag () {
-			message("window.add_tag action activated");
+            var filter_dialog_window = new FilterDialogWindow (this.application);
+            filter_dialog_window.show ();
+
+            filter_dialog_window.added.connect ((filter) => {
+
+                filters_treeview.add_filter (filter);
+
+                filter.enable_changed.connect ((enabled) => {
+                    lines_treeview.line_store_filter.refilter ();
+                    lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
+                });
+
+                lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
+            });
 		}
 
 		private void hide_untagged_lines () {
@@ -167,9 +174,8 @@ namespace Gtat {
 		}
 
         private void toggle_filters_view () {
-            print("position was: %d | allocated %d\n", paned.get_position (), paned.get_allocated_height ());
-            paned.set_position (paned.get_allocated_height () - paned.get_position () == 5 ? 360 : paned.get_allocated_height () - 5);
-            
+            var view_height = paned.get_allocated_height ();
+            paned.set_position (paned.get_position () >= view_height - 5 ? view_height - 160 : view_height - 5);
         }
 	}
 }

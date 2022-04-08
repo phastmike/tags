@@ -20,7 +20,7 @@ namespace Gtat {
             }
             set {
                 _enabled = value;
-                print("Enabled changed to: %s\n", _enabled.to_string ());
+                message ("[Tag: %s] enable_changed :: %s\n", this.description, _enabled.to_string ());
                 enable_changed (enabled);
             }
         }

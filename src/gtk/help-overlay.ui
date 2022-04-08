@@ -11,7 +11,19 @@
             <property name="title" translatable="yes" context="shortcut window">General</property>
             <child>
               <object class="GtkShortcutsShortcut">
-                <property name="title" translatable="yes" context="shortcut window">Hide untagged lines</property>
+                <property name="title" translatable="yes" context="shortcut window">Add a Tag</property>
+                <property name="action-name">win.add_tag</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes" context="shortcut window">Toggle tag list visibility</property>
+                <property name="action-name">win.toggle_filters_view</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes" context="shortcut window">Toggle untagged lines visibility</property>
                 <property name="action-name">win.hide_untagged_lines</property>
               </object>
             </child>
