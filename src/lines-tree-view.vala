@@ -120,8 +120,13 @@ namespace Gtat {
 
                 filters.foreach ((filters_model, filter_path, filter_iter) => {
                     LineFilter filter;
+
                     filters_model.@get (filter_iter, 0, out filter);
-                    if (filter.enabled == false) return false; 
+
+                    if (filter.enabled == false) {
+                        return false;
+                    }
+
                     if (line.contains (filter.pattern)) {
                         line_store.@set (lines_iter, 2, filter);
                         filter.hits += 1;
@@ -130,6 +135,8 @@ namespace Gtat {
                         return false;
                     }
                 });
+
+                queue_draw ();
                 return false;
             });
         }

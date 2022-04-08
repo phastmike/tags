@@ -100,8 +100,8 @@
   <menu id="file_menu">
     <section>
      <item>
-        <attribute name="label" translatable="yes">_Add Tag</attribute>
-        <attribute name="action">win.add_tag</attribute>
+		  <attribute name="label" translatable="yes">Show/Hide TagList</attribute>
+        <attribute name="action">win.toggle_filters_view</attribute>
     </item>
      <item>
         <attribute name="label" translatable="yes">Hide Untagged</attribute>

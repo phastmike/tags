@@ -37,11 +37,16 @@ namespace Gtat {
         [GtkChild]
         unowned Gtk.Button button_tags;
         
+        private Gtk.Paned paned;
         private LinesTreeView lines_treeview;
         private FiltersTreeView filters_treeview;
+
+        private int paned_last_position = -1;
+
 		private ActionEntry[] WINDOW_ACTIONS = {
 			{ "add_tag", add_tag },
-			{ "hide_untagged_lines", hide_untagged_lines }
+			{ "hide_untagged_lines", hide_untagged_lines },
+			{ "toggle_filters_view", toggle_filters_view }
 		};
 
 		public Window (Gtk.Application app) {
@@ -49,6 +54,7 @@ namespace Gtat {
 
 			this.add_action_entries(this.WINDOW_ACTIONS, this);
 			app.set_accels_for_action("win.hide_untagged_lines", {"<primary>h"});
+			app.set_accels_for_action("win.toggle_filters_view", {"<primary>f"});
             
             lines_treeview = new LinesTreeView (app);
             filters_treeview = new FiltersTreeView (app);
@@ -98,7 +104,7 @@ namespace Gtat {
                 });
             });
 
-            var paned = new Gtk.Paned (Gtk.Orientation.VERTICAL);
+            paned = new Gtk.Paned (Gtk.Orientation.VERTICAL);
             set_child (paned);
 
             var scrolled_lines = new Gtk.ScrolledWindow ();
@@ -159,5 +165,11 @@ namespace Gtat {
             lines_treeview.line_store_filter.refilter ();
             lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
 		}
+
+        private void toggle_filters_view () {
+            print("position was: %d | allocated %d\n", paned.get_position (), paned.get_allocated_height ());
+            paned.set_position (paned.get_allocated_height () - paned.get_position () == 5 ? 360 : paned.get_allocated_height () - 5);
+            
+        }
 	}
 }
