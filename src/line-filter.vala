@@ -12,11 +12,25 @@
 namespace Gtat {
 
     public class LineFilter : Object {
-        public bool enabled;
+        private bool _enabled;
+
+        public bool enabled { 
+            get {
+                return _enabled;
+            }
+            set {
+                _enabled = value;
+                message ("[Tag: %s] enable_changed :: %s\n", this.description, _enabled.to_string ());
+                enable_changed (enabled);
+            }
+        }
+
         public string pattern;
         public string description;
-        public uint hits; // Should be here?
+        public uint hits;
         public ColorScheme colors;
+
+        public signal void enable_changed (bool enabled);
         
         public LineFilter (string pattern, string description, ColorScheme colors) {
             this.pattern = pattern;
@@ -24,7 +38,7 @@ namespace Gtat {
             this.colors = colors;
 
             hits = 0;
-            enabled = true;
+            _enabled = true;
         }
     }
 }

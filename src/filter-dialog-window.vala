@@ -46,9 +46,12 @@ namespace Gtat {
                 var description = entry_tag_name.get_text ();
                 var fg_color = button_fg_color.get_rgba ();
                 var bg_color = button_bg_color.get_rgba ();
-                
-                var new_filter = new LineFilter (pattern, description, new ColorScheme ("default", fg_color, bg_color));
+
+                var color_scheme = new ColorScheme ("default", fg_color, bg_color);
+                var new_filter = new LineFilter (pattern, description, color_scheme); 
+
                 added (new_filter);
+
                 this.destroy ();
             });
             

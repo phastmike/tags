@@ -37,11 +37,25 @@ namespace Gtat {
         [GtkChild]
         unowned Gtk.Button button_tags;
         
+        private Gtk.Paned paned;
         private LinesTreeView lines_treeview;
         private FiltersTreeView filters_treeview;
 
+        private int paned_last_position = -1;
+
+		private ActionEntry[] WINDOW_ACTIONS = {
+			{ "add_tag", add_tag },
+			{ "hide_untagged_lines", hide_untagged_lines },
+			{ "toggle_filters_view", toggle_filters_view }
+		};
+
 		public Window (Gtk.Application app) {
 			Object (application: app);
+
+			this.add_action_entries(this.WINDOW_ACTIONS, this);
+			app.set_accels_for_action("win.add_tag", {"<primary>n"});
+			app.set_accels_for_action("win.hide_untagged_lines", {"<primary>h"});
+			app.set_accels_for_action("win.toggle_filters_view", {"<primary>f"});
             
             lines_treeview = new LinesTreeView (app);
             filters_treeview = new FiltersTreeView (app);
@@ -49,24 +63,26 @@ namespace Gtat {
             lines_treeview.row_activated.connect ((path, column) => {
                 string line_text;
                 Gtk.TreeIter iter;
+                LineFilter line_filter;
+                FilterDialogWindow filter_dialog;
 
                 lines_treeview.get_selection ().get_selected (null, out iter);
-                lines_treeview.get_model ().@get (iter, 1, out line_text);
-                
-                var filter_dialog = new FilterDialogWindow (app, line_text);
-                filter_dialog.added.connect ((filter) => {
-                    filters_treeview.add_filter (filter);
-                    lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
-                });
+                lines_treeview.get_model ().@get (iter, 1, out line_text, 2, out line_filter);
+
+                if (line_filter != null) {
+                    filter_dialog = new FilterDialogWindow.for_editing (app, line_filter);
+                    filter_dialog.added.connect ((filter) => {
+                        lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
+                    });
+                } else {
+                    filter_dialog = new FilterDialogWindow (app, line_text);
+                    filter_dialog.added.connect ((filter) => {
+                        filters_treeview.add_filter (filter);
+                        lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
+                    });
+                }
+
                 filter_dialog.show ();
-                
-                /* Possible if FilterDialogWindow invokes show () method */
-                /*
-                new FilterDialogWindow (app, line_text).added.connect ((filter) => {
-                    filters_treeview.add_filter (filter);
-                    lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
-                });
-                */
             });
 
 
@@ -81,6 +97,7 @@ namespace Gtat {
                 filter_dialog.show ();
                 filter_dialog.added.connect ((filter) => {
                     filters_treeview.queue_draw ();
+                    lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
                 });
                 
                 filter_dialog.deleted.connect ((filter) => {
@@ -98,7 +115,7 @@ namespace Gtat {
                 });
             });
 
-            var paned = new Gtk.Paned (Gtk.Orientation.VERTICAL);
+            paned = new Gtk.Paned (Gtk.Orientation.VERTICAL);
             set_child (paned);
 
             var scrolled_lines = new Gtk.ScrolledWindow ();
@@ -117,15 +134,21 @@ namespace Gtat {
             paned.set_end_child (scrolled_filters);
             paned.set_resize_start_child (true);
             paned.set_resize_end_child (true);
-            paned.set_position (360);
             paned.set_wide_handle (true);
+            paned.set_position (this.default_height - 47 - 160);
+            paned.queue_draw ();
 
             button_open_file.clicked.connect ( () => {
-                var file_chooser_dialog = new Gtk.FileChooserDialog ("Open File", this, Gtk.FileChooserAction.OPEN, "Open", Gtk.ResponseType.ACCEPT, "Cancel", Gtk.ResponseType.CANCEL, null);
+                var file_chooser_dialog = new Gtk.FileChooserDialog (
+                    "Open File", this, Gtk.FileChooserAction.OPEN, 
+                    "Open", Gtk.ResponseType.ACCEPT, 
+                    "Cancel", Gtk.ResponseType.CANCEL, 
+                    null);
                 file_chooser_dialog.set_modal (true);
                 file_chooser_dialog.response.connect ( (response_id) => {
                     if (response_id == Gtk.ResponseType.ACCEPT) {
                         lines_treeview.set_file(file_chooser_dialog.get_file ().get_path ());
+                        lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
                     }
                     file_chooser_dialog.destroy ();
                 });
@@ -133,13 +156,43 @@ namespace Gtat {
             });
 
             button_tags.clicked.connect ( () => {
-                var filter_dialog_window = new FilterDialogWindow (app);
-                filter_dialog_window.show ();
-                filter_dialog_window.added.connect ((filter) => {
-                    filters_treeview.add_filter (filter);
-                    lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
-                });
+                add_tag ();
             });
 		}
+
+		private void add_tag () {
+            var filter_dialog_window = new FilterDialogWindow (this.application);
+            filter_dialog_window.show ();
+
+            filter_dialog_window.added.connect ((filter) => {
+
+                filters_treeview.add_filter (filter);
+
+                filter.enable_changed.connect ((enabled) => {
+                    lines_treeview.line_store_filter.refilter ();
+                    lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
+                });
+
+                lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
+            });
+		}
+
+		private void hide_untagged_lines () {
+            lines_treeview.hide_untagged = !lines_treeview.hide_untagged; 
+            lines_treeview.line_store_filter.refilter ();
+            lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
+		}
+
+        private void toggle_filters_view () {
+            var view_height = paned.get_allocated_height ();
+            //paned.set_position (paned.get_position () >= view_height - 5 ? view_height - 160 : view_height - 5);
+
+            if (paned.get_position () >= view_height - 5) {
+                paned.set_position (paned_last_position);
+            } else {
+                paned_last_position = paned.get_position ();
+                paned.set_position (view_height - 5);
+            }
+        }
 	}
 }

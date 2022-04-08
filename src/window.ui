@@ -3,8 +3,8 @@
   <requires lib="gtk" version="4.0"/>
   <template class="GtatWindow" parent="GtkApplicationWindow">
     <property name="title" translatable="yes">Tagger</property>
-    <property name="default-width">800</property>
-    <property name="default-height">600</property>
+    <property name="default-width">1024</property>
+    <property name="default-height">768</property>
     <child type="titlebar">
       <object class="GtkHeaderBar" id="header_bar">
       <style>
@@ -21,9 +21,35 @@
         <object class="GtkButton" id="button_open_file">
          <property name="visible">true</property>
          <property name="icon_name">document-open-symbolic</property>
-         <property name="tooltip_text" translatable="yes">Open a file</property>
+         <property name="tooltip_text" translatable="yes">Open File</property>
        </object>
       </child>
+      <child type="end">
+        <object class="GtkBox">
+          <style>
+            <class name="linked"/>
+          </style>
+          <property name="orientation">horizontal</property>
+          <child>
+            <object class="GtkButton" id="button_tags">
+              <property name="visible">true</property>
+              <property name="label">Tags</property>
+              <property name="tooltip_text" translatable="yes">Add Tag</property>
+              <!--<property name="icon_name">user-bookmarks-symbolic</property>-->
+              <property name="icon_name">bookmark-new-symbolic</property>
+            </object>
+          </child>
+          <child>
+            <object class="GtkMenuButton">
+              <property name="visible">true</property>
+              <property name="valign">center</property>
+              <property name="popover">file_popover</property>
+              <property name="tooltip_text" translatable="yes">Tags menu</property>
+            </object>
+          </child>
+        </object>
+      </child>
+      <!--
       <child type="end">
         <object class="GtkMenuButton">
           <property name="visible">true</property>
@@ -32,13 +58,13 @@
         </object>
       </child>
       <child type="end">
-        <object class="GtkButton" id="button_tags">
+        <object class="GtkButton" id="xbutton_tags">
           <property name="visible">true</property>
           <property name="label">Tags</property>
-          <!--<property name="icon_name">user-bookmarks-symbolic</property>-->
           <property name="icon_name">bookmark-new-symbolic</property>
         </object>
       </child>
+      -->
       </object>
     </child>
     <child>
@@ -75,12 +101,12 @@
   <menu id="file_menu">
     <section>
      <item>
-        <attribute name="label" translatable="yes">_Add Tag</attribute>
-        <attribute name="action">app.preferences</attribute>
+		  <attribute name="label" translatable="yes">Toggle Tag List</attribute>
+        <attribute name="action">win.toggle_filters_view</attribute>
     </item>
      <item>
-        <attribute name="label" translatable="yes">_Hide Untagged</attribute>
-        <attribute name="action">app.preferences</attribute>
+        <attribute name="label" translatable="yes">Toggle Untagged</attribute>
+        <attribute name="action">win.hide_untagged_lines</attribute>
     </item>
     </section>
    <section>
