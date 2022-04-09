@@ -67,7 +67,7 @@ namespace Gtat {
         public FilterDialogWindow.for_editing (Gtk.Application app, LineFilter filter) {
             Object(application: app, transient_for: app.active_window, modal: true);
 
-            button_ok.set_label ("Edit");
+            button_ok.set_label ("_Edit");
             button_ok.set_sensitive (true);
 
             button_delete.set_visible (true);
