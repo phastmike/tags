@@ -180,8 +180,9 @@
         <property name="show_title_buttons">false</property>
         <child>
           <object class="GtkButton" id="button_cancel">
-            <property name="label">Cancel</property>
+            <property name="label">_Cancel</property>
             <property name="receives_default">True</property>
+            <property name="use_underline">True</property>
           </object>
         </child>
         <child type="end">
@@ -189,9 +190,10 @@
             <style>
               <class name="suggested-action"/>
             </style>
-            <property name="label">Add</property>
+            <property name="label">_Add</property>
             <property name="sensitive">false</property>
             <property name="receives_default">True</property>
+            <property name="use_underline">True</property>
           </object>
         </child>
         <child type="end">
@@ -199,9 +201,10 @@
             <style>
               <class name="destructive-action"/>
             </style>
-            <property name="label">Delete</property>
+            <property name="label">_Delete</property>
             <property name="visible">false</property>
             <property name="icon_name">app-remove-symbolic</property>
+            <property name="use_underline">True</property>
             <child>
               <object class="GtkBox">
                 <property name="orientation">horizontal</property>
