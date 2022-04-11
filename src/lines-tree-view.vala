@@ -1,47 +1,28 @@
-/* tree_view_main.vala
+/* -*- Mode: Vala; indent-tabs-mode: nil; c-basic-offset: 4; tab-width: 4 -*- */
+/* vim: set tabstop=4 softtabstop=4 shiftwidth=4 expandtab :                  */
+/*
+ * lines-tree-view.vala
  *
- * Copyright 2022 Jose Miguel Fonte
+ * Extended Treeview for LinesTreeview
  *
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the
- * "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish,
- * distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to
- * the following conditions:
- *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE X CONSORTIUM BE LIABLE FOR ANY
- * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
- * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
- * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name(s) of the above copyright
- * holders shall not be used in advertising or otherwise to promote the sale,
- * use or other dealings in this Software without prior written
- * authorization.
+ * José Miguel Fonte
  */
 
 namespace Gtat {
-	[GtkTemplate (ui = "/org/ampr/ct1enq/gtat/lines-tree-view.ui")]
-	public class LinesTreeView : Gtk.TreeView {
-		[GtkChild]
-		unowned Gtk.ListStore line_store;
-		[GtkChild]
-		public unowned Gtk.TreeModelFilter line_store_filter;
-		[GtkChild]
-		unowned Gtk.TreeViewColumn col_line_text;
-		[GtkChild]
-		unowned Gtk.CellRendererText renderer_line_text;
+    [GtkTemplate (ui = "/org/ampr/ct1enq/gtat/lines-tree-view.ui")]
+    public class LinesTreeView : Gtk.TreeView {
+        [GtkChild]
+        unowned Gtk.ListStore line_store;
+        [GtkChild]
+        public unowned Gtk.TreeModelFilter line_store_filter;
+        [GtkChild]
+        unowned Gtk.TreeViewColumn col_line_text;
+        [GtkChild]
+        unowned Gtk.CellRendererText renderer_line_text;
 
         public bool hide_untagged;
 
-		public LinesTreeView (Gtk.Application app) {
+        public LinesTreeView (Gtk.Application app) {
             hide_untagged = false;
 
             line_store_filter.set_visible_func ((model, iter) => {
@@ -61,21 +42,23 @@ namespace Gtat {
 
             col_line_text.set_cell_data_func (renderer_line_text, (column, cell, model, iter) => {
                 LineFilter filter;
+                var cell_text = (Gtk.CellRendererText) cell; 
+
                 model.@get (iter, 2, out filter);
                 if (filter != null) {
                     if (filter.colors.fg != null) {
-                        (cell as Gtk.CellRendererText).foreground_rgba = filter.colors.fg;
+                        cell_text.foreground_rgba = filter.colors.fg;
                     } else {
-                        (cell as Gtk.CellRendererText).foreground = null;
+                        cell_text.foreground = null;
                     }
                     if (filter.colors.bg != null) {
-                        (cell as Gtk.CellRendererText).background_rgba = filter.colors.bg;
+                        cell_text.background_rgba = filter.colors.bg;
                     } else {
-                        (cell as Gtk.CellRendererText).background = null;
+                        cell_text.background = null;
                     }
                 } else {
-                    (cell as Gtk.CellRendererText).foreground = null;
-                    (cell as Gtk.CellRendererText).background = null;
+                    cell_text.foreground = null;
+                    cell_text.background = null;
                 }
             });
         }
@@ -108,6 +91,7 @@ namespace Gtat {
             filters.foreach ((filters_model, filter_path, filter_iter) => {
                 LineFilter filter;
                 filters_model.@get (filter_iter, 0, out filter);
+                message ("Reseting hits [%s]\n", filter.description);
                 filter.hits = 0;
                 return false;
             });

@@ -29,7 +29,7 @@ namespace Gtat {
         [GtkChild]
         private unowned Gtk.Label label_sample_example;
 
-        public const string example_text = " Lorem ipsum dolor sit amet... ";
+        private const string example_text = " Lorem ipsum dolor sit amet... ";
 
         public signal void added (LineFilter filter);
         public signal void deleted (LineFilter filter);

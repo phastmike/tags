@@ -1,55 +1,36 @@
-/* tree_view_main.vala
+/* -*- Mode: Vala; indent-tabs-mode: nil; c-basic-offset: 4; tab-width: 4 -*- */
+/* vim: set tabstop=4 softtabstop=4 shiftwidth=4 expandtab :                  */
+/*
+ * filters-tree-view.vala
  *
- * Copyright 2022 Jose Miguel Fonte
+ * Extended Gtk.TreeView as FiltersTreeView
  *
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the
- * "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish,
- * distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to
- * the following conditions:
- *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE X CONSORTIUM BE LIABLE FOR ANY
- * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
- * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
- * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name(s) of the above copyright
- * holders shall not be used in advertising or otherwise to promote the sale,
- * use or other dealings in this Software without prior written
- * authorization.
+ * José Miguel Fonte
  */
 
 namespace Gtat {
-	[GtkTemplate (ui = "/org/ampr/ct1enq/gtat/filters-tree-view.ui")]
-	public class FiltersTreeView : Gtk.TreeView {
-		[GtkChild]
-		private unowned Gtk.ListStore filter_store;
-		[GtkChild]
+    [GtkTemplate (ui = "/org/ampr/ct1enq/gtat/filters-tree-view.ui")]
+    public class FiltersTreeView : Gtk.TreeView {
+        [GtkChild]
+        private unowned Gtk.ListStore filter_store;
+        [GtkChild]
         private unowned Gtk.TreeViewColumn col_filter_checkbox;
-		[GtkChild]
+        [GtkChild]
         private unowned Gtk.TreeViewColumn col_filter_pattern;
-		[GtkChild]
+        [GtkChild]
         private unowned Gtk.TreeViewColumn col_filter_description;
-		[GtkChild]
+        [GtkChild]
         private unowned Gtk.TreeViewColumn col_filter_hits;
-		[GtkChild]
+        [GtkChild]
         private unowned Gtk.CellRendererToggle renderer_filter_checkbox;
-		[GtkChild]
+        [GtkChild]
         private unowned Gtk.CellRendererText renderer_filter_pattern;
-		[GtkChild]
+        [GtkChild]
         private unowned Gtk.CellRendererText renderer_filter_description;
-		[GtkChild]
+        [GtkChild]
         private unowned Gtk.CellRendererText renderer_filter_hits;
 
-		public FiltersTreeView (Gtk.Application app) {
+        public FiltersTreeView (Gtk.Application app) {
             setup_cell_renderers ();
             
             renderer_filter_checkbox.toggled.connect ((path) => {
@@ -66,59 +47,48 @@ namespace Gtat {
                     this.get_selection ().unselect_all ();
                 }
             });
-            
-            /*
-            this.row_activated.connect ((path, column) => {
-                LineFilter filter;
-                Gtk.TreeIter iter;
-
-                get_selection ().get_selected (null, out iter);
-
-                filter_store.@get (iter, 0, out filter);
-                var filter_dialog = new FilterDialogWindow (app, filter);
-                filter_dialog.show ();
-                filter_dialog.added.connect ((filter) => {
-                    this.queue_draw ();
-                });
-            });
-            */
         }
         
         private void setup_cell_renderers () {
             col_filter_checkbox.set_cell_data_func (renderer_filter_checkbox, (column, cell, model, iter) => {
                 LineFilter filter;
+                var cell_toggle = (Gtk.CellRendererToggle) cell;
                 model.@get (iter, 0, out filter);
-                (cell as Gtk.CellRendererToggle?).set_active (filter.enabled);
+                cell_toggle.set_active (filter.enabled);
             });
             
             col_filter_pattern.set_cell_data_func (renderer_filter_pattern, (column, cell, model, iter) => {
                 LineFilter filter;
+                var cell_text = (Gtk.CellRendererText) cell;
+
                 model.@get (iter, 0, out filter);
-                (cell as Gtk.CellRendererText).text = filter.pattern != null ? filter.pattern : "";
+                cell_text.text = filter.pattern != null ? filter.pattern : "";
+
                 if (filter.colors.fg != null) {
-                    (cell as Gtk.CellRendererText).foreground_rgba = filter.colors.fg;
+                    cell_text.foreground_rgba = filter.colors.fg;
                 } else {
-                    (cell as Gtk.CellRendererText).foreground = null;
+                    cell_text.foreground = null;
                 }
                 if (filter.colors.bg != null) {
-                    (cell as Gtk.CellRendererText).background_rgba = filter.colors.bg;
+                    cell_text.background_rgba = filter.colors.bg;
                 } else {
-                    (cell as Gtk.CellRendererText).background = null;
+                    cell_text.background = null;
                 }
             });
 
             col_filter_description.set_cell_data_func (renderer_filter_description, (column, cell, model, iter) => {
                 LineFilter filter;
                 model.@get (iter, 0, out filter);
-                (cell as Gtk.CellRendererText).text = filter.description != null ? filter.description : "";
+                var cell_text = (Gtk.CellRendererText) cell;
+                cell_text.text = filter.description != null ? filter.description : "";
             });
 
             col_filter_hits.set_cell_data_func (renderer_filter_hits, (column, cell, model, iter) => {
                 LineFilter filter;
                 model.@get (iter, 0, out filter);
-                (cell as Gtk.CellRendererText).text = "%u".printf(filter.hits);
+                var cell_text = (Gtk.CellRendererText) cell;
+                cell_text.text = "%u".printf(filter.hits);
             });
-            
         }
 
         public void add_filter (LineFilter filter) {

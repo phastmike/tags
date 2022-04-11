@@ -1,37 +1,16 @@
-/* window.vala
+/* -*- Mode: Vala; indent-tabs-mode: nil; c-basic-offset: 4; tab-width: 4 -*- */
+/* vim: set tabstop=4 softtabstop=4 shiftwidth=4 expandtab :                  */
+/*
+ * window.vala
  *
- * Copyright 2022 Jose Miguel Fonte
+ * Main application Window class
  *
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the
- * "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish,
- * distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to
- * the following conditions:
- *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE X CONSORTIUM BE LIABLE FOR ANY
- * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
- * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
- * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name(s) of the above copyright
- * holders shall not be used in advertising or otherwise to promote the sale,
- * use or other dealings in this Software without prior written
- * authorization.
+ * José Miguel Fonte
  */
 
 namespace Gtat {
 	[GtkTemplate (ui = "/org/ampr/ct1enq/gtat/window.ui")]
 	public class Window : Gtk.ApplicationWindow {
-        [GtkChild]
-        unowned Gtk.HeaderBar header_bar;
         [GtkChild]
         unowned Gtk.Button button_open_file;
         [GtkChild]
@@ -73,16 +52,22 @@ namespace Gtat {
                     filter_dialog = new FilterDialogWindow.for_editing (app, line_filter);
                     filter_dialog.added.connect ((filter) => {
                         lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
+                        filters_treeview.queue_draw ();
                     });
                 } else {
                     filter_dialog = new FilterDialogWindow (app, line_text);
                     filter_dialog.added.connect ((filter) => {
+                        filter.enable_changed.connect ((enabled) => {
+                            lines_treeview.line_store_filter.refilter ();
+                            lines_treeview.tag_lines ((Gtk.ListStore) filters_treeview.get_model ());
+                        });
                         filters_treeview.add_filter (filter);
                         lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
                     });
                 }
 
                 filter_dialog.show ();
+
             });
 
 
@@ -96,16 +81,17 @@ namespace Gtat {
                 var filter_dialog = new FilterDialogWindow.for_editing (app, filter);
                 filter_dialog.show ();
                 filter_dialog.added.connect ((filter) => {
-                    filters_treeview.queue_draw ();
                     lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
+                    filters_treeview.queue_draw ();
                 });
                 
                 filter_dialog.deleted.connect ((filter) => {
                     filters_treeview.get_model ().foreach ((model, path, iter) => {
                         LineFilter lf;
                         model.@get (iter, 0, out lf);
+
                         if (lf == filter) {
-                            (model as Gtk.ListStore).remove (ref iter);
+                            ((Gtk.ListStore) model).remove (ref iter);
                             return true;
                         } else {
                             return false;
@@ -166,14 +152,13 @@ namespace Gtat {
 
             filter_dialog_window.added.connect ((filter) => {
 
-                filters_treeview.add_filter (filter);
-
                 filter.enable_changed.connect ((enabled) => {
                     lines_treeview.line_store_filter.refilter ();
-                    lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
+                    lines_treeview.tag_lines ((Gtk.ListStore) filters_treeview.get_model ());
                 });
 
-                lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
+                filters_treeview.add_filter (filter);
+                lines_treeview.tag_lines ((Gtk.ListStore) filters_treeview.get_model ());
             });
 		}
 
@@ -185,7 +170,6 @@ namespace Gtat {
 
         private void toggle_filters_view () {
             var view_height = paned.get_allocated_height ();
-            //paned.set_position (paned.get_position () >= view_height - 5 ? view_height - 160 : view_height - 5);
 
             if (paned.get_position () >= view_height - 5) {
                 paned.set_position (paned_last_position);
