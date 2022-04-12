@@ -9,8 +9,8 @@
  */
 
 namespace Gtat {
-	[GtkTemplate (ui = "/org/ampr/ct1enq/gtat/window.ui")]
-	public class Window : Gtk.ApplicationWindow {
+    [GtkTemplate (ui = "/org/ampr/ct1enq/gtat/window.ui")]
+    public class Window : Gtk.ApplicationWindow {
         [GtkChild]
         unowned Gtk.Button button_open_file;
         [GtkChild]
@@ -22,19 +22,19 @@ namespace Gtat {
 
         private int paned_last_position = -1;
 
-		private ActionEntry[] WINDOW_ACTIONS = {
-			{ "add_tag", add_tag },
-			{ "hide_untagged_lines", hide_untagged_lines },
-			{ "toggle_filters_view", toggle_filters_view }
-		};
+        private ActionEntry[] WINDOW_ACTIONS = {
+            { "add_tag", add_tag },
+            { "hide_untagged_lines", hide_untagged_lines },
+            { "toggle_filters_view", toggle_filters_view }
+        };
 
-		public Window (Gtk.Application app) {
-			Object (application: app);
+        public Window (Gtk.Application app) {
+            Object (application: app);
 
-			this.add_action_entries(this.WINDOW_ACTIONS, this);
-			app.set_accels_for_action("win.add_tag", {"<primary>n"});
-			app.set_accels_for_action("win.hide_untagged_lines", {"<primary>h"});
-			app.set_accels_for_action("win.toggle_filters_view", {"<primary>f"});
+            this.add_action_entries(this.WINDOW_ACTIONS, this);
+            app.set_accels_for_action("win.add_tag", {"<primary>n"});
+            app.set_accels_for_action("win.hide_untagged_lines", {"<primary>h"});
+            app.set_accels_for_action("win.toggle_filters_view", {"<primary>f"});
             
             lines_treeview = new LinesTreeView (app);
             filters_treeview = new FiltersTreeView (app);
@@ -144,9 +144,9 @@ namespace Gtat {
             button_tags.clicked.connect ( () => {
                 add_tag ();
             });
-		}
+        }
 
-		private void add_tag () {
+        private void add_tag () {
             var filter_dialog_window = new FilterDialogWindow (this.application);
             filter_dialog_window.show ();
 
@@ -160,13 +160,13 @@ namespace Gtat {
                 filters_treeview.add_filter (filter);
                 lines_treeview.tag_lines ((Gtk.ListStore) filters_treeview.get_model ());
             });
-		}
+        }
 
-		private void hide_untagged_lines () {
+        private void hide_untagged_lines () {
             lines_treeview.hide_untagged = !lines_treeview.hide_untagged; 
             lines_treeview.line_store_filter.refilter ();
             lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
-		}
+        }
 
         private void toggle_filters_view () {
             var view_height = paned.get_allocated_height ();
@@ -178,5 +178,5 @@ namespace Gtat {
                 paned.set_position (view_height - 5);
             }
         }
-	}
+    }
 }
