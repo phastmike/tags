@@ -21,7 +21,7 @@
     <property name="model">line_store_filter</property>
     <property name="headers-visible">false</property>
     <property name="headers-clickable">false</property>
-    <property name="enable-search">false</property>
+    <property name="enable-search">true</property>
     <property name="search-column">1</property>
     <property name="enable-grid-lines">vertical</property>
     <child internal-child="selection">

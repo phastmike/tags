@@ -25,6 +25,12 @@ namespace Gtat {
         public LinesTreeView (Gtk.Application app) {
             hide_untagged = false;
 
+            this.set_search_equal_func ((model, column, key, iter) => {
+                string line;
+                model.@get (iter, 1, out line);
+                return !line.contains(key);
+            });
+
             line_store_filter.set_visible_func ((model, iter) => {
                 if (hide_untagged == false) {
                     return true;
