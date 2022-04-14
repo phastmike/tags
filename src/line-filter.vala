@@ -19,7 +19,6 @@ namespace Gtat {
             }
             set {
                 _enabled = value;
-                message ("[Tag: %s] enable_changed :: %s\n", this.description, _enabled.to_string ());
                 enable_changed (enabled);
             }
         }
