@@ -20,7 +20,7 @@ namespace Gtat {
         [GtkChild]
         unowned Gtk.CellRendererText renderer_line_text;
 
-        public bool hide_untagged;
+        public bool hide_untagged {set; get; default=false;}
 
         public LinesTreeView (Gtk.Application app) {
             hide_untagged = false;

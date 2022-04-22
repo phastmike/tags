@@ -19,13 +19,12 @@ namespace Gtat {
         private Gtk.Paned paned;
         private LinesTreeView lines_treeview;
         private FiltersTreeView filters_treeview;
-
         private int paned_last_position = -1;
 
         private ActionEntry[] WINDOW_ACTIONS = {
             { "add_tag", add_tag },
-            { "hide_untagged_lines", hide_untagged_lines },
-            { "toggle_filters_view", toggle_filters_view }
+            { "hide_untagged_lines", hide_untagged_lines, null, "false", null},
+            { "toggle_filters_view", toggle_filters_view, null, "false", null}
         };
 
         public Window (Gtk.Application app) {
@@ -70,7 +69,7 @@ namespace Gtat {
 
             });
 
-
+            
             filters_treeview.row_activated.connect ((path, column) => {
                 LineFilter filter;
                 Gtk.TreeIter iter;
@@ -164,18 +163,23 @@ namespace Gtat {
 
         private void hide_untagged_lines () {
             lines_treeview.hide_untagged = !lines_treeview.hide_untagged; 
+            var action = this.lookup_action ("hide_untagged_lines");
+            action.change_state (new Variant.boolean ((bool) lines_treeview.hide_untagged));
             lines_treeview.line_store_filter.refilter ();
             lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
         }
 
         private void toggle_filters_view () {
             var view_height = paned.get_allocated_height ();
+            var action = this.lookup_action ("toggle_filters_view");
 
             if (paned.get_position () >= view_height - 5) {
                 paned.set_position (paned_last_position);
+                action.change_state (new Variant.boolean (false));
             } else {
                 paned_last_position = paned.get_position ();
                 paned.set_position (view_height - 5);
+                action.change_state (new Variant.boolean (true));
             }
         }
     }
