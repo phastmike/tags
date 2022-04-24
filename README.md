@@ -12,6 +12,8 @@ Tags can have names, visibility toggle and hit count.
 
 ## Features and Shortchuts
 
+<kbd>Ctrl</kbd> + <kbd>N</kbd> : Add a Tag
+
 <kbd>Ctrl</kbd> + <kbd>H</kbd> : Toggle untagged lines visibility
 
 <kbd>Ctrl</kbd> + <kbd>F</kbd> : Hide/Show Tag list (bottom)
