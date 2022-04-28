@@ -52,8 +52,8 @@ namespace Gtat {
                                   "wrap-license", true,
                                   "comments", "Tag lines to a given color scheme.\nPaint for logs ftw!",
                                   "logo-icon-name", "org.ampr.ct1enq.gtat",
-                                  "website", "https://github.com/phastmike/gtat",
-                                  "website-label", "https://github.com/phastmike/gtat",
+                                  "website", "https://github.com/phastmike/tagger",
+                                  "website-label", "https://github.com/phastmike/tagger",
                                   "version", "0.1.0");
         }
 
