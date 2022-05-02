@@ -1,6 +1,6 @@
 # Tagger
 
-A GNOME text tagger inpired by the [TextAnalysisTool.NET](https://textanalysistool.github.io/)
+A GNOME text tagger inspired by the [TextAnalysisTool.NET](https://textanalysistool.github.io/)
 tool.
 
 The main goal is to aid log analysis by tagging lines with user defined colors.
