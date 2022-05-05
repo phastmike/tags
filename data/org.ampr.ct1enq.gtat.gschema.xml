@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="gtat">
-	<schema id="org.ampr.ct1enq.gtat" path="/org/ampr/ct1enq/gtat/">
-	</schema>
+  <schema id="org.ampr.ct1enq.gtat" path="/org/ampr/ct1enq/gtat/" gettext-domain="gtat">
+
+    <key name="line-numbers-fg-color" type="s">
+      <default>"rgb(192,191,188)"</default>
+      <summary>Line numbers foreground color</summary>
+      <description>Line numbers foreground color</description>
+    </key>
+
+    <key name="line-numbers-bg-color" type="s">
+      <default>"rgb(246,245,244)"</default>
+      <summary>Line numbers background color</summary>
+      <description>Line numbers background color</description>
+    </key>
+
+  </schema>
 </schemalist>

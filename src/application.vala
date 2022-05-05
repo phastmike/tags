@@ -59,6 +59,7 @@ namespace Gtat {
 
         private void on_preferences_action () {
             message("app.preferences action activated");
+            new PreferencesWindow (this);
         }
     }
 }
