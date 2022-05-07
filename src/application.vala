@@ -39,8 +39,9 @@ namespace Gtat {
             };
 
             string[] artists = {
-                "MD Badsha Meah on freeicons.io (App Icon)",
-                "www.wishforge.games on freeicons.io (Symbolic Icon)"
+                "José Miguel Fonte",
+                "App icon by MD Badsha Meah on freeicons.io",
+                "Symbolic icon by www.wishforge.games on freeicons.io"
             };
 
             Gtk.show_about_dialog(this.active_window,
@@ -54,12 +55,11 @@ namespace Gtat {
                                   "logo-icon-name", "org.ampr.ct1enq.gtat",
                                   "website", "https://github.com/phastmike/tagger",
                                   "website-label", "https://github.com/phastmike/tagger",
-                                  "version", "0.1.0");
+                                  "version", "0.2.0");
         }
 
         private void on_preferences_action () {
-            message("app.preferences action activated");
-            new PreferencesWindow (this);
+            new PreferencesWindow (this).show ();
         }
     }
 }

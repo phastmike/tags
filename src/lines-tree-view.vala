@@ -19,11 +19,19 @@ namespace Gtat {
         unowned Gtk.TreeViewColumn col_line_text;
         [GtkChild]
         unowned Gtk.CellRendererText renderer_line_text;
+        [GtkChild]
+        unowned Gtk.CellRendererText renderer_line_number;
 
         public bool hide_untagged {set; get; default=false;}
 
         public LinesTreeView (Gtk.Application app) {
-            hide_untagged = false;
+            var preferences = Preferences.instance ();
+
+            update_line_number_colors (preferences);
+
+            preferences.line_number_colors_changed.connect ((p) => {
+                update_line_number_colors (p);
+            });
 
             this.set_search_equal_func ((model, column, key, iter) => {
                 string line;
@@ -44,6 +52,7 @@ namespace Gtat {
                     }
                 }
             });
+
             this.model = line_store_filter;
 
             col_line_text.set_cell_data_func (renderer_line_text, (column, cell, model, iter) => {
@@ -129,6 +138,20 @@ namespace Gtat {
                 queue_draw ();
                 return false;
             });
+        }
+
+        public void update_line_number_colors (Preferences p) {
+            var rgb = Gdk.RGBA ();
+
+            rgb.parse (p.ln_fg_color);
+            renderer_line_number.foreground_rgba = rgb;
+
+            rgb.parse (p.ln_bg_color);
+            renderer_line_number.background_rgba = rgb;
+
+            //renderer_line_number.size_points = 8.0;
+            
+            queue_draw ();
         }
     }
 }

@@ -20,9 +20,16 @@ namespace Gtat {
             Object(application: app, transient_for: app.active_window, modal: true);
 
             var preferences = Preferences.instance ();
-            
-            button_fg_color.rgba.parse (preferences.ln_fg_color);
-            button_bg_color.rgba.parse (preferences.ln_bg_color);
+
+            var rgb = Gdk.RGBA ();
+
+            if (rgb.parse (preferences.ln_fg_color)) {
+                button_fg_color.set_rgba(rgb);
+            }
+
+            if (rgb.parse (preferences.ln_bg_color)) {
+                button_bg_color.set_rgba(rgb);
+            }
 
             button_fg_color.color_set.connect (() => {
                 preferences.ln_fg_color = button_fg_color.get_rgba ().to_string ();
@@ -31,8 +38,6 @@ namespace Gtat {
             button_bg_color.color_set.connect (() => {
                 preferences.ln_bg_color = button_bg_color.get_rgba ().to_string ();
             });
-
-            show ();
         }
     }
 }
