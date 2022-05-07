@@ -148,11 +148,11 @@
   <menu id="file_menu">
     <section>
       <item>
-        <attribute name="label" translatable="yes">Toggle Tag List</attribute>
+        <attribute name="label" translatable="yes">Hide Tag list</attribute>
         <attribute name="action">win.toggle_filters_view</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">Toggle Untagged</attribute>
+        <attribute name="label" translatable="yes">Hide Untagged</attribute>
         <attribute name="action">win.hide_untagged_lines</attribute>
       </item>
     </section>
