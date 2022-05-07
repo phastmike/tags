@@ -15,6 +15,8 @@ namespace Gtat {
         unowned Gtk.Button button_open_file;
         [GtkChild]
         unowned Gtk.Button button_tags;
+        [GtkChild]
+        unowned Gtk.Label subtitle;
         
         private Gtk.Paned paned;
         private LinesTreeView lines_treeview;
@@ -134,6 +136,8 @@ namespace Gtat {
                     if (response_id == Gtk.ResponseType.ACCEPT) {
                         lines_treeview.set_file(file_chooser_dialog.get_file ().get_path ());
                         lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
+                        this.subtitle.set_label (file_chooser_dialog.get_file ().get_basename ());
+                        this.subtitle.set_tooltip_text (file_chooser_dialog.get_file ().get_path ());
                     }
                     file_chooser_dialog.destroy ();
                 });

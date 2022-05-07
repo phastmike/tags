@@ -7,10 +7,57 @@
     <property name="default-height">768</property>
     <child type="titlebar">
       <object class="GtkHeaderBar" id="header_bar">
-      <style>
-         <class name="flat"/>
-         <class name="devel"/>
-       </style>
+        <style>
+           <class name="flat"/>
+           <class name="devel"/>
+        </style>
+
+        <!--
+        <property name="title-widget">
+          <object class="GtkLabel">
+            <property name="label" translatable="yes">Tagger</property>
+            <property name="single-line-mode">True</property>
+            <property name="ellipsize">end</property>
+            <property name="width-chars">5</property>
+            <style>
+              <class name="title"/>
+            </style>
+          </object>
+        </property>
+        -->
+
+        <property name="title-widget">
+          <object class="GtkBox">
+            <property name="orientation">vertical</property>
+            <property name="homogeneous">true</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="label" translatable="yes">Tagger</property>
+                <property name="single-line-mode">True</property>
+                <property name="ellipsize">none</property>
+                <property name="width-chars">5</property>
+                <style>
+                  <class name="title"/>
+                </style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="subtitle">
+                <property name="label" translatable="yes">Open a file to get started...</property>
+                <property name="has-tooltip">true</property>
+                <property name="single-line-mode">True</property>
+                <property name="ellipsize">end</property>
+                <property name="width-chars">5</property>
+                <style>
+                  <class name="subtitle"/>
+                </style>
+              </object>
+            </child>
+          </object>
+        </property>
+
+
+
         <child type="end">
           <object class="GtkMenuButton">
             <property name="icon-name">open-menu-symbolic</property>
