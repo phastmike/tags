@@ -104,6 +104,18 @@ namespace Gtat {
 
             paned = new Gtk.Paned (Gtk.Orientation.VERTICAL);
             set_child (paned);
+            paned.notify["position"].connect ((s,p) => {
+                var view_height = paned.get_allocated_height ();
+                
+                if (view_height == 0) return;
+
+                /* Change menu action state if manually hidden */
+                if (paned.get_position () >= view_height - 9) {
+                    //paned_last_position = view_height - 35;
+                    var action = this.lookup_action ("toggle_filters_view");
+                    action.change_state (new Variant.boolean (true));
+                }
+            });
 
             var scrolled_lines = new Gtk.ScrolledWindow ();
             scrolled_lines.set_kinetic_scrolling (true);
@@ -123,6 +135,7 @@ namespace Gtat {
             paned.set_resize_end_child (true);
             paned.set_wide_handle (true);
             paned.set_position (this.default_height - 47 - 160);
+            paned_last_position = paned.get_position (); 
             paned.queue_draw ();
 
             button_open_file.clicked.connect ( () => {
