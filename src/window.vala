@@ -21,7 +21,7 @@ namespace Gtat {
         private Gtk.Paned paned;
         private LinesTreeView lines_treeview;
         private FiltersTreeView filters_treeview;
-        private int paned_last_position = -1;
+        private double paned_last_position = -1.0;
 
         private ActionEntry[] WINDOW_ACTIONS = {
             { "add_tag", add_tag },
@@ -193,13 +193,11 @@ namespace Gtat {
             var view_height = paned.get_allocated_height ();
             var action = this.lookup_action ("toggle_filters_view");
 
-            message("toggle_filters_view: vh: %d pos: %d", view_height, paned.position);
-
             if (paned.get_position () >= view_height - 5) {
-                paned.set_position (paned_last_position);
+                paned.set_position ((int) (paned_last_position * view_height));
                 action.change_state (new Variant.boolean (false));
             } else {
-                paned_last_position = paned.get_position ();
+                paned_last_position = ((float) paned.get_position () / (float) view_height);
                 paned.set_position (view_height - 5);
                 action.change_state (new Variant.boolean (true));
             }
