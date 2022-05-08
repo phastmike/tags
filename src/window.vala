@@ -109,11 +109,14 @@ namespace Gtat {
                 
                 if (view_height == 0) return;
 
+                var action = this.lookup_action ("toggle_filters_view");
+
                 /* Change menu action state if manually hidden */
                 if (paned.get_position () >= view_height - 9) {
                     //paned_last_position = view_height - 35;
-                    var action = this.lookup_action ("toggle_filters_view");
                     action.change_state (new Variant.boolean (true));
+                } else {
+                    action.change_state (new Variant.boolean (false));
                 }
             });
 
@@ -189,6 +192,8 @@ namespace Gtat {
         private void toggle_filters_view () {
             var view_height = paned.get_allocated_height ();
             var action = this.lookup_action ("toggle_filters_view");
+
+            message("toggle_filters_view: vh: %d pos: %d", view_height, paned.position);
 
             if (paned.get_position () >= view_height - 5) {
                 paned.set_position (paned_last_position);
