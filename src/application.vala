@@ -18,7 +18,7 @@ namespace Gtat {
 
 
         public Application () {
-            Object (application_id: "org.ampr.ct1enq.gtat", flags: ApplicationFlags.FLAGS_NONE);
+            Object (application_id: "org.ampr.ct1enq.gtat", flags: ApplicationFlags.HANDLES_OPEN);
 
             this.add_action_entries(this.APP_ACTIONS, this);
             this.set_accels_for_action("app.quit", {"<primary>q"});
@@ -31,6 +31,15 @@ namespace Gtat {
                 win = new Gtat.Window (this);
             }
             win.present ();
+        }
+
+        public override void open (File[] files, string hint) {
+            print ("open :: method :: hint = %s Len = %d\n", hint, files.length);
+            
+            foreach (var file in files) {
+                print ("Checking file: %s | File exists? %s\n", file.get_basename (), file.query_exists () ? "Yes" : "No");
+            }
+            
         }
 
         private void on_about_action () {
