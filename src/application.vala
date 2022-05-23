@@ -34,12 +34,14 @@ namespace Gtat {
         }
 
         public override void open (File[] files, string hint) {
-            print ("open :: method :: hint = %s Len = %d\n", hint, files.length);
-            
-            foreach (var file in files) {
-                print ("Checking file: %s | File exists? %s\n", file.get_basename (), file.query_exists () ? "Yes" : "No");
-            }
-            
+            if (files[0].query_exists () == true) {
+                var win = this.active_window;
+                if (win == null) {
+                    win = new Gtat.Window (this);
+                    ((Gtat.Window) win).set_file (files[0]);
+                }
+                win.present ();
+            } 
         }
 
         private void on_about_action () {
