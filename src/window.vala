@@ -22,6 +22,7 @@ namespace Gtat {
         private LinesTreeView lines_treeview;
         private FiltersTreeView filters_treeview;
         private double paned_last_position = 0.778086;
+        private File? last_file = null;
 
         private ActionEntry[] WINDOW_ACTIONS = {
             { "add_tag", add_tag },
@@ -146,9 +147,13 @@ namespace Gtat {
                     "Cancel", Gtk.ResponseType.CANCEL, 
                     null);
                 file_chooser_dialog.set_modal (true);
+                if (last_file != null) {
+                    file_chooser_dialog.set_current_folder (last_file.get_parent ());
+                }
                 file_chooser_dialog.response.connect ( (response_id) => {
                     if (response_id == Gtk.ResponseType.ACCEPT) {
                         this.set_file(file_chooser_dialog.get_file ());
+                        last_file = file_chooser_dialog.get_file ();
                     }
                     file_chooser_dialog.destroy ();
                 });
