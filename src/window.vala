@@ -148,7 +148,11 @@ namespace Gtat {
                     null);
                 file_chooser_dialog.set_modal (true);
                 if (last_file != null) {
-                    file_chooser_dialog.set_current_folder (last_file.get_parent ());
+                    try {
+                        file_chooser_dialog.set_current_folder (last_file.get_parent ());
+                    } catch (Error e) {
+                        warning ("FileChooser:set_current_folder error message: %s", e.message);
+                    }
                 }
                 file_chooser_dialog.response.connect ( (response_id) => {
                     if (response_id == Gtk.ResponseType.ACCEPT) {
