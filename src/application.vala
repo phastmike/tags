@@ -18,7 +18,7 @@ namespace Gtat {
 
 
         public Application () {
-            Object (application_id: "org.ampr.ct1enq.gtat", flags: ApplicationFlags.FLAGS_NONE);
+            Object (application_id: "org.ampr.ct1enq.gtat", flags: ApplicationFlags.HANDLES_OPEN);
 
             this.add_action_entries(this.APP_ACTIONS, this);
             this.set_accels_for_action("app.quit", {"<primary>q"});
@@ -31,6 +31,17 @@ namespace Gtat {
                 win = new Gtat.Window (this);
             }
             win.present ();
+        }
+
+        public override void open (File[] files, string hint) {
+            if (files[0].query_exists () == true) {
+                var win = this.active_window;
+                if (win == null) {
+                    win = new Gtat.Window (this);
+                    ((Gtat.Window) win).set_file (files[0]);
+                }
+                win.present ();
+            } 
         }
 
         private void on_about_action () {
@@ -55,7 +66,7 @@ namespace Gtat {
                                   "logo-icon-name", "org.ampr.ct1enq.gtat",
                                   "website", "https://github.com/phastmike/tagger",
                                   "website-label", "https://github.com/phastmike/tagger",
-                                  "version", "0.9.0");
+                                  "version", "0.9.2");
         }
 
         private void on_preferences_action () {

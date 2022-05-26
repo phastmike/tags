@@ -22,6 +22,7 @@ namespace Gtat {
         private LinesTreeView lines_treeview;
         private FiltersTreeView filters_treeview;
         private double paned_last_position = 0.778086;
+        private File? last_file = null;
 
         private ActionEntry[] WINDOW_ACTIONS = {
             { "add_tag", add_tag },
@@ -146,12 +147,17 @@ namespace Gtat {
                     "Cancel", Gtk.ResponseType.CANCEL, 
                     null);
                 file_chooser_dialog.set_modal (true);
+                if (last_file != null) {
+                    try {
+                        file_chooser_dialog.set_current_folder (last_file.get_parent ());
+                    } catch (Error e) {
+                        warning ("FileChooser:set_current_folder error message: %s", e.message);
+                    }
+                }
                 file_chooser_dialog.response.connect ( (response_id) => {
                     if (response_id == Gtk.ResponseType.ACCEPT) {
-                        lines_treeview.set_file(file_chooser_dialog.get_file ().get_path ());
-                        lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
-                        this.subtitle.set_label (file_chooser_dialog.get_file ().get_basename ());
-                        this.subtitle.set_tooltip_text (file_chooser_dialog.get_file ().get_path ());
+                        this.set_file(file_chooser_dialog.get_file ());
+                        last_file = file_chooser_dialog.get_file ();
                     }
                     file_chooser_dialog.destroy ();
                 });
@@ -161,6 +167,13 @@ namespace Gtat {
             button_tags.clicked.connect ( () => {
                 add_tag ();
             });
+        }
+        
+        public void set_file (File file) {
+            lines_treeview.set_file(file.get_path ());
+            lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
+            subtitle.set_label (file.get_basename ());
+            subtitle.set_tooltip_text (file.get_path ());
         }
 
         private void add_tag () {
