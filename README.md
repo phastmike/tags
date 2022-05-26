@@ -4,7 +4,7 @@ A GNOME text tagger inspired by the [TextAnalysisTool.NET](https://textanalysist
 tool.
 
 The main goal is to aid log analysis by tagging lines with user defined colors.
-Tags can have names, visibility toggle and hit count.
+Tags have a name, a visibility toggle and a hit counter.
 
 ## Screenshot
 
