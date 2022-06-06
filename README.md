@@ -1,4 +1,4 @@
-# Tagger [![build](https://app.travis-ci.com/phastmike/tagger.svg?branch=master)](https://app.travis-ci.com/github/phastmike/tagger)
+# Tagger
 
 A GNOME text tagger inspired by the [TextAnalysisTool.NET](https://textanalysistool.github.io/)
 tool.
