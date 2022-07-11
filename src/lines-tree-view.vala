@@ -90,8 +90,12 @@ namespace Gtat {
                     var lines = contents.split ("\n");
                     lines.resize (lines.length - 1);
                     foreach (var line in lines) {
-                        line_store.append (out iter);
-                        line_store.@set (iter, 0, ++nr, 1, line, 2, null, -1);
+                        if line.validate () {
+                            line_store.append (out iter);
+                            line_store.@set (iter, 0, ++nr, 1, line, 2, null, -1);
+                        } else {
+                            print("Error::UTF8::Invalid line - not added..."
+                        }
                     }
                 } else {
                     print("Error opening file [%s]\n", "example.log");
