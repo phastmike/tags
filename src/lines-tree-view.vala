@@ -79,8 +79,39 @@ namespace Gtat {
         }
 
         public void set_file (string file) {
+            uint8[] con;
             Gtk.TreeIter iter;
-            string contents;
+            string? contents;
+
+            line_store.clear ();
+
+            try {
+                if (FileUtils.get_data(file, out con)) {
+                    for (int i = 0; i < con.length - 2; i++) {
+                        /* change nulls for '0' */
+                        if (con[i] == 0x00) {
+                            con[i] = 0x30;
+                        }
+                    }
+                    contents = (string) con;
+                    var nr = 0;
+                    var lines = contents.split ("\n");
+                    lines.resize (lines.length - 1);
+                    foreach (unowned var line in lines ) {
+                        line_store.append (out iter);
+                        line_store.@set (iter, 0, ++nr, 1, line, 2, null, -1);
+                    }
+                } else {
+                    warning ("Error opening file [%s]\n", file);
+                }
+            } catch (FileError err) {
+                warning ("Error: %s\n", err.message);
+            }
+        }
+
+        public void set_file2 (string file) {
+            Gtk.TreeIter iter;
+            string? contents;
 
             line_store.clear ();
 
@@ -89,20 +120,16 @@ namespace Gtat {
                     var nr = 0;
                     var lines = contents.split ("\n");
                     lines.resize (lines.length - 1);
-                    foreach (var line in lines) {
-                        if line.validate () {
-                            line_store.append (out iter);
-                            line_store.@set (iter, 0, ++nr, 1, line, 2, null, -1);
-                        } else {
-                            print("Error::UTF8::Invalid line - not added..."
-                        }
+                    foreach (var line in lines ) {
+                        line_store.append (out iter);
+                        line_store.@set (iter, 0, ++nr, 1, line, 2, null, -1);
                     }
                 } else {
-                    print("Error opening file [%s]\n", "example.log");
+                    warning ("Error opening file [%s]\n", file);
                 }
             } catch (FileError err) {
-                print("Error: %s\n", err.message);
-            } 
+                warning ("Error: %s\n", err.message);
+            }
         }
 
         public void tag_lines (Gtk.ListStore filters) {
