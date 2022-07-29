@@ -193,11 +193,28 @@ namespace Gtat {
         }
 
         private void hide_untagged_lines () {
+            Gtk.TreeIter iter;
+            Gtk.TreeModel model;
+
             lines_treeview.hide_untagged = !lines_treeview.hide_untagged; 
+
             var action = this.lookup_action ("hide_untagged_lines");
             action.change_state (new Variant.boolean ((bool) lines_treeview.hide_untagged));
+
             lines_treeview.line_store_filter.refilter ();
             lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
+
+            var selection = lines_treeview.get_selection ();
+
+            if (lines_treeview.hide_untagged == false) {
+                    selection.get_selected (out model, out iter);
+                    var path = new Gtk.TreePath.from_string (model.get_string_from_iter(iter));
+                    lines_treeview.scroll_to_cell (path, null, true, (float) 0.5, (float) 0.5);
+            } else {
+                // Need to check why won't work on both situations
+                // Model filter influence?
+                selection.unselect_all ();
+            }
         }
 
         private void toggle_filters_view () {

@@ -35,11 +35,11 @@ namespace Gtat {
 
         public override void open (File[] files, string hint) {
             if (files[0].query_exists () == true) {
-                var win = this.active_window;
-                if (win == null) {
-                    win = new Gtat.Window (this);
+                //var win = this.active_window;
+                //if (win == null) {
+                    var win = new Gtat.Window (this);
                     ((Gtat.Window) win).set_file (files[0]);
-                }
+                //}
                 win.present ();
             } 
         }
