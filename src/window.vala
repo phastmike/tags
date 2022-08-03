@@ -156,8 +156,9 @@ namespace Gtat {
                 }
                 file_chooser_dialog.response.connect ( (response_id) => {
                     if (response_id == Gtk.ResponseType.ACCEPT) {
-                        this.set_file(file_chooser_dialog.get_file ());
                         last_file = file_chooser_dialog.get_file ();
+                        print ("last_file = %s\n", last_file.get_path ());
+                        this.set_file(last_file);
                     }
                     file_chooser_dialog.destroy ();
                 });
@@ -170,7 +171,7 @@ namespace Gtat {
         }
         
         public void set_file (File file) {
-            lines_treeview.set_file(file.get_path ());
+            lines_treeview.set_file (file.get_path ());
             lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
             subtitle.set_label (file.get_basename ());
             subtitle.set_tooltip_text (file.get_path ());

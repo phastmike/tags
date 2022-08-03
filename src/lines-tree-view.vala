@@ -83,7 +83,21 @@ namespace Gtat {
             Gtk.TreeIter iter;
             string? contents;
 
+            this.model = null;
+            /*
+            line_store.foreach ((model, path, iter) => {
+                int n;
+                model.@get (iter, 0, out n);
+                print("Removing line nr: %d\n", n);
+                line_store.remove (ref iter);
+                return false;
+            });
+            */
+
             line_store.clear ();
+            
+            //line_store = new Gtk.ListStore (3, Type.INT, Type.STRING, Type.Object);
+            //line_store_filter = new Gtk.TreeModelFilter (line_store, new TreePath.first ());
 
             try {
                 if (FileUtils.get_data(file, out con)) {
@@ -107,6 +121,8 @@ namespace Gtat {
             } catch (FileError err) {
                 warning ("Error: %s\n", err.message);
             }
+
+            this.model = line_store_filter;
         }
 
         public void set_file2 (string file) {
@@ -166,9 +182,11 @@ namespace Gtat {
                     }
                 });
 
-                queue_draw ();
+                //queue_draw ();
                 return false;
             });
+
+            queue_draw ();
         }
 
         public void update_line_number_colors (Preferences p) {

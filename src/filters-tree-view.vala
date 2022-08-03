@@ -32,6 +32,8 @@ namespace Gtat {
 
         public FiltersTreeView (Gtk.Application app) {
             setup_cell_renderers ();
+            //enable_model_drag_dest (new Gdk.ContentFormats (null), Gdk.DragAction.MOVE);
+            //enable_model_drag_source (Gdk.ModifierType.BUTTON1_MASK, new Gdk.ContentFormats (null), Gdk.DragAction.MOVE);
             
             renderer_filter_checkbox.toggled.connect ((path) => {
                 Gtk.TreeIter i;
