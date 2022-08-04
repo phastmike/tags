@@ -171,10 +171,10 @@ namespace Gtat {
         }
         
         public void set_file (File file) {
-            lines_treeview.set_file (file.get_path ());
-            lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
             subtitle.set_label (file.get_basename ());
             subtitle.set_tooltip_text (file.get_path ());
+            lines_treeview.set_file (file.get_path ());
+            lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
         }
 
         private void add_tag () {

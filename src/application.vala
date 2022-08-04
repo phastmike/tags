@@ -37,10 +37,10 @@ namespace Gtat {
             if (files[0].query_exists () == true) {
                 //var win = this.active_window;
                 //if (win == null) {
-                    var win = new Gtat.Window (this);
-                    ((Gtat.Window) win).set_file (files[0]);
+                var win = new Gtat.Window (this);
+                win.show ();
+                win.set_file (files[0]);
                 //}
-                win.present ();
             } 
         }
 

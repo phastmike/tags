@@ -78,9 +78,8 @@ namespace Gtat {
             });
         }
 
-        public void set_file (string file) {
+        public async void set_file (string file) {
             uint8[] con;
-            Gtk.TreeIter iter;
             string? contents;
 
             this.model = null;
@@ -99,10 +98,29 @@ namespace Gtat {
             //line_store = new Gtk.ListStore (3, Type.INT, Type.STRING, Type.Object);
             //line_store_filter = new Gtk.TreeModelFilter (line_store, new TreePath.first ());
 
+            File ffile = File.new_for_path (file);
+            ffile.read_async.begin (Priority.DEFAULT, null, (obj, res) => {
+                var nr = 0;
+                Gtk.TreeIter iter;
+                try {
+                    FileInputStream @is = ffile.read_async.end (res);
+                    DataInputStream @dis = new DataInputStream (@is);
+                    string line;
+                    
+                    while ((line = dis.read_line ()) != null) {
+                        line_store.append (out iter);
+                        line_store.@set (iter, 0, ++nr, 1, line, 2, null, -1);
+                    }
+                } catch (Error e) {
+                    print ("Error: %s\n", e.message);
+                }
+            });
+
+            
+            /*
             try {
                 if (FileUtils.get_data(file, out con)) {
                     for (int i = 0; i < con.length - 2; i++) {
-                        /* change nulls for '0' */
                         if (con[i] == 0x00) {
                             con[i] = 0x30;
                         }
@@ -121,6 +139,7 @@ namespace Gtat {
             } catch (FileError err) {
                 warning ("Error: %s\n", err.message);
             }
+            */
 
             this.model = line_store_filter;
         }
