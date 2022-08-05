@@ -76,6 +76,17 @@ namespace Gtat {
                     cell_text.background = null;
                 }
             });
+
+            /*
+            var selection = this.get_selection ();
+            selection.changed.connect (() => {
+                Gtk.TreeIter iter;
+                Gtk.TreeModel model;
+                if (selection.get_selected (out model, out iter)) {
+                    print ("Selection changed ... path = %s\n", model.get_string_from_iter (iter));
+                }
+            });
+            */
         }
 
         public async void set_file (string file) {
