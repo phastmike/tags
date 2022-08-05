@@ -22,6 +22,7 @@ namespace Gtat {
         [GtkChild]
         unowned Gtk.CellRendererText renderer_line_number;
 
+        private bool will_clear_all {private set; private get; default=false;}
         public bool hide_untagged {set; get; default=false;}
 
         public LinesTreeView (Gtk.Application app) {
@@ -40,6 +41,7 @@ namespace Gtat {
             });
 
             line_store_filter.set_visible_func ((model, iter) => {
+                if (will_clear_all == true) return false;
                 if (hide_untagged == false) {
                     return true;
                 } else {
@@ -76,39 +78,22 @@ namespace Gtat {
                     cell_text.background = null;
                 }
             });
-
-            /*
-            var selection = this.get_selection ();
-            selection.changed.connect (() => {
-                Gtk.TreeIter iter;
-                Gtk.TreeModel model;
-                if (selection.get_selected (out model, out iter)) {
-                    print ("Selection changed ... path = %s\n", model.get_string_from_iter (iter));
-                }
-            });
-            */
         }
 
-        public async void set_file (string file) {
+        public void set_file (string file) {
             uint8[] con;
             string? contents;
+            Gtk.TreeIter iter;
 
             this.model = null;
-            /*
-            line_store.foreach ((model, path, iter) => {
-                int n;
-                model.@get (iter, 0, out n);
-                print("Removing line nr: %d\n", n);
-                line_store.remove (ref iter);
-                return false;
-            });
-            */
 
+            // Workaround to speed up removing lines
+            will_clear_all = true;
+            line_store_filter.refilter ();
             line_store.clear ();
-            
-            //line_store = new Gtk.ListStore (3, Type.INT, Type.STRING, Type.Object);
-            //line_store_filter = new Gtk.TreeModelFilter (line_store, new TreePath.first ());
+            will_clear_all = false;
 
+            /*
             File ffile = File.new_for_path (file);
             ffile.read_async.begin (Priority.DEFAULT, null, (obj, res) => {
                 var nr = 0;
@@ -126,13 +111,12 @@ namespace Gtat {
                     print ("Error: %s\n", e.message);
                 }
             });
+            */
 
-            
-            /*
             try {
                 if (FileUtils.get_data(file, out con)) {
                     for (int i = 0; i < con.length - 2; i++) {
-                        if (con[i] == 0x00) {
+                        if (con[i] == 0x00 || con[i] == '\r') {
                             con[i] = 0x30;
                         }
                     }
@@ -150,32 +134,8 @@ namespace Gtat {
             } catch (FileError err) {
                 warning ("Error: %s\n", err.message);
             }
-            */
 
             this.model = line_store_filter;
-        }
-
-        public void set_file2 (string file) {
-            Gtk.TreeIter iter;
-            string? contents;
-
-            line_store.clear ();
-
-            try {
-                if (FileUtils.get_contents(file, out contents, null)) {
-                    var nr = 0;
-                    var lines = contents.split ("\n");
-                    lines.resize (lines.length - 1);
-                    foreach (var line in lines ) {
-                        line_store.append (out iter);
-                        line_store.@set (iter, 0, ++nr, 1, line, 2, null, -1);
-                    }
-                } else {
-                    warning ("Error opening file [%s]\n", file);
-                }
-            } catch (FileError err) {
-                warning ("Error: %s\n", err.message);
-            }
         }
 
         public void tag_lines (Gtk.ListStore filters) {
