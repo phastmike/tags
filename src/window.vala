@@ -54,14 +54,15 @@ namespace Gtat {
                     filter_dialog = new FilterDialogWindow.for_editing (app, line_filter);
                     filter_dialog.added.connect ((filter) => {
                         lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
-                        filters_treeview.queue_draw ();
+                        //filters_treeview.queue_draw ();
+                        lines_treeview.line_store_filter.refilter ();
                     });
                 } else {
                     filter_dialog = new FilterDialogWindow (app, line_text);
                     filter_dialog.added.connect ((filter) => {
                         filter.enable_changed.connect ((enabled) => {
                             lines_treeview.line_store_filter.refilter ();
-                            lines_treeview.tag_lines ((Gtk.ListStore) filters_treeview.get_model ());
+                            //lines_treeview.tag_lines ((Gtk.ListStore) filters_treeview.get_model ());
                         });
                         filters_treeview.add_filter (filter);
                         lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
@@ -185,7 +186,7 @@ namespace Gtat {
 
                 filter.enable_changed.connect ((enabled) => {
                     lines_treeview.line_store_filter.refilter ();
-                    lines_treeview.tag_lines ((Gtk.ListStore) filters_treeview.get_model ());
+                    //lines_treeview.tag_lines ((Gtk.ListStore) filters_treeview.get_model ());
                 });
 
                 filters_treeview.add_filter (filter);

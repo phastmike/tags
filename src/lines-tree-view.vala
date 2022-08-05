@@ -41,13 +41,23 @@ namespace Gtat {
             });
 
             line_store_filter.set_visible_func ((model, iter) => {
-                if (will_clear_all == true) return false;
+                if (will_clear_all == true) {
+                    return false;
+                }
+
                 if (hide_untagged == false) {
                     return true;
                 } else {
                     LineFilter? filter; 
                     model.@get (iter, 2, out filter);
-                    if (filter != null) {
+                    if (filter != null && filter.enabled == true) {
+                        /*
+                        if (filter.enabled == true) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                        */
                         return true;
                     } else {
                         return false;
@@ -62,7 +72,7 @@ namespace Gtat {
                 var cell_text = (Gtk.CellRendererText) cell; 
 
                 model.@get (iter, 2, out filter);
-                if (filter != null) {
+                if (filter != null && filter.enabled == true) {
                     if (filter.colors.fg != null) {
                         cell_text.foreground_rgba = filter.colors.fg;
                     } else {
@@ -92,26 +102,6 @@ namespace Gtat {
             line_store_filter.refilter ();
             line_store.clear ();
             will_clear_all = false;
-
-            /*
-            File ffile = File.new_for_path (file);
-            ffile.read_async.begin (Priority.DEFAULT, null, (obj, res) => {
-                var nr = 0;
-                Gtk.TreeIter iter;
-                try {
-                    FileInputStream @is = ffile.read_async.end (res);
-                    DataInputStream @dis = new DataInputStream (@is);
-                    string line;
-                    
-                    while ((line = dis.read_line ()) != null) {
-                        line_store.append (out iter);
-                        line_store.@set (iter, 0, ++nr, 1, line, 2, null, -1);
-                    }
-                } catch (Error e) {
-                    print ("Error: %s\n", e.message);
-                }
-            });
-            */
 
             try {
                 if (FileUtils.get_data(file, out con)) {
