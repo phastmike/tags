@@ -54,7 +54,6 @@ namespace Gtat {
                     filter_dialog = new FilterDialogWindow.for_editing (app, line_filter);
                     filter_dialog.added.connect ((filter) => {
                         lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
-                        //filters_treeview.queue_draw ();
                         lines_treeview.line_store_filter.refilter ();
                     });
                 } else {
@@ -62,7 +61,6 @@ namespace Gtat {
                     filter_dialog.added.connect ((filter) => {
                         filter.enable_changed.connect ((enabled) => {
                             lines_treeview.line_store_filter.refilter ();
-                            //lines_treeview.tag_lines ((Gtk.ListStore) filters_treeview.get_model ());
                         });
                         filters_treeview.add_filter (filter);
                         lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
@@ -186,7 +184,6 @@ namespace Gtat {
 
                 filter.enable_changed.connect ((enabled) => {
                     lines_treeview.line_store_filter.refilter ();
-                    //lines_treeview.tag_lines ((Gtk.ListStore) filters_treeview.get_model ());
                 });
 
                 filters_treeview.add_filter (filter);
@@ -203,8 +200,9 @@ namespace Gtat {
             var action = this.lookup_action ("hide_untagged_lines");
             action.change_state (new Variant.boolean ((bool) lines_treeview.hide_untagged));
 
+            lines_treeview.model = null;
             lines_treeview.line_store_filter.refilter ();
-            //lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
+            lines_treeview.model = lines_treeview.line_store_filter;
 
             var selection = lines_treeview.get_selection ();
             if (selection.get_selected (out model, out iter)) {
