@@ -200,12 +200,13 @@ namespace Gtat {
             var action = this.lookup_action ("hide_untagged_lines");
             action.change_state (new Variant.boolean ((bool) lines_treeview.hide_untagged));
 
-            lines_treeview.model = null;
+            //lines_treeview.model = null;
             lines_treeview.line_store_filter.refilter ();
-            lines_treeview.model = lines_treeview.line_store_filter;
+            //lines_treeview.model = lines_treeview.line_store_filter;
 
             var selection = lines_treeview.get_selection ();
-            if (selection.get_selected (out model, out iter)) {
+            if (selection.get_selected (out model, out iter) == true) {
+                selection = lines_treeview.get_selection ();
                 lines_treeview.scroll_to_cell (model.get_path (iter) , null, true, (float) 0.5, (float) 0.5);
             }
         }

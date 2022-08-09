@@ -22,8 +22,8 @@ namespace Gtat {
         [GtkChild]
         unowned Gtk.CellRendererText renderer_line_number;
 
-        private bool will_clear_all {private set; private get; default=false;}
         public bool hide_untagged {set; get; default=false;}
+        private bool will_clear_all {private set; private get; default=false;}
 
         public LinesTreeView (Gtk.Application app) {
             var preferences = Preferences.instance ();
@@ -51,13 +51,6 @@ namespace Gtat {
                     LineFilter? filter; 
                     model.@get (iter, 2, out filter);
                     if (filter != null && filter.enabled == true) {
-                        /*
-                        if (filter.enabled == true) {
-                            return true;
-                        } else {
-                            return false;
-                        }
-                        */
                         return true;
                     } else {
                         return false;
@@ -128,8 +121,7 @@ namespace Gtat {
             this.model = line_store_filter;
         }
 
-        public void tag_lines (Gtk.ListStore filters) {
-            /* Clear Filter Hit Counter */
+        private void clear_hit_counters (Gtk.ListStore filters) {
             filters.foreach ((filters_model, filter_path, filter_iter) => {
                 LineFilter filter;
                 filters_model.@get (filter_iter, 0, out filter);
@@ -137,6 +129,10 @@ namespace Gtat {
                 filter.hits = 0;
                 return false;
             });
+        }
+
+        public void tag_lines (Gtk.ListStore filters) {
+            clear_hit_counters (filters);
 
             line_store.foreach ((lines_model, lines_path, lines_iter) => {
                 string line;
@@ -149,9 +145,11 @@ namespace Gtat {
 
                     filters_model.@get (filter_iter, 0, out filter);
 
+                    /*
                     if (filter.enabled == false) {
                         return false;
                     }
+                    */
 
                     if (line.contains (filter.pattern)) {
                         line_store.@set (lines_iter, 2, filter);

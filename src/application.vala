@@ -66,7 +66,7 @@ namespace Gtat {
                                   "logo-icon-name", "org.ampr.ct1enq.gtat",
                                   "website", "https://github.com/phastmike/tagger",
                                   "website-label", "https://github.com/phastmike/tagger",
-                                  "version", "0.9.2");
+                                  "version", "0.9.3");
         }
 
         private void on_preferences_action () {
