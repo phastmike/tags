@@ -39,7 +39,7 @@ Clone the repository and inside it, compile with:
 
 Then, test it with:
 
-`$ ./src/gtat`
+`$ ./src/tagger`
 
 If you want to install, do it with:
 

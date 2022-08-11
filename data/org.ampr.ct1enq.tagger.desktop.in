@@ -1,6 +1,6 @@
 [Desktop Entry]
-Name=gtat
-Exec=gtat %U
+Name=tagger
+Exec=tagger %U
 Icon=org.ampr.ct1enq.tagger
 Terminal=false
 Type=Application

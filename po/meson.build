@@ -1,1 +1,1 @@
-i18n.gettext('gtat', preset: 'glib')
+i18n.gettext('tagger', preset: 'glib')
