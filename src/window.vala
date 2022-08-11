@@ -50,6 +50,7 @@ namespace Tagger {
                 lines_treeview.get_selection ().get_selected (null, out iter);
                 lines_treeview.get_model ().@get (iter, 1, out line_text, 2, out line_filter);
 
+                /*
                 if (line_filter != null) {
                     filter_dialog = new FilterDialogWindow.for_editing (app, line_filter);
                     filter_dialog.added.connect ((filter) => {
@@ -57,6 +58,7 @@ namespace Tagger {
                         lines_treeview.line_store_filter.refilter ();
                     });
                 } else {
+                */
                     filter_dialog = new FilterDialogWindow (app, line_text);
                     filter_dialog.added.connect ((filter) => {
                         filter.enable_changed.connect ((enabled) => {
@@ -65,7 +67,7 @@ namespace Tagger {
                         filters_treeview.add_filter (filter);
                         lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
                     });
-                }
+                /*}*/
 
                 filter_dialog.show ();
 

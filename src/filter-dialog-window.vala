@@ -39,6 +39,7 @@ namespace Tagger {
 
             if (text != null) {
                 entry_tag_filter.set_text (text);
+                button_ok.set_sensitive (true);
             }
 
             button_ok.clicked.connect (() => {
@@ -117,8 +118,8 @@ namespace Tagger {
         }
 
         private void validate_entries () {
-            if ((entry_tag_filter.get_text_length () != 0) &
-                (entry_tag_name.get_text_length () != 0)) {
+            if ((entry_tag_filter.get_text_length () != 0) /*&
+                (entry_tag_name.get_text_length () != 0)*/) {
                 button_ok.set_sensitive (true);
             } else {
                 button_ok.set_sensitive (false);
