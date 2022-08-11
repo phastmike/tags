@@ -1,4 +1,4 @@
-application_id = 'org.ampr.ct1enq.gtat'
+application_id = 'org.ampr.ct1enq.tagger'
 
 scalable_dir = join_paths('hicolor', 'scalable', 'apps')
 install_data(

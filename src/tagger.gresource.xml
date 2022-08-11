@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
-  <gresource prefix="/org/ampr/ct1enq/gtat">
+  <gresource prefix="/org/ampr/ct1enq/tagger">
     <file>window.ui</file>
     <file>lines-tree-view.ui</file>
     <file>filters-tree-view.ui</file>

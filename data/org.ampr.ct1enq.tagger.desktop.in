@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=gtat
 Exec=gtat %U
-Icon=org.ampr.ct1enq.gtat
+Icon=org.ampr.ct1enq.tagger
 Terminal=false
 Type=Application
 Categories=GTK;

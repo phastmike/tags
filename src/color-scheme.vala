@@ -11,7 +11,7 @@
  * José Miguel Fonte
  */
 
-namespace Gtat {
+namespace Tagger {
     public class ColorScheme : Object {
         private string _name;
         private Gdk.RGBA? _fg;

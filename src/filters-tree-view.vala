@@ -8,8 +8,8 @@
  * José Miguel Fonte
  */
 
-namespace Gtat {
-    [GtkTemplate (ui = "/org/ampr/ct1enq/gtat/filters-tree-view.ui")]
+namespace Tagger {
+    [GtkTemplate (ui = "/org/ampr/ct1enq/tagger/filters-tree-view.ui")]
     public class FiltersTreeView : Gtk.TreeView {
         [GtkChild]
         private unowned Gtk.ListStore filter_store;

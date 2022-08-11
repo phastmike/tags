@@ -9,8 +9,8 @@
  * José Miguel Fonte
  */
 
-namespace Gtat {
-    [GtkTemplate (ui = "/org/ampr/ct1enq/gtat/filter-dialog-window.ui")]
+namespace Tagger {
+    [GtkTemplate (ui = "/org/ampr/ct1enq/tagger/filter-dialog-window.ui")]
     public class FilterDialogWindow : Gtk.Window {
         [GtkChild]
         private unowned Gtk.Button button_ok;

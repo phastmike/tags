@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk" version="4.0"/>
-  <template class="GtatWindow" parent="GtkApplicationWindow">
+  <template class="TaggerWindow" parent="GtkApplicationWindow">
     <property name="title" translatable="yes">Tagger</property>
     <property name="default-width">1024</property>
     <property name="default-height">768</property>
@@ -171,7 +171,7 @@
         <attribute name="action">win.show-help-overlay</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">_About gtat</attribute>
+        <attribute name="label" translatable="yes">_About Tagger</attribute>
         <attribute name="action">app.about</attribute>
       </item>
     </section>

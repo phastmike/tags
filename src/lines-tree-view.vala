@@ -8,8 +8,8 @@
  * José Miguel Fonte
  */
 
-namespace Gtat {
-    [GtkTemplate (ui = "/org/ampr/ct1enq/gtat/lines-tree-view.ui")]
+namespace Tagger {
+    [GtkTemplate (ui = "/org/ampr/ct1enq/tagger/lines-tree-view.ui")]
     public class LinesTreeView : Gtk.TreeView {
         [GtkChild]
         unowned Gtk.ListStore line_store;

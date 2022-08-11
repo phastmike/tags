@@ -8,8 +8,8 @@
  * José Miguel Fonte
  */
 
-namespace Gtat {
-    [GtkTemplate (ui = "/org/ampr/ct1enq/gtat/window.ui")]
+namespace Tagger {
+    [GtkTemplate (ui = "/org/ampr/ct1enq/tagger/window.ui")]
     public class Window : Gtk.ApplicationWindow {
         [GtkChild]
         unowned Gtk.Button button_open_file;

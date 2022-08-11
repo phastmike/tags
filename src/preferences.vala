@@ -8,7 +8,7 @@
  * José Miguel Fonte
  */
 
-namespace Gtat {
+namespace Tagger {
     public class Preferences : Object {
         private GLib.Settings preferences;
         private static Once<Preferences> _instance;
@@ -20,7 +20,7 @@ namespace Gtat {
         public signal void line_number_colors_changed (Preferences p);
 
         private Preferences () {
-            preferences = new GLib.Settings ("org.ampr.ct1enq.gtat");
+            preferences = new GLib.Settings ("org.ampr.ct1enq.tagger");
 
             _ln_fg_color = preferences.get_string ("line-numbers-fg-color");
             _ln_bg_color = preferences.get_string ("line-numbers-bg-color");

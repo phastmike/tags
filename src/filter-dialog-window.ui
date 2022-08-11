@@ -2,7 +2,7 @@
 <!-- Generated with glade 3.38.2 -->
 <interface>
   <requires lib="gtk" version="4.0"/>
-  <template class="GtatFilterDialogWindow" parent="GtkWindow">
+  <template class="TaggerFilterDialogWindow" parent="GtkWindow">
     <property name="title" translatable="yes">Tag Filter</property>
     <property name="resizable">False</property>
     <property name="default_width">600</property>
