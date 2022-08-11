@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=tagger
+Name=Tagger
 Exec=tagger %U
 Icon=org.ampr.ct1enq.tagger
 Terminal=false
