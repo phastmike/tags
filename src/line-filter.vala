@@ -8,7 +8,7 @@
  * José Miguel Fonte
  */
 
-namespace Gtat {
+namespace Tagger {
 
     public class LineFilter : Object {
         private bool _enabled;

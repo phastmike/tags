@@ -8,8 +8,8 @@
  * José Miguel Fonte
  */
 
-namespace Gtat {
-    [GtkTemplate (ui = "/org/ampr/ct1enq/gtat/preferences-window.ui")]
+namespace Tagger {
+    [GtkTemplate (ui = "/org/ampr/ct1enq/tagger/preferences-window.ui")]
     public class PreferencesWindow : Gtk.Window {
         [GtkChild]
         unowned Gtk.ColorButton button_fg_color;

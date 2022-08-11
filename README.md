@@ -1,4 +1,4 @@
-# Tagger
+# Tagger [![build](https://app.travis-ci.com/phastmike/tagger.svg?branch=master)](https://app.travis-ci.com/github/phastmike/tagger)
 
 A GNOME text tagger inspired by the [TextAnalysisTool.NET](https://textanalysistool.github.io/)
 tool.
@@ -39,7 +39,7 @@ Clone the repository and inside it, compile with:
 
 Then, test it with:
 
-`$ ./src/gtat`
+`$ ./src/tagger`
 
 If you want to install, do it with:
 

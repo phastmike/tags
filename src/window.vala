@@ -8,8 +8,8 @@
  * José Miguel Fonte
  */
 
-namespace Gtat {
-    [GtkTemplate (ui = "/org/ampr/ct1enq/gtat/window.ui")]
+namespace Tagger {
+    [GtkTemplate (ui = "/org/ampr/ct1enq/tagger/window.ui")]
     public class Window : Gtk.ApplicationWindow {
         [GtkChild]
         unowned Gtk.Button button_open_file;
@@ -54,14 +54,13 @@ namespace Gtat {
                     filter_dialog = new FilterDialogWindow.for_editing (app, line_filter);
                     filter_dialog.added.connect ((filter) => {
                         lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
-                        filters_treeview.queue_draw ();
+                        lines_treeview.line_store_filter.refilter ();
                     });
                 } else {
                     filter_dialog = new FilterDialogWindow (app, line_text);
                     filter_dialog.added.connect ((filter) => {
                         filter.enable_changed.connect ((enabled) => {
                             lines_treeview.line_store_filter.refilter ();
-                            lines_treeview.tag_lines ((Gtk.ListStore) filters_treeview.get_model ());
                         });
                         filters_treeview.add_filter (filter);
                         lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
@@ -156,8 +155,9 @@ namespace Gtat {
                 }
                 file_chooser_dialog.response.connect ( (response_id) => {
                     if (response_id == Gtk.ResponseType.ACCEPT) {
-                        this.set_file(file_chooser_dialog.get_file ());
                         last_file = file_chooser_dialog.get_file ();
+                        print ("last_file = %s\n", last_file.get_path ());
+                        this.set_file(last_file);
                     }
                     file_chooser_dialog.destroy ();
                 });
@@ -170,10 +170,10 @@ namespace Gtat {
         }
         
         public void set_file (File file) {
-            lines_treeview.set_file(file.get_path ());
-            lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
             subtitle.set_label (file.get_basename ());
             subtitle.set_tooltip_text (file.get_path ());
+            lines_treeview.set_file (file.get_path ());
+            lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
         }
 
         private void add_tag () {
@@ -184,7 +184,6 @@ namespace Gtat {
 
                 filter.enable_changed.connect ((enabled) => {
                     lines_treeview.line_store_filter.refilter ();
-                    lines_treeview.tag_lines ((Gtk.ListStore) filters_treeview.get_model ());
                 });
 
                 filters_treeview.add_filter (filter);
@@ -193,11 +192,23 @@ namespace Gtat {
         }
 
         private void hide_untagged_lines () {
+            Gtk.TreeIter iter;
+            Gtk.TreeModel model;
+
             lines_treeview.hide_untagged = !lines_treeview.hide_untagged; 
+
             var action = this.lookup_action ("hide_untagged_lines");
             action.change_state (new Variant.boolean ((bool) lines_treeview.hide_untagged));
+
+            //lines_treeview.model = null;
             lines_treeview.line_store_filter.refilter ();
-            lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
+            //lines_treeview.model = lines_treeview.line_store_filter;
+
+            var selection = lines_treeview.get_selection ();
+            if (selection.get_selected (out model, out iter) == true) {
+                selection = lines_treeview.get_selection ();
+                lines_treeview.scroll_to_cell (model.get_path (iter) , null, true, (float) 0.5, (float) 0.5);
+            }
         }
 
         private void toggle_filters_view () {

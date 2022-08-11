@@ -15,7 +15,7 @@
   <object class="GtkTreeModelFilter" id="line_store_filter">
     <property name="child-model">line_store</property>
 	</object>
-  <template class="GtatLinesTreeView" parent="GtkTreeView">
+  <template class="TaggerLinesTreeView" parent="GtkTreeView">
     <property name="visible">True</property>
     <property name="can-focus">True</property>
     <property name="model">line_store_filter</property>
@@ -24,12 +24,15 @@
     <property name="enable-search">true</property>
     <property name="search-column">1</property>
     <property name="enable-grid-lines">vertical</property>
+    <property name="fixed-height-mode">True</property>
     <child internal-child="selection">
       <object class="GtkTreeSelection" id="selection"/>
     </child>
     <child>
       <object class="GtkTreeViewColumn" id="col_line_number">
         <property name="title">Nr</property>
+		  <property name="fixed-width">60</property>
+		  <property name="sizing">fixed</property>
         <child>
           <object class="GtkCellRendererText" id="renderer_line_number">
             <property name="xalign">1</property>
@@ -45,6 +48,7 @@
     <child>
       <object class="GtkTreeViewColumn" id="col_line_text">
         <property name="title">Line text</property>
+		  <property name="sizing">fixed</property>
         <child>
           <object class="GtkCellRendererText" id="renderer_line_text"/>
           <attributes>

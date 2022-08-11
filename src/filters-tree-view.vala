@@ -8,8 +8,8 @@
  * José Miguel Fonte
  */
 
-namespace Gtat {
-    [GtkTemplate (ui = "/org/ampr/ct1enq/gtat/filters-tree-view.ui")]
+namespace Tagger {
+    [GtkTemplate (ui = "/org/ampr/ct1enq/tagger/filters-tree-view.ui")]
     public class FiltersTreeView : Gtk.TreeView {
         [GtkChild]
         private unowned Gtk.ListStore filter_store;
@@ -32,6 +32,8 @@ namespace Gtat {
 
         public FiltersTreeView (Gtk.Application app) {
             setup_cell_renderers ();
+            //enable_model_drag_dest (new Gdk.ContentFormats (null), Gdk.DragAction.MOVE);
+            //enable_model_drag_source (Gdk.ModifierType.BUTTON1_MASK, new Gdk.ContentFormats (null), Gdk.DragAction.MOVE);
             
             renderer_filter_checkbox.toggled.connect ((path) => {
                 Gtk.TreeIter i;

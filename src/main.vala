@@ -9,6 +9,6 @@
  */
 
 int main (string[] args) {
-	var app = new Gtat.Application ();
+	var app = new Tagger.Application ();
 	return app.run (args);
 }

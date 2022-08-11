@@ -8,8 +8,8 @@
  * José Miguel Fonte
  */
 
-namespace Gtat {
-    [GtkTemplate (ui = "/org/ampr/ct1enq/gtat/lines-tree-view.ui")]
+namespace Tagger {
+    [GtkTemplate (ui = "/org/ampr/ct1enq/tagger/lines-tree-view.ui")]
     public class LinesTreeView : Gtk.TreeView {
         [GtkChild]
         unowned Gtk.ListStore line_store;
@@ -23,6 +23,7 @@ namespace Gtat {
         unowned Gtk.CellRendererText renderer_line_number;
 
         public bool hide_untagged {set; get; default=false;}
+        private bool will_clear_all {private set; private get; default=false;}
 
         public LinesTreeView (Gtk.Application app) {
             var preferences = Preferences.instance ();
@@ -40,12 +41,16 @@ namespace Gtat {
             });
 
             line_store_filter.set_visible_func ((model, iter) => {
+                if (will_clear_all == true) {
+                    return false;
+                }
+
                 if (hide_untagged == false) {
                     return true;
                 } else {
                     LineFilter? filter; 
                     model.@get (iter, 2, out filter);
-                    if (filter != null) {
+                    if (filter != null && filter.enabled == true) {
                         return true;
                     } else {
                         return false;
@@ -60,7 +65,7 @@ namespace Gtat {
                 var cell_text = (Gtk.CellRendererText) cell; 
 
                 model.@get (iter, 2, out filter);
-                if (filter != null) {
+                if (filter != null && filter.enabled == true) {
                     if (filter.colors.fg != null) {
                         cell_text.foreground_rgba = filter.colors.fg;
                     } else {
@@ -79,30 +84,44 @@ namespace Gtat {
         }
 
         public void set_file (string file) {
+            uint8[] con;
+            string? contents;
             Gtk.TreeIter iter;
-            string contents;
 
+            this.model = null;
+
+            // Workaround to speed up removing lines
+            will_clear_all = true;
+            line_store_filter.refilter ();
             line_store.clear ();
+            will_clear_all = false;
 
             try {
-                if (FileUtils.get_contents(file, out contents, null)) {
+                if (FileUtils.get_data(file, out con)) {
+                    for (int i = 0; i < con.length - 2; i++) {
+                        if (con[i] == 0x00 || con[i] == '\r') {
+                            con[i] = 0x30;
+                        }
+                    }
+                    contents = (string) con;
                     var nr = 0;
                     var lines = contents.split ("\n");
                     lines.resize (lines.length - 1);
-                    foreach (var line in lines) {
+                    foreach (unowned var line in lines ) {
                         line_store.append (out iter);
                         line_store.@set (iter, 0, ++nr, 1, line, 2, null, -1);
                     }
                 } else {
-                    print("Error opening file [%s]\n", "example.log");
+                    warning ("Error opening file [%s]\n", file);
                 }
             } catch (FileError err) {
-                print("Error: %s\n", err.message);
-            } 
+                warning ("Error: %s\n", err.message);
+            }
+
+            this.model = line_store_filter;
         }
 
-        public void tag_lines (Gtk.ListStore filters) {
-            /* Clear Filter Hit Counter */
+        private void clear_hit_counters (Gtk.ListStore filters) {
             filters.foreach ((filters_model, filter_path, filter_iter) => {
                 LineFilter filter;
                 filters_model.@get (filter_iter, 0, out filter);
@@ -110,6 +129,10 @@ namespace Gtat {
                 filter.hits = 0;
                 return false;
             });
+        }
+
+        public void tag_lines (Gtk.ListStore filters) {
+            clear_hit_counters (filters);
 
             line_store.foreach ((lines_model, lines_path, lines_iter) => {
                 string line;
@@ -122,9 +145,11 @@ namespace Gtat {
 
                     filters_model.@get (filter_iter, 0, out filter);
 
+                    /*
                     if (filter.enabled == false) {
                         return false;
                     }
+                    */
 
                     if (line.contains (filter.pattern)) {
                         line_store.@set (lines_iter, 2, filter);
@@ -135,9 +160,11 @@ namespace Gtat {
                     }
                 });
 
-                queue_draw ();
+                //queue_draw ();
                 return false;
             });
+
+            queue_draw ();
         }
 
         public void update_line_number_colors (Preferences p) {

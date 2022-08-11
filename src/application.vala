@@ -8,7 +8,7 @@
  * José Miguel Fonte
  */
 
-namespace Gtat {
+namespace Tagger {
     public class Application : Gtk.Application {
         private ActionEntry[] APP_ACTIONS = {
             { "about", on_about_action },
@@ -18,7 +18,7 @@ namespace Gtat {
 
 
         public Application () {
-            Object (application_id: "org.ampr.ct1enq.gtat", flags: ApplicationFlags.HANDLES_OPEN);
+            Object (application_id: "org.ampr.ct1enq.tagger", flags: ApplicationFlags.HANDLES_OPEN);
 
             this.add_action_entries(this.APP_ACTIONS, this);
             this.set_accels_for_action("app.quit", {"<primary>q"});
@@ -28,19 +28,19 @@ namespace Gtat {
             base.activate();
             var win = this.active_window;
             if (win == null) {
-                win = new Gtat.Window (this);
+                win = new Tagger.Window (this);
             }
             win.present ();
         }
 
         public override void open (File[] files, string hint) {
             if (files[0].query_exists () == true) {
-                var win = this.active_window;
-                if (win == null) {
-                    win = new Gtat.Window (this);
-                    ((Gtat.Window) win).set_file (files[0]);
-                }
-                win.present ();
+                //var win = this.active_window;
+                //if (win == null) {
+                var win = new Tagger.Window (this);
+                win.show ();
+                win.set_file (files[0]);
+                //}
             } 
         }
 
@@ -63,10 +63,10 @@ namespace Gtat {
                                   "license-type", Gtk.License.MIT_X11,
                                   "wrap-license", true,
                                   "comments", "Tag lines to a given color scheme.\nPaint for logs ftw!",
-                                  "logo-icon-name", "org.ampr.ct1enq.gtat",
+                                  "logo-icon-name", "org.ampr.ct1enq.tagger",
                                   "website", "https://github.com/phastmike/tagger",
                                   "website-label", "https://github.com/phastmike/tagger",
-                                  "version", "0.9.2");
+                                  "version", "0.9.3");
         }
 
         private void on_preferences_action () {

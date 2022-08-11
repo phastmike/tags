@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk" version="4.0"/>
-  <template class="GtatPreferencesWindow" parent="GtkWindow">
+  <template class="TaggerPreferencesWindow" parent="GtkWindow">
     <property name="title" translatable="yes">Preferences</property>
     <property name="resizable">False</property>
     <property name="default-width">600</property>

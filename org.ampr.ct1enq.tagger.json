@@ -1,9 +1,9 @@
 {
-    "app-id" : "org.ampr.ct1enq.gtat",
+    "app-id" : "org.ampr.ct1enq.tagger",
     "runtime" : "org.gnome.Platform",
     "runtime-version" : "master",
     "sdk" : "org.gnome.Sdk",
-    "command" : "gtat",
+    "command" : "tagger",
     "finish-args" : [
         "--share=network",
         "--share=ipc",
@@ -25,13 +25,13 @@
     ],
     "modules" : [
         {
-            "name" : "gtat",
+            "name" : "tagger",
             "builddir" : true,
             "buildsystem" : "meson",
             "sources" : [
                 {
                     "type" : "git",
-                    "url" : "file:///home/miguel/Programming/gtat"
+                    "url" : "file:///home/miguel/Programming/tagger"
                 }
             ]
         }
