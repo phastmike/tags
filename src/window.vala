@@ -38,39 +38,27 @@ namespace Tagger {
             app.set_accels_for_action("win.hide_untagged_lines", {"<primary>h"});
             app.set_accels_for_action("win.toggle_filters_view", {"<primary>f"});
             
-            lines_treeview = new LinesTreeView (app);
             filters_treeview = new FiltersTreeView (app);
+            lines_treeview = new LinesTreeView (app, filters_treeview.get_model () as Gtk.ListStore);
             
             lines_treeview.row_activated.connect ((path, column) => {
                 string line_text;
                 Gtk.TreeIter iter;
-                LineFilter line_filter;
                 FilterDialogWindow filter_dialog;
 
                 lines_treeview.get_selection ().get_selected (null, out iter);
-                lines_treeview.get_model ().@get (iter, 1, out line_text, 2, out line_filter);
+                lines_treeview.get_model ().@get (iter, LinesTreeView.Columns.LINE_TEXT, out line_text, -1);
 
-                /*
-                if (line_filter != null) {
-                    filter_dialog = new FilterDialogWindow.for_editing (app, line_filter);
-                    filter_dialog.added.connect ((filter) => {
-                        lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
+                filter_dialog = new FilterDialogWindow (app, line_text);
+                filter_dialog.added.connect ((filter) => {
+                    filter.enable_changed.connect ((enabled) => {
                         lines_treeview.line_store_filter.refilter ();
                     });
-                } else {
-                */
-                    filter_dialog = new FilterDialogWindow (app, line_text);
-                    filter_dialog.added.connect ((filter) => {
-                        filter.enable_changed.connect ((enabled) => {
-                            lines_treeview.line_store_filter.refilter ();
-                        });
-                        filters_treeview.add_filter (filter);
-                        lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
-                    });
-                /*}*/
+                    filters_treeview.add_filter (filter);
+                    count_tag_hits ();
+                });
 
                 filter_dialog.show ();
-
             });
 
             
@@ -79,15 +67,14 @@ namespace Tagger {
                 Gtk.TreeIter iter;
 
                 filters_treeview.get_selection ().get_selected (null, out iter);
-
                 filters_treeview.get_model ().@get (iter, 0, out filter);
+
                 var filter_dialog = new FilterDialogWindow.for_editing (app, filter);
-                filter_dialog.show ();
-                filter_dialog.added.connect ((filter) => {
-                    lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
-                    filters_treeview.queue_draw ();
+
+                filter_dialog.edited.connect ((filter) => {
+                    count_tag_hits ();
                 });
-                
+                /* Use Dialog and Response (reuse) or leave it as is */
                 filter_dialog.deleted.connect ((filter) => {
                     filters_treeview.get_model ().foreach ((model, path, iter) => {
                         LineFilter lf;
@@ -100,8 +87,9 @@ namespace Tagger {
                             return false;
                         }
                     });
-                    lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
                 });
+
+                filter_dialog.show ();
             });
 
             paned = new Gtk.Paned (Gtk.Orientation.VERTICAL);
@@ -152,13 +140,13 @@ namespace Tagger {
                     try {
                         file_chooser_dialog.set_current_folder (last_file.get_parent ());
                     } catch (Error e) {
-                        warning ("FileChooser:set_current_folder error message: %s", e.message);
+                        warning ("FileChooser::set_current_folder::error message: %s", e.message);
                     }
                 }
                 file_chooser_dialog.response.connect ( (response_id) => {
                     if (response_id == Gtk.ResponseType.ACCEPT) {
                         last_file = file_chooser_dialog.get_file ();
-                        print ("last_file = %s\n", last_file.get_path ());
+                        message ("last_file = %s\n", last_file.get_path ());
                         this.set_file(last_file);
                     }
                     file_chooser_dialog.destroy ();
@@ -175,7 +163,6 @@ namespace Tagger {
             subtitle.set_label (file.get_basename ());
             subtitle.set_tooltip_text (file.get_path ());
             lines_treeview.set_file (file.get_path ());
-            lines_treeview.tag_lines (filters_treeview.get_model () as Gtk.ListStore);
         }
 
         private void add_tag () {
@@ -189,7 +176,33 @@ namespace Tagger {
                 });
 
                 filters_treeview.add_filter (filter);
-                lines_treeview.tag_lines ((Gtk.ListStore) filters_treeview.get_model ());
+                count_tag_hits ();
+            });
+        }
+
+        private void count_tag_hits () {
+            Idle.add (() => {
+                filters_treeview.clear_hit_counters ();
+                Gtk.TreeModel tags;
+                Gtk.TreeModel lines;
+
+                tags = filters_treeview.get_model ();
+                lines = lines_treeview.get_model ();
+
+                lines.foreach ((model, path, iter) => {
+                    string? line;
+                    model.@get (iter, LinesTreeView.Columns.LINE_TEXT, out line, -1);
+                    tags.foreach ((model, path, iter) => {
+                        LineFilter? tag;
+                        model.@get (iter, 0, out tag, -1);
+                        if (line.contains (tag.pattern)) tag.hits += 1;
+                        return false;
+                    });
+                    return false;
+                });
+
+                filters_treeview.queue_draw ();
+                return false;
             });
         }
 
@@ -202,9 +215,7 @@ namespace Tagger {
             var action = this.lookup_action ("hide_untagged_lines");
             action.change_state (new Variant.boolean ((bool) lines_treeview.hide_untagged));
 
-            //lines_treeview.model = null;
             lines_treeview.line_store_filter.refilter ();
-            //lines_treeview.model = lines_treeview.line_store_filter;
 
             var selection = lines_treeview.get_selection ();
             if (selection.get_selected (out model, out iter) == true) {

@@ -21,14 +21,23 @@ namespace Tagger {
         unowned Gtk.CellRendererText renderer_line_text;
         [GtkChild]
         unowned Gtk.CellRendererText renderer_line_number;
+        
+        public enum Columns {
+            LINE_NUMBER,
+            LINE_TEXT;
+        }
+            
 
+        public Gtk.ListStore filters;
         public bool hide_untagged {set; get; default=false;}
         private bool will_clear_all {private set; private get; default=false;}
 
-        public LinesTreeView (Gtk.Application app) {
+        public LinesTreeView (Gtk.Application app, Gtk.ListStore filters) {
             var preferences = Preferences.instance ();
 
             update_line_number_colors (preferences);
+
+            this.filters = filters;
 
             preferences.line_number_colors_changed.connect ((p) => {
                 update_line_number_colors (p);
@@ -48,6 +57,29 @@ namespace Tagger {
                 if (hide_untagged == false) {
                     return true;
                 } else {
+                    string line;
+                    bool found = false;
+
+                    model.@get (iter, 1, out line);
+                    filters.foreach ((filters_model, filter_path, filter_iter) => {
+                        LineFilter filter;
+
+                        filters_model.@get (filter_iter, 0, out filter);
+                        
+                        if (line.contains (filter.pattern) && filter.enabled == true) {
+                            found = true;
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    });
+
+
+                    // ternary operator not working as expected 
+                    if (found) return true;
+                    return false;
+
+/*
                     LineFilter? filter; 
                     model.@get (iter, 2, out filter);
                     if (filter != null && filter.enabled == true) {
@@ -55,15 +87,46 @@ namespace Tagger {
                     } else {
                         return false;
                     }
+*/
                 }
             });
 
             this.model = line_store_filter;
 
             col_line_text.set_cell_data_func (renderer_line_text, (column, cell, model, iter) => {
-                LineFilter filter;
+                LineFilter? filter=null;
                 var cell_text = (Gtk.CellRendererText) cell; 
 
+                bool found = false;
+                filters.foreach ((filters_model, filter_path, filter_iter) => {
+
+                    filters_model.@get (filter_iter, 0, out filter);
+                    
+
+                    if (renderer_line_text.text.contains (filter.pattern) && filter.enabled == true) {
+                        found = true;
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+
+                if (found) {
+                    if (filter.colors.fg != null) {
+                        cell_text.foreground_rgba = filter.colors.fg;
+                    } else {
+                        cell_text.foreground = null;
+                    }
+                    if (filter.colors.bg != null) {
+                        cell_text.background_rgba = filter.colors.bg;
+                    } else {
+                        cell_text.background = null;
+                    }
+                } else {
+                    cell_text.foreground = null;
+                    cell_text.background = null;
+                }
+/*
                 model.@get (iter, 2, out filter);
                 if (filter != null && filter.enabled == true) {
                     if (filter.colors.fg != null) {
@@ -80,6 +143,7 @@ namespace Tagger {
                     cell_text.foreground = null;
                     cell_text.background = null;
                 }
+*/
             });
         }
 
@@ -109,7 +173,7 @@ namespace Tagger {
                     lines.resize (lines.length - 1);
                     foreach (unowned var line in lines ) {
                         line_store.append (out iter);
-                        line_store.@set (iter, 0, ++nr, 1, line, 2, null, -1);
+                        line_store.@set (iter, Columns.LINE_NUMBER, ++nr, Columns.LINE_TEXT, line, -1);
                     }
                 } else {
                     warning ("Error opening file [%s]\n", file);

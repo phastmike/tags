@@ -9,7 +9,7 @@
       <!-- column-name line_text -->
       <column type="gchararray"/>
       <!-- column-name line_filter -->
-      <column type="GObject"/>
+		 <!--<column type="GObject"/>-->
     </columns>
   </object>
   <object class="GtkTreeModelFilter" id="line_store_filter">

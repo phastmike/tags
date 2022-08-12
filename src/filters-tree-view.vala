@@ -32,8 +32,6 @@ namespace Tagger {
 
         public FiltersTreeView (Gtk.Application app) {
             setup_cell_renderers ();
-            //enable_model_drag_dest (new Gdk.ContentFormats (null), Gdk.DragAction.MOVE);
-            //enable_model_drag_source (Gdk.ModifierType.BUTTON1_MASK, new Gdk.ContentFormats (null), Gdk.DragAction.MOVE);
             
             renderer_filter_checkbox.toggled.connect ((path) => {
                 Gtk.TreeIter i;
@@ -99,5 +97,13 @@ namespace Tagger {
             filter_store.@set (iter, 0, filter);
         }
 
+        public void clear_hit_counters () {
+            filter_store.foreach ((filters_model, filter_path, filter_iter) => {
+                LineFilter filter;
+                filters_model.@get (filter_iter, 0, out filter);
+                filter.hits = 0;
+                return false;
+            });
+        }
     }
 }

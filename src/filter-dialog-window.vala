@@ -32,6 +32,7 @@ namespace Tagger {
         private const string example_text = " Lorem ipsum dolor sit amet... ";
 
         public signal void added (LineFilter filter);
+        public signal void edited (LineFilter filter);
         public signal void deleted (LineFilter filter);
 
         public FilterDialogWindow (Gtk.Application app, string? text = null) {
@@ -84,7 +85,7 @@ namespace Tagger {
                 filter.description = entry_tag_name.get_text ();
                 filter.colors.fg = button_fg_color.get_rgba ();
                 filter.colors.bg = button_bg_color.get_rgba ();
-                added (filter);
+                edited (filter);
                 this.destroy ();
             });
             
