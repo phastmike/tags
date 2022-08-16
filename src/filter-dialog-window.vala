@@ -38,11 +38,6 @@ namespace Tagger {
         public FilterDialogWindow (Gtk.Application app, string? text = null) {
             Object(application: app, transient_for: app.active_window, modal: true);
 
-            if (text != null) {
-                entry_tag_filter.set_text (text);
-                button_ok.set_sensitive (true);
-            }
-
             button_ok.clicked.connect (() => {
                 var pattern = entry_tag_filter.get_text ();
                 var description = entry_tag_name.get_text ();
@@ -64,6 +59,11 @@ namespace Tagger {
             button_cancel.clicked.connect (this.destroy);
             button_fg_color.color_set.connect (set_label_example_colors);
             button_bg_color.color_set.connect (set_label_example_colors);
+
+            if (text != null) {
+                entry_tag_filter.set_text (text);
+                //button_ok.set_sensitive (true);
+            }
         }
 
         public FilterDialogWindow.for_editing (Gtk.Application app, LineFilter filter) {

@@ -94,6 +94,7 @@ namespace Tagger {
 
             paned = new Gtk.Paned (Gtk.Orientation.VERTICAL);
             set_child (paned);
+
             paned.notify["position"].connect ((s,p) => {
                 var view_height = paned.get_allocated_height ();
                 
@@ -127,7 +128,8 @@ namespace Tagger {
             paned.set_resize_end_child (true);
             paned.set_wide_handle (true);
             paned.set_position (this.default_height - 47 - 160);
-            paned.queue_draw ();
+
+            //paned.queue_draw ();
 
             button_open_file.clicked.connect ( () => {
                 var file_chooser_dialog = new Gtk.FileChooserDialog (
@@ -135,7 +137,9 @@ namespace Tagger {
                     "Open", Gtk.ResponseType.ACCEPT, 
                     "Cancel", Gtk.ResponseType.CANCEL, 
                     null);
+
                 file_chooser_dialog.set_modal (true);
+
                 if (last_file != null) {
                     try {
                         file_chooser_dialog.set_current_folder (last_file.get_parent ());
@@ -143,14 +147,16 @@ namespace Tagger {
                         warning ("FileChooser::set_current_folder::error message: %s", e.message);
                     }
                 }
+
                 file_chooser_dialog.response.connect ( (response_id) => {
                     if (response_id == Gtk.ResponseType.ACCEPT) {
                         last_file = file_chooser_dialog.get_file ();
-                        message ("last_file = %s\n", last_file.get_path ());
+                        //message ("last_file = %s\n", last_file.get_path ());
                         this.set_file(last_file);
                     }
                     file_chooser_dialog.destroy ();
                 });
+
                 file_chooser_dialog.show ();
             });
 
@@ -160,6 +166,9 @@ namespace Tagger {
         }
         
         public void set_file (File file) {
+            // Sets title for gnome shell window identity
+            set_title (file.get_basename ());
+
             subtitle.set_label (file.get_basename ());
             subtitle.set_tooltip_text (file.get_path ());
             lines_treeview.set_file (file.get_path ());
@@ -182,9 +191,10 @@ namespace Tagger {
 
         private void count_tag_hits () {
             Idle.add (() => {
-                filters_treeview.clear_hit_counters ();
                 Gtk.TreeModel tags;
                 Gtk.TreeModel lines;
+
+                filters_treeview.clear_hit_counters ();
 
                 tags = filters_treeview.get_model ();
                 lines = lines_treeview.get_model ();

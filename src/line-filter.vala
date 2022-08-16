@@ -39,4 +39,5 @@ namespace Tagger {
             _enabled = true;
         }
     }
+
 }
