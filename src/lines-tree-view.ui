@@ -8,7 +8,7 @@
       <column type="gint"/>
       <!-- column-name line_text -->
       <column type="gchararray"/>
-      <!-- column-name line_filter -->
+      <!-- column-name tag -->
 		 <!--<column type="GObject"/>-->
     </columns>
   </object>

@@ -20,14 +20,14 @@ namespace Tagger {
         
         private Gtk.Paned paned;
         private LinesTreeView lines_treeview;
-        private FiltersTreeView filters_treeview;
+        private TagsTreeView tags_treeview;
         private double paned_last_position = 0.778086;
         private File? last_file = null;
 
         private ActionEntry[] WINDOW_ACTIONS = {
             { "add_tag", add_tag },
             { "hide_untagged_lines", hide_untagged_lines, null, "false", null},
-            { "toggle_filters_view", toggle_filters_view, null, "false", null}
+            { "toggle_tags_view", toggle_tags_view, null, "false", null}
         };
 
         public Window (Gtk.Application app) {
@@ -36,51 +36,50 @@ namespace Tagger {
             this.add_action_entries(this.WINDOW_ACTIONS, this);
             app.set_accels_for_action("win.add_tag", {"<primary>n"});
             app.set_accels_for_action("win.hide_untagged_lines", {"<primary>h"});
-            app.set_accels_for_action("win.toggle_filters_view", {"<primary>f"});
+            app.set_accels_for_action("win.toggle_tags_view", {"<primary>f"});
             
-            filters_treeview = new FiltersTreeView (app);
-            lines_treeview = new LinesTreeView (app, filters_treeview.get_model () as Gtk.ListStore);
+            tags_treeview = new TagsTreeView (app);
+            lines_treeview = new LinesTreeView (app, tags_treeview.get_model () as Gtk.ListStore);
             
             lines_treeview.row_activated.connect ((path, column) => {
                 string line_text;
                 Gtk.TreeIter iter;
-                FilterDialogWindow filter_dialog;
 
                 lines_treeview.get_selection ().get_selected (null, out iter);
                 lines_treeview.get_model ().@get (iter, LinesTreeView.Columns.LINE_TEXT, out line_text, -1);
 
-                filter_dialog = new FilterDialogWindow (app, line_text);
-                filter_dialog.added.connect ((filter) => {
-                    filter.enable_changed.connect ((enabled) => {
+                var tag_dialog = new TagDialogWindow (app, line_text);
+                tag_dialog.added.connect ((tag) => {
+                    tag.enable_changed.connect ((enabled) => {
                         lines_treeview.line_store_filter.refilter ();
                     });
-                    filters_treeview.add_filter (filter);
+                    tags_treeview.add_tag (tag);
                     count_tag_hits ();
                 });
 
-                filter_dialog.show ();
+                tag_dialog.show ();
             });
 
             
-            filters_treeview.row_activated.connect ((path, column) => {
-                LineFilter filter;
+            tags_treeview.row_activated.connect ((path, column) => {
+                Tag tag;
                 Gtk.TreeIter iter;
 
-                filters_treeview.get_selection ().get_selected (null, out iter);
-                filters_treeview.get_model ().@get (iter, 0, out filter);
+                tags_treeview.get_selection ().get_selected (null, out iter);
+                tags_treeview.get_model ().@get (iter, 0, out tag);
 
-                var filter_dialog = new FilterDialogWindow.for_editing (app, filter);
+                var tag_dialog = new TagDialogWindow.for_editing (app, tag);
 
-                filter_dialog.edited.connect ((filter) => {
+                tag_dialog.edited.connect ((tag) => {
                     count_tag_hits ();
                 });
                 /* Use Dialog and Response (reuse) or leave it as is */
-                filter_dialog.deleted.connect ((filter) => {
-                    filters_treeview.get_model ().foreach ((model, path, iter) => {
-                        LineFilter lf;
-                        model.@get (iter, 0, out lf);
+                tag_dialog.deleted.connect ((tag) => {
+                    tags_treeview.get_model ().foreach ((model, path, iter) => {
+                        Tag t;
+                        model.@get (iter, 0, out t);
 
-                        if (lf == filter) {
+                        if (t == tag) {
                             ((Gtk.ListStore) model).remove (ref iter);
                             return true;
                         } else {
@@ -89,7 +88,7 @@ namespace Tagger {
                     });
                 });
 
-                filter_dialog.show ();
+                tag_dialog.show ();
             });
 
             paned = new Gtk.Paned (Gtk.Orientation.VERTICAL);
@@ -100,7 +99,7 @@ namespace Tagger {
                 
                 if (view_height == 0) return;
 
-                var action = this.lookup_action ("toggle_filters_view");
+                var action = this.lookup_action ("toggle_tags_view");
 
                 /* Change menu action state if manually hidden */
                 if (paned.get_position () >= view_height - 5) {
@@ -116,14 +115,14 @@ namespace Tagger {
             scrolled_lines.set_overlay_scrolling (true);
             scrolled_lines.set_child (lines_treeview);
 
-            var scrolled_filters = new Gtk.ScrolledWindow ();
-            scrolled_filters.set_kinetic_scrolling (true);
-            scrolled_filters.set_placement (Gtk.CornerType.TOP_LEFT);
-            scrolled_filters.set_overlay_scrolling (true);
-            scrolled_filters.set_child (filters_treeview);
+            var scrolled_tags = new Gtk.ScrolledWindow ();
+            scrolled_tags.set_kinetic_scrolling (true);
+            scrolled_tags.set_placement (Gtk.CornerType.TOP_LEFT);
+            scrolled_tags.set_overlay_scrolling (true);
+            scrolled_tags.set_child (tags_treeview);
 
             paned.set_start_child (scrolled_lines);
-            paned.set_end_child (scrolled_filters);
+            paned.set_end_child (scrolled_tags);
             paned.set_resize_start_child (true);
             paned.set_resize_end_child (true);
             paned.set_wide_handle (true);
@@ -175,16 +174,16 @@ namespace Tagger {
         }
 
         private void add_tag () {
-            var filter_dialog_window = new FilterDialogWindow (this.application);
-            filter_dialog_window.show ();
+            var tag_dialog = new TagDialogWindow (this.application);
+            tag_dialog.show ();
 
-            filter_dialog_window.added.connect ((filter) => {
+            tag_dialog.added.connect ((tag) => {
 
-                filter.enable_changed.connect ((enabled) => {
+                tag.enable_changed.connect ((enabled) => {
                     lines_treeview.line_store_filter.refilter ();
                 });
 
-                filters_treeview.add_filter (filter);
+                tags_treeview.add_tag (tag);
                 count_tag_hits ();
             });
         }
@@ -194,16 +193,16 @@ namespace Tagger {
                 Gtk.TreeModel tags;
                 Gtk.TreeModel lines;
 
-                filters_treeview.clear_hit_counters ();
+                tags_treeview.clear_hit_counters ();
 
-                tags = filters_treeview.get_model ();
+                tags = tags_treeview.get_model ();
                 lines = lines_treeview.get_model ();
 
                 lines.foreach ((model, path, iter) => {
                     string? line;
                     model.@get (iter, LinesTreeView.Columns.LINE_TEXT, out line, -1);
                     tags.foreach ((model, path, iter) => {
-                        LineFilter? tag;
+                        Tag? tag;
                         model.@get (iter, 0, out tag, -1);
                         if (line.contains (tag.pattern)) tag.hits += 1;
                         return false;
@@ -211,7 +210,7 @@ namespace Tagger {
                     return false;
                 });
 
-                filters_treeview.queue_draw ();
+                tags_treeview.queue_draw ();
                 return false;
             });
         }
@@ -234,9 +233,9 @@ namespace Tagger {
             }
         }
 
-        private void toggle_filters_view () {
+        private void toggle_tags_view () {
             var view_height = paned.get_allocated_height ();
-            var action = this.lookup_action ("toggle_filters_view");
+            var action = this.lookup_action ("toggle_tags_view");
             
             if (paned.get_position () >= view_height - 5) {
                 paned.set_position ((int) (paned_last_position * view_height));

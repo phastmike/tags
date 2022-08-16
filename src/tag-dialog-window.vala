@@ -1,17 +1,17 @@
 /* -*- Mode: Vala; indent-tabs-mode: nil; c-basic-offset: 4; tab-width: 4 -*- */
 /* vim: set tabstop=4 softtabstop=4 shiftwidth=4 expandtab :                  */
 /*
- * filter-dialog-window.vala
+ * tag-dialog-window.vala
  *
- * Dialog Window to Add/Edit filter
+ * Dialog Window to Add/Edit a Tag 
  * 
  *
  * José Miguel Fonte
  */
 
 namespace Tagger {
-    [GtkTemplate (ui = "/org/ampr/ct1enq/tagger/filter-dialog-window.ui")]
-    public class FilterDialogWindow : Gtk.Window {
+    [GtkTemplate (ui = "/org/ampr/ct1enq/tagger/tag-dialog-window.ui")]
+    public class TagDialogWindow : Gtk.Window {
         [GtkChild]
         private unowned Gtk.Button button_ok;
         [GtkChild]
@@ -23,7 +23,7 @@ namespace Tagger {
         [GtkChild]
         private unowned Gtk.ColorButton button_bg_color;
         [GtkChild]
-        private unowned Gtk.Entry entry_tag_filter;
+        private unowned Gtk.Entry entry_tag_pattern;
         [GtkChild]
         private unowned Gtk.Entry entry_tag_name;
         [GtkChild]
@@ -31,28 +31,28 @@ namespace Tagger {
 
         private const string example_text = " Lorem ipsum dolor sit amet... ";
 
-        public signal void added (LineFilter filter);
-        public signal void edited (LineFilter filter);
-        public signal void deleted (LineFilter filter);
+        public signal void added (Tag tag);
+        public signal void edited (Tag tag);
+        public signal void deleted (Tag tag);
 
-        public FilterDialogWindow (Gtk.Application app, string? text = null) {
+        public TagDialogWindow (Gtk.Application app, string? text = null) {
             Object(application: app, transient_for: app.active_window, modal: true);
 
             button_ok.clicked.connect (() => {
-                var pattern = entry_tag_filter.get_text ();
+                var pattern = entry_tag_pattern.get_text ();
                 var description = entry_tag_name.get_text ();
                 var fg_color = button_fg_color.get_rgba ();
                 var bg_color = button_bg_color.get_rgba ();
 
                 var color_scheme = new ColorScheme ("default", fg_color, bg_color);
-                var new_filter = new LineFilter (pattern, description, color_scheme); 
+                var tag = new Tag (pattern, description, color_scheme); 
 
-                added (new_filter);
+                added (tag);
 
                 this.destroy ();
             });
             
-            entry_tag_filter.changed.connect (validate_entries);
+            entry_tag_pattern.changed.connect (validate_entries);
             entry_tag_name.changed.connect (validate_entries);
             set_label_example_colors ();
             
@@ -61,12 +61,12 @@ namespace Tagger {
             button_bg_color.color_set.connect (set_label_example_colors);
 
             if (text != null) {
-                entry_tag_filter.set_text (text);
+                entry_tag_pattern.set_text (text);
                 //button_ok.set_sensitive (true);
             }
         }
 
-        public FilterDialogWindow.for_editing (Gtk.Application app, LineFilter filter) {
+        public TagDialogWindow.for_editing (Gtk.Application app, Tag tag) {
             Object(application: app, transient_for: app.active_window, modal: true);
 
             button_ok.set_label ("_Edit");
@@ -74,27 +74,27 @@ namespace Tagger {
 
             button_delete.set_visible (true);
 
-            entry_tag_filter.set_text (filter.pattern); 
-            entry_tag_name.set_text (filter.description);
-            button_fg_color.set_rgba (filter.colors.fg);
-            button_bg_color.set_rgba (filter.colors.bg);
+            entry_tag_pattern.set_text (tag.pattern); 
+            entry_tag_name.set_text (tag.description);
+            button_fg_color.set_rgba (tag.colors.fg);
+            button_bg_color.set_rgba (tag.colors.bg);
 
             
             button_ok.clicked.connect (() => { 
-                filter.pattern = entry_tag_filter.get_text ();
-                filter.description = entry_tag_name.get_text ();
-                filter.colors.fg = button_fg_color.get_rgba ();
-                filter.colors.bg = button_bg_color.get_rgba ();
-                edited (filter);
+                tag.pattern = entry_tag_pattern.get_text ();
+                tag.description = entry_tag_name.get_text ();
+                tag.colors.fg = button_fg_color.get_rgba ();
+                tag.colors.bg = button_bg_color.get_rgba ();
+                edited (tag);
                 this.destroy ();
             });
             
             button_delete.clicked.connect (() => {
-                deleted(filter);
+                deleted(tag);
                 this.destroy ();
             });
             
-            entry_tag_filter.changed.connect (validate_entries);
+            entry_tag_pattern.changed.connect (validate_entries);
             entry_tag_name.changed.connect (validate_entries);
             set_label_example_colors ();
             
@@ -119,7 +119,7 @@ namespace Tagger {
         }
 
         private void validate_entries () {
-            if ((entry_tag_filter.get_text_length () != 0) /*&
+            if ((entry_tag_pattern.get_text_length () != 0) /*&
                 (entry_tag_name.get_text_length () != 0)*/) {
                 button_ok.set_sensitive (true);
             } else {

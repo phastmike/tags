@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.38.2 -->
 <interface>
   <requires lib="gtk" version="4.0"/>
-  <template class="TaggerFilterDialogWindow" parent="GtkWindow">
-    <property name="title" translatable="yes">Tag Filter</property>
+  <template class="TaggerTagDialogWindow" parent="GtkWindow">
+    <property name="title" translatable="yes">Tag</property>
     <property name="resizable">False</property>
     <property name="default_width">600</property>
     <property name="default_height">320</property>
@@ -29,8 +28,8 @@
                     <child>
                       <object class="GtkBox">
                         <child>
-                          <object class="GtkLabel" id="label_tag_filter">
-                            <property name="label" translatable="yes">Tag Pattern</property>
+                          <object class="GtkLabel" id="label_tag_pattern">
+                            <property name="label" translatable="yes">Pattern</property>
                             <property name="xalign">0</property>
                             <property name="halign">start</property>
                             <property name="valign">center</property>
@@ -38,7 +37,7 @@
                             </object>
                         </child>
                         <child>
-                          <object class="GtkEntry" id="entry_tag_filter">
+                          <object class="GtkEntry" id="entry_tag_pattern">
                             <property name="halign">end</property>
                             <property name="valign">center</property>
                             <property name="placeholder-text">Type here…</property>
@@ -57,7 +56,7 @@
                       <object class="GtkBox">
                         <child>
                           <object class="GtkLabel" id="label_tag_name">
-                            <property name="label" translatable="yes">Tag Name</property>
+                            <property name="label" translatable="yes">Description</property>
                             <property name="xalign">0</property>
                             <property name="halign">start</property>
                             <property name="valign">center</property>
@@ -138,7 +137,7 @@
                       <object class="GtkBox">
                         <child>
                           <object class="GtkLabel" id="label_sample">
-                            <property name="label" translatable="yes">Text example</property>
+                            <property name="label" translatable="yes">Example</property>
                             <property name="xalign">0</property>
                             <property name="halign">start</property>
                             <property name="valign">center</property>

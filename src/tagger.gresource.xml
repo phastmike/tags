@@ -3,8 +3,8 @@
   <gresource prefix="/org/ampr/ct1enq/tagger">
     <file>window.ui</file>
     <file>lines-tree-view.ui</file>
-    <file>filters-tree-view.ui</file>
-    <file>filter-dialog-window.ui</file>
+    <file>tags-tree-view.ui</file>
+    <file>tag-dialog-window.ui</file>
     <file>preferences-window.ui</file>
     <file>gtk/help-overlay.ui</file>
   </gresource>
