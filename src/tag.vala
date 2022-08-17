@@ -1,16 +1,16 @@
 /* -*- Mode: Vala; indent-tabs-mode: nil; c-basic-offset: 4; tab-width: 4 -*- */
 /* vim: set tabstop=4 softtabstop=4 shiftwidth=4 expandtab :                  */
 /*
- * line-filter.vala
+ * tag.vala
  *
- * Class containing a Line Filter
+ * Class containing a Tag 
  *
  * José Miguel Fonte
  */
 
 namespace Tagger {
 
-    public class LineFilter : Object {
+    public class Tag : Object {
         private bool _enabled;
 
         public bool enabled { 
@@ -30,7 +30,7 @@ namespace Tagger {
 
         public signal void enable_changed (bool enabled);
         
-        public LineFilter (string pattern, string description, ColorScheme colors) {
+        public Tag (string pattern, string description, ColorScheme colors) {
             this.pattern = pattern;
             this.description = description;
             this.colors = colors;
@@ -39,4 +39,5 @@ namespace Tagger {
             _enabled = true;
         }
     }
+
 }

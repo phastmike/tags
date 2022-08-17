@@ -149,7 +149,7 @@
     <section>
       <item>
         <attribute name="label" translatable="yes">Hide Tag list</attribute>
-        <attribute name="action">win.toggle_filters_view</attribute>
+        <attribute name="action">win.toggle_tags_view</attribute>
       </item>
       <item>
         <attribute name="label" translatable="yes">Hide Untagged</attribute>

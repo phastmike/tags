@@ -21,14 +21,23 @@ namespace Tagger {
         unowned Gtk.CellRendererText renderer_line_text;
         [GtkChild]
         unowned Gtk.CellRendererText renderer_line_number;
+        
+        public enum Columns {
+            LINE_NUMBER,
+            LINE_TEXT;
+        }
+            
 
+        public Gtk.ListStore tags;
         public bool hide_untagged {set; get; default=false;}
         private bool will_clear_all {private set; private get; default=false;}
 
-        public LinesTreeView (Gtk.Application app) {
+        public LinesTreeView (Gtk.Application app, Gtk.ListStore tags) {
             var preferences = Preferences.instance ();
 
             update_line_number_colors (preferences);
+
+            this.tags = tags;
 
             preferences.line_number_colors_changed.connect ((p) => {
                 update_line_number_colors (p);
@@ -48,31 +57,60 @@ namespace Tagger {
                 if (hide_untagged == false) {
                     return true;
                 } else {
-                    LineFilter? filter; 
-                    model.@get (iter, 2, out filter);
-                    if (filter != null && filter.enabled == true) {
-                        return true;
-                    } else {
-                        return false;
-                    }
+                    string line;
+                    bool found = false;
+
+                    model.@get (iter, 1, out line);
+                    tags.foreach ((tags_model, tag_path, tag_iter) => {
+                        Tag tag;
+
+                        tags_model.@get (tag_iter, 0, out tag);
+                        
+                        if (line.contains (tag.pattern) && tag.enabled == true) {
+                            found = true;
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    });
+
+
+                    // ternary operator not working as expected 
+                    if (found) return true;
+                    return false;
                 }
             });
 
             this.model = line_store_filter;
 
             col_line_text.set_cell_data_func (renderer_line_text, (column, cell, model, iter) => {
-                LineFilter filter;
+                Tag? tag = null;
+
                 var cell_text = (Gtk.CellRendererText) cell; 
 
-                model.@get (iter, 2, out filter);
-                if (filter != null && filter.enabled == true) {
-                    if (filter.colors.fg != null) {
-                        cell_text.foreground_rgba = filter.colors.fg;
+                bool found = false;
+
+                tags.foreach ((tags_model, tag_path, tag_iter) => {
+
+                    tags_model.@get (tag_iter, 0, out tag);
+                    
+
+                    if (renderer_line_text.text.contains (tag.pattern) && tag.enabled == true) {
+                        found = true;
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+
+                if (found) {
+                    if (tag.colors.fg != null) {
+                        cell_text.foreground_rgba = tag.colors.fg;
                     } else {
                         cell_text.foreground = null;
                     }
-                    if (filter.colors.bg != null) {
-                        cell_text.background_rgba = filter.colors.bg;
+                    if (tag.colors.bg != null) {
+                        cell_text.background_rgba = tag.colors.bg;
                     } else {
                         cell_text.background = null;
                     }
@@ -109,7 +147,7 @@ namespace Tagger {
                     lines.resize (lines.length - 1);
                     foreach (unowned var line in lines ) {
                         line_store.append (out iter);
-                        line_store.@set (iter, 0, ++nr, 1, line, 2, null, -1);
+                        line_store.@set (iter, Columns.LINE_NUMBER, ++nr, Columns.LINE_TEXT, line, -1);
                     }
                 } else {
                     warning ("Error opening file [%s]\n", file);
@@ -121,18 +159,18 @@ namespace Tagger {
             this.model = line_store_filter;
         }
 
-        private void clear_hit_counters (Gtk.ListStore filters) {
-            filters.foreach ((filters_model, filter_path, filter_iter) => {
-                LineFilter filter;
-                filters_model.@get (filter_iter, 0, out filter);
-                message ("Reseting hits [%s]\n", filter.description);
-                filter.hits = 0;
+        private void clear_hit_counters (Gtk.ListStore tags) {
+            tags.foreach ((tags_model, tag_path, tag_iter) => {
+                Tag tag;
+                tags_model.@get (tag_iter, 0, out tag);
+                message ("Reseting hits [%s]\n", tag.description);
+                tag.hits = 0;
                 return false;
             });
         }
 
-        public void tag_lines (Gtk.ListStore filters) {
-            clear_hit_counters (filters);
+        public void tag_lines (Gtk.ListStore tags) {
+            clear_hit_counters (tags);
 
             line_store.foreach ((lines_model, lines_path, lines_iter) => {
                 string line;
@@ -140,20 +178,14 @@ namespace Tagger {
                 lines_model.@get (lines_iter, 1, out line);
                 line_store.@set (lines_iter, 2, null);
 
-                filters.foreach ((filters_model, filter_path, filter_iter) => {
-                    LineFilter filter;
+                tags.foreach ((tags_model, tag_path, tag_iter) => {
+                    Tag tag;
 
-                    filters_model.@get (filter_iter, 0, out filter);
+                    tags_model.@get (tag_iter, 0, out tag);
 
-                    /*
-                    if (filter.enabled == false) {
-                        return false;
-                    }
-                    */
-
-                    if (line.contains (filter.pattern)) {
-                        line_store.@set (lines_iter, 2, filter);
-                        filter.hits += 1;
+                    if (line.contains (tag.pattern)) {
+                        line_store.@set (lines_iter, 2, tag);
+                        tag.hits += 1;
                         return true;
                     } else {
                         return false;
