@@ -97,6 +97,20 @@ namespace Tagger {
             tag_store.@set (iter, 0, tag);
         }
 
+        public void remove_tag (Tag tag) {
+            tag_store.foreach ((model, path, iter) => {
+                Tag t;
+                model.@get (iter, 0, out t);
+
+                if (t == tag) {
+                    tag_store.remove (ref iter);
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        }
+
         public void clear_hit_counters () {
             tag_store.foreach ((tags_model, tag_path, tag_iter) => {
                 Tag tag;

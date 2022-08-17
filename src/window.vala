@@ -71,21 +71,16 @@ namespace Tagger {
                 var tag_dialog = new TagDialogWindow.for_editing (app, tag);
 
                 tag_dialog.edited.connect ((tag) => {
+                    if (lines_treeview.hide_untagged) 
+                        lines_treeview.line_store_filter.refilter ();
                     count_tag_hits ();
                 });
-                /* Use Dialog and Response (reuse) or leave it as is */
-                tag_dialog.deleted.connect ((tag) => {
-                    tags_treeview.get_model ().foreach ((model, path, iter) => {
-                        Tag t;
-                        model.@get (iter, 0, out t);
 
-                        if (t == tag) {
-                            ((Gtk.ListStore) model).remove (ref iter);
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    });
+                tag_dialog.deleted.connect ((tag) => {
+                    tags_treeview.remove_tag (tag);
+                    if (lines_treeview.hide_untagged) { 
+                        lines_treeview.line_store_filter.refilter ();
+                    }
                 });
 
                 tag_dialog.show ();
@@ -175,7 +170,6 @@ namespace Tagger {
 
         private void add_tag () {
             var tag_dialog = new TagDialogWindow (this.application);
-            tag_dialog.show ();
 
             tag_dialog.added.connect ((tag) => {
 
@@ -184,8 +178,13 @@ namespace Tagger {
                 });
 
                 tags_treeview.add_tag (tag);
+                if (lines_treeview.hide_untagged) { 
+                    lines_treeview.line_store_filter.refilter ();
+                }
                 count_tag_hits ();
             });
+
+            tag_dialog.show ();
         }
 
         private void count_tag_hits () {
