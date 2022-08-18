@@ -26,6 +26,7 @@ namespace Tagger {
 
         private ActionEntry[] WINDOW_ACTIONS = {
             { "add_tag", add_tag },
+            { "save_tagged", save_tagged },
             { "hide_untagged_lines", hide_untagged_lines, null, "false", null},
             { "toggle_tags_view", toggle_tags_view, null, "false", null}
         };
@@ -35,11 +36,14 @@ namespace Tagger {
 
             this.add_action_entries(this.WINDOW_ACTIONS, this);
             app.set_accels_for_action("win.add_tag", {"<primary>n"});
+            app.set_accels_for_action("win.save_tagged", {"<primary>s"});
             app.set_accels_for_action("win.hide_untagged_lines", {"<primary>h"});
             app.set_accels_for_action("win.toggle_tags_view", {"<primary>f"});
             
+            save_tagged_disable ();
+            
             tags_treeview = new TagsTreeView (app);
-            lines_treeview = new LinesTreeView (app, tags_treeview.get_model () as Gtk.ListStore);
+            lines_treeview = new LinesTreeView (app, tags_treeview.get_model ());
             
             lines_treeview.row_activated.connect ((path, column) => {
                 string line_text;
@@ -145,8 +149,8 @@ namespace Tagger {
                 file_chooser_dialog.response.connect ( (response_id) => {
                     if (response_id == Gtk.ResponseType.ACCEPT) {
                         last_file = file_chooser_dialog.get_file ();
-                        //message ("last_file = %s\n", last_file.get_path ());
                         this.set_file(last_file);
+                        save_tagged_enable ();
                     }
                     file_chooser_dialog.destroy ();
                 });
@@ -185,6 +189,45 @@ namespace Tagger {
             });
 
             tag_dialog.show ();
+        }
+
+        private void save_tagged_enable () {
+            var action = new SimpleAction ("save_tagged", null); 
+            action.activate.connect (save_tagged);
+            //application.set_accels_for_action("win.save_tagged", {"<primary>s"});
+            add_action (action);
+        }
+
+        private void save_tagged_disable () {
+            remove_action ("save_tagged");
+        }
+
+        private void save_tagged () {
+            var file_chooser_dialog = new Gtk.FileChooserDialog (
+                "Save File", this, Gtk.FileChooserAction.SAVE, 
+                "Save", Gtk.ResponseType.ACCEPT, 
+                "Cancel", Gtk.ResponseType.CANCEL, 
+                null);
+
+            file_chooser_dialog.set_modal (true);
+
+            if (last_file != null) {
+                try {
+                    file_chooser_dialog.set_current_folder (last_file.get_parent ());
+                } catch (Error e) {
+                    warning ("FileChooser::set_current_folder::error message: %s", e.message);
+                }
+            }
+
+            file_chooser_dialog.response.connect ( (response_id) => {
+                if (response_id == Gtk.ResponseType.ACCEPT) {
+                    var file = file_chooser_dialog.get_file ();
+                    lines_treeview.to_file(file);
+                }
+                file_chooser_dialog.destroy ();
+            });
+
+            file_chooser_dialog.show ();
         }
 
         private void count_tag_hits () {
