@@ -119,5 +119,48 @@ namespace Tagger {
                 return false;
             });
         }
+
+        public void to_file () {
+            Json.Node root = new Json.Node (Json.NodeType.ARRAY);
+            Json.Array array = new Json.Array ();
+
+            tag_store.foreach ((model, path, iter) => {
+                Tag tag;
+                model.get (iter, 0, out tag);
+                //Json.Node root = Json.gobject_serialize (tag);
+                Json.Node node = Json.gobject_serialize (tag);
+                array.add_element (node); 
+                return false;
+            });
+
+            root.take_array (array);
+            Json.Generator generator = new Json.Generator ();
+            generator.pretty = true;
+            generator.set_root (root);
+            string data = generator.to_data (null);
+
+            Json.Parser parser = new Json.Parser ();
+            parser.load_from_data (data);
+            print (data);
+            print ("\n");
+
+            Json.Node node = parser.get_root ();
+
+            if (node.get_node_type () == Json.NodeType.ARRAY) {
+                array = node.get_array ();
+                array.foreach_element ((array, index_, element_node) => {
+                    //var obj = element_node.get_object ();
+                    Tag t = Json.gobject_deserialize (typeof (Tag), element_node) as Tag;
+                    /*
+                    foreach (unowned string name in obj.get_members ()) {
+                        message ("foreach member name: %s", name);
+                    }
+                    */
+                    message ("New Tag object: [%s | %s | %s | %u || Colors (%s :: %s :: %s) ...]", t.enabled.to_string (), t.pattern, t.description, t.hits, t.colors.name, t.colors.fg.to_string (), t.colors.bg.to_string ());
+                    add_tag (t);
+                });
+            }
+
+        }
     }
 }

@@ -26,6 +26,7 @@ namespace Tagger {
 
         private ActionEntry[] WINDOW_ACTIONS = {
             { "add_tag", add_tag },
+            { "save_tags", save_tags },
             { "save_tagged", save_tagged },
             { "hide_untagged_lines", hide_untagged_lines, null, "false", null},
             { "toggle_tags_view", toggle_tags_view, null, "false", null}
@@ -189,6 +190,10 @@ namespace Tagger {
             });
 
             tag_dialog.show ();
+        }
+
+        private void save_tags () {
+            tags_treeview.to_file ();
         }
 
         private void save_tagged_enable () {

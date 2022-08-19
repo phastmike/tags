@@ -134,17 +134,19 @@ namespace Tagger {
             try {
                 if (FileUtils.get_data(file, out con)) {
                     for (int i = 0; i < con.length - 2; i++) {
-                        if (con[i] == 0x00 || con[i] == '\r') {
+                        if (con[i] == 0x00 /*|| con[i] == '\r'*/) {
                             con[i] = 0x30;
                         }
                     }
                     contents = (string) con;
                     var nr = 0;
-                    var lines = contents.split ("\n");
+                    var lines = contents.split_set("\r\n");
                     lines.resize (lines.length - 1);
                     foreach (unowned var line in lines ) {
-                        line_store.append (out iter);
-                        line_store.@set (iter, Columns.LINE_NUMBER, ++nr, Columns.LINE_TEXT, line, -1);
+                        if (line.length > 1) {
+                            line_store.append (out iter);
+                            line_store.@set (iter, Columns.LINE_NUMBER, ++nr, Columns.LINE_TEXT, line, -1);
+                        }
                     }
                 } else {
                     warning ("Error opening file [%s]\n", file);
