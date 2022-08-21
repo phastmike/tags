@@ -26,6 +26,8 @@ namespace Tagger {
 
         private ActionEntry[] WINDOW_ACTIONS = {
             { "add_tag", add_tag },
+            { "remove_all_tags", remove_all_tags },
+            { "load_tags", load_tags },
             { "save_tags", save_tags },
             { "save_tagged", save_tagged },
             { "hide_untagged_lines", hide_untagged_lines, null, "false", null},
@@ -151,7 +153,6 @@ namespace Tagger {
                     if (response_id == Gtk.ResponseType.ACCEPT) {
                         last_file = file_chooser_dialog.get_file ();
                         this.set_file(last_file);
-                        save_tagged_enable ();
                     }
                     file_chooser_dialog.destroy ();
                 });
@@ -171,6 +172,7 @@ namespace Tagger {
             subtitle.set_label (file.get_basename ());
             subtitle.set_tooltip_text (file.get_path ());
             lines_treeview.set_file (file.get_path ());
+            save_tagged_enable ();
         }
 
         private void add_tag () {
@@ -192,8 +194,65 @@ namespace Tagger {
             tag_dialog.show ();
         }
 
+        private void remove_all_tags () {
+            tags_treeview.clear_tags ();
+        }
+
+        private void load_tags () {
+            var file_chooser_dialog = new Gtk.FileChooserDialog (
+                "Open File", this, Gtk.FileChooserAction.OPEN, 
+                "Open", Gtk.ResponseType.ACCEPT, 
+                "Cancel", Gtk.ResponseType.CANCEL, 
+                null);
+
+            file_chooser_dialog.set_modal (true);
+
+            if (last_file != null) {
+                try {
+                    file_chooser_dialog.set_current_folder (last_file.get_parent ());
+                } catch (Error e) {
+                    warning ("FileChooser::set_current_folder::error message: %s", e.message);
+                }
+            }
+
+            file_chooser_dialog.response.connect ( (response_id) => {
+                if (response_id == Gtk.ResponseType.ACCEPT) {
+                    var file = file_chooser_dialog.get_file ();
+                    tags_treeview.load_tags (file);
+                }
+                file_chooser_dialog.destroy ();
+            });
+
+            file_chooser_dialog.show ();
+        }
+
         private void save_tags () {
-            tags_treeview.to_file ();
+            var file_chooser_dialog = new Gtk.FileChooserDialog (
+                "Save File", this, Gtk.FileChooserAction.SAVE, 
+                "Save", Gtk.ResponseType.ACCEPT, 
+                "Cancel", Gtk.ResponseType.CANCEL, 
+                null);
+
+            file_chooser_dialog.set_modal (true);
+
+            if (last_file != null) {
+                try {
+                    file_chooser_dialog.set_current_folder (last_file.get_parent ());
+                } catch (Error e) {
+                    warning ("FileChooser::set_current_folder::error message: %s", e.message);
+                }
+            }
+
+            file_chooser_dialog.response.connect ( (response_id) => {
+                if (response_id == Gtk.ResponseType.ACCEPT) {
+                    var file = file_chooser_dialog.get_file ();
+                    lines_treeview.to_file(file);
+                    tags_treeview.to_file (file);
+                }
+                file_chooser_dialog.destroy ();
+            });
+
+            file_chooser_dialog.show ();
         }
 
         private void save_tagged_enable () {

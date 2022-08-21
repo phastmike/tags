@@ -42,7 +42,7 @@ namespace Tagger {
 
         // Json.Serializable methods
 
-        public virtual Json.Node serialize_property (string property_name, Value @value, ParamSpec pspec) {
+        public override Json.Node serialize_property (string property_name, Value @value, ParamSpec pspec) {
             if (@value.type ().is_a (typeof (Gdk.RGBA))) {
                 var obj = (Gdk.RGBA?) @value.get_boxed();
                 if (obj != null) {
@@ -55,8 +55,7 @@ namespace Tagger {
             return default_serialize_property (property_name, @value, pspec);
         }
 
-        public virtual bool deserialize_property (string property_name, out Value @value, ParamSpec pspec, Json.Node property_node) {
-            //if (property_node.get_node_type () == Json.NodeType.VALUE) {
+        public override bool deserialize_property (string property_name, out Value @value, ParamSpec pspec, Json.Node property_node) {
             if (property_name == "fg" || property_name == "bg") {
                 Gdk.RGBA? rgba = Gdk.RGBA ();
                 rgba.parse (property_node.get_string ());
@@ -64,11 +63,6 @@ namespace Tagger {
                 @value.set_boxed ((Gdk.RGBA *) rgba);
                 return true;
             }
-            /*
-            if (@value.type ().is_a (typeof (Gdk.RGBA))) {
-               message ("Process GdkRGBA!"); 
-            }
-            */
 
             return default_deserialize_property (property_name, out @value, pspec, property_node);
         }

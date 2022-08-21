@@ -148,6 +148,20 @@
   <menu id="file_menu">
     <section>
       <item>
+        <attribute name="label" translatable="yes">New Tag</attribute>
+        <attribute name="action">win.add_tag</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Remove Tags</attribute>
+        <attribute name="action">win.remove_all_tags</attribute>
+      </item>
+    </section>  
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">Load Tags</attribute>
+        <attribute name="action">win.load_tags</attribute>
+      </item>
+      <item>
         <attribute name="label" translatable="yes">Save Tags</attribute>
         <attribute name="action">win.save_tags</attribute>
       </item>
