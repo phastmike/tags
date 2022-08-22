@@ -30,7 +30,10 @@ namespace Tagger {
         [GtkChild]
         private unowned Gtk.CellRendererText renderer_hits;
 
+        private Gtk.Application application;
+
         public TagsTreeView (Gtk.Application app) {
+            application = app;
             setup_cell_renderers ();
             
             renderer_checkbox.toggled.connect ((path) => {
@@ -118,6 +121,33 @@ namespace Tagger {
                 tag.hits = 0;
                 return false;
             });
+        }
+        
+        public void clear_tags () {
+            tag_store.clear ();
+        }
+
+        public void to_file (File file) {
+            Json.Node root = new Json.Node (Json.NodeType.ARRAY);
+            Json.Array array = new Json.Array ();
+
+            tag_store.foreach ((model, path, iter) => {
+                Tag tag;
+                model.get (iter, 0, out tag);
+                Json.Node node = Json.gobject_serialize (tag);
+                array.add_element (node); 
+                return false;
+            });
+
+            root.take_array (array);
+            Json.Generator generator = new Json.Generator ();
+            generator.pretty = true;
+            generator.set_root (root);
+            try {
+                generator.to_file (file.get_path ());
+            } catch (Error e) {
+                error ("Json.Generator::to_file error: %s", e.message);
+            }
         }
     }
 }

@@ -27,12 +27,11 @@ namespace Tagger {
             LINE_TEXT;
         }
             
-
-        public Gtk.ListStore tags;
+        private Gtk.TreeModel tags;
         public bool hide_untagged {set; get; default=false;}
         private bool will_clear_all {private set; private get; default=false;}
 
-        public LinesTreeView (Gtk.Application app, Gtk.ListStore tags) {
+        public LinesTreeView (Gtk.Application app, Gtk.TreeModel tags) {
             var preferences = Preferences.instance ();
 
             update_line_number_colors (preferences);
@@ -45,7 +44,7 @@ namespace Tagger {
 
             this.set_search_equal_func ((model, column, key, iter) => {
                 string line;
-                model.@get (iter, 1, out line);
+                model.@get (iter, Columns.LINE_TEXT, out line);
                 return !line.contains(key);
             });
 
@@ -74,7 +73,6 @@ namespace Tagger {
                         }
                     });
 
-
                     // ternary operator not working as expected 
                     if (found) return true;
                     return false;
@@ -94,7 +92,6 @@ namespace Tagger {
 
                     tags_model.@get (tag_iter, 0, out tag);
                     
-
                     if (renderer_line_text.text.contains (tag.pattern) && tag.enabled == true) {
                         found = true;
                         return true;
@@ -137,17 +134,19 @@ namespace Tagger {
             try {
                 if (FileUtils.get_data(file, out con)) {
                     for (int i = 0; i < con.length - 2; i++) {
-                        if (con[i] == 0x00 || con[i] == '\r') {
+                        if (con[i] == 0x00 /*|| con[i] == '\r'*/) {
                             con[i] = 0x30;
                         }
                     }
                     contents = (string) con;
                     var nr = 0;
-                    var lines = contents.split ("\n");
+                    var lines = contents.split_set("\r\n");
                     lines.resize (lines.length - 1);
                     foreach (unowned var line in lines ) {
-                        line_store.append (out iter);
-                        line_store.@set (iter, Columns.LINE_NUMBER, ++nr, Columns.LINE_TEXT, line, -1);
+                        if (line.length > 1) {
+                            line_store.append (out iter);
+                            line_store.@set (iter, Columns.LINE_NUMBER, ++nr, Columns.LINE_TEXT, line, -1);
+                        }
                     }
                 } else {
                     warning ("Error opening file [%s]\n", file);
@@ -159,47 +158,37 @@ namespace Tagger {
             this.model = line_store_filter;
         }
 
-        private void clear_hit_counters (Gtk.ListStore tags) {
-            tags.foreach ((tags_model, tag_path, tag_iter) => {
-                Tag tag;
-                tags_model.@get (tag_iter, 0, out tag);
-                message ("Reseting hits [%s]\n", tag.description);
-                tag.hits = 0;
-                return false;
-            });
-        }
-
-        public void tag_lines (Gtk.ListStore tags) {
-            clear_hit_counters (tags);
-
-            line_store.foreach ((lines_model, lines_path, lines_iter) => {
-                string line;
-
-                lines_model.@get (lines_iter, 1, out line);
-                line_store.@set (lines_iter, 2, null);
-
-                tags.foreach ((tags_model, tag_path, tag_iter) => {
-                    Tag tag;
-
-                    tags_model.@get (tag_iter, 0, out tag);
-
-                    if (line.contains (tag.pattern)) {
-                        line_store.@set (lines_iter, 2, tag);
-                        tag.hits += 1;
-                        return true;
-                    } else {
-                        return false;
-                    }
+        public void to_file (File file) {
+            FileOutputStream fsout;
+            try {
+                fsout = file.replace (null, false, FileCreateFlags.REPLACE_DESTINATION, null); 
+                line_store_filter.foreach ((model, path, iter) => {
+                    Tag? tag = null;
+                    string line;
+                    model.@get (iter, Columns.LINE_TEXT, out line);
+                    tags.foreach ((tags_model, tag_path, tag_iter) => {
+                        tags_model.@get (tag_iter, 0, out tag);
+                        
+                        if (line.contains (tag.pattern) && tag.enabled == true) {
+                            try {
+                                fsout.write(("%s\n".printf (line)).data);
+                            } catch (IOError ioerr) {
+                                error ("IOError: %s", ioerr.message);
+                            }
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    });
+                    return false;
                 });
-
-                //queue_draw ();
-                return false;
-            });
-
-            queue_draw ();
+                fsout.close ();
+            } catch (Error e) {
+                error ("Error: %s", e.message);
+            }
         }
 
-        public void update_line_number_colors (Preferences p) {
+        private void update_line_number_colors (Preferences p) {
             var rgb = Gdk.RGBA ();
 
             rgb.parse (p.ln_fg_color);

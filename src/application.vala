@@ -35,12 +35,9 @@ namespace Tagger {
 
         public override void open (File[] files, string hint) {
             if (files[0].query_exists () == true) {
-                //var win = this.active_window;
-                //if (win == null) {
                 var win = new Tagger.Window (this);
                 win.show ();
                 win.set_file (files[0]);
-                //}
             } 
         }
 
@@ -66,7 +63,7 @@ namespace Tagger {
                                   "logo-icon-name", "org.ampr.ct1enq.tagger",
                                   "website", "https://github.com/phastmike/tagger",
                                   "website-label", "https://github.com/phastmike/tagger",
-                                  "version", "0.9.4");
+                                  "version", "0.9.5");
         }
 
         private void on_preferences_action () {

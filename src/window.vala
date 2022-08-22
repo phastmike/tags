@@ -26,6 +26,10 @@ namespace Tagger {
 
         private ActionEntry[] WINDOW_ACTIONS = {
             { "add_tag", add_tag },
+            { "remove_all_tags", remove_all_tags },
+            { "load_tags", load_tags },
+            { "save_tags", save_tags },
+            { "save_tagged", save_tagged },
             { "hide_untagged_lines", hide_untagged_lines, null, "false", null},
             { "toggle_tags_view", toggle_tags_view, null, "false", null}
         };
@@ -35,11 +39,14 @@ namespace Tagger {
 
             this.add_action_entries(this.WINDOW_ACTIONS, this);
             app.set_accels_for_action("win.add_tag", {"<primary>n"});
+            app.set_accels_for_action("win.save_tagged", {"<primary>s"});
             app.set_accels_for_action("win.hide_untagged_lines", {"<primary>h"});
             app.set_accels_for_action("win.toggle_tags_view", {"<primary>f"});
             
+            save_tagged_disable ();
+            
             tags_treeview = new TagsTreeView (app);
-            lines_treeview = new LinesTreeView (app, tags_treeview.get_model () as Gtk.ListStore);
+            lines_treeview = new LinesTreeView (app, tags_treeview.get_model ());
             
             lines_treeview.row_activated.connect ((path, column) => {
                 string line_text;
@@ -145,7 +152,6 @@ namespace Tagger {
                 file_chooser_dialog.response.connect ( (response_id) => {
                     if (response_id == Gtk.ResponseType.ACCEPT) {
                         last_file = file_chooser_dialog.get_file ();
-                        //message ("last_file = %s\n", last_file.get_path ());
                         this.set_file(last_file);
                     }
                     file_chooser_dialog.destroy ();
@@ -166,6 +172,7 @@ namespace Tagger {
             subtitle.set_label (file.get_basename ());
             subtitle.set_tooltip_text (file.get_path ());
             lines_treeview.set_file (file.get_path ());
+            save_tagged_enable ();
         }
 
         private void add_tag () {
@@ -178,6 +185,7 @@ namespace Tagger {
                 });
 
                 tags_treeview.add_tag (tag);
+
                 if (lines_treeview.hide_untagged) { 
                     lines_treeview.line_store_filter.refilter ();
                 }
@@ -185,6 +193,135 @@ namespace Tagger {
             });
 
             tag_dialog.show ();
+        }
+
+        private void remove_all_tags () {
+            tags_treeview.clear_tags ();
+            lines_treeview.line_store_filter.refilter ();
+        }
+
+        private void load_tags () {
+            var file_chooser_dialog = new Gtk.FileChooserDialog (
+                "Open File", this, Gtk.FileChooserAction.OPEN, 
+                "Open", Gtk.ResponseType.ACCEPT, 
+                "Cancel", Gtk.ResponseType.CANCEL, 
+                null);
+
+            file_chooser_dialog.set_modal (true);
+
+            if (last_file != null) {
+                try {
+                    file_chooser_dialog.set_current_folder (last_file.get_parent ());
+                } catch (Error e) {
+                    warning ("FileChooser::set_current_folder::error message: %s", e.message);
+                }
+            }
+
+            file_chooser_dialog.response.connect ( (response_id) => {
+                if (response_id == Gtk.ResponseType.ACCEPT) {
+                    var file = file_chooser_dialog.get_file ();
+                    try {
+                        Json.Parser parser = new Json.Parser ();
+                        parser.load_from_file (file.get_path ());
+
+                        tags_treeview.clear_tags ();
+
+                        Json.Node node = parser.get_root ();
+                        Json.Array array = new Json.Array ();
+                        if (node.get_node_type () == Json.NodeType.ARRAY) {
+                            array = node.get_array ();
+                            array.foreach_element ((array, index_, element_node) => {
+                                Tag tag = Json.gobject_deserialize (typeof (Tag), element_node) as Tag;
+                                tags_treeview.add_tag (tag);
+                            });
+                        }
+                    } catch (Error e) {
+                        print ("Unable to parse: %s\n", e.message);
+                        var dialog = new Gtk.MessageDialog.with_markup (application.active_window,
+                                                    Gtk.DialogFlags.DESTROY_WITH_PARENT |
+                                                    Gtk.DialogFlags.MODAL,
+                                                    Gtk.MessageType.WARNING,
+                                                    Gtk.ButtonsType.CLOSE,
+                                                    "Could not parse tags file");
+                        //dialog.format_secondary_text (file.get_path ());
+                        dialog.format_secondary_text (e.message);
+                        dialog.response.connect ((response_id) => {
+                            dialog.destroy ();
+                        });
+                        dialog.show ();
+                    }
+                }
+                file_chooser_dialog.destroy ();
+            });
+
+            file_chooser_dialog.show ();
+        }
+
+        private void save_tags () {
+            var file_chooser_dialog = new Gtk.FileChooserDialog (
+                "Save File", this, Gtk.FileChooserAction.SAVE, 
+                "Save", Gtk.ResponseType.ACCEPT, 
+                "Cancel", Gtk.ResponseType.CANCEL, 
+                null);
+
+            file_chooser_dialog.set_modal (true);
+
+            if (last_file != null) {
+                try {
+                    file_chooser_dialog.set_current_folder (last_file.get_parent ());
+                } catch (Error e) {
+                    warning ("FileChooser::set_current_folder::error message: %s", e.message);
+                }
+            }
+
+            file_chooser_dialog.response.connect ( (response_id) => {
+                if (response_id == Gtk.ResponseType.ACCEPT) {
+                    var file = file_chooser_dialog.get_file ();
+                    //lines_treeview.to_file(file);
+                    tags_treeview.to_file (file);
+                }
+                file_chooser_dialog.destroy ();
+            });
+
+            file_chooser_dialog.show ();
+        }
+
+        private void save_tagged_enable () {
+            var action = (SimpleAction) lookup_action ("save_tagged");
+            action.set_enabled (true);
+        }
+
+        private void save_tagged_disable () {
+            var action = (SimpleAction) lookup_action ("save_tagged");
+            action.set_enabled (false);
+        }
+
+        private void save_tagged () {
+            var file_chooser_dialog = new Gtk.FileChooserDialog (
+                "Save File", this, Gtk.FileChooserAction.SAVE, 
+                "Save", Gtk.ResponseType.ACCEPT, 
+                "Cancel", Gtk.ResponseType.CANCEL, 
+                null);
+
+            file_chooser_dialog.set_modal (true);
+
+            if (last_file != null) {
+                try {
+                    file_chooser_dialog.set_current_folder (last_file.get_parent ());
+                } catch (Error e) {
+                    warning ("FileChooser::set_current_folder::error message: %s", e.message);
+                }
+            }
+
+            file_chooser_dialog.response.connect ( (response_id) => {
+                if (response_id == Gtk.ResponseType.ACCEPT) {
+                    var file = file_chooser_dialog.get_file ();
+                    lines_treeview.to_file(file);
+                }
+                file_chooser_dialog.destroy ();
+            });
+
+            file_chooser_dialog.show ();
         }
 
         private void count_tag_hits () {

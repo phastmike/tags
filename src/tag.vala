@@ -23,10 +23,10 @@ namespace Tagger {
             }
         }
 
-        public string pattern;
-        public string description;
-        public uint hits;
-        public ColorScheme colors;
+        public uint hits; 
+        public string pattern { get; set; } 
+        public string description { get; set; }
+        public ColorScheme colors { get; set; }
 
         public signal void enable_changed (bool enabled);
         

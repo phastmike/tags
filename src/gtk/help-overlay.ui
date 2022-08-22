@@ -17,8 +17,14 @@
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes" context="shortcut window">Save Tagged lines</property>
+                <property name="action-name">win.save_tagged</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
                 <property name="title" translatable="yes" context="shortcut window">Toggle tag list visibility</property>
-                <property name="action-name">win.toggle_filters_view</property>
+                <property name="action-name">win.toggle_tags_view</property>
               </object>
             </child>
             <child>

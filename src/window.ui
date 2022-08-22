@@ -148,6 +148,30 @@
   <menu id="file_menu">
     <section>
       <item>
+        <attribute name="label" translatable="yes">New Tag</attribute>
+        <attribute name="action">win.add_tag</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Remove Tags</attribute>
+        <attribute name="action">win.remove_all_tags</attribute>
+      </item>
+    </section>  
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">Load Tags</attribute>
+        <attribute name="action">win.load_tags</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Save Tags</attribute>
+        <attribute name="action">win.save_tags</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Save Tagged</attribute>
+        <attribute name="action">win.save_tagged</attribute>
+      </item>
+    </section>  
+    <section>
+      <item>
         <attribute name="label" translatable="yes">Hide Tag list</attribute>
         <attribute name="action">win.toggle_tags_view</attribute>
       </item>
@@ -161,17 +185,17 @@
   <menu id="primary_menu">
     <section>
       <item>
-        <attribute name="label" translatable="yes">_Preferences</attribute>
+        <attribute name="label" translatable="yes">Preferences</attribute>
         <attribute name="action">app.preferences</attribute>
       </item>
-  </section>  
-   <section>  
+    </section>  
+    <section>  
       <item>
-        <attribute name="label" translatable="yes">_Keyboard Shortcuts</attribute>
+        <attribute name="label" translatable="yes">Keyboard Shortcuts</attribute>
         <attribute name="action">win.show-help-overlay</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">_About Tagger</attribute>
+        <attribute name="label" translatable="yes">About Tagger</attribute>
         <attribute name="action">app.about</attribute>
       </item>
     </section>
