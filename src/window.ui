@@ -160,6 +160,7 @@
       <item>
         <attribute name="label" translatable="yes">Load Tags</attribute>
         <attribute name="action">win.load_tags</attribute>
+        <!-- <attribute name="icon">document-open-symbolic.symbolic</attribute> -->
       </item>
       <item>
         <attribute name="label" translatable="yes">Save Tags</attribute>
@@ -168,9 +169,11 @@
       <item>
         <attribute name="label" translatable="yes">Save Tagged</attribute>
         <attribute name="action">win.save_tagged</attribute>
+        <!-- <attribute name="hidden-when">action-disabled</attribute> -->
       </item>
     </section>  
     <section>
+      <!-- <attribute name="label" translatable="yes" context="menu item" comments="Translators: ...">UI</attribute> -->
       <item>
         <attribute name="label" translatable="yes">Hide Tag list</attribute>
         <attribute name="action">win.toggle_tags_view</attribute>
