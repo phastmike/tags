@@ -30,7 +30,10 @@ namespace Tagger {
         [GtkChild]
         private unowned Gtk.CellRendererText renderer_hits;
 
+        private Gtk.Application application;
+
         public TagsTreeView (Gtk.Application app) {
+            application = app;
             setup_cell_renderers ();
             
             renderer_checkbox.toggled.connect ((path) => {
@@ -141,7 +144,19 @@ namespace Tagger {
                     });
                 }
             } catch (Error e) {
-                print ("Unable to parse `%s': %s\n", file.get_path (), e.message);
+                print ("Unable to parse: %s\n", e.message);
+                var dialog = new Gtk.MessageDialog.with_markup (application.active_window,
+                                            Gtk.DialogFlags.DESTROY_WITH_PARENT |
+                                            Gtk.DialogFlags.MODAL,
+                                            Gtk.MessageType.WARNING,
+                                            Gtk.ButtonsType.CLOSE,
+                                            "Could not parse tags file");
+                //dialog.format_secondary_text (file.get_path ());
+                dialog.format_secondary_text (e.message);
+                dialog.response.connect ((response_id) => {
+                    dialog.destroy ();
+                });
+                dialog.show ();
             }
         }
 
@@ -161,25 +176,11 @@ namespace Tagger {
             Json.Generator generator = new Json.Generator ();
             generator.pretty = true;
             generator.set_root (root);
-            string data = generator.to_data (null);
-            var retval = generator.to_file (file.get_path ());
-
-            Json.Parser parser = new Json.Parser ();
-            parser.load_from_data (data);
-            print (data);
-            print ("\n");
-
-            Json.Node node = parser.get_root ();
-
-            if (node.get_node_type () == Json.NodeType.ARRAY) {
-                array = node.get_array ();
-                array.foreach_element ((array, index_, element_node) => {
-                    Tag t = Json.gobject_deserialize (typeof (Tag), element_node) as Tag;
-                    message ("New Tag object: [%s | %s | %s | %u || Colors (%s :: %s :: %s) ...]", t.enabled.to_string (), t.pattern, t.description, t.hits, t.colors.name, t.colors.fg.to_string (), t.colors.bg.to_string ());
-                    add_tag (t);
-                });
+            try {
+                generator.to_file (file.get_path ());
+            } catch (Error e) {
+                error ("Json.Generator::to_file error: %s", e.message);
             }
-
         }
     }
 }

@@ -196,6 +196,7 @@ namespace Tagger {
 
         private void remove_all_tags () {
             tags_treeview.clear_tags ();
+            lines_treeview.line_store_filter.refilter ();
         }
 
         private void load_tags () {
@@ -246,7 +247,7 @@ namespace Tagger {
             file_chooser_dialog.response.connect ( (response_id) => {
                 if (response_id == Gtk.ResponseType.ACCEPT) {
                     var file = file_chooser_dialog.get_file ();
-                    lines_treeview.to_file(file);
+                    //lines_treeview.to_file(file);
                     tags_treeview.to_file (file);
                 }
                 file_chooser_dialog.destroy ();
@@ -256,14 +257,13 @@ namespace Tagger {
         }
 
         private void save_tagged_enable () {
-            var action = new SimpleAction ("save_tagged", null); 
-            action.activate.connect (save_tagged);
-            //application.set_accels_for_action("win.save_tagged", {"<primary>s"});
-            add_action (action);
+            var action = (SimpleAction) lookup_action ("save_tagged");
+            action.set_enabled (true);
         }
 
         private void save_tagged_disable () {
-            remove_action ("save_tagged");
+            var action = (SimpleAction) lookup_action ("save_tagged");
+            action.set_enabled (false);
         }
 
         private void save_tagged () {
