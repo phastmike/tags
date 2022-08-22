@@ -127,39 +127,6 @@ namespace Tagger {
             tag_store.clear ();
         }
 
-        public void load_tags (File file) {
-            try {
-                Json.Parser parser = new Json.Parser ();
-                parser.load_from_file (file.get_path ());
-
-                clear_tags ();
-
-                Json.Node node = parser.get_root ();
-                Json.Array array = new Json.Array ();
-                if (node.get_node_type () == Json.NodeType.ARRAY) {
-                    array = node.get_array ();
-                    array.foreach_element ((array, index_, element_node) => {
-                        Tag tag = Json.gobject_deserialize (typeof (Tag), element_node) as Tag;
-                        add_tag (tag);
-                    });
-                }
-            } catch (Error e) {
-                print ("Unable to parse: %s\n", e.message);
-                var dialog = new Gtk.MessageDialog.with_markup (application.active_window,
-                                            Gtk.DialogFlags.DESTROY_WITH_PARENT |
-                                            Gtk.DialogFlags.MODAL,
-                                            Gtk.MessageType.WARNING,
-                                            Gtk.ButtonsType.CLOSE,
-                                            "Could not parse tags file");
-                //dialog.format_secondary_text (file.get_path ());
-                dialog.format_secondary_text (e.message);
-                dialog.response.connect ((response_id) => {
-                    dialog.destroy ();
-                });
-                dialog.show ();
-            }
-        }
-
         public void to_file (File file) {
             Json.Node root = new Json.Node (Json.NodeType.ARRAY);
             Json.Array array = new Json.Array ();
