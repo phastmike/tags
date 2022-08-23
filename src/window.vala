@@ -31,7 +31,8 @@ namespace Tagger {
             { "save_tags", save_tags },
             { "save_tagged", save_tagged },
             { "hide_untagged_lines", hide_untagged_lines, null, "false", null},
-            { "toggle_tags_view", toggle_tags_view, null, "false", null}
+            { "toggle_tags_view", toggle_tags_view, null, "false", null},
+            { "copy", copy}
         };
 
         public Window (Gtk.Application app) {
@@ -42,6 +43,7 @@ namespace Tagger {
             app.set_accels_for_action("win.save_tagged", {"<primary>s"});
             app.set_accels_for_action("win.hide_untagged_lines", {"<primary>h"});
             app.set_accels_for_action("win.toggle_tags_view", {"<primary>f"});
+            app.set_accels_for_action("win.copy", {"<primary>c"});
             
             save_tagged_disable ();
             
@@ -371,10 +373,12 @@ namespace Tagger {
             lines_treeview.line_store_filter.refilter ();
 
             var selection = lines_treeview.get_selection ();
+            selection.set_mode (Gtk.SelectionMode.SINGLE);
             if (selection.get_selected (out model, out iter) == true) {
                 selection = lines_treeview.get_selection ();
                 lines_treeview.scroll_to_cell (model.get_path (iter) , null, true, (float) 0.5, (float) 0.5);
             }
+            selection.set_mode (Gtk.SelectionMode.MULTIPLE);
         }
 
         private void toggle_tags_view () {
@@ -388,6 +392,22 @@ namespace Tagger {
                 paned_last_position = ((float) paned.get_position () / (float) view_height);
                 paned.set_position (view_height - 5);
                 action.change_state (new Variant.boolean (true));
+            }
+        }
+        
+        private void copy () {
+            string text = "";
+            var selection = lines_treeview.get_selection ();
+            selection.selected_foreach ((model, path, iter) => {
+                string buffer;
+                model.@get (iter, LinesTreeView.Columns.LINE_TEXT, out buffer);
+                text += buffer + "\n";
+            });
+            
+            if (text.length > 0) {
+                var display = Gdk.Display.get_default ();
+                var clipboard = display.get_clipboard ();
+                clipboard.set_text (text);
             }
         }
     }

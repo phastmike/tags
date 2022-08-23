@@ -55,9 +55,6 @@
             </child>
           </object>
         </property>
-
-
-
         <child type="end">
           <object class="GtkMenuButton">
             <property name="icon-name">open-menu-symbolic</property>
@@ -85,12 +82,13 @@
               <property name="icon_name">bookmark-new-symbolic</property>
             </object>
           </child>
+          <!--
           <child>
             <object class="GtkToggleButton" id="button_toggle_taglist_visibility">
               <property name="visible">true</property>
               <property name="label">TagList</property>
               <property name="tooltip_text" translatable="yes">Toogle Taglist visibility</property>
-              <property name="icon_name">view-dual-symbolic</property>
+              <property name="icon_name">media-view-subtitles-symbolic</property>
             </object>
           </child>
           <child>
@@ -100,7 +98,8 @@
               <property name="tooltip_text" translatable="yes">Toogle untagged visibility</property>
               <property name="icon_name">view-continuous-symbolic</property>
             </object>
-          </child>
+         </child>
+          -->
           <child>
             <object class="GtkMenuButton">
               <property name="visible">true</property>

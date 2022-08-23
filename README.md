@@ -16,6 +16,8 @@ Tags have a description/name, a visibility toggle and a hit counter.
 
 <kbd>Ctrl</kbd> + <kbd>S</kbd> : Save tagged lines
 
+<kbd>Ctrl</kbd> + <kbd>C</kbd> : Copy selected text lines to clipboard
+
 <kbd>Ctrl</kbd> + <kbd>H</kbd> : Toggle untagged lines visibility
 
 <kbd>Ctrl</kbd> + <kbd>F</kbd> : Hide/Show Tag list (bottom)
