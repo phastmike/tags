@@ -82,8 +82,23 @@
               <property name="visible">true</property>
               <property name="label">Tags</property>
               <property name="tooltip_text" translatable="yes">Add Tag</property>
-              <!--<property name="icon_name">user-bookmarks-symbolic</property>-->
               <property name="icon_name">bookmark-new-symbolic</property>
+            </object>
+          </child>
+          <child>
+            <object class="GtkToggleButton" id="button_toggle_taglist_visibility">
+              <property name="visible">true</property>
+              <property name="label">TagList</property>
+              <property name="tooltip_text" translatable="yes">Toogle Taglist visibility</property>
+              <property name="icon_name">view-dual-symbolic</property>
+            </object>
+          </child>
+          <child>
+            <object class="GtkToggleButton" id="button_toggle_untagged_visibility">
+              <property name="visible">true</property>
+              <property name="label">Untagged visibility</property>
+              <property name="tooltip_text" translatable="yes">Toogle untagged visibility</property>
+              <property name="icon_name">view-continuous-symbolic</property>
             </object>
           </child>
           <child>
