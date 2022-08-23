@@ -233,8 +233,16 @@ namespace Tagger {
                             array.foreach_element ((array, index_, element_node) => {
                                 Tag tag = Json.gobject_deserialize (typeof (Tag), element_node) as Tag;
                                 tags_treeview.add_tag (tag);
+                                tag.enable_changed.connect ((enabled) => {
+                                    lines_treeview.line_store_filter.refilter ();
+                                });
+
+                                if (lines_treeview.hide_untagged) { 
+                                    lines_treeview.line_store_filter.refilter ();
+                                }
                             });
                         }
+                        count_tag_hits ();
                     } catch (Error e) {
                         print ("Unable to parse: %s\n", e.message);
                         var dialog = new Gtk.MessageDialog.with_markup (application.active_window,
