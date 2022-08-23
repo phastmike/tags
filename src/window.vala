@@ -32,7 +32,16 @@ namespace Tagger {
             { "save_tagged", save_tagged },
             { "hide_untagged_lines", hide_untagged_lines, null, "false", null},
             { "toggle_tags_view", toggle_tags_view, null, "false", null},
-            { "copy", copy}
+            { "copy", copy},
+            { "toggle_tag_1", toggle_tag_1},
+            { "toggle_tag_2", toggle_tag_2},
+            { "toggle_tag_3", toggle_tag_3},
+            { "toggle_tag_4", toggle_tag_4},
+            { "toggle_tag_5", toggle_tag_5},
+            { "toggle_tag_6", toggle_tag_6},
+            { "toggle_tag_7", toggle_tag_7},
+            { "toggle_tag_8", toggle_tag_8},
+            { "toggle_tag_9", toggle_tag_9}
         };
 
         public Window (Gtk.Application app) {
@@ -44,6 +53,15 @@ namespace Tagger {
             app.set_accels_for_action("win.hide_untagged_lines", {"<primary>h"});
             app.set_accels_for_action("win.toggle_tags_view", {"<primary>f"});
             app.set_accels_for_action("win.copy", {"<primary>c"});
+            app.set_accels_for_action("win.toggle_tag_1", {"<alt>1"});
+            app.set_accels_for_action("win.toggle_tag_2", {"<alt>2"});
+            app.set_accels_for_action("win.toggle_tag_3", {"<alt>3"});
+            app.set_accels_for_action("win.toggle_tag_4", {"<alt>4"});
+            app.set_accels_for_action("win.toggle_tag_5", {"<alt>5"});
+            app.set_accels_for_action("win.toggle_tag_6", {"<alt>6"});
+            app.set_accels_for_action("win.toggle_tag_7", {"<alt>7"});
+            app.set_accels_for_action("win.toggle_tag_8", {"<alt>8"});
+            app.set_accels_for_action("win.toggle_tag_9", {"<alt>9"});
             
             save_tagged_disable ();
             
@@ -409,6 +427,52 @@ namespace Tagger {
                 var clipboard = display.get_clipboard ();
                 clipboard.set_text (text);
             }
+        }
+
+        private void toggle_tag (int nr) requires (nr >= 0 && nr <= 8) {
+            Tag tag;
+            Gtk.TreeIter iter;
+            if (tags_treeview.model.@get_iter_from_string (out iter, nr.to_string ())) {
+                tags_treeview.model.@get (iter, 0,  out tag);
+                tag.enabled = !tag.enabled;
+            }
+            tags_treeview.queue_draw ();
+        }
+
+        private void toggle_tag_1 () {
+            toggle_tag (0);
+        }
+
+        private void toggle_tag_2 () {
+            toggle_tag (1);
+        }
+
+        private void toggle_tag_3 () {
+            toggle_tag (2);
+        }
+
+        private void toggle_tag_4 () {
+            toggle_tag (3);
+        }
+
+        private void toggle_tag_5 () {
+            toggle_tag (4);
+        }
+
+        private void toggle_tag_6 () {
+            toggle_tag (5);
+        }
+
+        private void toggle_tag_7 () {
+            toggle_tag (6);
+        }
+
+        private void toggle_tag_8 () {
+            toggle_tag (7);
+        }
+
+        private void toggle_tag_9 () {
+            toggle_tag (8);
         }
     }
 }
