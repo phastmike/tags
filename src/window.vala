@@ -41,7 +41,8 @@ namespace Tagger {
             { "toggle_tag_6", toggle_tag_6},
             { "toggle_tag_7", toggle_tag_7},
             { "toggle_tag_8", toggle_tag_8},
-            { "toggle_tag_9", toggle_tag_9}
+            { "toggle_tag_9", toggle_tag_9},
+            { "toggle_tag_0", toggle_tag_0}
         };
 
         public Window (Gtk.Application app) {
@@ -473,6 +474,10 @@ namespace Tagger {
 
         private void toggle_tag_9 () {
             toggle_tag (8);
+        }
+
+        private void toggle_tag_0 () {
+            toggle_tag (9);
         }
     }
 }
