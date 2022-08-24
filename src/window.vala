@@ -31,7 +31,17 @@ namespace Tagger {
             { "save_tags", save_tags },
             { "save_tagged", save_tagged },
             { "hide_untagged_lines", hide_untagged_lines, null, "false", null},
-            { "toggle_tags_view", toggle_tags_view, null, "false", null}
+            { "toggle_tags_view", toggle_tags_view, null, "false", null},
+            { "copy", copy},
+            { "toggle_tag_1", toggle_tag_1},
+            { "toggle_tag_2", toggle_tag_2},
+            { "toggle_tag_3", toggle_tag_3},
+            { "toggle_tag_4", toggle_tag_4},
+            { "toggle_tag_5", toggle_tag_5},
+            { "toggle_tag_6", toggle_tag_6},
+            { "toggle_tag_7", toggle_tag_7},
+            { "toggle_tag_8", toggle_tag_8},
+            { "toggle_tag_9", toggle_tag_9}
         };
 
         public Window (Gtk.Application app) {
@@ -42,6 +52,16 @@ namespace Tagger {
             app.set_accels_for_action("win.save_tagged", {"<primary>s"});
             app.set_accels_for_action("win.hide_untagged_lines", {"<primary>h"});
             app.set_accels_for_action("win.toggle_tags_view", {"<primary>f"});
+            app.set_accels_for_action("win.copy", {"<primary>c"});
+            app.set_accels_for_action("win.toggle_tag_1", {"<alt>1"});
+            app.set_accels_for_action("win.toggle_tag_2", {"<alt>2"});
+            app.set_accels_for_action("win.toggle_tag_3", {"<alt>3"});
+            app.set_accels_for_action("win.toggle_tag_4", {"<alt>4"});
+            app.set_accels_for_action("win.toggle_tag_5", {"<alt>5"});
+            app.set_accels_for_action("win.toggle_tag_6", {"<alt>6"});
+            app.set_accels_for_action("win.toggle_tag_7", {"<alt>7"});
+            app.set_accels_for_action("win.toggle_tag_8", {"<alt>8"});
+            app.set_accels_for_action("win.toggle_tag_9", {"<alt>9"});
             
             save_tagged_disable ();
             
@@ -233,8 +253,16 @@ namespace Tagger {
                             array.foreach_element ((array, index_, element_node) => {
                                 Tag tag = Json.gobject_deserialize (typeof (Tag), element_node) as Tag;
                                 tags_treeview.add_tag (tag);
+                                tag.enable_changed.connect ((enabled) => {
+                                    lines_treeview.line_store_filter.refilter ();
+                                });
+
+                                if (lines_treeview.hide_untagged) { 
+                                    lines_treeview.line_store_filter.refilter ();
+                                }
                             });
                         }
+                        count_tag_hits ();
                     } catch (Error e) {
                         print ("Unable to parse: %s\n", e.message);
                         var dialog = new Gtk.MessageDialog.with_markup (application.active_window,
@@ -363,10 +391,12 @@ namespace Tagger {
             lines_treeview.line_store_filter.refilter ();
 
             var selection = lines_treeview.get_selection ();
+            selection.set_mode (Gtk.SelectionMode.SINGLE);
             if (selection.get_selected (out model, out iter) == true) {
                 selection = lines_treeview.get_selection ();
                 lines_treeview.scroll_to_cell (model.get_path (iter) , null, true, (float) 0.5, (float) 0.5);
             }
+            selection.set_mode (Gtk.SelectionMode.MULTIPLE);
         }
 
         private void toggle_tags_view () {
@@ -381,6 +411,68 @@ namespace Tagger {
                 paned.set_position (view_height - 5);
                 action.change_state (new Variant.boolean (true));
             }
+        }
+        
+        private void copy () {
+            string text = "";
+            var selection = lines_treeview.get_selection ();
+            selection.selected_foreach ((model, path, iter) => {
+                string buffer;
+                model.@get (iter, LinesTreeView.Columns.LINE_TEXT, out buffer);
+                text += buffer + "\n";
+            });
+            
+            if (text.length > 0) {
+                var display = Gdk.Display.get_default ();
+                var clipboard = display.get_clipboard ();
+                clipboard.set_text (text);
+            }
+        }
+
+        private void toggle_tag (int nr) requires (nr >= 0 && nr <= 8) {
+            Tag tag;
+            Gtk.TreeIter iter;
+            if (tags_treeview.model.@get_iter_from_string (out iter, nr.to_string ())) {
+                tags_treeview.model.@get (iter, 0,  out tag);
+                tag.enabled = !tag.enabled;
+            }
+            tags_treeview.queue_draw ();
+        }
+
+        private void toggle_tag_1 () {
+            toggle_tag (0);
+        }
+
+        private void toggle_tag_2 () {
+            toggle_tag (1);
+        }
+
+        private void toggle_tag_3 () {
+            toggle_tag (2);
+        }
+
+        private void toggle_tag_4 () {
+            toggle_tag (3);
+        }
+
+        private void toggle_tag_5 () {
+            toggle_tag (4);
+        }
+
+        private void toggle_tag_6 () {
+            toggle_tag (5);
+        }
+
+        private void toggle_tag_7 () {
+            toggle_tag (6);
+        }
+
+        private void toggle_tag_8 () {
+            toggle_tag (7);
+        }
+
+        private void toggle_tag_9 () {
+            toggle_tag (8);
         }
     }
 }

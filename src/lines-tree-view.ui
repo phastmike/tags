@@ -26,7 +26,9 @@
     <property name="enable-grid-lines">vertical</property>
     <property name="fixed-height-mode">True</property>
     <child internal-child="selection">
-      <object class="GtkTreeSelection" id="selection"/>
+      <object class="GtkTreeSelection" id="selection">
+        <property name="mode">multiple</property>
+      </object>
     </child>
     <child>
       <object class="GtkTreeViewColumn" id="col_line_number">

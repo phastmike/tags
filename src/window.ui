@@ -55,11 +55,9 @@
             </child>
           </object>
         </property>
-
-
-
         <child type="end">
           <object class="GtkMenuButton">
+            <property name="primary">true</property>
             <property name="icon-name">open-menu-symbolic</property>
             <property name="menu-model">primary_menu</property>
           </object>
@@ -82,10 +80,27 @@
               <property name="visible">true</property>
               <property name="label">Tags</property>
               <property name="tooltip_text" translatable="yes">Add Tag</property>
-              <!--<property name="icon_name">user-bookmarks-symbolic</property>-->
               <property name="icon_name">bookmark-new-symbolic</property>
             </object>
           </child>
+          <!--
+          <child>
+            <object class="GtkToggleButton" id="button_toggle_taglist_visibility">
+              <property name="visible">true</property>
+              <property name="label">TagList</property>
+              <property name="tooltip_text" translatable="yes">Toogle Taglist visibility</property>
+              <property name="icon_name">media-view-subtitles-symbolic</property>
+            </object>
+          </child>
+          <child>
+            <object class="GtkToggleButton" id="button_toggle_untagged_visibility">
+              <property name="visible">true</property>
+              <property name="label">Untagged visibility</property>
+              <property name="tooltip_text" translatable="yes">Toogle untagged visibility</property>
+              <property name="icon_name">view-continuous-symbolic</property>
+            </object>
+         </child>
+          -->
           <child>
             <object class="GtkMenuButton">
               <property name="visible">true</property>
@@ -160,6 +175,7 @@
       <item>
         <attribute name="label" translatable="yes">Load Tags</attribute>
         <attribute name="action">win.load_tags</attribute>
+        <!-- <attribute name="icon">document-open-symbolic.symbolic</attribute> -->
       </item>
       <item>
         <attribute name="label" translatable="yes">Save Tags</attribute>
@@ -168,9 +184,11 @@
       <item>
         <attribute name="label" translatable="yes">Save Tagged</attribute>
         <attribute name="action">win.save_tagged</attribute>
+        <!-- <attribute name="hidden-when">action-disabled</attribute> -->
       </item>
     </section>  
     <section>
+      <!-- <attribute name="label" translatable="yes" context="menu item" comments="Translators: ...">UI</attribute> -->
       <item>
         <attribute name="label" translatable="yes">Hide Tag list</attribute>
         <attribute name="action">win.toggle_tags_view</attribute>
@@ -183,6 +201,12 @@
   </menu>
 
   <menu id="primary_menu">
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">New Window</attribute>
+        <attribute name="action">app.new_window</attribute>
+      </item>
+    </section>  
     <section>
       <item>
         <attribute name="label" translatable="yes">Preferences</attribute>

@@ -133,9 +133,15 @@ namespace Tagger {
 
             try {
                 if (FileUtils.get_data(file, out con)) {
+                    /* FIXME: 
+                       Simple fix to solve problematic text files with CR+LF problems
+                       We are spliting \r\n because some files onl have \r (CR)
+                    */
                     for (int i = 0; i < con.length - 2; i++) {
-                        if (con[i] == 0x00 /*|| con[i] == '\r'*/) {
+                        if (con[i] == 0x00) {
                             con[i] = 0x30;
+                        } else if (con[i] == '\r' && con[i+1] == '\n') {
+                            con[i] = ' ';
                         }
                     }
                     contents = (string) con;
@@ -143,10 +149,8 @@ namespace Tagger {
                     var lines = contents.split_set("\r\n");
                     lines.resize (lines.length - 1);
                     foreach (unowned var line in lines ) {
-                        if (line.length > 1) {
-                            line_store.append (out iter);
-                            line_store.@set (iter, Columns.LINE_NUMBER, ++nr, Columns.LINE_TEXT, line, -1);
-                        }
+                        line_store.append (out iter);
+                        line_store.@set (iter, Columns.LINE_NUMBER, ++nr, Columns.LINE_TEXT, line, -1);
                     }
                 } else {
                     warning ("Error opening file [%s]\n", file);
@@ -193,10 +197,8 @@ namespace Tagger {
 
             rgb.parse (p.ln_fg_color);
             renderer_line_number.foreground_rgba = rgb;
-
             rgb.parse (p.ln_bg_color);
             renderer_line_number.background_rgba = rgb;
-
             //renderer_line_number.size_points = 8.0;
             
             queue_draw ();
