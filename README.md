@@ -10,7 +10,7 @@ Tags have a description/name, a visibility toggle and a hit counter.
 
 ![tagger](./data/screenshots/tagger_1.png)
 
-## Features and Shortchuts
+## Actions and Shortchuts
 
 <kbd>Ctrl</kbd> + <kbd>N</kbd> : Add a Tag
 
@@ -22,11 +22,27 @@ Tags have a description/name, a visibility toggle and a hit counter.
 
 <kbd>Ctrl</kbd> + <kbd>F</kbd> : Hide/Show Tag list (bottom)
 
-Additional features:
+### Tags
+
+Toggle the first ten tags with keyboard shortcuts.
+
+<kbd>Alt</kbd> + <kbd>1</kbd> : Toggle enabled status for first tag
+
+<kbd>Alt</kbd> + <kbd>2</kbd> : Toggle enabled status for second tag
+
+...
+
+<kbd>Alt</kbd> + <kbd>9</kbd> : Toggle enabled status for ninth tag
+
+<kbd>Alt</kbd> + <kbd>0</kbd> : Toggle enabled status for tenth tag
+
+### Additional features:
 
 - Load tags
 - Save tags
-
+- Remove all tags
+- Open new window
+- User defined line numbering color scheme
 
 ## Development
 
@@ -40,6 +56,7 @@ It depends on:
 - ninja
 - valac
 - Gtk 4
+- json-glib-1.0
 
 ### Build
 
@@ -47,13 +64,14 @@ Clone the repository and inside it, compile with:
 
 `$ meson build && cd build && ninja`
 
-Then, test it with:
-
-`$ ./src/tagger`
-
-If you want to install, do it with:
+Install with:
 
 `$ ninja install`
+
+Then, test it with:
+
+`$ tagger`
+
 
 ---
 
