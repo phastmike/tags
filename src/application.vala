@@ -11,8 +11,9 @@
 namespace Tagger {
     public class Application : Gtk.Application {
         private ActionEntry[] APP_ACTIONS = {
-            { "about", on_about_action },
+            { "new_window", on_new_window },
             { "preferences", on_preferences_action },
+            { "about", on_about_action },
             { "quit", quit }
         };
 
@@ -63,11 +64,15 @@ namespace Tagger {
                                   "logo-icon-name", "org.ampr.ct1enq.tagger",
                                   "website", "https://github.com/phastmike/tagger",
                                   "website-label", "https://github.com/phastmike/tagger",
-                                  "version", "0.9.7");
+                                  "version", "0.9.8");
         }
 
         private void on_preferences_action () {
             new PreferencesWindow (this).show ();
+        }
+
+        private void on_new_window () {
+            new Tagger.Window (this).show ();
         }
     }
 }
