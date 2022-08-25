@@ -73,8 +73,12 @@ namespace Tagger {
                 string line_text;
                 Gtk.TreeIter iter;
 
-                lines_treeview.get_selection ().get_selected (null, out iter);
+                message ("add tag with text");
+                var selection = lines_treeview.get_selection ();
+                selection.set_mode (Gtk.SelectionMode.SINGLE);
+                selection.get_selected (null, out iter);
                 lines_treeview.get_model ().@get (iter, LinesTreeView.Columns.LINE_TEXT, out line_text, -1);
+                selection.set_mode (Gtk.SelectionMode.MULTIPLE);
 
                 var tag_dialog = new TagDialogWindow (app, line_text);
                 tag_dialog.added.connect ((tag) => {
@@ -98,7 +102,7 @@ namespace Tagger {
 
                 var tag_dialog = new TagDialogWindow.for_editing (app, tag);
 
-                tag_dialog.edited.connect ((tag) => {
+                tag_dialog.edited.connect ((t) => {
                     if (lines_treeview.hide_untagged) 
                         lines_treeview.line_store_filter.refilter ();
                     count_tag_hits ();
