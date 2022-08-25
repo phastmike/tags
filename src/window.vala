@@ -63,6 +63,7 @@ namespace Tagger {
             app.set_accels_for_action("win.toggle_tag_7", {"<alt>7"});
             app.set_accels_for_action("win.toggle_tag_8", {"<alt>8"});
             app.set_accels_for_action("win.toggle_tag_9", {"<alt>9"});
+            app.set_accels_for_action("win.toggle_tag_0", {"<alt>0"});
             
             save_tagged_disable ();
             
@@ -434,7 +435,7 @@ namespace Tagger {
             }
         }
 
-        private void toggle_tag (int nr) requires (nr >= 0 && nr <= 8) {
+        private void toggle_tag (int nr) requires (nr >= 0 && nr <= 9) {
             Tag tag;
             Gtk.TreeIter iter;
             if (tags_treeview.model.@get_iter_from_string (out iter, nr.to_string ())) {
