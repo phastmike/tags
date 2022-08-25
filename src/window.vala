@@ -74,7 +74,6 @@ namespace Tagger {
                 string line_text;
                 Gtk.TreeIter iter;
 
-                message ("add tag with text");
                 var selection = lines_treeview.get_selection ();
                 selection.set_mode (Gtk.SelectionMode.SINGLE);
                 selection.get_selected (null, out iter);
