@@ -118,6 +118,18 @@ namespace Tagger {
             });
         }
 
+        public string get_selected_lines_as_string () {
+            var string_builder = new StringBuilder ();
+            var selection = get_selection ();
+            selection.selected_foreach ((model, path, iter) => {
+                string line_text;
+                model.@get (iter, LinesTreeView.Columns.LINE_TEXT, out line_text);
+                string_builder.append (line_text + "\n");
+            });
+            
+            return (string) string_builder.data;
+        }
+
         public void set_file (string file) {
             uint8[] con;
             string? contents;

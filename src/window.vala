@@ -427,14 +427,7 @@ namespace Tagger {
         }
         
         private void copy () {
-            string text = "";
-            var selection = lines_treeview.get_selection ();
-            selection.selected_foreach ((model, path, iter) => {
-                string buffer;
-                model.@get (iter, LinesTreeView.Columns.LINE_TEXT, out buffer);
-                text += buffer + "\n";
-            });
-            
+            var text = lines_treeview.get_selected_lines_as_string ();
             if (text.length > 0) {
                 var display = Gdk.Display.get_default ();
                 var clipboard = display.get_clipboard ();
