@@ -42,7 +42,10 @@ namespace Tagger {
             { "toggle_tag_7", toggle_tag_7},
             { "toggle_tag_8", toggle_tag_8},
             { "toggle_tag_9", toggle_tag_9},
-            { "toggle_tag_0", toggle_tag_0}
+            { "toggle_tag_0", toggle_tag_0},
+            { "only_tag_1", only_tag_1},
+            { "enable_all_tags", enable_all_tags },
+            { "disable_all_tags", disable_all_tags }
         };
 
         public Window (Gtk.Application app) {
@@ -64,6 +67,9 @@ namespace Tagger {
             app.set_accels_for_action("win.toggle_tag_8", {"<alt>8"});
             app.set_accels_for_action("win.toggle_tag_9", {"<alt>9"});
             app.set_accels_for_action("win.toggle_tag_0", {"<alt>0"});
+            app.set_accels_for_action("win.only_tag_1", {"<primary>1"});
+            app.set_accels_for_action("win.enable_all_tags", {"<alt>e"});
+            app.set_accels_for_action("win.disable_all_tags", {"<alt>d"});
             
             save_tagged_disable ();
             
@@ -436,54 +442,57 @@ namespace Tagger {
             }
         }
 
-        private void toggle_tag (int nr) requires (nr >= 0 && nr <= 9) {
-            Tag tag;
-            Gtk.TreeIter iter;
-            if (tags_treeview.model.@get_iter_from_string (out iter, nr.to_string ())) {
-                tags_treeview.model.@get (iter, 0,  out tag);
-                tag.enabled = !tag.enabled;
-            }
-            tags_treeview.queue_draw ();
-        }
-
         private void toggle_tag_1 () {
-            toggle_tag (0);
+            tags_treeview.toggle_tag (0);
         }
 
         private void toggle_tag_2 () {
-            toggle_tag (1);
+            tags_treeview.toggle_tag (1);
         }
 
         private void toggle_tag_3 () {
-            toggle_tag (2);
+            tags_treeview.toggle_tag (2);
         }
 
         private void toggle_tag_4 () {
-            toggle_tag (3);
+            tags_treeview.toggle_tag (3);
         }
 
         private void toggle_tag_5 () {
-            toggle_tag (4);
+            tags_treeview.toggle_tag (4);
         }
 
         private void toggle_tag_6 () {
-            toggle_tag (5);
+            tags_treeview.toggle_tag (5);
         }
 
         private void toggle_tag_7 () {
-            toggle_tag (6);
+            tags_treeview.toggle_tag (6);
         }
 
         private void toggle_tag_8 () {
-            toggle_tag (7);
+            tags_treeview.toggle_tag (7);
         }
 
         private void toggle_tag_9 () {
-            toggle_tag (8);
+            tags_treeview.toggle_tag (8);
         }
 
         private void toggle_tag_0 () {
-            toggle_tag (9);
+            tags_treeview.toggle_tag (9);
+        }
+
+        private void only_tag_1 () {
+            tags_treeview.tags_set_enable (false);
+            toggle_tag_1 ();
+        }
+
+        private void enable_all_tags () {
+            tags_treeview.tags_set_enable (true);
+        }
+
+        private void disable_all_tags () {
+            tags_treeview.tags_set_enable (false);
         }
     }
 }

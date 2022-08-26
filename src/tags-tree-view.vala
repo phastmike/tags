@@ -100,18 +100,38 @@ namespace Tagger {
             tag_store.@set (iter, 0, tag);
         }
 
-        public void remove_tag (Tag tag) {
+        public void remove_tag (Tag to_remove) {
             tag_store.foreach ((model, path, iter) => {
-                Tag t;
-                model.@get (iter, 0, out t);
+                Tag tag;
+                model.@get (iter, 0, out tag);
 
-                if (t == tag) {
+                if (tag == to_remove) {
                     tag_store.remove (ref iter);
                     return true;
                 } else {
                     return false;
                 }
             });
+        }
+
+        public void toggle_tag (int nr) requires (nr >= 0 && nr <= 9) {
+            Tag tag;
+            Gtk.TreeIter iter;
+            if (model.@get_iter_from_string (out iter, nr.to_string ())) {
+                model.@get (iter, 0,  out tag);
+                tag.enabled = !tag.enabled;
+            }
+            queue_draw ();
+        }
+
+        public void tags_set_enable (bool enable) {
+            model.foreach ((model, path, iter) => {
+                Tag tag;
+                model.@get (iter, 0, out tag);
+                tag.enabled = enable;
+                return false;
+            });
+            queue_draw ();
         }
 
         public void clear_hit_counters () {
