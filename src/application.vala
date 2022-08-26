@@ -42,6 +42,10 @@ namespace Tagger {
             } 
         }
 
+        /**************************
+            Application Actions
+        **************************/
+
         private void on_about_action () {
             string[] authors = {
                 "Jose Miguel Fonte"

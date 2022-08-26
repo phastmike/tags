@@ -373,7 +373,9 @@ namespace Tagger {
                     tags.foreach ((model, path, iter) => {
                         Tag? tag;
                         model.@get (iter, 0, out tag, -1);
-                        if (line.contains (tag.pattern)) tag.hits += 1;
+                        if (line.contains (tag.pattern)) {
+                            tag.hits += 1;
+                        }
                         return false;
                     });
                     return false;
