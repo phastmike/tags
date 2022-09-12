@@ -182,8 +182,7 @@ namespace Tagger {
 
                 file_chooser_dialog.response.connect ( (response_id) => {
                     if (response_id == Gtk.ResponseType.ACCEPT) {
-                        last_file = file_chooser_dialog.get_file ();
-                        this.set_file(last_file);
+                        this.set_file(file_chooser_dialog.get_file ());
                     }
                     file_chooser_dialog.destroy ();
                 });
@@ -198,6 +197,7 @@ namespace Tagger {
         
         public void set_file (File file) {
             // Sets title for gnome shell window identity
+            last_file = file;
             set_title (file.get_basename ());
 
             subtitle.set_label (file.get_basename ());
