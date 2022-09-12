@@ -147,6 +147,7 @@ namespace Tagger {
             scrolled_lines.set_placement (Gtk.CornerType.TOP_LEFT);
             scrolled_lines.set_overlay_scrolling (true);
             scrolled_lines.set_child (lines_treeview);
+            scrolled_lines.set_policy (Gtk.PolicyType.ALWAYS, Gtk.PolicyType.ALWAYS);
 
             var scrolled_tags = new Gtk.ScrolledWindow ();
             scrolled_tags.set_kinetic_scrolling (true);
@@ -161,7 +162,7 @@ namespace Tagger {
             paned.set_wide_handle (true);
             paned.set_position (this.default_height - 47 - 160);
 
-            //paned.queue_draw ();
+            paned.queue_draw ();
 
             button_open_file.clicked.connect ( () => {
                 var file_chooser_dialog = new Gtk.FileChooserDialog (

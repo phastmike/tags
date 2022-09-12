@@ -21,12 +21,12 @@ namespace Tagger {
         public Application () {
             Object (application_id: "org.ampr.ct1enq.tagger", flags: ApplicationFlags.HANDLES_OPEN);
 
-            this.add_action_entries(this.APP_ACTIONS, this);
-            this.set_accels_for_action("app.quit", {"<primary>q"});
+            this.add_action_entries (this.APP_ACTIONS, this);
+            this.set_accels_for_action ("app.quit", {"<primary>q"});
         }
 
         public override void activate () {
-            base.activate();
+            base.activate ();
             var win = this.active_window;
             if (win == null) {
                 win = new Tagger.Window (this);
@@ -37,8 +37,10 @@ namespace Tagger {
         public override void open (File[] files, string hint) {
             if (files[0].query_exists () == true) {
                 var win = new Tagger.Window (this);
-                win.show ();
                 win.set_file (files[0]);
+                win.present ();
+            } else {
+                error ("file does not exist ...");
             } 
         }
 
@@ -57,7 +59,7 @@ namespace Tagger {
                 "Symbolic icon by www.wishforge.games on freeicons.io"
             };
 
-            Gtk.show_about_dialog(this.active_window,
+            Gtk.show_about_dialog (this.active_window,
                                   "program-name", "Tagger",
                                   "authors", authors,
                                   "artists", artists,
@@ -76,7 +78,7 @@ namespace Tagger {
         }
 
         private void on_new_window () {
-            new Tagger.Window (this).show ();
+            new Tagger.Window (this).present ();
         }
     }
 }
