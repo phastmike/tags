@@ -44,6 +44,7 @@
       <object class="GtkTreeViewColumn" id="col_description">
         <property name="min-width">100</property>
         <property name="title">Description</property>
+        <property name="sizing">GTK_TREE_VIEW_COLUMN_AUTOSIZE</property>
         <child>
           <object class="GtkCellRendererText" id="renderer_description"/>
         </child>

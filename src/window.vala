@@ -147,7 +147,7 @@ namespace Tagger {
             scrolled_lines.set_placement (Gtk.CornerType.TOP_LEFT);
             scrolled_lines.set_overlay_scrolling (true);
             scrolled_lines.set_child (lines_treeview);
-            scrolled_lines.set_policy (Gtk.PolicyType.ALWAYS, Gtk.PolicyType.ALWAYS);
+            //scrolled_lines.set_policy (Gtk.PolicyType.ALWAYS, Gtk.PolicyType.ALWAYS);
 
             var scrolled_tags = new Gtk.ScrolledWindow ();
             scrolled_tags.set_kinetic_scrolling (true);
