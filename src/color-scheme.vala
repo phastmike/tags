@@ -40,7 +40,7 @@ namespace Tagger {
             _bg = bg;
         }
 
-        // Json.Serializable methods
+        /* Json.Serializable methods */
 
         public override Json.Node serialize_property (string property_name, Value @value, ParamSpec pspec) {
             if (@value.type ().is_a (typeof (Gdk.RGBA))) {

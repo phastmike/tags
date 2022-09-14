@@ -36,9 +36,18 @@ namespace Tagger {
 
         public override void open (File[] files, string hint) {
             if (files[0].query_exists () == true) {
+                /* 
+                   When setting the file, ScrolledWindow Adjustment
+                   is not set properly, need this workaround but still
+                   the adjustment is missing some more width
+                */
+                var file = files[0];
                 var win = new Tagger.Window (this);
-                win.set_file (files[0]);
                 win.present ();
+                Idle.add (()=> {
+                    win.set_file (file);
+                    return false;
+                });
             } else {
                 error ("file does not exist ...");
             } 

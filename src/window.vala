@@ -162,7 +162,7 @@ namespace Tagger {
             paned.set_wide_handle (true);
             paned.set_position (this.default_height - 47 - 160);
 
-            paned.queue_draw ();
+            //paned.queue_draw ();
 
             button_open_file.clicked.connect ( () => {
                 var file_chooser_dialog = new Gtk.FileChooserDialog (
@@ -197,8 +197,8 @@ namespace Tagger {
         }
         
         public void set_file (File file) {
-            // Sets title for gnome shell window identity
             last_file = file;
+            // Sets title for gnome shell window identity
             set_title (file.get_basename ());
 
             subtitle.set_label (file.get_basename ());
