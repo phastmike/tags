@@ -44,6 +44,15 @@ namespace Tagger {
             { "toggle_tag_9", toggle_tag_9},
             { "toggle_tag_0", toggle_tag_0},
             { "only_tag_1", only_tag_1},
+            { "only_tag_2", only_tag_2},
+            { "only_tag_3", only_tag_3},
+            { "only_tag_4", only_tag_4},
+            { "only_tag_5", only_tag_5},
+            { "only_tag_6", only_tag_6},
+            { "only_tag_7", only_tag_7},
+            { "only_tag_8", only_tag_8},
+            { "only_tag_9", only_tag_9},
+            { "only_tag_0", only_tag_0},
             { "enable_all_tags", enable_all_tags },
             { "disable_all_tags", disable_all_tags }
         };
@@ -68,6 +77,15 @@ namespace Tagger {
             app.set_accels_for_action("win.toggle_tag_9", {"<alt>9"});
             app.set_accels_for_action("win.toggle_tag_0", {"<alt>0"});
             app.set_accels_for_action("win.only_tag_1", {"<primary>1"});
+            app.set_accels_for_action("win.only_tag_2", {"<primary>2"});
+            app.set_accels_for_action("win.only_tag_3", {"<primary>3"});
+            app.set_accels_for_action("win.only_tag_4", {"<primary>4"});
+            app.set_accels_for_action("win.only_tag_5", {"<primary>5"});
+            app.set_accels_for_action("win.only_tag_6", {"<primary>6"});
+            app.set_accels_for_action("win.only_tag_7", {"<primary>7"});
+            app.set_accels_for_action("win.only_tag_8", {"<primary>8"});
+            app.set_accels_for_action("win.only_tag_9", {"<primary>9"});
+            app.set_accels_for_action("win.only_tag_0", {"<primary>0"});
             app.set_accels_for_action("win.enable_all_tags", {"<alt>e"});
             app.set_accels_for_action("win.disable_all_tags", {"<alt>d"});
             
@@ -479,6 +497,51 @@ namespace Tagger {
         private void only_tag_1 () {
             tags_treeview.tags_set_enable (false);
             toggle_tag_1 ();
+        }
+
+        private void only_tag_2 () {
+            tags_treeview.tags_set_enable (false);
+            toggle_tag_2 ();
+        }
+
+        private void only_tag_3 () {
+            tags_treeview.tags_set_enable (false);
+            toggle_tag_3 ();
+        }
+
+        private void only_tag_4 () {
+            tags_treeview.tags_set_enable (false);
+            toggle_tag_4 ();
+        }
+
+        private void only_tag_5 () {
+            tags_treeview.tags_set_enable (false);
+            toggle_tag_5 ();
+        }
+
+        private void only_tag_6 () {
+            tags_treeview.tags_set_enable (false);
+            toggle_tag_6 ();
+        }
+
+        private void only_tag_7 () {
+            tags_treeview.tags_set_enable (false);
+            toggle_tag_7 ();
+        }
+
+        private void only_tag_8 () {
+            tags_treeview.tags_set_enable (false);
+            toggle_tag_8 ();
+        }
+
+        private void only_tag_9 () {
+            tags_treeview.tags_set_enable (false);
+            toggle_tag_9 ();
+        }
+
+        private void only_tag_0 () {
+            tags_treeview.tags_set_enable (false);
+            toggle_tag_0 ();
         }
 
         private void enable_all_tags () {

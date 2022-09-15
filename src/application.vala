@@ -17,7 +17,6 @@ namespace Tagger {
             { "quit", quit }
         };
 
-
         public Application () {
             Object (application_id: "org.ampr.ct1enq.tagger", flags: ApplicationFlags.HANDLES_OPEN);
 
@@ -72,7 +71,7 @@ namespace Tagger {
                                   "logo-icon-name", "org.ampr.ct1enq.tagger",
                                   "website", "https://github.com/phastmike/tagger",
                                   "website-label", "https://github.com/phastmike/tagger",
-                                  "version", "0.9.13");
+                                  "version", "0.9.14");
         }
 
         private void on_preferences_action () {

@@ -43,7 +43,7 @@
             </child>
             <child>
               <object class="GtkLabel" id="subtitle">
-                <property name="label" translatable="yes">Open a file to get started...</property>
+                <property name="label" translatable="yes">Open a file to get started ...</property>
                 <property name="has-tooltip">true</property>
                 <property name="single-line-mode">True</property>
                 <property name="ellipsize">end</property>
@@ -166,11 +166,14 @@
         <attribute name="label" translatable="yes">New Tag</attribute>
         <attribute name="action">win.add_tag</attribute>
       </item>
-      <item>
-        <attribute name="label" translatable="yes">Remove Tags</attribute>
-        <attribute name="action">win.remove_all_tags</attribute>
-      </item>
     </section>  
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">Save Tagged</attribute>
+        <attribute name="action">win.save_tagged</attribute>
+        <attribute name="hidden-when">action-disabled</attribute>
+      </item>
+    </section> 
     <section>
       <item>
         <attribute name="label" translatable="yes">Load Tags</attribute>
@@ -182,11 +185,10 @@
         <attribute name="action">win.save_tags</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">Save Tagged</attribute>
-        <attribute name="action">win.save_tagged</attribute>
-        <!-- <attribute name="hidden-when">action-disabled</attribute> -->
+        <attribute name="label" translatable="yes">Remove Tags</attribute>
+        <attribute name="action">win.remove_all_tags</attribute>
       </item>
-    </section>  
+    </section>
     <section>
       <!-- <attribute name="label" translatable="yes" context="menu item" comments="Translators: ...">UI</attribute> -->
       <item>
