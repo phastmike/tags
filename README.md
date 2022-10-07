@@ -4,7 +4,7 @@ A GNOME text tagger inspired by the [TextAnalysisTool.NET](https://textanalysist
 tool.
 
 The main goal is to aid log analysis by tagging lines with user defined colors.
-Tags have a description/name, a visibility toggle and a hit counter.
+Tags have a description name, a visibility toggle, a color scheme and a hit counter.
 
 ## Screenshot
 
@@ -35,6 +35,11 @@ Toggle the first ten tags with keyboard shortcuts.
 <kbd>Alt</kbd> + <kbd>9</kbd> : Toggle enabled status for ninth tag
 
 <kbd>Alt</kbd> + <kbd>0</kbd> : Toggle enabled status for tenth tag
+
+**Note**:
+
+Using <kbd>Ctrl</kbd> instead of <kbd>Alt</kbd> will enable the respective tag
+and hide all the others.
 
 ### Additional features:
 
