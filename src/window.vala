@@ -390,7 +390,7 @@ namespace Tagger {
                 tags_treeview.clear_hit_counters ();
 
                 tags = tags_treeview.get_model ();
-                lines = lines_treeview.get_model ();
+                lines = (lines_treeview.get_model () as Gtk.TreeModelFilter)?.get_model ();
 
                 lines.foreach ((model, path, iter) => {
                     string? line;
