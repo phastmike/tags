@@ -383,32 +383,29 @@ namespace Tagger {
         }
 
         private void count_tag_hits () {
-            Idle.add (() => {
-                Gtk.TreeModel tags;
-                Gtk.TreeModel lines;
+            Gtk.TreeModel tags;
+            Gtk.TreeModel lines;
 
-                tags_treeview.clear_hit_counters ();
+            tags_treeview.clear_hit_counters ();
 
-                tags = tags_treeview.get_model ();
-                lines = (lines_treeview.get_model () as Gtk.TreeModelFilter)?.get_model ();
+            tags = tags_treeview.get_model ();
+            lines = (lines_treeview.get_model () as Gtk.TreeModelFilter)?.get_model ();
 
-                lines.foreach ((model, path, iter) => {
-                    string? line;
-                    model.@get (iter, LinesTreeView.Columns.LINE_TEXT, out line, -1);
-                    tags.foreach ((model, path, iter) => {
-                        Tag? tag;
-                        model.@get (iter, 0, out tag, -1);
-                        if (line.contains (tag.pattern)) {
-                            tag.hits += 1;
-                        }
-                        return false;
-                    });
+            lines.foreach ((model, path, iter) => {
+                string? line;
+                model.@get (iter, LinesTreeView.Columns.LINE_TEXT, out line, -1);
+                tags.foreach ((model, path, iter) => {
+                    Tag? tag;
+                    model.@get (iter, 0, out tag, -1);
+                    if (line.contains (tag.pattern)) {
+                        tag.hits += 1;
+                    }
                     return false;
                 });
-
-                tags_treeview.queue_draw ();
                 return false;
             });
+
+            tags_treeview.queue_draw ();
         }
 
         private void hide_untagged_lines () {
