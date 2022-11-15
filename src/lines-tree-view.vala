@@ -147,7 +147,7 @@ namespace Tagger {
                 if (FileUtils.get_data(file, out con)) {
                     /* FIXME: 
                        Simple fix to solve problematic text files with CR+LF problems
-                       We are spliting \r\n because some files onl have \r (CR)
+                       We are spliting \r\n because some files only have \r (CR)
                     */
                     for (int i = 0; i < con.length - 2; i++) {
                         if (con[i] == 0x00) {

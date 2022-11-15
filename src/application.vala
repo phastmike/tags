@@ -75,7 +75,7 @@ namespace Tagger {
         }
 
         private void on_preferences_action () {
-            new PreferencesWindow (this).show ();
+            new PreferencesWindow (this).present ();
         }
 
         private void on_new_window () {
