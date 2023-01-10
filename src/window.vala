@@ -445,9 +445,7 @@ namespace Tagger {
         private void copy () {
             var text = lines_treeview.get_selected_lines_as_string ();
             if (text.length > 0) {
-                var display = Gdk.Display.get_default ();
-                var clipboard = display.get_clipboard ();
-                clipboard.set_text (text);
+                this.get_clipboard ().set_text (text);
             }
         }
 
