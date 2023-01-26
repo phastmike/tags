@@ -445,7 +445,7 @@ namespace Tagger {
         private void copy () {
             var text = lines_treeview.get_selected_lines_as_string ();
             if (text.length > 0) {
-                this.get_clipboard ().set_text (text);
+                lines_treeview.get_clipboard ().set_text (text);
             }
         }
 
