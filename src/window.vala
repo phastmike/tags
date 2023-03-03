@@ -212,6 +212,20 @@ namespace Tagger {
             button_tags.clicked.connect ( () => {
                 add_tag ();
             });
+
+            /* CLIPBOARD CALLBACK TESTING. ON NEW WINDOW THEN CLOSE, CALLBACK PERSIST, SHOULD DISCONNECT? */
+            var clipboard = this.get_clipboard ();
+            clipboard.changed.connect ( () => {
+                clipboard.read_text_async.begin (null, (obj, res) => {
+                    try {
+                        var clipboard_text = clipboard.read_text_async.end (res);
+                        print ("\nClipboard Owner changed...: %s\n", clipboard_text);
+                    } catch (Error e) {
+                        warning ("clipboard async error: %s", e.message);
+                    }
+                });
+            });
+            /* CLIPBOARD CALLBACK TESTING ENDS HERE */
         }
         
         public void set_file (File file) {
@@ -445,7 +459,12 @@ namespace Tagger {
         private void copy () {
             var text = lines_treeview.get_selected_lines_as_string ();
             if (text.length > 0) {
-                lines_treeview.get_clipboard ().set_text (text);
+                var clipboard = lines_treeview.get_clipboard ();
+                clipboard.set_content (null);
+                clipboard.set_text (text);
+
+                // Worlks sometimes, not always
+                //lines_treeview.get_clipboard ().set_text (text);
             }
         }
 
