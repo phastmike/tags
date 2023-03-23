@@ -202,6 +202,13 @@ namespace Tagger {
                 file_chooser_dialog.response.connect ( (response_id) => {
                     if (response_id == Gtk.ResponseType.ACCEPT) {
                         this.set_file(file_chooser_dialog.get_file ());
+                        
+                        /* Here we check if application property autoload tags is enabled*/
+                        /*
+                        if (Preferences.instance ().autoload_tags == true) {
+                            // load tags for file_chooser_dialog.get_file ()
+                        }
+                        */
                     }
                     file_chooser_dialog.destroy ();
                 });
