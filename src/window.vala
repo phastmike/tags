@@ -223,6 +223,13 @@ namespace Tagger {
             subtitle.set_tooltip_text (file.get_path ());
             lines_treeview.set_file (file.get_path ());
             save_tagged_enable ();
+
+            /* Here we check if application property autoload tags is enabled*/
+            if (Preferences.instance ().tags_autoload == true) {
+                // load tags for file_chooser_dialog.get_file ()
+                File file_tags = File.new_for_path (file.get_path () + ".tags");
+                set_tags (file_tags, false); 
+            }
         }
 
         private void add_tag () {
@@ -269,50 +276,57 @@ namespace Tagger {
 
             file_chooser_dialog.response.connect ( (response_id) => {
                 if (response_id == Gtk.ResponseType.ACCEPT) {
-                    var file = file_chooser_dialog.get_file ();
-                    try {
-                        Json.Parser parser = new Json.Parser ();
-                        parser.load_from_file (file.get_path ());
-
-                        tags_treeview.clear_tags ();
-
-                        Json.Node node = parser.get_root ();
-                        Json.Array array = new Json.Array ();
-                        if (node.get_node_type () == Json.NodeType.ARRAY) {
-                            array = node.get_array ();
-                            array.foreach_element ((array, index_, element_node) => {
-                                Tag tag = Json.gobject_deserialize (typeof (Tag), element_node) as Tag;
-                                tags_treeview.add_tag (tag);
-                                tag.enable_changed.connect ((enabled) => {
-                                    lines_treeview.line_store_filter.refilter ();
-                                });
-
-                                if (lines_treeview.hide_untagged) { 
-                                    lines_treeview.line_store_filter.refilter ();
-                                }
-                            });
-                        }
-                        count_tag_hits ();
-                    } catch (Error e) {
-                        print ("Unable to parse: %s\n", e.message);
-                        var dialog = new Gtk.MessageDialog.with_markup (application.active_window,
-                                                    Gtk.DialogFlags.DESTROY_WITH_PARENT |
-                                                    Gtk.DialogFlags.MODAL,
-                                                    Gtk.MessageType.WARNING,
-                                                    Gtk.ButtonsType.CLOSE,
-                                                    "Could not parse tags file");
-                        //dialog.format_secondary_text (file.get_path ());
-                        dialog.format_secondary_text (e.message);
-                        dialog.response.connect ((response_id) => {
-                            dialog.destroy ();
-                        });
-                        dialog.show ();
-                    }
+                    set_tags(file_chooser_dialog.get_file ());
                 }
                 file_chooser_dialog.destroy ();
             });
 
             file_chooser_dialog.show ();
+        }
+
+        private void set_tags (File file, bool show_ui_dialog = true) {
+            try {
+                Json.Parser parser = new Json.Parser ();
+                parser.load_from_file (file.get_path ());
+
+                tags_treeview.clear_tags ();
+
+                Json.Node node = parser.get_root ();
+                Json.Array array = new Json.Array ();
+                if (node.get_node_type () == Json.NodeType.ARRAY) {
+                    array = node.get_array ();
+                    array.foreach_element ((array, index_, element_node) => {
+                        Tag tag = Json.gobject_deserialize (typeof (Tag), element_node) as Tag;
+                        tags_treeview.add_tag (tag);
+                        tag.enable_changed.connect ((enabled) => {
+                            lines_treeview.line_store_filter.refilter ();
+                        });
+
+                        if (lines_treeview.hide_untagged) { 
+                            lines_treeview.line_store_filter.refilter ();
+                        }
+                    });
+                }
+                count_tag_hits ();
+            } catch (Error e) {
+                print ("Unable to parse: %s\n", e.message);
+
+                if (show_ui_dialog == false) return;
+
+                var dialog = new Gtk.MessageDialog.with_markup (application.active_window,
+                                            Gtk.DialogFlags.DESTROY_WITH_PARENT |
+                                            Gtk.DialogFlags.MODAL,
+                                            Gtk.MessageType.WARNING,
+                                            Gtk.ButtonsType.CLOSE,
+                                            "Could not parse tags file");
+                //dialog.format_secondary_text (file.get_path ());
+                dialog.format_secondary_text (e.message);
+                dialog.response.connect ((response_id) => {
+                    dialog.destroy ();
+                });
+                dialog.show ();
+            }
+        
         }
 
         private void save_tags () {

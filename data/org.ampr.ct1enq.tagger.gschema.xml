@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="tagger">
-  <schema id="org.ampr.ct1enq.tagger" path="/org/ampr/ct1enq/tagger/" gettext-domain="tagger">
+   <schema id="org.ampr.ct1enq.tagger" path="/org/ampr/ct1enq/tagger/" gettext-domain="tagger">
 
-    <key name="line-numbers-fg-color" type="s">
-      <default>"rgb(192,191,188)"</default>
-      <summary>Line numbers foreground color</summary>
-      <description>Line numbers foreground color</description>
-    </key>
+      <key name="line-numbers-fg-color" type="s">
+         <default>"rgb(192,191,188)"</default>
+         <summary>Line numbers foreground color</summary>
+         <description>Line numbers foreground color</description>
+      </key>
 
-    <key name="line-numbers-bg-color" type="s">
-      <default>"rgb(246,245,244)"</default>
-      <summary>Line numbers background color</summary>
-      <description>Line numbers background color</description>
-    </key>
+      <key name="line-numbers-bg-color" type="s">
+         <default>"rgb(246,245,244)"</default>
+         <summary>Line numbers background color</summary>
+         <description>Line numbers background color</description>
+      </key>
 
-  </schema>
+      <key name="tags-autoload" type="b">
+         <default>false</default>
+         <summary>Autoload tags files</summary>
+         <description>Autoload tags files if filename.tags exists</description>
+      </key>
+
+   </schema>
 </schemalist>
