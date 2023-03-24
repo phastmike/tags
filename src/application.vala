@@ -71,7 +71,7 @@ namespace Tagger {
                                   "logo-icon-name", "org.ampr.ct1enq.tagger",
                                   "website", "https://github.com/phastmike/tagger",
                                   "website-label", "https://github.com/phastmike/tagger",
-                                  "version", "0.9.18");
+                                  "version", "0.9.19");
         }
 
         private void on_preferences_action () {
