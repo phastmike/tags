@@ -42,7 +42,7 @@
     </child>
     <child>
       <object class="GtkTreeViewColumn" id="col_description">
-        <property name="min-width">100</property>
+        <property name="min-width">110</property>
         <property name="title">Description</property>
         <property name="sizing">GTK_TREE_VIEW_COLUMN_AUTOSIZE</property>
         <!-- Resize needs to be after sizing, otherwise no effect -->
