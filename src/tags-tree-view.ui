@@ -45,6 +45,8 @@
         <property name="min-width">100</property>
         <property name="title">Description</property>
         <property name="sizing">GTK_TREE_VIEW_COLUMN_AUTOSIZE</property>
+        <!-- Resize needs to be after sizing, otherwise no effect -->
+        <property name="resizable">True</property>
         <child>
           <object class="GtkCellRendererText" id="renderer_description"/>
         </child>
