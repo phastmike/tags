@@ -212,6 +212,12 @@ namespace Tagger {
             button_tags.clicked.connect ( () => {
                 add_tag ();
             });
+
+            close_request.connect ( () => {
+                // Here we should check for tags file changes and alert user before exit
+                print ("I'm about the exit from tagger ...\n");
+                return false;
+            });
         }
         
         public void set_file (File file) {
