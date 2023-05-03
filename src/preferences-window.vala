@@ -12,9 +12,9 @@ namespace Tagger {
     [GtkTemplate (ui = "/org/ampr/ct1enq/tagger/preferences-window.ui")]
     public class PreferencesWindow : Gtk.Window {
         [GtkChild]
-        unowned Gtk.ColorButton button_fg_color;
+        unowned Gtk.ColorDialogButton button_fg_color;
         [GtkChild]
-        unowned Gtk.ColorButton button_bg_color;
+        unowned Gtk.ColorDialogButton button_bg_color;
         [GtkChild]
         unowned Gtk.Switch switch_tags_autoload;
 
@@ -33,11 +33,23 @@ namespace Tagger {
                 button_bg_color.set_rgba(rgb);
             }
 
-            button_fg_color.color_set.connect (() => {
+            var dialog_fg_color = new Gtk.ColorDialog ();
+            dialog_fg_color.set_modal (true);
+            dialog_fg_color.set_with_alpha (false);
+            dialog_fg_color.set_title ("Select the foreground color");
+            button_fg_color.set_dialog (dialog_fg_color); 
+
+            var dialog_bg_color = new Gtk.ColorDialog ();
+            dialog_bg_color.set_modal (true);
+            dialog_bg_color.set_with_alpha (false);
+            dialog_bg_color.set_title ("Select the background color");
+            button_bg_color.set_dialog (dialog_bg_color); 
+
+            button_fg_color.notify["rgba"].connect (() => {
                 preferences.ln_fg_color = button_fg_color.get_rgba ().to_string ();
             });
 
-            button_bg_color.color_set.connect (() => {
+            button_bg_color.notify["rgba"].connect (() => {
                 preferences.ln_bg_color = button_bg_color.get_rgba ().to_string ();
             });
 
