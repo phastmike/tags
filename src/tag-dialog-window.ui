@@ -91,7 +91,7 @@
                          </object>
                        </child>
                        <child>
-                         <object class="GtkColorButton" id="button_fg_color">
+                         <object class="GtkColorDialogButton" id="button_fg_color">
                            <property name="halign">end</property>
                            <property name="valign">center</property>
                            <property name="rgba">#ffffff</property>
@@ -118,7 +118,7 @@
                          </object>
                        </child>
                        <child>
-                         <object class="GtkColorButton" id="button_bg_color">
+                         <object class="GtkColorDialogButton" id="button_bg_color">
                            <property name="halign">end</property>
                            <property name="valign">center</property>
                            <property name="rgba">#26a269</property>

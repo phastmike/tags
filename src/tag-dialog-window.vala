@@ -19,9 +19,9 @@ namespace Tagger {
         [GtkChild]
         private unowned Gtk.Button button_delete;
         [GtkChild]
-        private unowned Gtk.ColorButton button_fg_color;
+        private unowned Gtk.ColorDialogButton button_fg_color;
         [GtkChild]
-        private unowned Gtk.ColorButton button_bg_color;
+        private unowned Gtk.ColorDialogButton button_bg_color;
         [GtkChild]
         private unowned Gtk.Entry entry_tag_pattern;
         [GtkChild]
@@ -34,6 +34,25 @@ namespace Tagger {
         public signal void added (Tag tag);
         public signal void edited (Tag tag);
         public signal void deleted (Tag tag);
+
+        construct {
+            var dialog_fg_color = new Gtk.ColorDialog ();
+            dialog_fg_color.set_modal (true);
+            dialog_fg_color.set_with_alpha (false);
+            dialog_fg_color.set_title ("Select the foreground color");
+            button_fg_color.set_dialog (dialog_fg_color); 
+            
+            var dialog_bg_color = new Gtk.ColorDialog ();
+            dialog_bg_color.set_modal (true);
+            dialog_bg_color.set_with_alpha (false);
+            dialog_bg_color.set_title ("Select the background color");
+            button_bg_color.set_dialog (dialog_bg_color); 
+
+            button_cancel.clicked.connect (this.destroy);
+
+            button_fg_color.notify["rgba"].connect (set_label_example_colors);
+            button_bg_color.notify["rgba"].connect (set_label_example_colors);
+        }
 
         public TagDialogWindow (Gtk.Application app, string? text = null) {
             Object(application: app, transient_for: app.active_window, modal: true);
@@ -55,14 +74,9 @@ namespace Tagger {
             entry_tag_pattern.changed.connect (validate_entries);
             entry_tag_name.changed.connect (validate_entries);
             set_label_example_colors ();
-            
-            button_cancel.clicked.connect (this.destroy);
-            button_fg_color.color_set.connect (set_label_example_colors);
-            button_bg_color.color_set.connect (set_label_example_colors);
 
             if (text != null) {
                 entry_tag_pattern.set_text (text);
-                //button_ok.set_sensitive (true);
             }
         }
 
@@ -97,10 +111,6 @@ namespace Tagger {
             entry_tag_pattern.changed.connect (validate_entries);
             entry_tag_name.changed.connect (validate_entries);
             set_label_example_colors ();
-            
-            button_cancel.clicked.connect (this.destroy);
-            button_fg_color.color_set.connect (set_label_example_colors);
-            button_bg_color.color_set.connect (set_label_example_colors);
         }
 
         private void set_label_example_colors () {
@@ -119,8 +129,7 @@ namespace Tagger {
         }
 
         private void validate_entries () {
-            if ((entry_tag_pattern.get_text_length () != 0) /*&
-                (entry_tag_name.get_text_length () != 0)*/) {
+            if (entry_tag_pattern.get_text_length () != 0) {
                 button_ok.set_sensitive (true);
             } else {
                 button_ok.set_sensitive (false);
