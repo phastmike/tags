@@ -22,7 +22,7 @@ namespace Tagger {
         private LinesTreeView lines_treeview;
         private TagsTreeView tags_treeview;
         private double paned_last_position = 0.778086;
-        private File? last_file = null;
+        private File? file_opened = null;
 
         private ActionEntry[] WINDOW_ACTIONS = {
             { "add_tag", add_tag },
@@ -191,9 +191,9 @@ namespace Tagger {
 
                 file_chooser_dialog.set_modal (true);
 
-                if (last_file != null) {
+                if (file_opened != null) {
                     try {
-                        file_chooser_dialog.set_current_folder (last_file.get_parent ());
+                        file_chooser_dialog.set_current_folder (file_opened.get_parent ());
                     } catch (Error e) {
                         warning ("FileChooser::set_current_folder::error message: %s", e.message);
                     }
@@ -221,7 +221,7 @@ namespace Tagger {
         }
         
         public void set_file (File file) {
-            last_file = file;
+            file_opened = file;
             // Sets title for gnome shell window identity
             set_title (file.get_basename ());
 
@@ -272,9 +272,9 @@ namespace Tagger {
 
             file_chooser_dialog.set_modal (true);
 
-            if (last_file != null) {
+            if (file_opened != null) {
                 try {
-                    file_chooser_dialog.set_current_folder (last_file.get_parent ());
+                    file_chooser_dialog.set_current_folder (file_opened.get_parent ());
                 } catch (Error e) {
                     warning ("FileChooser::set_current_folder::error message: %s", e.message);
                 }
@@ -344,9 +344,9 @@ namespace Tagger {
 
             file_chooser_dialog.set_modal (true);
 
-            if (last_file != null) {
+            if (file_opened != null) {
                 try {
-                    file_chooser_dialog.set_current_folder (last_file.get_parent ());
+                    file_chooser_dialog.set_current_folder (file_opened.get_parent ());
                 } catch (Error e) {
                     warning ("FileChooser::set_current_folder::error message: %s", e.message);
                 }
@@ -383,9 +383,9 @@ namespace Tagger {
 
             file_chooser_dialog.set_modal (true);
 
-            if (last_file != null) {
+            if (file_opened != null) {
                 try {
-                    file_chooser_dialog.set_current_folder (last_file.get_parent ());
+                    file_chooser_dialog.set_current_folder (file_opened.get_parent ());
                 } catch (Error e) {
                     warning ("FileChooser::set_current_folder::error message: %s", e.message);
                 }
