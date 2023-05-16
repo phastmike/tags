@@ -236,6 +236,8 @@ namespace Tagger {
                 File file_tags = File.new_for_path (file.get_path () + ".tags");
                 set_tags (file_tags, false); 
             }
+
+            count_tag_hits ();
         }
 
         private void add_tag () {
