@@ -31,17 +31,28 @@ namespace Tagger {
         private unowned Gtk.CellRendererText renderer_hits;
 
         private Gtk.Application application;
+        private int ntags;
 
         public TagsTreeView (Gtk.Application app) {
             application = app;
             setup_cell_renderers ();
             
+            ntags = 0;
+
             renderer_checkbox.toggled.connect ((path) => {
                 Gtk.TreeIter i;
                 Tag tag;
                 tag_store.get_iter_from_string (out i, path);
                 tag_store.@get (i, 0, out tag);
                 tag.enabled = !tag.enabled;
+            });
+
+            tag_store.row_inserted.connect ((path, iter) => {
+                ntags++;
+            });
+
+            tag_store.row_deleted.connect ((path, iter) => {
+                ntags--;
             });
 
             /* Unselects rows on leaving the object*/
@@ -145,6 +156,7 @@ namespace Tagger {
         
         public void clear_tags () {
             tag_store.clear ();
+            ntags = 0;
         }
 
         public void to_file (File file) {

@@ -419,7 +419,10 @@ namespace Tagger {
                 tags.foreach ((model, path, iter) => {
                     Tag? tag;
                     model.@get (iter, 0, out tag, -1);
-                    if (line.contains (tag.pattern)) {
+
+                    Regex regex = new Regex (tag.pattern);
+                    if (regex.match (line) == true) {
+                    //if (line.contains (tag.pattern)) {
                         tag.hits += 1;
                     }
                     return false;

@@ -65,7 +65,9 @@ namespace Tagger {
 
                         tags_model.@get (tag_iter, 0, out tag);
                         
-                        if (line.contains (tag.pattern) && tag.enabled == true) {
+                        Regex regex = new Regex (tag.pattern);
+                        if (regex.match (line) == true && tag.enabled) {
+                        //if (line.contains (tag.pattern) && tag.enabled == true) {
                             found = true;
                             return true;
                         } else {
@@ -92,7 +94,9 @@ namespace Tagger {
 
                     tags_model.@get (tag_iter, 0, out tag);
                     
-                    if (renderer_line_text.text.contains (tag.pattern) && tag.enabled == true) {
+                    Regex regex = new Regex (tag.pattern);
+                    if (regex.match (renderer_line_text.text) == true && tag.enabled) {
+                    //if (renderer_line_text.text.contains (tag.pattern) && tag.enabled == true) {
                         found = true;
                         return true;
                     } else {
@@ -185,7 +189,9 @@ namespace Tagger {
                     tags.foreach ((tags_model, tag_path, tag_iter) => {
                         tags_model.@get (tag_iter, 0, out tag);
                         
-                        if (line.contains (tag.pattern) && tag.enabled == true) {
+                        Regex regex = new Regex (tag.pattern);
+                        if (regex.match (line) == true && tag.enabled) {
+                        //if (line.contains (tag.pattern) && tag.enabled == true) {
                             try {
                                 fsout.write(("%s\n".printf (line)).data);
                             } catch (IOError ioerr) {
