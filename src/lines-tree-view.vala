@@ -183,25 +183,9 @@ namespace Tagger {
             try {
                 fsout = file.replace (null, false, FileCreateFlags.REPLACE_DESTINATION, null); 
                 line_store_filter.foreach ((model, path, iter) => {
-                    Tag? tag = null;
                     string line;
                     model.@get (iter, Columns.LINE_TEXT, out line);
-                    tags.foreach ((tags_model, tag_path, tag_iter) => {
-                        tags_model.@get (tag_iter, 0, out tag);
-                        
-                        Regex regex = new Regex (tag.pattern);
-                        if (regex.match (line) == true && tag.enabled) {
-                        //if (line.contains (tag.pattern) && tag.enabled == true) {
-                            try {
-                                fsout.write(("%s\n".printf (line)).data);
-                            } catch (IOError ioerr) {
-                                error ("IOError: %s", ioerr.message);
-                            }
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    });
+                    fsout.write(("%s\n".printf (line)).data);
                     return false;
                 });
                 fsout.close ();
