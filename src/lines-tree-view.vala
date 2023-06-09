@@ -75,9 +75,7 @@ namespace Tagger {
                         }
                     });
 
-                    // ternary operator not working as expected 
-                    if (found) return true;
-                    return false;
+                    return found ? true : false;
                 }
             });
 
