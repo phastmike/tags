@@ -122,10 +122,36 @@ namespace Tagger {
             var bg_web = "#%02x%02x%02x".
                     printf((uint) (bg.red * 255), (uint) (bg.green * 255), (uint) (bg.blue * 255));
 
-            string markup = "<span foreground=\"%s\" background=\"%s\">%s</span>".
-                    printf(fg_web, bg_web, example_text);
+            //string markup = "<span foreground=\"%s\" background=\"%s\">%s</span>".printf(fg_web, bg_web, example_text);
+            //label_sample_example.set_markup (markup);
+            label_sample_example.set_markup (example_text);
 
-            label_sample_example.set_markup (markup);
+            /*
+            string? lstyle = """
+                label.row-example {
+                    padding: 6px 12px;
+                    background-color: %s;
+                    border-radius: 14px;
+                    color: %s;
+                    font-size: 0.833em;
+                }
+            """.printf (bg_web, fg_web);
+            */
+
+            string? lstyle = """
+                label.row-example {
+                    padding: 6px 6px;
+                    background-color: %s;
+                    border-radius: 7px;
+                    color: %s;
+                    font-size: 0.83em;
+                }
+            """.printf (bg_web, fg_web);
+
+            var provider = new Gtk.CssProvider ();
+            provider.load_from_data (lstyle.data);
+            label_sample_example.add_css_class ("row-example");
+            Gtk.StyleContext.add_provider_for_display (Gdk.Display.get_default (), provider, Gtk.STYLE_PROVIDER_PRIORITY_USER);
         }
 
         private void validate_entries () {
