@@ -144,7 +144,7 @@ namespace Tagger {
                     background-color: %s;
                     border-radius: 7px;
                     color: %s;
-                    font-size: 0.83em;
+                    font-size: 0.833em;
                 }
             """.printf (bg_web, fg_web);
 
