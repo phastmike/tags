@@ -29,7 +29,7 @@ namespace Tagger {
         [GtkChild]
         private unowned Gtk.Label label_sample_example;
 
-        private const string example_text = " Lorem ipsum dolor sit amet... ";
+        private const string example_text = "Lorem ipsum dolor sit amet...";
 
         public signal void added (Tag tag);
         public signal void edited (Tag tag);
@@ -122,25 +122,13 @@ namespace Tagger {
             var bg_web = "#%02x%02x%02x".
                     printf((uint) (bg.red * 255), (uint) (bg.green * 255), (uint) (bg.blue * 255));
 
+            label_sample_example.set_text (example_text);
             //string markup = "<span foreground=\"%s\" background=\"%s\">%s</span>".printf(fg_web, bg_web, example_text);
             //label_sample_example.set_markup (markup);
-            label_sample_example.set_markup (example_text);
-
-            /*
-            string? lstyle = """
-                label.row-example {
-                    padding: 6px 12px;
-                    background-color: %s;
-                    border-radius: 14px;
-                    color: %s;
-                    font-size: 0.833em;
-                }
-            """.printf (bg_web, fg_web);
-            */
 
             string? lstyle = """
                 label.row-example {
-                    padding: 6px 6px;
+                    padding: 6px 8px;
                     background-color: %s;
                     border-radius: 7px;
                     color: %s;
