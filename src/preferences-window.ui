@@ -73,8 +73,9 @@
                 </child>
                 <child>
                    <object class="GtkLabel">
-                      <property name="label">Automatic load of tags file only occurs if there is a file with the same name and the extension .tags on the same path.</property>
+                      <property name="label">Automatic load of tags file if there is a file with the same name and the extension .tags on the same path.</property>
                       <property name="wrap">true</property>
+                      <property name="justify">fill</property>
                       <property name="margin-top">6</property>
                       <property name="margin-bottom">12</property>
                       <style>
@@ -166,6 +167,3 @@
     </child>
   </template>
 </interface>
-
-
-
