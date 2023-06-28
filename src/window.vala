@@ -201,6 +201,7 @@ namespace Tagger {
 
                 file_chooser_dialog.response.connect ( (response_id) => {
                     if (response_id == Gtk.ResponseType.ACCEPT) {
+                        // FIXME: May block, with diolog opened, if loading takes time
                         this.set_file(file_chooser_dialog.get_file ());
                     }
                     file_chooser_dialog.destroy ();
