@@ -17,6 +17,10 @@ namespace Tagger {
         unowned Gtk.ColorDialogButton button_bg_color;
         [GtkChild]
         unowned Gtk.Switch switch_tags_autoload;
+        [GtkChild]
+        private unowned Gtk.Label label_sample_example;
+
+        private const string css_class = "color_scheme_example";
 
         public PreferencesWindow (Gtk.Application app) {
             Object(application: app, transient_for: app.active_window, modal: true);
@@ -47,14 +51,44 @@ namespace Tagger {
 
             button_fg_color.notify["rgba"].connect (() => {
                 preferences.ln_fg_color = button_fg_color.get_rgba ().to_string ();
+                set_label_example_colors ();
             });
 
             button_bg_color.notify["rgba"].connect (() => {
                 preferences.ln_bg_color = button_bg_color.get_rgba ().to_string ();
+                set_label_example_colors ();
             });
 
             switch_tags_autoload.set_active (preferences.tags_autoload);
             preferences.bind_property("tags_autoload", switch_tags_autoload, "active", BindingFlags.SYNC_CREATE | BindingFlags.BIDIRECTIONAL);
+
+            set_label_example_colors ();
         }
+
+        private void set_label_example_colors () {
+            var fg = button_fg_color.get_rgba ();
+            var bg = button_bg_color.get_rgba ();
+
+            var fg_web = "#%02x%02x%02x".
+                    printf((uint) (fg.red * 255), (uint) (fg.green * 255), (uint) (fg.blue * 255));
+            var bg_web = "#%02x%02x%02x".
+                    printf((uint) (bg.red * 255), (uint) (bg.green * 255), (uint) (bg.blue * 255));
+
+            string? lstyle = """
+                label.%s {
+                    padding: 6px 8px;
+                    background-color: %s;
+                    border-radius: 7px;
+                    color: %s;
+                    font-size: 0.8333em;
+                }
+            """.printf (this.css_class, bg_web, fg_web);
+
+            var provider = new Gtk.CssProvider ();
+            provider.load_from_data (lstyle.data);
+            label_sample_example.add_css_class (this.css_class);
+            Gtk.StyleContext.add_provider_for_display (Gdk.Display.get_default (), provider, Gtk.STYLE_PROVIDER_PRIORITY_USER);
+        }
+
     }
 }
