@@ -100,7 +100,6 @@
                       <class name="rich-list"/>
                       <class name="boxed-list"/>
                     </style>
-
                     <child>
                       <object class="GtkListBoxRow">
                         <property name="activatable">false</property>
@@ -128,7 +127,6 @@
                         </child>
                       </object>
                     </child>
-
                     <child>
                       <object class="GtkListBoxRow">
                         <property name="activatable">false</property>
@@ -156,7 +154,6 @@
                         </child>
                       </object>
                     </child>
-                    
                   </object>
                 </child>
               </object>

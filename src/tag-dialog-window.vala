@@ -29,6 +29,7 @@ namespace Tagger {
         [GtkChild]
         private unowned Gtk.Label label_sample_example;
 
+        private const string css_class = "color_scheme_example";
         private const string example_text = "Lorem ipsum dolor sit amet...";
 
         public signal void added (Tag tag);
@@ -127,18 +128,18 @@ namespace Tagger {
             //label_sample_example.set_markup (markup);
 
             string? lstyle = """
-                label.row-example {
+                label.%s {
                     padding: 6px 8px;
                     background-color: %s;
                     border-radius: 7px;
                     color: %s;
-                    font-size: 0.833em;
+                    font-size: 0.8333em;
                 }
-            """.printf (bg_web, fg_web);
+            """.printf (this.css_class, bg_web, fg_web);
 
             var provider = new Gtk.CssProvider ();
             provider.load_from_data (lstyle.data);
-            label_sample_example.add_css_class ("row-example");
+            label_sample_example.add_css_class (this.css_class);
             Gtk.StyleContext.add_provider_for_display (Gdk.Display.get_default (), provider, Gtk.STYLE_PROVIDER_PRIORITY_USER);
         }
 
