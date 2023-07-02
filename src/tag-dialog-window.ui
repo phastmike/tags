@@ -165,9 +165,6 @@
             </style>
           </object>
         </child>
-        <child>
-          <placeholder/>
-        </child>
       </object>
     </child>
     <child type="titlebar">
