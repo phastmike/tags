@@ -13,7 +13,7 @@
   </object>
   <object class="GtkTreeModelFilter" id="line_store_filter">
     <property name="child-model">line_store</property>
-   </object>
+  </object>
   <template class="TaggerLinesTreeView" parent="GtkTreeView">
     <property name="visible">True</property>
     <property name="can-focus">True</property>
