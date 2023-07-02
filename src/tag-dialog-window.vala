@@ -85,9 +85,6 @@ namespace Tagger {
             if (text != null) {
                 entry_tag_pattern.set_text (text);
             }
-
-            //switch_regex.set_active (false);
-            //switch_case.set_active (false);
         }
 
         public TagDialogWindow.for_editing (Gtk.Application app, Tag tag) {
