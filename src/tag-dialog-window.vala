@@ -28,6 +28,10 @@ namespace Tagger {
         private unowned Gtk.Entry entry_tag_name;
         [GtkChild]
         private unowned Gtk.Label label_sample_example;
+        [GtkChild]
+        private unowned Gtk.Switch switch_regex;
+        [GtkChild]
+        private unowned Gtk.Switch switch_case;
 
         private const string css_class = "color_scheme_example";
 
@@ -65,6 +69,9 @@ namespace Tagger {
 
                 var color_scheme = new ColorScheme ("default", fg_color, bg_color);
                 var tag = new Tag (pattern, description, color_scheme); 
+                // Use a builder classs
+                tag.is_regex = switch_regex.get_active ();
+                tag.is_case_sensitive = switch_case.get_active ();
 
                 added (tag);
 
@@ -78,6 +85,9 @@ namespace Tagger {
             if (text != null) {
                 entry_tag_pattern.set_text (text);
             }
+
+            //switch_regex.set_active (false);
+            //switch_case.set_active (false);
         }
 
         public TagDialogWindow.for_editing (Gtk.Application app, Tag tag) {
@@ -99,6 +109,8 @@ namespace Tagger {
                 tag.description = entry_tag_name.get_text ();
                 tag.colors.fg = button_fg_color.get_rgba ();
                 tag.colors.bg = button_bg_color.get_rgba ();
+                tag.is_regex = switch_regex.get_active ();
+                tag.is_case_sensitive = switch_case.get_active ();
                 edited (tag);
                 this.destroy ();
             });
@@ -111,6 +123,9 @@ namespace Tagger {
             entry_tag_pattern.changed.connect (validate_entries);
             entry_tag_name.changed.connect (validate_entries);
             set_label_example_colors ();
+
+            switch_regex.set_active(tag.is_regex);
+            switch_case.set_active(tag.is_case_sensitive);
         }
 
         private void set_label_example_colors () {

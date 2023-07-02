@@ -26,6 +26,8 @@ namespace Tagger {
         public uint hits; 
         public string pattern { get; set; } 
         public string description { get; set; }
+        public bool is_regex { get; set; }
+        public bool is_case_sensitive { get; set; }
         public ColorScheme colors { get; set; }
 
         public signal void enable_changed (bool enabled);
