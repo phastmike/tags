@@ -36,10 +36,14 @@ Toggle the first ten tags with keyboard shortcuts.
 
 <kbd>Alt</kbd> + <kbd>0</kbd> : Toggle enabled status for tenth tag
 
-**Note**:
 
-Using <kbd>Ctrl</kbd> instead of <kbd>Alt</kbd> will enable the respective tag
-and hide all the others.
+---
+#### Notice
+
+**Using <kbd>Ctrl</kbd> instead of <kbd>Alt</kbd> will enable the respective tag
+and hide all the others**.
+
+---
 
 ### Additional features:
 
@@ -48,6 +52,11 @@ and hide all the others.
 - Remove all tags
 - Open new window
 - User defined line numbering color scheme
+- Simple tags based on a string containg a pattern
+- Support for regular expressions
+- Case sensitive support
+- Automatic load tags file when opening a file and a similarly named file with
+  added `.tags` extension exists
 
 ## Development
 
