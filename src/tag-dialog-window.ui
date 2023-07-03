@@ -5,218 +5,255 @@
     <property name="title" translatable="yes">Tag</property>
     <property name="resizable">False</property>
     <property name="default_width">600</property>
-    <property name="default_height">330</property>
+    <property name="default_height">485</property>
     <property name="destroy_with_parent">True</property>
     <child>
-      <object class="GtkBox">
-        <property name="orientation">vertical</property>
-        <property name="margin_start">60</property>
-        <property name="margin_end">60</property>
-        <property name="margin_top">30</property>
-        <property name="margin_bottom">30</property>
+      <object class="GtkScrolledWindow">
+        <property name="hscrollbar-policy">never</property>
+        <property name="min-content-height">200</property>
+        <property name="hexpand">0</property>
+        <property name="vexpand">1</property>
         <child>
-          <object class="GtkListBox">
-            <property name="selection_mode">none</property>
+          <object class="GtkViewport">
+            <property name="scroll-to-focus">1</property>
             <child>
-              <object class="GtkListBoxRow">
-                <property name="activatable">false</property>
-                <property name="selectable">false</property>
-                <property name="focusable">false</property>
+              <object class="GtkBox">
+                <property name="orientation">vertical</property>
+                <property name="hexpand">true</property>
+                <property name="hexpand-set">true</property>
+                <property name="vexpand">true</property>
+                <property name="vexpand-set">true</property>
+                <property name="margin_start">60</property>
+                <property name="margin_end">60</property>
+                <property name="margin_top">30</property>
+                <property name="margin_bottom">30</property>
+                <property name="spacing">24</property>
                 <child>
                   <object class="GtkBox">
+                    <property name="orientation">vertical</property>
                     <child>
-                      <object class="GtkLabel" id="label_tag_pattern">
-                        <property name="label" translatable="yes">Pattern</property>
-                        <property name="xalign">0</property>
-                        <property name="halign">start</property>
-                        <property name="valign">center</property>
-                        <property name="hexpand">1</property>
-                        </object>
+                      <object class="GtkListBox">
+                        <property name="selection_mode">none</property>
+                        <child>
+                          <object class="GtkListBoxRow">
+                            <property name="activatable">false</property>
+                            <property name="selectable">false</property>
+                            <property name="focusable">false</property>
+                            <child>
+                              <object class="GtkBox">
+                                <child>
+                                  <object class="GtkLabel" id="label_tag_pattern">
+                                    <property name="label" translatable="yes">Pattern</property>
+                                    <property name="xalign">0</property>
+                                    <property name="halign">start</property>
+                                    <property name="valign">center</property>
+                                    <property name="hexpand">1</property>
+                                    </object>
+                                </child>
+                                <child>
+                                  <object class="GtkEntry" id="entry_tag_pattern">
+                                    <property name="halign">end</property>
+                                    <property name="valign">center</property>
+                                    <property name="placeholder-text">Type here…</property>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkListBoxRow">
+                            <property name="activatable">false</property>
+                            <property name="selectable">false</property>
+                            <property name="focusable">false</property>
+                            <child>
+                              <object class="GtkBox">
+                                <child>
+                                  <object class="GtkLabel" id="label_tag_name">
+                                    <property name="label" translatable="yes">Description</property>
+                                    <property name="xalign">0</property>
+                                    <property name="halign">start</property>
+                                    <property name="valign">center</property>
+                                    <property name="hexpand">1</property>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkEntry" id="entry_tag_name">
+                                    <property name="halign">end</property>
+                                    <property name="valign">center</property>
+                                    <property name="placeholder-text">Type here…</property>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkListBoxRow">
+                            <property name="activatable">false</property>
+                            <property name="selectable">false</property>
+                            <property name="focusable">false</property>
+                            <child>
+                              <object class="GtkBox">
+                               <child>
+                                 <object class="GtkLabel" id="label_regex">
+                                   <property name="label" translatable="yes">Regular Expression</property>
+                                   <property name="xalign">0</property>
+                                   <property name="halign">start</property>
+                                   <property name="valign">center</property>
+                                   <property name="hexpand">1</property>
+                                 </object>
+                               </child>
+                               <child>
+                                 <object class="GtkSwitch" id="switch_regex">
+                                   <property name="halign">end</property>
+                                   <property name="valign">center</property>
+                                   <property name="active">false</property>
+                                 </object>
+                               </child>
+                             </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkListBoxRow">
+                            <property name="activatable">false</property>
+                            <property name="selectable">false</property>
+                            <property name="focusable">false</property>
+                            <child>
+                              <object class="GtkBox">
+                               <child>
+                                 <object class="GtkLabel" id="label_case">
+                                   <property name="label" translatable="yes">Case Sensitive</property>
+                                   <property name="xalign">0</property>
+                                   <property name="halign">start</property>
+                                   <property name="valign">center</property>
+                                   <property name="hexpand">1</property>
+                                 </object>
+                               </child>
+                               <child>
+                                 <object class="GtkSwitch" id="switch_case">
+                                   <property name="halign">end</property>
+                                   <property name="valign">center</property>
+                                   <property name="active">false</property>
+                                 </object>
+                               </child>
+                             </object>
+                            </child>
+                          </object>
+                        </child>
+                        <style>
+                          <class name="rich-list"/>
+                          <class name="boxed-list"/>
+                        </style>
+                      </object>
                     </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="orientation">vertical</property>
                     <child>
-                      <object class="GtkEntry" id="entry_tag_pattern">
-                        <property name="halign">end</property>
-                        <property name="valign">center</property>
-                        <property name="placeholder-text">Type here…</property>
+                      <object class="GtkListBox">
+                        <property name="selection_mode">none</property>
+                          <child>
+                            <object class="GtkListBoxRow">
+                              <property name="activatable">false</property>
+                              <property name="selectable">false</property>
+                              <property name="focusable">false</property>
+                              <child>
+                                <object class="GtkBox">
+                                 <child>
+                                   <object class="GtkLabel" id="label_fg_color">
+                                     <property name="label" translatable="yes">Foreground color</property>
+                                     <property name="xalign">0</property>
+                                     <property name="halign">start</property>
+                                     <property name="valign">center</property>
+                                     <property name="hexpand">1</property>
+                                   </object>
+                                 </child>
+                                 <child>
+                                   <object class="GtkColorDialogButton" id="button_fg_color">
+                                     <property name="halign">end</property>
+                                     <property name="valign">center</property>
+                                     <property name="rgba">#ffffff</property>
+                                   </object>
+                                 </child>
+                               </object>
+                              </child>
+                            </object>
+                          </child>
+                          <child>
+                            <object class="GtkListBoxRow">
+                              <property name="activatable">false</property>
+                              <property name="selectable">false</property>
+                              <property name="focusable">false</property>
+                              <child>
+                                <object class="GtkBox">
+                                 <child>
+                                   <object class="GtkLabel" id="label_bg_color">
+                                     <property name="label" translatable="yes">Background color</property>
+                                     <property name="xalign">0</property>
+                                     <property name="halign">start</property>
+                                     <property name="valign">center</property>
+                                     <property name="hexpand">1</property>
+                                   </object>
+                                 </child>
+                                 <child>
+                                   <object class="GtkColorDialogButton" id="button_bg_color">
+                                     <property name="halign">end</property>
+                                     <property name="valign">center</property>
+                                     <property name="rgba">#26a269</property>
+                                   </object>
+                                 </child>
+                               </object>
+                              </child>
+                            </object>
+                          </child>
+                          <child>
+                            <object class="GtkListBoxRow">
+                              <property name="activatable">false</property>
+                              <property name="selectable">false</property>
+                              <property name="focusable">false</property>
+                              <child>
+                                <object class="GtkBox">
+                                  <child>
+                                    <object class="GtkLabel" id="label_sample">
+                                      <property name="label" translatable="yes">Example</property>
+                                      <property name="xalign">0</property>
+                                      <property name="halign">start</property>
+                                      <property name="valign">center</property>
+                                      <property name="hexpand">1</property>
+                                    </object>
+                                  </child>
+                                  <child>
+                                    <object class="GtkLabel" id="label_sample_example">
+                                      <property name="halign">end</property>
+                                      <property name="valign">center</property>
+                                      <property name="use_markup">true</property>
+                                      <property name="label" translatable="yes">Lorem ipsum dolor sit amet...</property>
+                                      <property name="xalign">0</property>
+                                      <property name="halign">start</property>
+                                      <property name="valign">center</property>
+                                      <property name="hexpand">0</property>
+                                      <property name="vexpand">1</property>
+                                      <property name="justify">right</property>
+                                    </object>
+                                  </child>
+                                </object>
+                              </child>
+                            </object>
+                          </child>
+                        <style>
+                          <class name="rich-list"/>
+                          <class name="boxed-list"/>
+                        </style>
                       </object>
                     </child>
                   </object>
                 </child>
               </object>
             </child>
-            <child>
-              <object class="GtkListBoxRow">
-                <property name="activatable">false</property>
-                <property name="selectable">false</property>
-                <property name="focusable">false</property>
-                <child>
-                  <object class="GtkBox">
-                    <child>
-                      <object class="GtkLabel" id="label_tag_name">
-                        <property name="label" translatable="yes">Description</property>
-                        <property name="xalign">0</property>
-                        <property name="halign">start</property>
-                        <property name="valign">center</property>
-                        <property name="hexpand">1</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkEntry" id="entry_tag_name">
-                        <property name="halign">end</property>
-                        <property name="valign">center</property>
-                        <property name="placeholder-text">Type here…</property>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkListBoxRow">
-                <property name="activatable">false</property>
-                <property name="selectable">false</property>
-                <property name="focusable">false</property>
-                <child>
-                  <object class="GtkBox">
-                   <child>
-                     <object class="GtkLabel" id="label_regex">
-                       <property name="label" translatable="yes">Regular Expression</property>
-                       <property name="xalign">0</property>
-                       <property name="halign">start</property>
-                       <property name="valign">center</property>
-                       <property name="hexpand">1</property>
-                     </object>
-                   </child>
-                   <child>
-                     <object class="GtkSwitch" id="switch_regex">
-                       <property name="halign">end</property>
-                       <property name="valign">center</property>
-                       <property name="active">false</property>
-                     </object>
-                   </child>
-                 </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkListBoxRow">
-                <property name="activatable">false</property>
-                <property name="selectable">false</property>
-                <property name="focusable">false</property>
-                <child>
-                  <object class="GtkBox">
-                   <child>
-                     <object class="GtkLabel" id="label_case">
-                       <property name="label" translatable="yes">Case Sensitive</property>
-                       <property name="xalign">0</property>
-                       <property name="halign">start</property>
-                       <property name="valign">center</property>
-                       <property name="hexpand">1</property>
-                     </object>
-                   </child>
-                   <child>
-                     <object class="GtkSwitch" id="switch_case">
-                       <property name="halign">end</property>
-                       <property name="valign">center</property>
-                       <property name="active">false</property>
-                     </object>
-                   </child>
-                 </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkListBoxRow">
-                <property name="activatable">false</property>
-                <property name="selectable">false</property>
-                <property name="focusable">false</property>
-                <child>
-                  <object class="GtkBox">
-                   <child>
-                     <object class="GtkLabel" id="label_fg_color">
-                       <property name="label" translatable="yes">Foreground color</property>
-                       <property name="xalign">0</property>
-                       <property name="halign">start</property>
-                       <property name="valign">center</property>
-                       <property name="hexpand">1</property>
-                     </object>
-                   </child>
-                   <child>
-                     <object class="GtkColorDialogButton" id="button_fg_color">
-                       <property name="halign">end</property>
-                       <property name="valign">center</property>
-                       <property name="rgba">#ffffff</property>
-                     </object>
-                   </child>
-                 </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkListBoxRow">
-                <property name="activatable">false</property>
-                <property name="selectable">false</property>
-                <property name="focusable">false</property>
-                <child>
-                  <object class="GtkBox">
-                   <child>
-                     <object class="GtkLabel" id="label_bg_color">
-                       <property name="label" translatable="yes">Background color</property>
-                       <property name="xalign">0</property>
-                       <property name="halign">start</property>
-                       <property name="valign">center</property>
-                       <property name="hexpand">1</property>
-                     </object>
-                   </child>
-                   <child>
-                     <object class="GtkColorDialogButton" id="button_bg_color">
-                       <property name="halign">end</property>
-                       <property name="valign">center</property>
-                       <property name="rgba">#26a269</property>
-                     </object>
-                   </child>
-                 </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkListBoxRow">
-                <property name="activatable">false</property>
-                <property name="selectable">false</property>
-                <property name="focusable">false</property>
-                <child>
-                  <object class="GtkBox">
-                    <child>
-                      <object class="GtkLabel" id="label_sample">
-                        <property name="label" translatable="yes">Example</property>
-                        <property name="xalign">0</property>
-                        <property name="halign">start</property>
-                        <property name="valign">center</property>
-                        <property name="hexpand">1</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="label_sample_example">
-                        <property name="halign">end</property>
-                        <property name="valign">center</property>
-                        <property name="use_markup">true</property>
-                        <property name="label" translatable="yes">Lorem ipsum dolor sit amet...</property>
-                        <property name="xalign">0</property>
-                        <property name="halign">start</property>
-                        <property name="valign">center</property>
-                        <property name="hexpand">0</property>
-                        <property name="vexpand">1</property>
-                        <property name="justify">right</property>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <style>
-              <class name="rich-list"/>
-              <class name="boxed-list"/>
-            </style>
           </object>
         </child>
       </object>
