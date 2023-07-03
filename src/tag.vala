@@ -45,20 +45,10 @@ namespace Tagger {
             if (!this.enabled) return false;
 
             if (this.is_regex) {
-                RegexCompileFlags reflags = 0;
-
-                if (!this.is_case_sensitive) {
-                    reflags = RegexCompileFlags.CASELESS;
-                }
-
-                Regex regex = new Regex (this.pattern, reflags);
+                var regex = new Regex (this.pattern, is_case_sensitive ? 0 : RegexCompileFlags.CASELESS);
                 return regex.match (text);
             } else {
-                if (this.is_case_sensitive) {
-                    return text.contains (this.pattern);
-                } else {
-                    return text.up ().contains (this.pattern.up ());
-                }
+                return is_case_sensitive ? text.contains (pattern) : text.up ().contains (pattern.up ());
             }
 
             return false;
