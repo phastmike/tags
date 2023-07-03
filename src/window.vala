@@ -421,9 +421,7 @@ namespace Tagger {
                     Tag? tag;
                     model.@get (iter, 0, out tag, -1);
 
-                    Regex regex = new Regex (tag.pattern);
-                    if (regex.match (line) == true) {
-                    //if (line.contains (tag.pattern)) {
+                    if (tag.applies_to (line)) {
                         tag.hits += 1;
                     }
                     return false;

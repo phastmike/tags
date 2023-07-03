@@ -40,6 +40,28 @@ namespace Tagger {
             hits = 0;
             _enabled = true;
         }
-    }
 
+        public bool applies_to (string text) {
+            if (!this.enabled) return false;
+
+            if (this.is_regex) {
+                RegexCompileFlags reflags = 0;
+
+                if (!this.is_case_sensitive) {
+                    reflags = RegexCompileFlags.CASELESS;
+                }
+
+                Regex regex = new Regex (this.pattern, reflags);
+                return regex.match (text);
+            } else {
+                if (this.is_case_sensitive) {
+                    return text.contains (this.pattern);
+                } else {
+                    return text.up ().contains (this.pattern.up ());
+                }
+            }
+
+            return false;
+        }
+    }
 }

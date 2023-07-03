@@ -65,43 +65,12 @@ namespace Tagger {
 
                         tags_model.@get (tag_iter, 0, out tag);
                         
-                        if (tag.enabled) {
-                            if (tag.is_regex) {
-                            
-                                Regex regex;
-
-                                if (tag.is_case_sensitive) {
-                                    regex = new Regex (tag.pattern, RegexCompileFlags.CASELESS);
-                                } else {
-                                    regex = new Regex (tag.pattern);
-                                }
-
-                                if (regex.match (line) == true) {
-                                    found = true;
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-                            }
-
-                            if (tag.is_case_sensitive) {
-                                if (line.contains (tag.pattern)) {
-                                    found = true;
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-                            }
-
-                            if (line.up ().contains (tag.pattern.up ())) {
-                                    found = true;
-                                    return true;
-                            }
-                        }
-
-                        return false;
+                        if (tag.applies_to (line)) {
+                            found = true;
+                        } 
+                        
+                        return found; 
                     });
-
                     return found ? true : false;
                 }
             });
@@ -119,14 +88,10 @@ namespace Tagger {
 
                     tags_model.@get (tag_iter, 0, out tag);
                     
-                    Regex regex = new Regex (tag.pattern);
-                    if (regex.match (renderer_line_text.text) == true && tag.enabled) {
-                    //if (renderer_line_text.text.contains (tag.pattern) && tag.enabled == true) {
+                    if (tag.applies_to (renderer_line_text.text)) {
                         found = true;
-                        return true;
-                    } else {
-                        return false;
                     }
+                    return found;
                 });
 
                 if (found) {
