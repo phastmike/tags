@@ -34,6 +34,12 @@ namespace Tagger {
         private unowned Gtk.Switch switch_case;
 
         [GtkChild]
+        private unowned Gtk.ListBoxRow row_pattern;
+        [GtkChild]
+        private unowned Gtk.ListBoxRow row_description;
+        [GtkChild]
+        private unowned Gtk.ListBoxRow row_regex;
+        [GtkChild]
         private unowned Gtk.ListBox list_box_text;
         [GtkChild]
         private unowned Gtk.Text text_pattern;
@@ -64,12 +70,20 @@ namespace Tagger {
             button_fg_color.notify["rgba"].connect (set_label_example_colors);
             button_bg_color.notify["rgba"].connect (set_label_example_colors);
 
-            /*
             list_box_text.row_activated.connect ((row) => {
-                print ("Row selected ... 0x%p\n", row);
-                row.set_can_focus (!row.get_can_focus ());
+                print ("Row activated ... 0x%p\n", row);
+                if (row == row_pattern) {
+                    text_pattern.grab_focus ();
+                }
+                 
+                if (row == row_description) {
+                    text_description.grab_focus ();
+                }
+
+                if (row == row_regex) {
+                    switch_regex.set_active (!switch_regex.get_active ());
+                }
             });
-            */
         }
 
         public TagDialogWindow (Gtk.Application app, string? text = null) {

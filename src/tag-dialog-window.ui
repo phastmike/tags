@@ -34,14 +34,11 @@
                     <child>
                       <object class="GtkListBox" id="list_box_text">
                         <property name="selection_mode">none</property>
-                        <property name="activate_on_single_click">none</property>
+                        <property name="activate_on_single_click">true</property>
                         <child>
-                          <object class="GtkListBoxRow">
+                          <object class="GtkListBoxRow" id="row_pattern">
                             <property name="activatable">true</property>
-                            <property name="selectable">true</property>
-                            <property name="focusable">true</property>
-                            <property name="can-focus">true</property>
-                            <property name="focus-on-click">true</property>
+                            <property name="focusable">false</property>
                             <child>
                               <object class="GtkBox">
                                 <property name="orientation">horizontal</property>
@@ -79,11 +76,9 @@
                           </object>
                         </child>
                         <child>
-                          <object class="GtkListBoxRow">
+                          <object class="GtkListBoxRow" id="row_description">
                             <property name="activatable">true</property>
-                            <property name="selectable">true</property>
-                            <property name="focusable">true</property>
-                            <property name="can-focus">true</property>
+                            <property name="focusable">false</property>
                             <child>
                               <object class="GtkBox">
                                 <property name="orientation">horizontal</property>
@@ -183,9 +178,8 @@
                           </object>
                         </child>
                         <child>
-                          <object class="GtkListBoxRow">
-                            <property name="activatable">false</property>
-                            <property name="selectable">false</property>
+                          <object class="GtkListBoxRow" id="row_regex">
+                            <property name="activatable">true</property>
                             <property name="focusable">false</property>
                             <child>
                               <object class="GtkBox">
