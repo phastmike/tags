@@ -33,6 +33,13 @@ namespace Tagger {
         [GtkChild]
         private unowned Gtk.Switch switch_case;
 
+        [GtkChild]
+        private unowned Gtk.ListBox list_box_text;
+        [GtkChild]
+        private unowned Gtk.Text text_pattern;
+        [GtkChild]
+        private unowned Gtk.Text text_description;
+
         private const string css_class = "color_scheme_example";
 
         public signal void added (Tag tag);
@@ -56,6 +63,13 @@ namespace Tagger {
 
             button_fg_color.notify["rgba"].connect (set_label_example_colors);
             button_bg_color.notify["rgba"].connect (set_label_example_colors);
+
+            /*
+            list_box_text.row_activated.connect ((row) => {
+                print ("Row selected ... 0x%p\n", row);
+                row.set_can_focus (!row.get_can_focus ());
+            });
+            */
         }
 
         public TagDialogWindow (Gtk.Application app, string? text = null) {

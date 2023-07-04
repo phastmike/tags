@@ -5,7 +5,7 @@
     <property name="title" translatable="yes">Tag</property>
     <property name="resizable">False</property>
     <property name="default_width">600</property>
-    <property name="default_height">485</property>
+    <property name="default_height">490</property>
     <property name="destroy_with_parent">True</property>
     <child>
       <object class="GtkScrolledWindow">
@@ -32,22 +32,28 @@
                   <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <child>
-                      <object class="GtkListBox">
+                      <object class="GtkListBox" id="list_box_text">
                         <property name="selection_mode">none</property>
+                        <property name="activate_on_single_click">none</property>
                         <child>
                           <object class="GtkListBoxRow">
-                            <property name="activatable">false</property>
-                            <property name="selectable">false</property>
-                            <property name="focusable">false</property>
+                            <property name="activatable">true</property>
+                            <property name="selectable">true</property>
+                            <property name="focusable">true</property>
+                            <property name="can-focus">true</property>
+                            <property name="focus-on-click">true</property>
                             <child>
                               <object class="GtkBox">
                                 <property name="orientation">horizontal</property>
                                 <child>
                                   <object class="GtkBox">
                                     <property name="orientation">vertical</property>
+                                    <property name="spacing">3</property>
                                     <child>
                                       <object class="GtkLabel">
-                                        <property name="label" translatable="yes">Pattern</property>
+                                        <!--<property name="label" translatable="yes">Pattern</property>-->
+                                        <property name="label" translatable="yes">&lt;span size="small"&gt;Pattern&lt;/span&gt;</property>
+                                        <property name="use-markup">true</property>
                                         <property name="xalign">0</property>
                                         <property name="halign">start</property>
                                         <property name="valign">center</property>
@@ -58,9 +64,57 @@
                                       </object>
                                     </child>
                                     <child>
-                                      <object class="GtkText">
+                                      <object class="GtkText" id="text_pattern">
                                       </object>
                                     </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkImage">
+                                    <property name="icon-name">document-edit-symbolic</property>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkListBoxRow">
+                            <property name="activatable">true</property>
+                            <property name="selectable">true</property>
+                            <property name="focusable">true</property>
+                            <property name="can-focus">true</property>
+                            <child>
+                              <object class="GtkBox">
+                                <property name="orientation">horizontal</property>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="orientation">vertical</property>
+                                    <property name="spacing">3</property>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <property name="label" translatable="yes">&lt;span size="small"&gt;Description&lt;/span&gt;</property>
+                                        <property name="use-markup">true</property>
+                                        <property name="xalign">0</property>
+                                        <property name="halign">start</property>
+                                        <property name="valign">center</property>
+                                        <property name="hexpand">1</property>
+                                        <style>
+                                          <class name="dim-label"/>
+                                        </style>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkText" id="text_description">
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkButton">
+                                    <property name="has-frame">false</property>
+                                    <property name="tooltip-text">Copy pattern to description</property>
+                                    <property name="icon-name">edit-copy-symbolic</property>
                                   </object>
                                 </child>
                                 <child>
@@ -77,44 +131,7 @@
                             <property name="activatable">false</property>
                             <property name="selectable">false</property>
                             <property name="focusable">false</property>
-                            <child>
-                              <object class="GtkBox">
-                                <property name="orientation">horizontal</property>
-                                <child>
-                                  <object class="GtkBox">
-                                    <property name="orientation">vertical</property>
-                                    <child>
-                                      <object class="GtkLabel">
-                                        <property name="label" translatable="yes">Description</property>
-                                        <property name="xalign">0</property>
-                                        <property name="halign">start</property>
-                                        <property name="valign">center</property>
-                                        <property name="hexpand">1</property>
-                                        <style>
-                                          <class name="dim-label"/>
-                                        </style>
-                                      </object>
-                                    </child>
-                                    <child>
-                                      <object class="GtkText">
-                                      </object>
-                                    </child>
-                                  </object>
-                                </child>
-                                <child>
-                                  <object class="GtkImage">
-                                    <property name="icon-name">document-edit-symbolic</property>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkListBoxRow">
-                            <property name="activatable">false</property>
-                            <property name="selectable">false</property>
-                            <property name="focusable">false</property>
+                            <property name="visible">false</property>
                             <child>
                               <object class="GtkBox">
                                 <child>
@@ -142,6 +159,7 @@
                             <property name="activatable">false</property>
                             <property name="selectable">false</property>
                             <property name="focusable">false</property>
+                            <property name="visible">false</property>
                             <child>
                               <object class="GtkBox">
                                 <child>
