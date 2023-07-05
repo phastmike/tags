@@ -34,10 +34,8 @@
                     <child>
                       <object class="GtkListBox" id="list_box_text">
                         <property name="selection_mode">none</property>
-                        <property name="activate_on_single_click">true</property>
                         <child>
                           <object class="GtkListBoxRow" id="row_pattern">
-                            <property name="activatable">true</property>
                             <property name="focusable">false</property>
                             <child>
                               <object class="GtkBox">
@@ -67,7 +65,8 @@
                                   </object>
                                 </child>
                                 <child>
-                                  <object class="GtkImage">
+                                  <object class="GtkImage" id="icon_edit_pattern">
+                                    <property name="visible">false</property>
                                     <property name="icon-name">document-edit-symbolic</property>
                                   </object>
                                 </child>
@@ -77,7 +76,6 @@
                         </child>
                         <child>
                           <object class="GtkListBoxRow" id="row_description">
-                            <property name="activatable">true</property>
                             <property name="focusable">false</property>
                             <child>
                               <object class="GtkBox">
@@ -107,13 +105,15 @@
                                 </child>
                                 <child>
                                   <object class="GtkButton">
+                                    <property name="visible">false</property>
                                     <property name="has-frame">false</property>
                                     <property name="tooltip-text">Copy pattern to description</property>
                                     <property name="icon-name">edit-copy-symbolic</property>
                                   </object>
                                 </child>
                                 <child>
-                                  <object class="GtkImage">
+                                  <object class="GtkImage" id="icon_edit_description">
+                                    <property name="visible">false</property>
                                     <property name="icon-name">document-edit-symbolic</property>
                                   </object>
                                 </child>
@@ -179,7 +179,6 @@
                         </child>
                         <child>
                           <object class="GtkListBoxRow" id="row_regex">
-                            <property name="activatable">true</property>
                             <property name="focusable">false</property>
                             <child>
                               <object class="GtkBox">
@@ -204,9 +203,7 @@
                           </object>
                         </child>
                         <child>
-                          <object class="GtkListBoxRow">
-                            <property name="activatable">false</property>
-                            <property name="selectable">false</property>
+                          <object class="GtkListBoxRow" id="row_case">
                             <property name="focusable">false</property>
                             <child>
                               <object class="GtkBox">

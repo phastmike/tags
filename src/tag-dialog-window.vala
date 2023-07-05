@@ -40,6 +40,12 @@ namespace Tagger {
         [GtkChild]
         private unowned Gtk.ListBoxRow row_regex;
         [GtkChild]
+        private unowned Gtk.ListBoxRow row_case;
+        [GtkChild]
+        private unowned Gtk.Image icon_edit_pattern;
+        [GtkChild]
+        private unowned Gtk.Image icon_edit_description;
+        [GtkChild]
         private unowned Gtk.ListBox list_box_text;
         [GtkChild]
         private unowned Gtk.Text text_pattern;
@@ -71,7 +77,7 @@ namespace Tagger {
             button_bg_color.notify["rgba"].connect (set_label_example_colors);
 
             list_box_text.row_activated.connect ((row) => {
-                print ("Row activated ... 0x%p\n", row);
+                // Should create classes and methods to decouple this logic
                 if (row == row_pattern) {
                     text_pattern.grab_focus ();
                 }
@@ -83,6 +89,10 @@ namespace Tagger {
                 if (row == row_regex) {
                     switch_regex.set_active (!switch_regex.get_active ());
                 }
+
+                if (row == row_case) {
+                    switch_case.set_active (!switch_case.get_active ());
+                }
             });
         }
 
@@ -90,8 +100,10 @@ namespace Tagger {
             Object(application: app, transient_for: app.active_window, modal: true);
 
             button_ok.clicked.connect (() => {
-                var pattern = entry_tag_pattern.get_text ();
-                var description = entry_tag_name.get_text ();
+                //var pattern = entry_tag_pattern.get_text ();
+                var pattern = text_pattern.get_text ();
+                //var description = entry_tag_name.get_text ();
+                var description = text_description.get_text ();
                 var fg_color = button_fg_color.get_rgba ();
                 var bg_color = button_bg_color.get_rgba ();
 
@@ -106,12 +118,15 @@ namespace Tagger {
                 this.destroy ();
             });
             
-            entry_tag_pattern.changed.connect (validate_entries);
-            entry_tag_name.changed.connect (validate_entries);
+            //entry_tag_pattern.changed.connect (validate_entries);
+            text_pattern.changed.connect (validate_entries);
+            //entry_tag_name.changed.connect (validate_entries);
+            text_description.changed.connect (validate_entries);
             set_label_example_colors ();
 
             if (text != null) {
-                entry_tag_pattern.set_text (text);
+                //entry_tag_pattern.set_text (text);
+                text_pattern.set_text (text);
             }
         }
 
@@ -123,15 +138,19 @@ namespace Tagger {
 
             button_delete.set_visible (true);
 
-            entry_tag_pattern.set_text (tag.pattern); 
-            entry_tag_name.set_text (tag.description);
+            //entry_tag_pattern.set_text (tag.pattern); 
+            text_pattern.set_text (tag.pattern); 
+            //entry_tag_name.set_text (tag.description);
+            text_description.set_text (tag.description);
             button_fg_color.set_rgba (tag.colors.fg);
             button_bg_color.set_rgba (tag.colors.bg);
 
             
             button_ok.clicked.connect (() => { 
-                tag.pattern = entry_tag_pattern.get_text ();
-                tag.description = entry_tag_name.get_text ();
+                //tag.pattern = entry_tag_pattern.get_text ();
+                tag.pattern = text_pattern.get_text ();
+                //tag.description = entry_tag_name.get_text ();
+                tag.description = text_description.get_text ();
                 tag.colors.fg = button_fg_color.get_rgba ();
                 tag.colors.bg = button_bg_color.get_rgba ();
                 tag.is_regex = switch_regex.get_active ();
@@ -145,8 +164,10 @@ namespace Tagger {
                 this.destroy ();
             });
             
-            entry_tag_pattern.changed.connect (validate_entries);
-            entry_tag_name.changed.connect (validate_entries);
+            //entry_tag_pattern.changed.connect (validate_entries);
+            text_pattern.changed.connect (validate_entries);
+            //entry_tag_name.changed.connect (validate_entries);
+            text_description.changed.connect (validate_entries);
             set_label_example_colors ();
 
             switch_regex.set_active(tag.is_regex);
@@ -179,7 +200,8 @@ namespace Tagger {
         }
 
         private void validate_entries () {
-            if (entry_tag_pattern.get_text_length () != 0) {
+            if (text_pattern.get_text_length () != 0) {
+            //if (entry_tag_pattern.get_text_length () != 0) {
                 button_ok.set_sensitive (true);
             } else {
                 button_ok.set_sensitive (false);
