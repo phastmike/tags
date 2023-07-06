@@ -76,6 +76,23 @@ namespace Tagger {
             button_fg_color.notify["rgba"].connect (set_label_example_colors);
             button_bg_color.notify["rgba"].connect (set_label_example_colors);
 
+            string? lstyle = """
+                text {
+                    /*font-size: 0.8333em;*/
+                    font-family: monospace;
+                }
+
+                text selection {
+                    background-color: #3584e4;
+                    color: @accent_fg_color;
+                }
+            """;
+
+            var provider = new Gtk.CssProvider ();
+            provider.load_from_data (lstyle.data);
+            entry_tag_pattern.add_css_class (this.css_class);
+            Gtk.StyleContext.add_provider_for_display (Gdk.Display.get_default (), provider, Gtk.STYLE_PROVIDER_PRIORITY_USER);
+
             list_box_text.row_activated.connect ((row) => {
                 // Should create classes and methods to decouple this logic
                 if (row == row_pattern) {
