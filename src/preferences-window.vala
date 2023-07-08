@@ -82,11 +82,11 @@ namespace Tagger {
                     color: %s;
                     font-size: 0.8333em;
                 }
-            """.printf (this.css_class, bg_web, fg_web);
+            """.printf (PreferencesWindow.css_class, bg_web, fg_web);
 
             var provider = new Gtk.CssProvider ();
             provider.load_from_data (lstyle.data);
-            label_sample_example.add_css_class (this.css_class);
+            label_sample_example.add_css_class (PreferencesWindow.css_class);
             Gtk.StyleContext.add_provider_for_display (Gdk.Display.get_default (), provider, Gtk.STYLE_PROVIDER_PRIORITY_USER);
         }
 

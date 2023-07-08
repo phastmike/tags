@@ -175,7 +175,11 @@ namespace Tagger {
                 line_store_filter.foreach ((model, path, iter) => {
                     string line;
                     model.@get (iter, Columns.LINE_TEXT, out line);
-                    fsout.write(("%s\n".printf (line)).data);
+                    try {
+                        fsout.write(("%s\n".printf (line)).data);
+                    } catch (IOError e) {
+                        warning ("Could not write to file ...");
+                    }
                     return false;
                 });
                 fsout.close ();
