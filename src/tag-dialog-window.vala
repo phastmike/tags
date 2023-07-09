@@ -93,14 +93,22 @@ namespace Tagger {
             this.add_css_class (TagDialogWindow.css_class);
             Gtk.StyleContext.add_provider_for_display (Gdk.Display.get_default (), provider, Gtk.STYLE_PROVIDER_PRIORITY_USER);
 
+            text_pattern.grab_focus_without_selecting ();
+            /*
+            var len = text_pattern.get_buffer ().get_length ();
+            if (len > 0) {
+                text_pattern.set_position ((int) (len - 1));
+            }
+            */
+
             list_box_text.row_activated.connect ((row) => {
                 // Should create classes and methods to decouple this logic
                 if (row == row_pattern) {
-                    text_pattern.grab_focus ();
+                    text_pattern.grab_focus_without_selecting ();
                 }
                  
                 if (row == row_description) {
-                    text_description.grab_focus ();
+                    text_description.grab_focus_without_selecting ();
                 }
 
                 if (row == row_regex) {
