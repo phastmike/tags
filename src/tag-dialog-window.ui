@@ -5,7 +5,7 @@
     <property name="title" translatable="yes">Tag</property>
     <property name="resizable">False</property>
     <property name="default_width">600</property>
-    <property name="default_height">500</property>
+    <property name="default_height">580</property>
     <property name="destroy_with_parent">True</property>
     <child>
       <object class="GtkScrolledWindow">
@@ -31,6 +31,16 @@
                 <child>
                   <object class="GtkBox">
                     <property name="orientation">vertical</property>
+                    <property name="spacing">6</property>
+                      <child>
+                      <object class="GtkLabel">
+                        <property name="label">Filter</property>
+                        <property name="xalign">0</property>
+                        <style>
+                          <class name="title-4"/>
+                        </style>
+                      </object>
+                    </child>
                     <child>
                       <object class="GtkListBox" id="list_box_text">
                         <property name="selection_mode">none</property>
@@ -238,6 +248,16 @@
                 <child>
                   <object class="GtkBox">
                     <property name="orientation">vertical</property>
+                    <property name="spacing">6</property>
+                      <child>
+                      <object class="GtkLabel">
+                        <property name="label">Color scheme</property>
+                        <property name="xalign">0</property>
+                        <style>
+                          <class name="title-4"/>
+                        </style>
+                      </object>
+                    </child>
                     <child>
                       <object class="GtkListBox">
                         <property name="selection_mode">none</property>
