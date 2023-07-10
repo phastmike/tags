@@ -22,6 +22,10 @@ namespace Tagger {
         [GtkChild]
         private unowned Gtk.TreeViewColumn col_hits;
         [GtkChild]
+        private unowned Gtk.TreeViewColumn col_regex;
+        [GtkChild]
+        private unowned Gtk.TreeViewColumn col_case;
+        [GtkChild]
         private unowned Gtk.CellRendererToggle renderer_checkbox;
         [GtkChild]
         private unowned Gtk.CellRendererText renderer_pattern;
@@ -29,6 +33,10 @@ namespace Tagger {
         private unowned Gtk.CellRendererText renderer_description;
         [GtkChild]
         private unowned Gtk.CellRendererText renderer_hits;
+        [GtkChild]
+        private unowned Gtk.CellRendererPixbuf renderer_regex;
+        [GtkChild]
+        private unowned Gtk.CellRendererPixbuf renderer_case;
 
         private Gtk.Application application;
         private int ntags;
@@ -102,6 +110,22 @@ namespace Tagger {
                 model.@get (iter, 0, out tag);
                 var cell_text = (Gtk.CellRendererText) cell;
                 cell_text.text = "%u".printf(tag.hits);
+            });
+
+            col_regex.set_cell_data_func (renderer_regex, (column, cell, model, iter) => {
+                Tag tag;
+                var cell_pixbuf = (Gtk.CellRendererPixbuf) cell;
+                model.@get (iter, 0, out tag);
+                // Could try "emblem-ok-symbolic"
+                cell_pixbuf.icon_name = tag.is_regex ? "emblem-default-symbolic" : null;
+            });
+
+            col_case.set_cell_data_func (renderer_case, (column, cell, model, iter) => {
+                Tag tag;
+                var cell_pixbuf = (Gtk.CellRendererPixbuf) cell;
+                model.@get (iter, 0, out tag);
+                // Could try "emblem-ok-symbolic"
+                cell_pixbuf.icon_name = tag.is_case_sensitive ? "emblem-default-symbolic" : null;
             });
         }
 

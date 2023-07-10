@@ -94,12 +94,6 @@ namespace Tagger {
             Gtk.StyleContext.add_provider_for_display (Gdk.Display.get_default (), provider, Gtk.STYLE_PROVIDER_PRIORITY_USER);
 
             text_pattern.grab_focus_without_selecting ();
-            /*
-            var len = text_pattern.get_buffer ().get_length ();
-            if (len > 0) {
-                text_pattern.set_position ((int) (len - 1));
-            }
-            */
 
             list_box_text.row_activated.connect ((row) => {
                 // Should create classes and methods to decouple this logic

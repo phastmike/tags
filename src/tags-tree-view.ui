@@ -24,7 +24,7 @@
     </child>
     <child>
       <object class="GtkTreeViewColumn" id="col_checkbox">
-        <property name="title"> </property>
+        <property name="title">En</property>
         <child>
           <object class="GtkCellRendererToggle" id="renderer_checkbox"/>
         </child>
@@ -36,6 +36,22 @@
         <property name="expand">True</property>
         <child>
           <object class="GtkCellRendererText" id="renderer_pattern"/>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="col_regex">
+        <property name="title">Re</property>
+        <child>
+          <object class="GtkCellRendererPixbuf" id="renderer_regex"/>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="col_case">
+        <property name="title">Cs</property>
+        <child>
+          <object class="GtkCellRendererPixbuf" id="renderer_case"/>
         </child>
       </object>
     </child>
