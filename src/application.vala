@@ -9,7 +9,8 @@
  */
 
 namespace Tagger {
-    public class Application : Gtk.Application {
+    //public class Application : Gtk.Application {
+    public class Application : Adw.Application {
         private ActionEntry[] APP_ACTIONS = {
             { "new_window", on_new_window },
             { "preferences", on_preferences_action },

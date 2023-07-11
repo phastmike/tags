@@ -14,6 +14,7 @@ tagger_sources = [
 tagger_deps = [
   dependency('gtk4'),
   dependency('json-glib-1.0'),
+  dependency('libadwaita-1'),
 ]
 
 gnome = import('gnome')
