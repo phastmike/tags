@@ -61,6 +61,7 @@ namespace Tagger {
                 "Symbolic icon by www.wishforge.games on freeicons.io"
             };
 
+            /*
             Gtk.show_about_dialog (this.active_window,
                                   "program-name", "Tagger",
                                   "authors", authors,
@@ -72,6 +73,17 @@ namespace Tagger {
                                   "logo-icon-name", "org.ampr.ct1enq.tagger",
                                   "website", "https://github.com/phastmike/tagger",
                                   "website-label", "https://github.com/phastmike/tagger",
+                                  "version", "0.9.21");
+            */
+            Adw.show_about_window (this.active_window,
+                                  "application-name", "Tagger",
+                                  "developer-name", "José Miguel Fonte",
+                                  "developers", authors,
+                                  "artists", artists,
+                                  "license-type", Gtk.License.MIT_X11,
+                                  "application-icon", "org.ampr.ct1enq.tagger",
+                                  "website", "https://github.com/phastmike/tagger",
+                                  "issue-url", "https://github.com/phastmike/tagger/issues",
                                   "version", "0.9.21");
         }
 
