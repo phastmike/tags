@@ -4,7 +4,8 @@
     <property name="modal">True</property>
     <child>
       <object class="GtkShortcutsSection">
-        <property name="section-name">shortcuts</property>
+        <property name="section-name">General</property>
+        <property name="title">General</property>
         <property name="max-height">10</property>
         <child>
           <object class="GtkShortcutsGroup">
@@ -59,6 +60,119 @@
               <object class="GtkShortcutsShortcut">
                 <property name="title" translatable="yes" context="shortcut window">Quit</property>
                 <property name="action-name">app.quit</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkShortcutsSection">
+        <property name="section-name">Tag visibility</property>
+        <property name="title">Visibility</property>
+        <property name="max-height">10</property>
+        <child>
+          <object class="GtkShortcutsGroup">
+            <property name="title" translatable="yes" context="shortcut window">Toggle tag visibility</property>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes" context="shortcut window">Toggle first tag visibility</property>
+                <property name="action-name">win.toggle_tag_1</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes" context="shortcut window">Toggle second tag visibility</property>
+                <property name="action-name">win.toggle_tag_2</property>
+              </object>
+            </child>
+            <!--
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes" context="shortcut window">Third Tag</property>
+                <property name="action-name">win.toggle_tag_3</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes" context="shortcut window">Fourth Tag</property>
+                <property name="action-name">win.toggle_tag_4</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes" context="shortcut window">Fifth Tag</property>
+                <property name="action-name">win.toggle_tag_5</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes" context="shortcut window">Sixth Tag</property>
+                <property name="action-name">win.toggle_tag_6</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes" context="shortcut window">Seventh Tag</property>
+                <property name="action-name">win.toggle_tag_7</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes" context="shortcut window">Eighth Tag</property>
+                <property name="action-name">win.toggle_tag_8</property>
+              </object>
+            </child>
+            -->
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes" context="shortcut window">...</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes" context="shortcut window">Toggle ninth tag visibility</property>
+                <property name="action-name">win.toggle_tag_9</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes" context="shortcut window">Toggle tenth tag visibility</property>
+                <property name="action-name">win.toggle_tag_0</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkShortcutsGroup">
+            <property name="title" translatable="yes" context="shortcut window">Show only</property>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes" context="shortcut window">Show only first tag</property>
+                <property name="action-name">win.only_tag_1</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes" context="shortcut window">Show only second tag</property>
+                <property name="action-name">win.only_tag_2</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes" context="shortcut window">...</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes" context="shortcut window">Show only ninth tag</property>
+                <property name="action-name">win.only_tag_9</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes" context="shortcut window">Show only tenth tag</property>
+                <property name="action-name">win.only_tag_0</property>
               </object>
             </child>
           </object>
