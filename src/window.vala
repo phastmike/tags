@@ -223,6 +223,17 @@ namespace Tagger {
         
         public void set_file (File file) {
             file_opened = file;
+
+            /************************************/
+            FileInfo info = file.query_info ("standard::*", 0);
+            print ("%s\n", info.get_name ());
+            print ("%lld bytes\n", info.get_size ());
+            print ("%s\n", info.get_content_type ());
+            print ("%s\n", info.get_creation_date_time ().to_string ());
+
+            foreach (string attribute in info.list_attributes (null)) { print ("Attribute: %s\n", attribute); }
+            /************************************/
+
             // Sets title for gnome shell window identity
             set_title (file.get_basename ());
 
