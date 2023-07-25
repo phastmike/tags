@@ -8,7 +8,7 @@
     <child type="titlebar">
       <object class="GtkHeaderBar" id="header_bar">
         <style>
-           <class name="flat"/>
+          <!--<class name="flat"/>-->
            <class name="devel"/>
         </style>
 
