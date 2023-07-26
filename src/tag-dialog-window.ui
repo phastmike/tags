@@ -3,7 +3,7 @@
   <requires lib="gtk" version="4.0"/>
   <template class="TaggerTagDialogWindow" parent="GtkWindow">
     <property name="title" translatable="yes">Tag</property>
-    <property name="resizable">False</property>
+    <property name="resizable">true</property>
     <property name="default_width">600</property>
     <property name="default_height">580</property>
     <property name="destroy_with_parent">True</property>
@@ -42,11 +42,20 @@
                       </object>
                     </child>
                     <child>
+                        <!--<object class="AdwPreferencesGroup" id="list_box_text">-->
                       <object class="GtkListBox" id="list_box_text">
                         <property name="selection_mode">none</property>
                         <child>
+                          <object class="AdwEntryRow" id="text_pattern">
+                            <property name="visible">true</property>
+                            <property name="title">Pattern</property>
+                            <property name="show-apply-button">true</property>
+                          </object>
+                        </child>
+                        <child>
                           <object class="GtkListBoxRow" id="row_pattern">
                             <property name="focusable">false</property>
+                            <property name="visible">false</property>
                             <child>
                               <object class="GtkBox">
                                 <property name="orientation">horizontal</property>
@@ -69,7 +78,7 @@
                                       </object>
                                     </child>
                                     <child>
-                                      <object class="GtkText" id="text_pattern">
+                                      <object class="GtkText" id="text_patternz">
                                       </object>
                                     </child>
                                   </object>
@@ -85,8 +94,16 @@
                           </object>
                         </child>
                         <child>
+                          <object class="AdwEntryRow" id="text_description">
+                            <property name="visible">true</property>
+                            <property name="title">Description</property>
+                            <property name="show-apply-button">true</property>
+                          </object>
+                        </child>
+                        <child>
                           <object class="GtkListBoxRow" id="row_description">
                             <property name="focusable">false</property>
+                            <property name="visible">false</property>
                             <child>
                               <object class="GtkBox">
                                 <property name="orientation">horizontal</property>
@@ -108,7 +125,7 @@
                                       </object>
                                     </child>
                                     <child>
-                                      <object class="GtkText" id="text_description">
+                                      <object class="GtkText" id="text_descriptionz">
                                       </object>
                                     </child>
                                   </object>

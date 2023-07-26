@@ -14,7 +14,8 @@ namespace Tagger {
         [GtkChild]
         unowned Gtk.Button button_open_file;
         [GtkChild]
-        unowned Gtk.Button button_tags;
+        //unowned Gtk.Button button_tags;
+        unowned Adw.SplitButton button_tags;
         [GtkChild]
         unowned Gtk.Label subtitle;
         

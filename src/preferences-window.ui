@@ -16,7 +16,7 @@
   </object>
   <template class="TaggerPreferencesWindow" parent="GtkWindow">
     <property name="title" translatable="yes">Preferences</property>
-    <property name="resizable">false</property>
+    <property name="resizable">true</property>
     <property name="default-width">600</property>
     <property name="default-height">390</property>
     <property name="destroy-with-parent">True</property>

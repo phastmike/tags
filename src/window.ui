@@ -11,21 +11,6 @@
           <!--<class name="flat"/>-->
            <class name="devel"/>
         </style>
-
-        <!--
-        <property name="title-widget">
-          <object class="GtkLabel">
-            <property name="label" translatable="yes">Tagger</property>
-            <property name="single-line-mode">True</property>
-            <property name="ellipsize">end</property>
-            <property name="width-chars">5</property>
-            <style>
-              <class name="title"/>
-            </style>
-          </object>
-        </property>
-        -->
-
         <property name="title-widget">
           <object class="GtkBox">
             <property name="orientation">vertical</property>
@@ -76,69 +61,11 @@
        </object>
       </child>
       <child type="end">
-        <object class="AdwSplitButton">
+        <object class="AdwSplitButton" id="button_tags">
           <property name="icon_name">bookmark-new-symbolic</property>
           <property name="popover">file_popover</property>
         </object>
       </child>
-      <child type="end">
-        <object class="GtkBox">
-          <style>
-            <class name="linked"/>
-          </style>
-          <property name="orientation">horizontal</property>
-          <child>
-            <object class="GtkButton" id="button_tags">
-              <property name="visible">true</property>
-              <property name="label">Tags</property>
-              <property name="tooltip_text" translatable="yes">Add Tag</property>
-              <property name="icon_name">bookmark-new-symbolic</property>
-            </object>
-          </child>
-          <!--
-          <child>
-            <object class="GtkToggleButton" id="button_toggle_taglist_visibility">
-              <property name="visible">true</property>
-              <property name="label">TagList</property>
-              <property name="tooltip_text" translatable="yes">Toogle Taglist visibility</property>
-              <property name="icon_name">media-view-subtitles-symbolic</property>
-            </object>
-          </child>
-          <child>
-            <object class="GtkToggleButton" id="button_toggle_untagged_visibility">
-              <property name="visible">true</property>
-              <property name="label">Untagged visibility</property>
-              <property name="tooltip_text" translatable="yes">Toogle untagged visibility</property>
-              <property name="icon_name">view-continuous-symbolic</property>
-            </object>
-         </child>
-          -->
-          <child>
-            <object class="GtkMenuButton">
-              <property name="visible">true</property>
-              <property name="valign">center</property>
-              <property name="popover">file_popover</property>
-              <property name="tooltip_text" translatable="yes">Tags menu</property>
-            </object>
-          </child>
-        </object>
-      </child>
-      <!--
-      <child type="end">
-        <object class="GtkMenuButton">
-          <property name="visible">true</property>
-          <property name="valign">center</property>
-          <property name="popover">file_popover</property>
-        </object>
-      </child>
-      <child type="end">
-        <object class="GtkButton" id="xbutton_tags">
-          <property name="visible">true</property>
-          <property name="label">Tags</property>
-          <property name="icon_name">bookmark-new-symbolic</property>
-        </object>
-      </child>
-      -->
       </object>
     </child>
     <child>

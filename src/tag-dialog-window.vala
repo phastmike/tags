@@ -48,9 +48,11 @@ namespace Tagger {
         [GtkChild]
         private unowned Gtk.ListBox list_box_text;
         [GtkChild]
-        private unowned Gtk.Text text_pattern;
+        //private unowned Gtk.Text text_pattern;
+        private unowned Adw.EntryRow text_pattern;
         [GtkChild]
-        private unowned Gtk.Text text_description;
+        //private unowned Gtk.Text text_description;
+        private unowned Adw.EntryRow text_description;
 
         private const string css_class = "color_scheme_example";
 
@@ -93,7 +95,8 @@ namespace Tagger {
             this.add_css_class (TagDialogWindow.css_class);
             Gtk.StyleContext.add_provider_for_display (Gdk.Display.get_default (), provider, Gtk.STYLE_PROVIDER_PRIORITY_USER);
 
-            text_pattern.grab_focus_without_selecting ();
+            //text_pattern.grab_focus_without_selecting ();
+            this.set_focus (null);
 
             list_box_text.row_activated.connect ((row) => {
                 // Should create classes and methods to decouple this logic
@@ -219,7 +222,8 @@ namespace Tagger {
         }
 
         private void validate_entries () {
-            if (text_pattern.get_text_length () != 0) {
+            if (text_pattern.get_text ().length != 0) {
+            //if (text_pattern.get_text_length () != 0) {
             //if (entry_tag_pattern.get_text_length () != 0) {
                 button_ok.set_sensitive (true);
             } else {
