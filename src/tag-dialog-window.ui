@@ -49,7 +49,7 @@
                           <object class="AdwEntryRow" id="text_pattern">
                             <property name="visible">true</property>
                             <property name="title">Pattern</property>
-                            <property name="show-apply-button">true</property>
+                            <property name="show-apply-button">false</property>
                           </object>
                         </child>
                         <child>
@@ -97,7 +97,7 @@
                           <object class="AdwEntryRow" id="text_description">
                             <property name="visible">true</property>
                             <property name="title">Description</property>
-                            <property name="show-apply-button">true</property>
+                            <property name="show-apply-button">false</property>
                           </object>
                         </child>
                         <child>
@@ -206,7 +206,7 @@
                         </child>
                         <child>
                           <object class="GtkListBoxRow" id="row_regex">
-                            <property name="focusable">false</property>
+                            <property name="focusable">true</property>
                             <child>
                               <object class="GtkBox">
                                <child>
@@ -231,7 +231,7 @@
                         </child>
                         <child>
                           <object class="GtkListBoxRow" id="row_case">
-                            <property name="focusable">false</property>
+                            <property name="focusable">true</property>
                             <child>
                               <object class="GtkBox">
                                <child>
@@ -282,7 +282,7 @@
                             <object class="GtkListBoxRow">
                               <property name="activatable">false</property>
                               <property name="selectable">false</property>
-                              <property name="focusable">false</property>
+                              <property name="focusable">true</property>
                               <child>
                                 <object class="GtkBox">
                                  <child>
@@ -309,7 +309,7 @@
                             <object class="GtkListBoxRow">
                               <property name="activatable">false</property>
                               <property name="selectable">false</property>
-                              <property name="focusable">false</property>
+                              <property name="focusable">true</property>
                               <child>
                                 <object class="GtkBox">
                                  <child>
@@ -336,7 +336,7 @@
                             <object class="GtkListBoxRow">
                               <property name="activatable">false</property>
                               <property name="selectable">false</property>
-                              <property name="focusable">false</property>
+                              <property name="focusable">true</property>
                               <child>
                                 <object class="GtkBox">
                                   <child>
