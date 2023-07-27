@@ -10,13 +10,15 @@
 
 namespace Tagger {
     [GtkTemplate (ui = "/org/ampr/ct1enq/tagger/preferences-window.ui")]
-    public class PreferencesWindow : Gtk.Window {
+    public class PreferencesWindow : Adw.PreferencesWindow {
         [GtkChild]
-        unowned Gtk.ColorDialogButton button_fg_color;
+        private unowned Gtk.ColorDialogButton button_fg_color;
         [GtkChild]
-        unowned Gtk.ColorDialogButton button_bg_color;
+        private unowned Gtk.ColorDialogButton button_bg_color;
         [GtkChild]
-        unowned Gtk.Switch switch_tags_autoload;
+        private unowned Adw.ActionRow row_autoload_tags; 
+        [GtkChild]
+        private unowned Gtk.Switch switch_tags_autoload;
         [GtkChild]
         private unowned Gtk.Label label_sample_example;
 
@@ -57,6 +59,10 @@ namespace Tagger {
             button_bg_color.notify["rgba"].connect (() => {
                 preferences.ln_bg_color = button_bg_color.get_rgba ().to_string ();
                 set_label_example_colors ();
+            });
+
+            row_autoload_tags.activated.connect (() => {
+                switch_tags_autoload.set_active(!switch_tags_autoload.get_active ());
             });
 
             switch_tags_autoload.set_active (preferences.tags_autoload);
