@@ -42,7 +42,7 @@ namespace Tagger {
         }
 
         public bool applies_to (string text) {
-            if (!this.enabled) return false;
+            //if (!this.enabled) return false;
 
             if (this.is_regex) {
                 try {
