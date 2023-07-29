@@ -73,7 +73,7 @@ namespace Tagger {
                                   "logo-icon-name", "org.ampr.ct1enq.tagger",
                                   "website", "https://github.com/phastmike/tagger",
                                   "website-label", "https://github.com/phastmike/tagger",
-                                  "version", "0.9.21");
+                                  "version", "0.9.30");
             */
             Adw.show_about_window (this.active_window,
                                   "application-name", "Tagger",
