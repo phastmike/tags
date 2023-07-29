@@ -301,6 +301,24 @@
                 </child>
               </object>
             </child>
+
+            <!--
+            <child>
+              <object class="AdwSpinRow">
+                <property name="title" translatable="yes">Size points</property>
+                <property name="adjustment">
+                  <object class="GtkAdjustment">
+                    <property name="lower">5</property>
+                    <property name="upper">30</property>
+                    <property name="value">10</property>
+                    <property name="page-increment">1</property>
+                    <property name="step-increment">0.1</property>
+                  </object>
+                </property>
+              </object>
+            </child>
+            -->
+
           </object>
         </child>
       </object>
