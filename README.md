@@ -70,6 +70,7 @@ It depends on:
 - ninja
 - valac
 - Gtk 4
+- LibAdwaita-1
 - json-glib-1.0
 
 ### Build
