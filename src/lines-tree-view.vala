@@ -65,7 +65,7 @@ namespace Tagger {
 
                         tags_model.@get (tag_iter, 0, out tag);
                         
-                        if (tag.applies_to (line)) {
+                        if (tag.applies_to (line) && tag.enabled) {
                             found = true;
                         } 
                         
@@ -88,7 +88,7 @@ namespace Tagger {
 
                     tags_model.@get (tag_iter, 0, out tag);
                     
-                    if (tag.applies_to (renderer_line_text.text)) {
+                    if (tag.applies_to (renderer_line_text.text) && tag.enabled) {
                         found = true;
                     }
                     return found;
