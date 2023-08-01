@@ -8,7 +8,7 @@ Tags have a description name, a visibility toggle, a color scheme and a hit coun
 
 ## Screenshot
 
-![tagger](./data/screenshots/tagger_2.png)
+![tagger](./data/screenshots/tagger_3.png)
 
 ## Actions and Shortchuts
 

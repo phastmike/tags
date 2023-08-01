@@ -117,7 +117,8 @@ namespace Tagger {
                 var cell_pixbuf = (Gtk.CellRendererPixbuf) cell;
                 model.@get (iter, 0, out tag);
                 // Could try "emblem-ok-symbolic"
-                cell_pixbuf.icon_name = tag.is_regex ? "emblem-default-symbolic" : null;
+                //cell_pixbuf.icon_name = tag.is_regex ? "emblem-default-symbolic" : null;
+                cell_pixbuf.icon_name = tag.is_regex ? "process-stop-symbolic" : null;
             });
 
             col_case.set_cell_data_func (renderer_case, (column, cell, model, iter) => {
@@ -125,7 +126,10 @@ namespace Tagger {
                 var cell_pixbuf = (Gtk.CellRendererPixbuf) cell;
                 model.@get (iter, 0, out tag);
                 // Could try "emblem-ok-symbolic"
-                cell_pixbuf.icon_name = tag.is_case_sensitive ? "emblem-default-symbolic" : null;
+                //cell_pixbuf.icon_name = tag.is_case_sensitive ? "emblem-default-symbolic" : null;
+                //cell_pixbuf.icon_name = tag.is_case_sensitive ? "window-close-symbolic" : null;
+                cell_pixbuf.icon_name = tag.is_case_sensitive ? "process-stop-symbolic" : null;
+                //cell_pixbuf.icon_name = tag.is_case_sensitive ? "media-record-symbolic" : null;
             });
         }
 
