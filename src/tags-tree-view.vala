@@ -133,9 +133,13 @@ namespace Tagger {
             });
         }
 
-        public void add_tag (Tag tag) {
+        public void add_tag (Tag tag, bool prepend = false) {
             Gtk.TreeIter iter;
-            tag_store.append (out iter);
+            if (prepend) {
+                tag_store.prepend (out iter);
+            } else {
+                tag_store.append (out iter);
+            }
             tag_store.@set (iter, 0, tag);
         }
 

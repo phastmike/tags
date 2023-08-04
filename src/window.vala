@@ -110,7 +110,7 @@ namespace Tagger {
                     tag.enable_changed.connect ((enabled) => {
                         lines_treeview.line_store_filter.refilter ();
                     });
-                    tags_treeview.add_tag (tag);
+                    tags_treeview.add_tag (tag, true);
                     count_tag_hits ();
                 });
 
@@ -251,7 +251,7 @@ namespace Tagger {
                     lines_treeview.line_store_filter.refilter ();
                 });
 
-                tags_treeview.add_tag (tag);
+                tags_treeview.add_tag (tag, true);
 
                 if (lines_treeview.hide_untagged) { 
                     lines_treeview.line_store_filter.refilter ();
