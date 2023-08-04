@@ -61,7 +61,7 @@
             </child>
             <child>
               <object class="AdwComboRow" id="row_add">
-                <property name="title">Add Tag to </property>
+                <property name="title">Add Tag to the list</property>
                 <property name="activatable">true</property>
                 <property name="model">
                   <object class="GtkStringList">
