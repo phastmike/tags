@@ -33,6 +33,8 @@ namespace Tagger {
         [GtkChild]
         private unowned Adw.ActionRow row_case;
         [GtkChild]
+        private unowned Adw.ComboRow row_add;
+        [GtkChild]
         private unowned Gtk.Switch switch_regex;
         [GtkChild]
         private unowned Gtk.Switch switch_case;
@@ -124,12 +126,15 @@ namespace Tagger {
 
             button_delete.set_visible (true);
 
+            row_add.set_visible (false);
+
             entry_tag_pattern.set_text (tag.pattern); 
             entry_tag_name.set_text (tag.description);
             button_fg_color.set_rgba (tag.colors.fg);
             button_bg_color.set_rgba (tag.colors.bg);
 
-            
+            this.set_default_size (600, 600);
+
             button_ok.clicked.connect (() => { 
                 tag.pattern = entry_tag_pattern.get_text ();
                 tag.description = entry_tag_name.get_text ();
