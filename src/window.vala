@@ -106,11 +106,11 @@ namespace Tagger {
                 selection.set_mode (Gtk.SelectionMode.MULTIPLE);
 
                 var tag_dialog = new TagDialogWindow (app, line_text);
-                tag_dialog.added.connect ((tag) => {
+                tag_dialog.added.connect ((tag, add_to_bottom) => {
                     tag.enable_changed.connect ((enabled) => {
                         lines_treeview.line_store_filter.refilter ();
                     });
-                    tags_treeview.add_tag (tag, true);
+                    tags_treeview.add_tag (tag, add_to_bottom);
                     count_tag_hits ();
                 });
 
@@ -245,13 +245,13 @@ namespace Tagger {
         private void add_tag () {
             var tag_dialog = new TagDialogWindow (this.application);
 
-            tag_dialog.added.connect ((tag) => {
+            tag_dialog.added.connect ((tag, add_to_bottom) => {
 
                 tag.enable_changed.connect ((enabled) => {
                     lines_treeview.line_store_filter.refilter ();
                 });
 
-                tags_treeview.add_tag (tag, true);
+                tags_treeview.add_tag (tag, add_to_bottom);
 
                 if (lines_treeview.hide_untagged) { 
                     lines_treeview.line_store_filter.refilter ();

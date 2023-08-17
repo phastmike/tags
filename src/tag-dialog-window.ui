@@ -70,7 +70,8 @@
                       <item translatable="yes">Bottom</item>
                     </items>
                   </object>
-                 </property>
+                </property>
+                <property name="selected">1</property>
               </object>
             </child>
             <!--

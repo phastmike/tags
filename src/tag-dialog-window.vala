@@ -41,7 +41,7 @@ namespace Tagger {
 
         private const string css_class = "color_scheme_example";
 
-        public signal void added (Tag tag);
+        public signal void added (Tag tag, bool add_to_bottom);
         public signal void edited (Tag tag);
         public signal void deleted (Tag tag);
 
@@ -104,7 +104,8 @@ namespace Tagger {
                 tag.is_regex = switch_regex.get_active ();
                 tag.is_case_sensitive = switch_case.get_active ();
 
-                added (tag);
+                bool add_to_bottom = row_add.get_selected () == 0 ? true : false;
+                added (tag, add_to_bottom);
 
                 this.destroy ();
             });
