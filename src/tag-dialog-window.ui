@@ -12,13 +12,6 @@
         <child>
           <object class="AdwPreferencesGroup">
             <property name="title">Filter</property>
-            <!--
-            <child type="header-suffix">
-              <object class="GtkToggleButton">
-                <property name="label">Prepend</property>
-              </object>
-            </child>
-            -->
             <child>
               <object class="AdwEntryRow" id="entry_tag_pattern">
                 <property name="title">Pattern</property>
@@ -29,7 +22,7 @@
                 <property name="title">Description</property>
               </object>
             </child>
-            <!--
+            <!-- check the closing tags /object/child below
             <child>
               <object class="AdwExpanderRow">
                 <property name="title">Options</property>
@@ -62,6 +55,7 @@
             <child>
               <object class="AdwActionRow" id="row_add">
                 <property name="title">Add to Top</property>
+                <!--<property name="subtitle">To make it have precedence over existing tags</property>-->
                 <property name="activatable">true</property>
                 <child>
                   <object class="GtkSwitch" id="switch_add">
@@ -70,21 +64,6 @@
                   </object>
                 </child>
               </object>
-              <!--
-              <object class="AdwComboRow" id="row_add">
-                <property name="title">Add Tag to the list</property>
-                <property name="activatable">true</property>
-                <property name="model">
-                  <object class="GtkStringList">
-                    <items>
-                      <item translatable="yes">Top</item>
-                      <item translatable="yes">Bottom</item>
-                    </items>
-                  </object>
-                </property>
-                <property name="selected">1</property>
-              </object>
-              -->
             </child>
             <!--
               </object>
