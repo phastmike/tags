@@ -84,7 +84,7 @@ namespace Tagger {
                                   "application-icon", "org.ampr.ct1enq.tagger",
                                   "website", "https://github.com/phastmike/tagger",
                                   "issue-url", "https://github.com/phastmike/tagger/issues",
-                                  "version", "0.9.30");
+                                  "version", "0.9.31");
         }
 
         private void on_preferences_action () {

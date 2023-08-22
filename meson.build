@@ -1,5 +1,5 @@
 project('tagger', ['c', 'vala'],
-          version: '0.9.30',
+          version: '0.9.31',
     meson_version: '>= 0.45.0',
   default_options: [ 'warning_level=2',
                    ],
