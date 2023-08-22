@@ -60,6 +60,17 @@
               </object>
             </child>
             <child>
+              <object class="AdwActionRow" id="row_add">
+                <property name="title">Add to Top</property>
+                <property name="activatable">true</property>
+                <child>
+                  <object class="GtkSwitch" id="switch_add">
+                    <property name="halign">start</property>
+                    <property name="valign">center</property>
+                  </object>
+                </child>
+              </object>
+              <!--
               <object class="AdwComboRow" id="row_add">
                 <property name="title">Add Tag to the list</property>
                 <property name="activatable">true</property>
@@ -73,6 +84,7 @@
                 </property>
                 <property name="selected">1</property>
               </object>
+              -->
             </child>
             <!--
               </object>

@@ -33,15 +33,18 @@ namespace Tagger {
         [GtkChild]
         private unowned Adw.ActionRow row_case;
         [GtkChild]
-        private unowned Adw.ComboRow row_add;
+        private unowned Adw.ActionRow row_add;
+        //private unowned Adw.ComboRow row_add;
         [GtkChild]
         private unowned Gtk.Switch switch_regex;
         [GtkChild]
         private unowned Gtk.Switch switch_case;
+        [GtkChild]
+        private unowned Gtk.Switch switch_add;
 
         private const string css_class = "color_scheme_example";
 
-        public signal void added (Tag tag, bool add_to_bottom);
+        public signal void added (Tag tag, bool add_to_top);
         public signal void edited (Tag tag);
         public signal void deleted (Tag tag);
 
@@ -87,6 +90,10 @@ namespace Tagger {
             row_case.activated.connect (() => {
                 switch_case.set_active(!switch_case.get_active ());
             });
+
+            row_add.activated.connect (() => {
+                switch_add.set_active(!switch_add.get_active ());
+            });
         }
 
         public TagDialogWindow (Gtk.Application app, string? text = null) {
@@ -104,8 +111,9 @@ namespace Tagger {
                 tag.is_regex = switch_regex.get_active ();
                 tag.is_case_sensitive = switch_case.get_active ();
 
-                bool add_to_bottom = row_add.get_selected () == 0 ? true : false;
-                added (tag, add_to_bottom);
+                bool add_to_top = switch_add.get_active ();
+
+                added (tag, add_to_top);
 
                 this.destroy ();
             });
