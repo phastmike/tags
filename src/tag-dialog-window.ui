@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk" version="4.0"/>
+  <object class="GtkPopover" id="popover_add_top">
+    <child>
+      <object class="GtkLabel">
+        <property name="margin-start">8</property>
+        <property name="margin-end">8</property>
+        <property name="margin-top">8</property>
+        <property name="margin-bottom">8</property>
+        <property name="wrap">true</property>
+        <property name="max-width-chars">36</property>
+        <property name="label" translatable="yes">Adds the tag to the top which gives precedence over the other tag filters. Once a line is tagged it disregards other possible tags. The user can reorder tags with drag and drop at any time</property>
+      </object>
+    </child>
+  </object>
   <template class="TaggerTagDialogWindow" parent="GtkWindow">
     <property name="title" translatable="yes">Tag</property>
     <property name="resizable">true</property>
@@ -53,14 +66,32 @@
               </object>
             </child>
             <child>
-              <object class="AdwActionRow" id="row_add">
+              <object class="AdwActionRow" id="row_atop">
                 <property name="title">Add to Top</property>
                 <!--<property name="subtitle">To make it have precedence over existing tags</property>-->
                 <property name="activatable">true</property>
                 <child>
-                  <object class="GtkSwitch" id="switch_add">
-                    <property name="halign">start</property>
+                  <object class="GtkBox">
+                    <property name="orientation">horizontal</property>
+                    <property name="halign">end</property>
                     <property name="valign">center</property>
+                    <property name="spacing">6</property>
+                    <child>
+                      <object class="GtkMenuButton">
+                        <property name="has-frame">false</property>
+                        <property name="icon-name">help-about-symbolic</property>
+                        <property name="popover">popover_add_top</property>
+                        <style>
+                          <class name="toggle"/>
+                        </style>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSwitch" id="switch_atop">
+                        <property name="halign">end</property>
+                        <property name="valign">center</property>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>

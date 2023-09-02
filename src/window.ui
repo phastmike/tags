@@ -5,12 +5,11 @@
     <property name="title" translatable="yes">Tagger</property>
     <property name="default-width">1024</property>
     <property name="default-height">768</property>
+	 <style>
+     <!--<class name="devel"/>-->
+	 </style>
     <child type="titlebar">
       <object class="GtkHeaderBar" id="header_bar">
-        <style>
-          <!--<class name="flat"/>-->
-           <class name="devel"/>
-        </style>
         <property name="title-widget">
           <object class="GtkBox">
             <property name="orientation">vertical</property>
