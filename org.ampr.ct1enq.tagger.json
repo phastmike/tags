@@ -1,7 +1,7 @@
 {
     "app-id" : "org.ampr.ct1enq.tagger",
-    "runtime" : "org.gnome.Sdk",
-    "runtime-version" : "42",
+    "runtime" : "org.gnome.Platform",
+    "runtime-version" : "master",
     "sdk" : "org.gnome.Sdk",
     "command" : "tagger",
     "finish-args" : [
@@ -33,7 +33,7 @@
             "sources" : [
                 {
                     "type" : "git",
-                    "url" : "file:///home/miguel/Programming/tagger"
+                    "url" : "https://github.com/phastmike/tagger.git"
                 }
             ]
         }
