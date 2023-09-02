@@ -4,6 +4,6 @@ Exec=tagger %U
 Icon=org.ampr.ct1enq.tagger
 Terminal=false
 Type=Application
-Categories=GTK;
+Categories=Utility;
 StartupNotify=true
 MimeType=text/plain;
