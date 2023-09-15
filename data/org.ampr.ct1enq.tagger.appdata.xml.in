@@ -1,9 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop">
-	<id>org.ampr.ct1enq.tagger.desktop</id>
-	<metadata_license>CC0-1.0</metadata_license>
-	<project_license>MIT</project_license>
-	<description>
-	  <p>No description</p>
-	</description>
+  <id>org.ampr.ct1enq.tagger.desktop</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT</project_license>
+  <name>tagger</name>
+  <summary>Color logs based on tags</summary>
+  <description>
+    <p>Create tags with color schemes and give color to your logs or text files</p>
+  </description>
+  <screenshots>
+    <screenshot type="default">
+      <caption>Tagger main window.</caption>
+      <image>https://raw.githubusercontent.com/phastmike/tagger/master/data/screenshots/tagger_3.png</image>
+    </screenshot>
+  </screenshots>
+  <developer_name>José Miguel Fonte</developer_name>
+  <update_contact>phastmike@gmail.com</update_contact>
+  <url type="homepage">https://github.com/phastmike/tagger</url>
+  <url type="bugtracker">https://github.com/phastmike/tagger/issues</url>
+  <content_rating type="oars-1.1" />
+  <custom>
+    <value key="x-appcenter-color-primary">#ffffff</value>
+    <value key="x-appcenter-color-primary-text">#000000</value>
+    <value key="x-appcenter-suggested-price">0</value>
+  </custom>
+  <releases>
+    <release version="0.9.31" date="2023-09-15" />
+  </releases>
 </component>
