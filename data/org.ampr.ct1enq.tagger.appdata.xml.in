@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<component type="desktop">
+<!-- Copyright 2022 José Miguel Fonte -->
+<component type="desktop-application">
   <id>org.ampr.ct1enq.tagger.desktop</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>MIT</project_license>
@@ -10,14 +11,15 @@
   </description>
   <screenshots>
     <screenshot type="default">
-      <caption>Tagger main window.</caption>
-      <image>https://raw.githubusercontent.com/phastmike/tagger/master/data/screenshots/tagger_3.png</image>
+      <caption>Tagger main window</caption>
+      <image>https://raw.githubusercontent.com/phastmike/tagger/master/data/screenshots/tagger_2.png</image>
     </screenshot>
   </screenshots>
   <developer_name>José Miguel Fonte</developer_name>
   <update_contact>phastmike@gmail.com</update_contact>
   <url type="homepage">https://github.com/phastmike/tagger</url>
   <url type="bugtracker">https://github.com/phastmike/tagger/issues</url>
+  <launchable type="desktop-id">org.ampr.ct1enq.tagger.desktop</launchable>
   <content_rating type="oars-1.1" />
   <custom>
     <value key="x-appcenter-color-primary">#ffffff</value>
