@@ -75,6 +75,8 @@ namespace Tagger {
                                   "website-label", "https://github.com/phastmike/tagger",
                                   "version", "0.9.30");
             */
+
+           /*
             Adw.show_about_window (this.active_window,
                                   "application-name", "Tagger",
                                   "developer-name", "José Miguel Fonte",
@@ -85,6 +87,24 @@ namespace Tagger {
                                   "website", "https://github.com/phastmike/tagger",
                                   "issue-url", "https://github.com/phastmike/tagger/issues",
                                   "version", "0.9.31");
+            */
+
+            var dialog = new Adw.AboutWindow () {
+                transient_for = (Gtk.Window) this.active_window,
+                modal = true
+            };
+
+            dialog.application_name = "Tagger";
+            dialog.developer_name = "José Miguel Fonte";
+            dialog.developers = authors;
+            dialog.artists = artists;
+            dialog.license_type = Gtk.License.MIT_X11;
+            dialog.application_icon = "org.ampr.ct1enq.tagger";
+            dialog.website = "https://github.com/phastmike/tagger";
+            dialog.issue_url = "https://github.com/phastmike/tagger/issues";
+            dialog.version = "0.9.31";
+
+            dialog.show ();
         }
 
         private void on_preferences_action () {
