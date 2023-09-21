@@ -1,7 +1,7 @@
 {
     "app-id" : "org.ampr.ct1enq.tagger",
     "runtime" : "org.gnome.Platform",
-    "runtime-version" : "master",
+    "runtime-version" : "45",
     "sdk" : "org.gnome.Sdk",
     "command" : "tagger",
     "finish-args" : [
