@@ -398,6 +398,7 @@ namespace Tagger {
             file_chooser_dialog.response.connect ( (response_id) => {
                 if (response_id == Gtk.ResponseType.ACCEPT) {
                     var file = file_chooser_dialog.get_file ();
+                    hide_untagged_lines ();
                     lines_treeview.to_file(file);
                 }
                 file_chooser_dialog.destroy ();
