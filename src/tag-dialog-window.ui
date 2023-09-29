@@ -68,7 +68,6 @@
             <child>
               <object class="AdwActionRow" id="row_atop">
                 <property name="title">Add to Top</property>
-                <!--<property name="subtitle">To make it have precedence over existing tags</property>-->
                 <property name="activatable">true</property>
                 <child>
                   <object class="GtkBox">
@@ -211,3 +210,4 @@
     </widgets>
   </object>
 </interface>
+
