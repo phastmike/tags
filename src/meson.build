@@ -1,4 +1,4 @@
-tagger_sources = [
+tags_sources = [
   'main.vala',
   'window.vala',
   'lines-tree-view.vala',
@@ -11,7 +11,7 @@ tagger_sources = [
   'application.vala',
   ]
 
-tagger_deps = [
+tags_deps = [
   dependency('gtk4'),
   dependency('json-glib-1.0'),
   dependency('libadwaita-1'),
@@ -19,12 +19,12 @@ tagger_deps = [
 
 gnome = import('gnome')
 
-tagger_sources += gnome.compile_resources('tagger-resources',
-  'tagger.gresource.xml',
-  c_name: 'tagger'
+tags_sources += gnome.compile_resources('tags-resources',
+  'tags.gresource.xml',
+  c_name: 'tags'
 )
 
-executable('tagger', tagger_sources,
-  vala_args: '--target-glib=2.50',  dependencies: tagger_deps,
+executable('tags', tags_sources,
+  vala_args: '--target-glib=2.50',  dependencies: tags_deps,
   install: true,
 )

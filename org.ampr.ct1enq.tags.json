@@ -1,9 +1,9 @@
 {
-    "app-id" : "org.ampr.ct1enq.tagger",
+    "app-id" : "org.ampr.ct1enq.tags",
     "runtime" : "org.gnome.Platform",
     "runtime-version" : "45",
     "sdk" : "org.gnome.Sdk",
-    "command" : "tagger",
+    "command" : "tags",
     "finish-args" : [
         "--share=network",
         "--share=ipc",
@@ -27,13 +27,13 @@
     ],
     "modules" : [
         {
-            "name" : "tagger",
+            "name" : "tags",
             "builddir" : true,
             "buildsystem" : "meson",
             "sources" : [
                 {
                     "type" : "git",
-                    "url" : "https://github.com/phastmike/tagger.git"
+                    "url" : "https://github.com/phastmike/tags.git"
                 }
             ]
         }
