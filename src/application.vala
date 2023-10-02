@@ -19,7 +19,7 @@ namespace Tagger {
         };
 
         public Application () {
-            Object (application_id: "org.ampr.ct1enq.tagger", flags: ApplicationFlags.HANDLES_OPEN);
+            Object (application_id: "org.ampr.ct1enq.tags", flags: ApplicationFlags.HANDLES_OPEN);
 
             this.add_action_entries (this.APP_ACTIONS, this);
             this.set_accels_for_action ("app.quit", {"<primary>q"});

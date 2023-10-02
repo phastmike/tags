@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schemalist gettext-domain="tagger">
-   <schema id="org.ampr.ct1enq.tagger" path="/org/ampr/ct1enq/tagger/" gettext-domain="tagger">
+<schemalist gettext-domain="tags">
+   <schema id="org.ampr.ct1enq.tags" path="/org/ampr/ct1enq/tags/" gettext-domain="tags">
 
       <key name="line-numbers-fg-color" type="s">
          <default>"rgb(192,191,188)"</default>

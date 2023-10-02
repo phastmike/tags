@@ -9,7 +9,7 @@
  */
 
 namespace Tagger {
-    [GtkTemplate (ui = "/org/ampr/ct1enq/tagger/tags-tree-view.ui")]
+    [GtkTemplate (ui = "/org/ampr/ct1enq/tags/tags-tree-view.ui")]
     public class TagsTreeView : Gtk.TreeView {
         [GtkChild]
         private unowned Gtk.ListStore tag_store;

@@ -9,7 +9,7 @@
  */
 
 namespace Tagger {
-    [GtkTemplate (ui = "/org/ampr/ct1enq/tagger/preferences-window.ui")]
+    [GtkTemplate (ui = "/org/ampr/ct1enq/tags/preferences-window.ui")]
     public class PreferencesWindow : Adw.PreferencesWindow {
         [GtkChild]
         private unowned Gtk.ColorDialogButton button_fg_color;

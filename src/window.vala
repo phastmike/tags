@@ -9,7 +9,7 @@
  */
 
 namespace Tagger {
-    [GtkTemplate (ui = "/org/ampr/ct1enq/tagger/window.ui")]
+    [GtkTemplate (ui = "/org/ampr/ct1enq/tags/window.ui")]
     public class Window : Gtk.ApplicationWindow {
         [GtkChild]
         unowned Gtk.Button button_open_file;

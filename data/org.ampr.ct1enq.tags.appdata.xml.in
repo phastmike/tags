@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2022 José Miguel Fonte -->
 <component type="desktop-application">
-  <id>org.ampr.ct1enq.tagger.desktop</id>
+  <id>org.ampr.ct1enq.tags.desktop</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>MIT</project_license>
-  <name>tagger</name>
+  <name>tags</name>
   <summary>Color logs based on tags</summary>
   <description>
     <p>Create tags with color schemes and give color to your logs or text files</p>
   </description>
   <screenshots>
     <screenshot type="default">
-      <caption>Tagger main window</caption>
+      <caption>Tags main window</caption>
       <image>https://raw.githubusercontent.com/phastmike/tagger/master/data/screenshots/tagger_2.png</image>
     </screenshot>
   </screenshots>
@@ -19,7 +19,7 @@
   <update_contact>phastmike@gmail.com</update_contact>
   <url type="homepage">https://github.com/phastmike/tagger</url>
   <url type="bugtracker">https://github.com/phastmike/tagger/issues</url>
-  <launchable type="desktop-id">org.ampr.ct1enq.tagger.desktop</launchable>
+  <launchable type="desktop-id">org.ampr.ct1enq.tags.desktop</launchable>
   <content_rating type="oars-1.1" />
   <custom>
     <value key="x-appcenter-color-primary">#ffffff</value>
