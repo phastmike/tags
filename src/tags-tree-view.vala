@@ -63,7 +63,7 @@ namespace Tags {
                 ntags--;
             });
 
-            /* Unselects rows on leaving the object*/
+            /* Unselects rows on leaving the object */
             this.state_flags_changed.connect ((flags) => {
                 if ((flags & Gtk.StateFlags.PRELIGHT) == 0) {
                     this.get_selection ().unselect_all ();
