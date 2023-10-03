@@ -14,7 +14,7 @@
       </object>
     </child>
   </object>
-  <template class="TaggerPreferencesWindow" parent="AdwPreferencesWindow">
+  <template class="TagsPreferencesWindow" parent="AdwPreferencesWindow">
     <property name="title" translatable="yes">Preferences</property>
     <property name="resizable">true</property>
     <property name="default-width">600</property>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk" version="4.0"/>
-  <template class="TaggerWindow" parent="GtkApplicationWindow">
-    <property name="title" translatable="yes">Tagger</property>
+  <template class="TagsWindow" parent="GtkApplicationWindow">
+    <property name="title" translatable="yes">Tags</property>
     <property name="default-width">1024</property>
     <property name="default-height">768</property>
 	 <style>
@@ -16,7 +16,7 @@
             <property name="homogeneous">true</property>
             <child>
               <object class="GtkLabel">
-                <property name="label" translatable="yes">Tagger</property>
+                <property name="label" translatable="yes">Tags</property>
                 <property name="single-line-mode">True</property>
                 <property name="ellipsize">none</property>
                 <property name="width-chars">5</property>
@@ -101,36 +101,36 @@
   <menu id="file_menu">
     <section>
       <item>
-        <attribute name="label" translatable="yes">New Tag</attribute>
+        <attribute name="label" translatable="yes">New tag</attribute>
         <attribute name="action">win.add_tag</attribute>
       </item>
     </section>  
     <section>
       <item>
-        <attribute name="label" translatable="yes">Save Tagged</attribute>
+        <attribute name="label" translatable="yes">Save tagged</attribute>
         <attribute name="action">win.save_tagged</attribute>
         <attribute name="hidden-when">action-disabled</attribute>
       </item>
     </section> 
     <section>
       <item>
-        <attribute name="label" translatable="yes">Load Tags</attribute>
+        <attribute name="label" translatable="yes">Load tags</attribute>
         <attribute name="action">win.load_tags</attribute>
         <!-- <attribute name="icon">document-open-symbolic.symbolic</attribute> -->
       </item>
       <item>
-        <attribute name="label" translatable="yes">Save Tags</attribute>
+        <attribute name="label" translatable="yes">Save tags</attribute>
         <attribute name="action">win.save_tags</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">Remove Tags</attribute>
+        <attribute name="label" translatable="yes">Remove tags</attribute>
         <attribute name="action">win.remove_all_tags</attribute>
       </item>
     </section>
     <section>
       <!-- <attribute name="label" translatable="yes" context="menu item" comments="Translators: ...">UI</attribute> -->
       <item>
-        <attribute name="label" translatable="yes">Hide Tag list</attribute>
+        <attribute name="label" translatable="yes">Hide tags list</attribute>
         <attribute name="action">win.toggle_tags_view</attribute>
       </item>
       <item>
@@ -159,7 +159,7 @@
         <attribute name="action">win.show-help-overlay</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">About Tagger</attribute>
+        <attribute name="label" translatable="yes">About Tags</attribute>
         <attribute name="action">app.about</attribute>
       </item>
     </section>

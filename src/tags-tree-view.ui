@@ -7,7 +7,7 @@
       <column type="GObject"/>
     </columns>
   </object>
-  <template class="TaggerTagsTreeView" parent="GtkTreeView">
+  <template class="TagsTagsTreeView" parent="GtkTreeView">
     <property name="visible">true</property>
     <property name="can-focus">true</property>
     <property name="hscroll-policy">natural</property>

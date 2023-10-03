@@ -14,7 +14,7 @@
       </object>
     </child>
   </object>
-  <template class="TaggerTagDialogWindow" parent="GtkWindow">
+  <template class="TagsTagDialogWindow" parent="GtkWindow">
     <property name="title" translatable="yes">Tag</property>
     <property name="resizable">true</property>
     <property name="default_width">600</property>

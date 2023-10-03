@@ -8,7 +8,7 @@
  * José Miguel Fonte
  */
 
-namespace Tagger {
+namespace Tags {
     [GtkTemplate (ui = "/org/ampr/ct1enq/tags/preferences-window.ui")]
     public class PreferencesWindow : Adw.PreferencesWindow {
         [GtkChild]

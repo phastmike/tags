@@ -8,7 +8,7 @@
  * José Miguel Fonte
  */
 
-namespace Tagger {
+namespace Tags {
     [GtkTemplate (ui = "/org/ampr/ct1enq/tags/lines-tree-view.ui")]
     public class LinesTreeView : Gtk.TreeView {
         [GtkChild]

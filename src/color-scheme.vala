@@ -11,7 +11,7 @@
  * José Miguel Fonte
  */
 
-namespace Tagger {
+namespace Tags {
     public class ColorScheme : Object, Json.Serializable {
         private string _name;
         private Gdk.RGBA? _fg;

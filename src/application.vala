@@ -8,7 +8,7 @@
  * José Miguel Fonte
  */
 
-namespace Tagger {
+namespace Tags {
     //public class Application : Gtk.Application {
     public class Application : Adw.Application {
         private ActionEntry[] APP_ACTIONS = {
@@ -29,7 +29,7 @@ namespace Tagger {
             base.activate ();
             var win = this.active_window;
             if (win == null) {
-                win = new Tagger.Window (this);
+                win = new Tags.Window (this);
             }
             win.present ();
         }
@@ -37,7 +37,7 @@ namespace Tagger {
         public override void open (File[] files, string hint) {
             foreach (var file in files) {
                 if (file.query_exists () == true) {
-                    var win = new Tagger.Window (this);
+                    var win = new Tags.Window (this);
                     win.present ();
                     win.set_file (file);
                 } else {
@@ -62,12 +62,12 @@ namespace Tagger {
             };
 
             Adw.show_about_window (this.active_window,
-                                  "application-name", "Tagger",
+                                  "application-name", "Tags",
                                   "developer-name", "José Miguel Fonte",
                                   "developers", authors,
                                   "artists", artists,
                                   "license-type", Gtk.License.MIT_X11,
-                                  "application-icon", "org.ampr.ct1enq.tagger",
+                                  "application-icon", "org.ampr.ct1enq.tags",
                                   "website", "https://github.com/phastmike/tagger",
                                   "issue-url", "https://github.com/phastmike/tagger/issues",
                                   "version", "0.9.31");
@@ -78,7 +78,7 @@ namespace Tagger {
         }
 
         private void on_new_window () {
-            new Tagger.Window (this).present ();
+            new Tags.Window (this).present ();
         }
     }
 }

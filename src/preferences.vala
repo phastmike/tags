@@ -8,7 +8,7 @@
  * José Miguel Fonte
  */
 
-namespace Tagger {
+namespace Tags {
     public class Preferences : Object {
         private GLib.Settings preferences;
         private static Once<Preferences> _instance;
@@ -22,7 +22,7 @@ namespace Tagger {
         public signal void tags_autoload_changed (Preferences p);
 
         private Preferences () {
-            preferences = new GLib.Settings ("org.ampr.ct1enq.tagger");
+            preferences = new GLib.Settings ("org.ampr.ct1enq.tags");
 
             _ln_fg_color = preferences.get_string ("line-numbers-fg-color");
             _ln_bg_color = preferences.get_string ("line-numbers-bg-color");

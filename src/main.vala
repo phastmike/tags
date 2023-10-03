@@ -9,6 +9,6 @@
  */
 
 int main (string[] args) {
-	var app = new Tagger.Application ();
+	var app = new Tags.Application ();
 	return app.run (args);
 }

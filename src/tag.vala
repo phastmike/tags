@@ -8,7 +8,7 @@
  * José Miguel Fonte
  */
 
-namespace Tagger {
+namespace Tags {
 
     public class Tag : Object {
         private bool _enabled;

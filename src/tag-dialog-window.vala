@@ -9,7 +9,7 @@
  * José Miguel Fonte
  */
 
-namespace Tagger {
+namespace Tags {
     [GtkTemplate (ui = "/org/ampr/ct1enq/tags/tag-dialog-window.ui")]
     public class TagDialogWindow : Gtk.Window {
         [GtkChild]

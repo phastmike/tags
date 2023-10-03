@@ -8,7 +8,7 @@
  * José Miguel Fonte
  */
 
-namespace Tagger {
+namespace Tags {
     [GtkTemplate (ui = "/org/ampr/ct1enq/tags/window.ui")]
     public class Window : Gtk.ApplicationWindow {
         [GtkChild]
@@ -216,7 +216,7 @@ namespace Tagger {
 
             close_request.connect ( () => {
                 // Here we should check for tags file changes and alert user before exit
-                print ("I'm about the exit from tagger ...\n");
+                print ("I'm about the exit ...\n");
                 return false;
             });
         }
