@@ -1,5 +1,5 @@
 project('tags', ['c', 'vala'],
-          version: '0.9.31',
+          version: '0.9.40',
     meson_version: '>= 0.45.0',
   default_options: [ 'warning_level=2',
                    ],

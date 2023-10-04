@@ -1,4 +1,4 @@
-# Tagger [![build](https://app.travis-ci.com/phastmike/tagger.svg?branch=master)](https://app.travis-ci.com/github/phastmike/tagger)
+# Tags
 
 A GNOME text tagger inspired by the [TextAnalysisTool.NET](https://textanalysistool.github.io/)
 tool.
@@ -8,7 +8,7 @@ Tags have a description name, a visibility toggle, a color scheme and a hit coun
 
 ## Screenshot
 
-![tagger](./data/screenshots/tagger_3.png)
+![tagger](./data/screenshots/tags.png)
 
 ## Actions and Shortchuts
 
@@ -85,7 +85,7 @@ Install with:
 
 Then, test it with:
 
-`$ tagger`
+`$ tags`
 
 
 ---
