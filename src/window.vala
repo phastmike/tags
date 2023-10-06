@@ -23,6 +23,7 @@ namespace Tags {
         private TagsTreeView tags_treeview;
         private double paned_last_position = 0.778086;
         private File? file_opened = null;
+        private File? file_tags = null;
 
         private ActionEntry[] WINDOW_ACTIONS = {
             { "add_tag", add_tag },
@@ -262,6 +263,7 @@ namespace Tags {
         }
 
         private void remove_all_tags () {
+            if (file_tags != null) file_tags = null;
             tags_treeview.clear_tags ();
             lines_treeview.line_store_filter.refilter ();
         }
@@ -283,9 +285,10 @@ namespace Tags {
                 }
             }
 
-            file_chooser_dialog.response.connect ( (response_id) => {
+            file_chooser_dialog.response.connect ((response_id) => {
                 if (response_id == Gtk.ResponseType.ACCEPT) {
-                    set_tags(file_chooser_dialog.get_file ());
+                    file_tags = file_chooser_dialog.get_file ();
+                    set_tags(file_tags);
                 }
                 file_chooser_dialog.destroy ();
             });
