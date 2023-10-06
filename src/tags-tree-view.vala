@@ -48,8 +48,8 @@ namespace Tags {
             ntags = 0;
 
             renderer_checkbox.toggled.connect ((path) => {
-                Gtk.TreeIter i;
                 Tag tag;
+                Gtk.TreeIter i;
                 tag_store.get_iter_from_string (out i, path);
                 tag_store.@get (i, 0, out tag);
                 tag.enabled = !tag.enabled;
@@ -116,8 +116,6 @@ namespace Tags {
                 Tag tag;
                 var cell_pixbuf = (Gtk.CellRendererPixbuf) cell;
                 model.@get (iter, 0, out tag);
-                // Could try "emblem-ok-symbolic"
-                //cell_pixbuf.icon_name = tag.is_regex ? "emblem-default-symbolic" : null;
                 cell_pixbuf.icon_name = tag.is_regex ? "process-stop-symbolic" : null;
             });
 
@@ -125,11 +123,7 @@ namespace Tags {
                 Tag tag;
                 var cell_pixbuf = (Gtk.CellRendererPixbuf) cell;
                 model.@get (iter, 0, out tag);
-                // Could try "emblem-ok-symbolic"
-                //cell_pixbuf.icon_name = tag.is_case_sensitive ? "emblem-default-symbolic" : null;
-                //cell_pixbuf.icon_name = tag.is_case_sensitive ? "window-close-symbolic" : null;
                 cell_pixbuf.icon_name = tag.is_case_sensitive ? "process-stop-symbolic" : null;
-                //cell_pixbuf.icon_name = tag.is_case_sensitive ? "media-record-symbolic" : null;
             });
         }
 
