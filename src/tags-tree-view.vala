@@ -38,8 +38,8 @@ namespace Tags {
         [GtkChild]
         private unowned Gtk.CellRendererPixbuf renderer_case;
 
+        public uint ntags;
         private Gtk.Application application;
-        private int ntags;
 
         public TagsTreeView (Gtk.Application app) {
             application = app;
@@ -48,10 +48,9 @@ namespace Tags {
             ntags = 0;
 
             renderer_checkbox.toggled.connect ((path) => {
-                Tag tag;
-                Gtk.TreeIter i;
-                tag_store.get_iter_from_string (out i, path);
-                tag_store.@get (i, 0, out tag);
+                Gtk.TreeIter iter;
+                tag_store.get_iter_from_string (out iter, path);
+                Tag tag = get_tag_from_model_with_iter (tag_store, iter);
                 tag.enabled = !tag.enabled;
             });
 
@@ -70,20 +69,23 @@ namespace Tags {
                 }
             });
         }
+
+        private Tag get_tag_from_model_with_iter (Gtk.TreeModel model, Gtk.TreeIter iter) {
+            Tag tag;
+            model.@get (iter, 0, out tag);
+            return tag;
+        }
         
         private void setup_cell_renderers () {
             col_checkbox.set_cell_data_func (renderer_checkbox, (column, cell, model, iter) => {
-                Tag tag;
                 var cell_toggle = (Gtk.CellRendererToggle) cell;
-                model.@get (iter, 0, out tag);
-                cell_toggle.set_active (tag.enabled);
+                cell_toggle.set_active (get_tag_from_model_with_iter (model, iter).enabled);
             });
             
             col_pattern.set_cell_data_func (renderer_pattern, (column, cell, model, iter) => {
-                Tag tag;
                 var cell_text = (Gtk.CellRendererText) cell;
+                Tag tag = get_tag_from_model_with_iter (model, iter);
 
-                model.@get (iter, 0, out tag);
                 cell_text.text = tag.pattern != null ? tag.pattern : "";
 
                 if (tag.colors.fg != null) {
@@ -99,30 +101,26 @@ namespace Tags {
             });
 
             col_description.set_cell_data_func (renderer_description, (column, cell, model, iter) => {
-                Tag tag;
-                model.@get (iter, 0, out tag);
+                Tag tag = get_tag_from_model_with_iter (model, iter);
                 var cell_text = (Gtk.CellRendererText) cell;
                 cell_text.text = tag.description != null ? tag.description : "";
             });
 
             col_hits.set_cell_data_func (renderer_hits, (column, cell, model, iter) => {
-                Tag tag;
-                model.@get (iter, 0, out tag);
+                Tag tag = get_tag_from_model_with_iter (model, iter);
                 var cell_text = (Gtk.CellRendererText) cell;
                 cell_text.text = "%u".printf(tag.hits);
             });
 
             col_regex.set_cell_data_func (renderer_regex, (column, cell, model, iter) => {
-                Tag tag;
+                Tag tag = get_tag_from_model_with_iter (model, iter);
                 var cell_pixbuf = (Gtk.CellRendererPixbuf) cell;
-                model.@get (iter, 0, out tag);
                 cell_pixbuf.icon_name = tag.is_regex ? "process-stop-symbolic" : null;
             });
 
             col_case.set_cell_data_func (renderer_case, (column, cell, model, iter) => {
-                Tag tag;
+                Tag tag = get_tag_from_model_with_iter (model, iter);
                 var cell_pixbuf = (Gtk.CellRendererPixbuf) cell;
-                model.@get (iter, 0, out tag);
                 cell_pixbuf.icon_name = tag.is_case_sensitive ? "process-stop-symbolic" : null;
             });
         }
@@ -139,8 +137,7 @@ namespace Tags {
 
         public void remove_tag (Tag to_remove) {
             tag_store.foreach ((model, path, iter) => {
-                Tag tag;
-                model.@get (iter, 0, out tag);
+                Tag tag = get_tag_from_model_with_iter (model, iter);
 
                 if (tag == to_remove) {
                     tag_store.remove (ref iter);
@@ -152,10 +149,9 @@ namespace Tags {
         }
 
         public void toggle_tag (int nr) requires (nr >= 0 && nr <= 9) {
-            Tag tag;
             Gtk.TreeIter iter;
             if (model.@get_iter_from_string (out iter, nr.to_string ())) {
-                model.@get (iter, 0,  out tag);
+                Tag tag = get_tag_from_model_with_iter (model, iter);
                 tag.enabled = !tag.enabled;
             }
             queue_draw ();
@@ -163,8 +159,7 @@ namespace Tags {
 
         public void tags_set_enable (bool enable) {
             model.foreach ((model, path, iter) => {
-                Tag tag;
-                model.@get (iter, 0, out tag);
+                Tag tag = get_tag_from_model_with_iter (model, iter);
                 tag.enabled = enable;
                 return false;
             });
@@ -173,8 +168,7 @@ namespace Tags {
 
         public void clear_hit_counters () {
             tag_store.foreach ((tags_model, tag_path, tag_iter) => {
-                Tag tag;
-                tags_model.@get (tag_iter, 0, out tag);
+                Tag tag = get_tag_from_model_with_iter (tags_model, tag_iter);
                 tag.hits = 0;
                 return false;
             });
@@ -190,8 +184,7 @@ namespace Tags {
             Json.Array array = new Json.Array ();
 
             tag_store.foreach ((model, path, iter) => {
-                Tag tag;
-                model.get (iter, 0, out tag);
+                Tag tag = get_tag_from_model_with_iter (model, iter);
                 Json.Node node = Json.gobject_serialize (tag);
                 array.add_element (node); 
                 return false;

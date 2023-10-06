@@ -24,6 +24,7 @@ namespace Tags {
         private double paned_last_position = 0.778086;
         private File? file_opened = null;
         private File? file_tags = null;
+        private bool tags_changed = false;
 
         private ActionEntry[] WINDOW_ACTIONS = {
             { "add_tag", add_tag },
@@ -128,12 +129,14 @@ namespace Tags {
                 var tag_dialog = new TagDialogWindow.for_editing (app, tag);
 
                 tag_dialog.edited.connect ((t) => {
+                    tags_changed = true;
                     if (lines_treeview.hide_untagged) 
                         lines_treeview.line_store_filter.refilter ();
                     count_tag_hits ();
                 });
 
                 tag_dialog.deleted.connect ((tag) => {
+                    tags_changed = true;
                     tags_treeview.remove_tag (tag);
                     if (lines_treeview.hide_untagged) { 
                         lines_treeview.line_store_filter.refilter ();
@@ -217,8 +220,25 @@ namespace Tags {
 
             close_request.connect ( () => {
                 // Here we should check for tags file changes and alert user before exit
-                print ("I'm about the exit ...\n");
-                return false;
+                if (tags_treeview.ntags > 0 && tags_changed) {
+                    var dialog = new Adw.MessageDialog (this, "Tags changed", "There are unsaved changes, discards changes?");
+                    dialog.add_response ("cancel", "_Cancel");
+                    dialog.add_response ("discard", "_Discard");
+                    dialog.set_response_appearance ("discard",Adw.ResponseAppearance.DESTRUCTIVE);
+                    dialog.set_default_response ("cancel");
+                    dialog.set_close_response ("cancel");
+                    dialog.show ();
+                    
+                    dialog.response.connect ((response) => {
+                        if (response == "discard") {
+                            this.application.quit ();
+                        }
+                    
+                    });
+                    return true;
+                } else {
+                    return false;
+                }
             });
         }
         
@@ -246,6 +266,7 @@ namespace Tags {
             var tag_dialog = new TagDialogWindow (this.application);
 
             tag_dialog.added.connect ((tag, add_to_top) => {
+                tags_changed = true;
 
                 tag.enable_changed.connect ((enabled) => {
                     lines_treeview.line_store_filter.refilter ();
@@ -263,9 +284,30 @@ namespace Tags {
         }
 
         private void remove_all_tags () {
-            if (file_tags != null) file_tags = null;
-            tags_treeview.clear_tags ();
-            lines_treeview.line_store_filter.refilter ();
+            // IF TAGS CHANGED WE SHOULD ASK USER IF HE'S SHURE
+            if (tags_changed) {
+                var dialog = new Adw.MessageDialog (this, "Tags changed", "There are unsaved changes, discards changes?");
+                dialog.add_response ("cancel", "_Cancel");
+                dialog.add_response ("discard", "_Discard");
+                dialog.set_response_appearance ("discard",Adw.ResponseAppearance.DESTRUCTIVE);
+                dialog.set_response_appearance ("cancel",Adw.ResponseAppearance.SUGGESTED);
+                dialog.set_default_response ("cancel");
+                dialog.set_close_response ("cancel");
+                dialog.show ();
+                
+                dialog.response.connect ((response) => {
+                    if (response == "discard") {
+                        tags_changed = false;
+                        if (file_tags != null) file_tags = null;
+                        tags_treeview.clear_tags ();
+                        lines_treeview.line_store_filter.refilter ();
+                    }
+                });
+            } else {
+                if (file_tags != null) file_tags = null;
+                tags_treeview.clear_tags ();
+                lines_treeview.line_store_filter.refilter ();
+            }
         }
 
         private void load_tags () {
@@ -301,6 +343,7 @@ namespace Tags {
                 Json.Parser parser = new Json.Parser ();
                 parser.load_from_file (file.get_path ());
 
+                tags_changed = false;
                 tags_treeview.clear_tags ();
 
                 Json.Node node = parser.get_root ();
