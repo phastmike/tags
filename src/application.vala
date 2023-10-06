@@ -68,9 +68,9 @@ namespace Tags {
                                   "artists", artists,
                                   "license-type", Gtk.License.MIT_X11,
                                   "application-icon", "org.ampr.ct1enq.tags",
-                                  "website", "https://github.com/phastmike/tagger",
-                                  "issue-url", "https://github.com/phastmike/tagger/issues",
-                                  "version", "0.9.40");
+                                  "website", "https://github.com/phastmike/tags",
+                                  "issue-url", "https://github.com/phastmike/tags/issues",
+                                  "version", "0.9.41");
         }
 
         private void on_preferences_action () {
