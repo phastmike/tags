@@ -284,8 +284,7 @@ namespace Tags {
         }
 
         private void remove_all_tags () {
-            // IF TAGS CHANGED WE SHOULD ASK USER IF HE'S SHURE
-            if (tags_changed) {
+            if (tags_treeview.ntags > 0 && tags_changed) {
                 var dialog = new Adw.MessageDialog (this, "Tags changed", "There are unsaved changes, discards changes?");
                 dialog.add_response ("cancel", "_Cancel");
                 dialog.add_response ("discard", "_Discard");
