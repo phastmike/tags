@@ -1,6 +1,6 @@
 desktop_file = i18n.merge_file(
-  input: 'org.ampr.ct1enq.tags.desktop.in',
-  output: 'org.ampr.ct1enq.tags.desktop',
+  input: 'io.github.phastmike.tags.desktop.in',
+  output: 'io.github.phastmike.tags.desktop',
   type: 'desktop',
   po_dir: '../po',
   install: true,
@@ -15,8 +15,8 @@ if desktop_utils.found()
 endif
 
 appstream_file = i18n.merge_file(
-  input: 'org.ampr.ct1enq.tags.appdata.xml.in',
-  output: 'org.ampr.ct1enq.tags.appdata.xml',
+  input: 'io.github.phastmike.tags.appdata.xml.in',
+  output: 'io.github.phastmike.tags.appdata.xml',
   po_dir: '../po',
   install: true,
   install_dir: join_paths(get_option('datadir'), 'appdata')
@@ -29,7 +29,7 @@ if appstream_util.found()
   )
 endif
 
-install_data('org.ampr.ct1enq.tags.gschema.xml',
+install_data('io.github.phastmike.tags.gschema.xml',
   install_dir: join_paths(get_option('datadir'), 'glib-2.0/schemas')
 )
 

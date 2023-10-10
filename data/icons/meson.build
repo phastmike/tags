@@ -1,4 +1,4 @@
-application_id = 'org.ampr.ct1enq.tags'
+application_id = 'io.github.phastmike.tags'
 
 scalable_dir = join_paths('hicolor', 'scalable', 'apps')
 install_data(

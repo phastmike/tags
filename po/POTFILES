@@ -1,6 +1,6 @@
-data/org.ampr.ct1enq.tagger.desktop.in
-data/org.ampr.ct1enq.tagger.appdata.xml.in
-data/org.ampr.ct1enq.tagger.gschema.xml
+data/io.github.phastmike.tags.desktop.in
+data/io.github.phastmike.tags.appdata.xml.in
+data/io.github.phastmike.tags.gschema.xml
 src/window.ui
 src/main.vala
 src/window.vala

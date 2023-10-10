@@ -9,7 +9,7 @@
  */
 
 namespace Tags {
-    [GtkTemplate (ui = "/org/ampr/ct1enq/tags/lines-tree-view.ui")]
+    [GtkTemplate (ui = "/io/github/phastmike/tags/lines-tree-view.ui")]
     public class LinesTreeView : Gtk.TreeView {
         [GtkChild]
         unowned Gtk.ListStore line_store;

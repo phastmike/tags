@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
-  <gresource prefix="/org/ampr/ct1enq/tags">
+  <gresource prefix="/io/github/phastmike/tags">
     <file>window.ui</file>
     <file>lines-tree-view.ui</file>
     <file>tags-tree-view.ui</file>

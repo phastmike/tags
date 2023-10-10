@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Tags
 Exec=tags %U
-Icon=org.ampr.ct1enq.tags
+Icon=io.github.phastmike.tags
 Terminal=false
 Type=Application
 Categories=Utility;

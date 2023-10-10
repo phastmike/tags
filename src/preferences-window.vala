@@ -9,7 +9,7 @@
  */
 
 namespace Tags {
-    [GtkTemplate (ui = "/org/ampr/ct1enq/tags/preferences-window.ui")]
+    [GtkTemplate (ui = "/io/github/phastmike/tags/preferences-window.ui")]
     public class PreferencesWindow : Adw.PreferencesWindow {
         [GtkChild]
         private unowned Gtk.ColorDialogButton button_fg_color;

@@ -19,7 +19,7 @@ namespace Tags {
         };
 
         public Application () {
-            Object (application_id: "org.ampr.ct1enq.tags", flags: ApplicationFlags.HANDLES_OPEN);
+            Object (application_id: "io.github.phastmike.tags", flags: ApplicationFlags.HANDLES_OPEN);
 
             this.add_action_entries (this.APP_ACTIONS, this);
             this.set_accels_for_action ("app.quit", {"<primary>q"});
@@ -67,7 +67,7 @@ namespace Tags {
                                   "developers", authors,
                                   "artists", artists,
                                   "license-type", Gtk.License.MIT_X11,
-                                  "application-icon", "org.ampr.ct1enq.tags",
+                                  "application-icon", "io.github.phastmike.tags",
                                   "website", "https://github.com/phastmike/tags",
                                   "issue-url", "https://github.com/phastmike/tags/issues",
                                   "version", Constants.VERSION);

@@ -10,7 +10,7 @@
  */
 
 namespace Tags {
-    [GtkTemplate (ui = "/org/ampr/ct1enq/tags/tag-dialog-window.ui")]
+    [GtkTemplate (ui = "/io/github/phastmike/tags/tag-dialog-window.ui")]
     public class TagDialogWindow : Gtk.Window {
         [GtkChild]
         private unowned Gtk.Button button_ok;

@@ -1,5 +1,5 @@
 {
-    "app-id" : "org.ampr.ct1enq.tags",
+    "app-id" : io.github.phastmike.tags",
     "runtime" : "org.gnome.Platform",
     "runtime-version" : "45",
     "sdk" : "org.gnome.Sdk",
@@ -9,9 +9,7 @@
         "--share=ipc",
         "--socket=fallback-x11",
         "--device=dri",
-        "--socket=wayland",
-        "--filesystem=host",
-        "--filesystem=home"
+        "--socket=wayland"
     ],
     "cleanup" : [
         "/include",
@@ -37,8 +35,5 @@
                 }
             ]
         }
-    ],
-    "build-options" : {
-        "env" : {        }
-    }
+    ]
 }

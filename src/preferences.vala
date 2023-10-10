@@ -22,7 +22,7 @@ namespace Tags {
         public signal void tags_autoload_changed (Preferences p);
 
         private Preferences () {
-            preferences = new GLib.Settings ("org.ampr.ct1enq.tags");
+            preferences = new GLib.Settings ("io.github.phastmike.tags");
 
             _ln_fg_color = preferences.get_string ("line-numbers-fg-color");
             _ln_bg_color = preferences.get_string ("line-numbers-bg-color");
