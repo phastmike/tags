@@ -32,6 +32,7 @@
                 {
                     "type" : "git",
                     "url" : "https://github.com/phastmike/tags.git"
+                    "sha256": "1064b8222ea08afd1c111d98853240266dce475c"
                 }
             ]
         }
