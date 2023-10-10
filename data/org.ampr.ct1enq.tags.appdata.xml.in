@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright 2022 José Miguel Fonte -->
+<!-- 2022/23 José Miguel Fonte -->
 <component type="desktop-application">
   <id>org.ampr.ct1enq.tags.desktop</id>
   <metadata_license>CC0-1.0</metadata_license>
@@ -8,17 +8,29 @@
   <summary>Color logs based on tags</summary>
   <description>
     <p>Create tags with color schemes and give color to your logs or text files</p>
+    <p>Features</p>
+    <ul>
+      <li>Load tags</li>
+      <li>Save tags</li>
+      <li>Remove all tags</li>
+      <li>Open new window</li>
+      <li>User defined line numbering color scheme</li>
+      <li>Simple tags based on string containing a pattern</li>
+      <li>Support for regular expressions</li>
+      <li>Case sensitive support</li>
+      <li>Automic load tags file when opening a file and a similarly named file with added .tags extension exists</li>
+    </ul>
   </description>
   <screenshots>
     <screenshot type="default">
       <caption>Tags main window</caption>
-      <image>https://raw.githubusercontent.com/phastmike/tagger/master/data/screenshots/tagger_2.png</image>
+      <image>https://raw.githubusercontent.com/phastmike/tagger/master/data/screenshots/tags.png</image>
     </screenshot>
   </screenshots>
   <developer_name>José Miguel Fonte</developer_name>
   <update_contact>phastmike@gmail.com</update_contact>
-  <url type="homepage">https://github.com/phastmike/tagger</url>
-  <url type="bugtracker">https://github.com/phastmike/tagger/issues</url>
+  <url type="homepage">https://github.com/phastmike/tags</url>
+  <url type="bugtracker">https://github.com/phastmike/tags</url>
   <launchable type="desktop-id">org.ampr.ct1enq.tags.desktop</launchable>
   <content_rating type="oars-1.1" />
   <custom>
@@ -27,6 +39,10 @@
     <value key="x-appcenter-suggested-price">0</value>
   </custom>
   <releases>
-    <release version="0.9.31" date="2023-09-15" />
+    <release version="1.0.0" date="2023-10-10">
+      <description>
+        First flatpak version and global reach
+      </description>
+    </release>
   </releases>
 </component>

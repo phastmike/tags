@@ -1,0 +1,5 @@
+namespace Constants {
+    public const string VERSION = @VERSION@;
+    public const string APPLICATION_ID = @APPLICATION_ID@;
+    public const string GETTEXT_PACKAGE = @GETTEXT_PACKAGE@;
+}

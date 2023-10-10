@@ -12,9 +12,9 @@ tags_sources = [
   ]
 
 tags_deps = [
-  dependency('gtk4', version: '>=4.9'),
-  dependency('json-glib-1.0', version: '>=1.6'),
-  dependency('libadwaita-1', version: '>=1.2'),
+  dependency('gtk4', version: '>= 4.9'),
+  dependency('json-glib-1.0', version: '>= 1.6'),
+  dependency('libadwaita-1', version: '>= 1.2'),
 ]
 
 gnome = import('gnome')
@@ -24,7 +24,10 @@ tags_sources += gnome.compile_resources('tags-resources',
   c_name: 'tags'
 )
 
-executable('tags', tags_sources,
-  vala_args: '--target-glib=2.50',  dependencies: tags_deps,
+executable('tags',
+  tags_sources,
+  config_file,
+  vala_args: '--target-glib=2.50',
+  dependencies: tags_deps,
   install: true,
 )

@@ -70,7 +70,7 @@ namespace Tags {
                                   "application-icon", "org.ampr.ct1enq.tags",
                                   "website", "https://github.com/phastmike/tags",
                                   "issue-url", "https://github.com/phastmike/tags/issues",
-                                  "version", "0.9.41");
+                                  "version", Constants.VERSION);
         }
 
         private void on_preferences_action () {

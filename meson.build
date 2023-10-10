@@ -1,13 +1,23 @@
-project('tags', ['c', 'vala'],
-          version: '0.9.41',
-    meson_version: '>= 0.45.0',
+project('org.ampr.ct1enq.tags', ['c', 'vala'],
+          version: '1.0',
+    meson_version: '>= 0.49.0',
   default_options: [ 'warning_level=2',
                    ],
 )
 
-i18n = import('i18n')
+i18n            = import('i18n')
+application_id  = 'org.ampr.ct1enq.tags'
 
+conf_data = configuration_data()
+conf_data.set_quoted('APPLICATION_ID', application_id)
+conf_data.set_quoted('GETTEXT_PACKAGE', application_id)
+conf_data.set_quoted('VERSION', meson.project_version())
 
+config_file = configure_file(
+    input : 'src/config.vala.in',
+    output : 'config.vala',
+    configuration : conf_data
+)
 
 subdir('data')
 subdir('src')
