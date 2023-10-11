@@ -4,7 +4,7 @@
   <id>io.github.phastmike.tags.desktop</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>MIT</project_license>
-  <name>tags</name>
+  <name>Tags</name>
   <summary>Color logs based on tags</summary>
   <description>
     <p>Create tags with color schemes and give color to your logs or text files</p>
