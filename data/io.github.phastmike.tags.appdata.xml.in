@@ -30,7 +30,7 @@
   <developer_name>José Miguel Fonte</developer_name>
   <update_contact>phastmike@gmail.com</update_contact>
   <url type="homepage">https://github.com/phastmike/tags</url>
-  <url type="bugtracker">https://github.com/phastmike/tags</url>
+  <url type="bugtracker">https://github.com/phastmike/tags/issues</url>
   <launchable type="desktop-id">io.github.phastmike.tags.desktop</launchable>
   <content_rating type="oars-1.1" />
   <custom>
