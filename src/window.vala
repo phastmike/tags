@@ -403,8 +403,8 @@ namespace Tags {
             file_chooser_dialog.response.connect ( (response_id) => {
                 if (response_id == Gtk.ResponseType.ACCEPT) {
                     var file = file_chooser_dialog.get_file ();
-                    //lines_treeview.to_file(file);
                     tags_treeview.to_file (file);
+                    tags_changed = false;
                 }
                 file_chooser_dialog.destroy ();
             });
