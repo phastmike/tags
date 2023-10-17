@@ -40,6 +40,8 @@ namespace Tags {
         private unowned Gtk.Switch switch_case;
         [GtkChild]
         private unowned Gtk.Switch switch_atop;
+        [GtkChild]
+        private unowned Gtk.Button button_regenerate_cs;
 
         private const string css_class = "color_scheme_example";
 
@@ -64,6 +66,7 @@ namespace Tags {
 
             button_fg_color.notify["rgba"].connect (set_label_example_colors);
             button_bg_color.notify["rgba"].connect (set_label_example_colors);
+            button_regenerate_cs.clicked.connect (set_random_color_scheme);
 
             string? lstyle = """
                 text {
