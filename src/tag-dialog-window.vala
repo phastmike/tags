@@ -125,7 +125,8 @@ namespace Tags {
             
             entry_tag_pattern.changed.connect (validate_entries);
             entry_tag_name.changed.connect (validate_entries);
-            set_label_example_colors ();
+
+            set_random_color_scheme ();
 
             if (text != null) {
                 entry_tag_pattern.set_text (text);
@@ -196,6 +197,25 @@ namespace Tags {
             provider.load_from_data (lstyle.data);
             label_sample_example.add_css_class (TagDialogWindow.css_class);
             Gtk.StyleContext.add_provider_for_display (Gdk.Display.get_default (), provider, Gtk.STYLE_PROVIDER_PRIORITY_USER);
+        }
+
+        private void set_random_color_scheme () {
+            int threshold = 105;
+
+            int red   = Random.int_range (0, 255);
+            int green = Random.int_range (0, 255);
+            int blue  = Random.int_range (0, 255);
+            string bgcolor_rgb = "rgb(%d,%d,%d)".printf (red, green, blue);
+            int bg_delta = (int) ((red * 0.299) + (green * 0.587) + (blue * 0.114));
+
+            Gdk.RGBA bgcolor = Gdk.RGBA ();
+            bgcolor.parse (bgcolor_rgb);
+
+            Gdk.RGBA fgcolor = Gdk.RGBA ();
+            fgcolor.parse((255 - bg_delta < threshold) ? "rgb(0,0,0)" : "rgb(255,255,255)");
+
+            button_bg_color.set_rgba (bgcolor);
+            button_fg_color.set_rgba (fgcolor);
         }
 
         private void validate_entries () {
