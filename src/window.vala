@@ -19,6 +19,7 @@ namespace Tags {
         unowned Gtk.Label subtitle;
         
         private Gtk.Paned paned;
+        private Adw.ToastOverlay overlay;
         private LinesTreeView lines_treeview;
         private TagsTreeView tags_treeview;
         private double paned_last_position = 0.778086;
@@ -146,8 +147,10 @@ namespace Tags {
                 tag_dialog.show ();
             });
 
+            overlay = new Adw.ToastOverlay ();
             paned = new Gtk.Paned (Gtk.Orientation.VERTICAL);
-            set_child (paned);
+            overlay.set_child (paned);
+            set_child (overlay);
 
             paned.notify["position"].connect ((s,p) => {
                 var view_height = paned.get_allocated_height ();
@@ -244,8 +247,10 @@ namespace Tags {
         
         public void set_file (File file) {
             file_opened = file;
+
             // Sets title for gnome shell window identity
             set_title (file.get_basename ());
+
 
             subtitle.set_label (file.get_basename ());
             subtitle.set_tooltip_text (file.get_path ());
