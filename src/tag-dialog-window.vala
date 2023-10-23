@@ -68,23 +68,6 @@ namespace Tags {
             button_bg_color.notify["rgba"].connect (set_label_example_colors);
             button_regenerate_cs.clicked.connect (set_random_color_scheme);
 
-            string? lstyle = """
-                text {
-                    /*font-size: 0.8333em;*/
-                    font-family: monospace;
-                }
-
-                text selection {
-                    background-color: #3584e4;
-                    color: @accent_fg_color;
-                }
-            """;
-
-            var provider = new Gtk.CssProvider ();
-            provider.load_from_data (lstyle.data);
-            this.add_css_class (TagDialogWindow.css_class);
-            Gtk.StyleContext.add_provider_for_display (Gdk.Display.get_default (), provider, Gtk.STYLE_PROVIDER_PRIORITY_USER);
-
             row_regex.activated.connect (() => {
                 switch_regex.set_active(!switch_regex.get_active ());
             });

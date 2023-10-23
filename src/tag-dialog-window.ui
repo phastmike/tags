@@ -28,6 +28,9 @@
             <child>
               <object class="AdwEntryRow" id="entry_tag_pattern">
                 <property name="title">Pattern</property>
+                  <style>
+                    <class name="monospace"/>
+                  </style>
               </object>
             </child>
             <child>
