@@ -265,6 +265,7 @@ namespace Tags {
             }
 
             count_tag_hits ();
+            //print ("Number of lines = %d\n",lines_treeview.get_number_of_items ());
         }
 
         private void add_tag () {

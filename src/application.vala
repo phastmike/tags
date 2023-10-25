@@ -9,7 +9,6 @@
  */
 
 namespace Tags {
-    //public class Application : Gtk.Application {
     public class Application : Adw.Application {
         private ActionEntry[] APP_ACTIONS = {
             { "new_window", on_new_window },
@@ -19,7 +18,7 @@ namespace Tags {
         };
 
         public Application () {
-            Object (application_id: "io.github.phastmike.tags", flags: ApplicationFlags.HANDLES_OPEN);
+            Object (application_id: Constants.APPLICATION_ID, flags: ApplicationFlags.HANDLES_OPEN);
 
             this.add_action_entries (this.APP_ACTIONS, this);
             this.set_accels_for_action ("app.quit", {"<primary>q"});

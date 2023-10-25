@@ -16,6 +16,8 @@ namespace Tags {
         [GtkChild]
         public unowned Gtk.TreeModelFilter line_store_filter;
         [GtkChild]
+        unowned Gtk.TreeViewColumn col_line_number;
+        [GtkChild]
         unowned Gtk.TreeViewColumn col_line_text;
         [GtkChild]
         unowned Gtk.CellRendererText renderer_line_text;
@@ -198,6 +200,10 @@ namespace Tags {
             //renderer_line_number.size_points = 8.0;
             
             queue_draw ();
+        }
+
+        public int get_number_of_items () {
+            return model.iter_n_children (null);
         }
     }
 }
