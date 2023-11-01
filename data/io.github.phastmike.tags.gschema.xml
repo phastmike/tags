@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="tags">
    <schema id="io.github.phastmike.tags" path="/io/github/phastmike/tags/" gettext-domain="tags">
+      <key name="line-numbers-visible" type="b">
+        <default>true</default>
+        <summary>Line numbers visibility</summary>
+        <description>Toggle line numbers visibility</description>
+      </key>
       <key name="line-numbers-fg-color" type="s">
          <default>"rgb(192,191,188)"</default>
          <summary>Line numbers foreground color</summary>

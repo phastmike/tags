@@ -12,6 +12,10 @@ namespace Tags {
     [GtkTemplate (ui = "/io/github/phastmike/tags/preferences-window.ui")]
     public class PreferencesWindow : Adw.PreferencesWindow {
         [GtkChild]
+        private unowned Adw.ActionRow row_ln_visible; 
+        [GtkChild]
+        private unowned Gtk.Switch switch_ln_visible;
+        [GtkChild]
         private unowned Gtk.ColorDialogButton button_fg_color;
         [GtkChild]
         private unowned Gtk.ColorDialogButton button_bg_color;
@@ -61,9 +65,16 @@ namespace Tags {
                 set_label_example_colors ();
             });
 
+            row_ln_visible.activated.connect (() => {
+                switch_ln_visible.set_active(!switch_ln_visible.get_active ());
+            });
+
             row_autoload_tags.activated.connect (() => {
                 switch_tags_autoload.set_active(!switch_tags_autoload.get_active ());
             });
+
+            switch_ln_visible.set_active (preferences.ln_visible);
+            preferences.bind_property("ln_visible", switch_ln_visible, "active", BindingFlags.SYNC_CREATE | BindingFlags.BIDIRECTIONAL);
 
             switch_tags_autoload.set_active (preferences.tags_autoload);
             preferences.bind_property("tags_autoload", switch_tags_autoload, "active", BindingFlags.SYNC_CREATE | BindingFlags.BIDIRECTIONAL);
