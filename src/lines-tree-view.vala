@@ -40,6 +40,7 @@ namespace Tags {
 
             this.tags = tags;
             this.model = line_store_filter;
+            col_line_number.set_visible (preferences.ln_visible);
 
             preferences.line_number_colors_changed.connect ((p) => {
                 update_line_number_colors (p);
