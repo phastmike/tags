@@ -44,6 +44,8 @@ namespace Tags {
         public bool applies_to (string text) {
             //if (!this.enabled) return false;
 
+            if (text == null) return false;
+
             if (this.is_regex) {
                 try {
                     var regex = new Regex (this.pattern, is_case_sensitive ? 0 : RegexCompileFlags.CASELESS);
