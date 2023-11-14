@@ -29,15 +29,11 @@ namespace Tags {
         [GtkChild]
         private unowned Gtk.Label label_sample_example;
         [GtkChild]
-        private unowned Adw.ActionRow row_regex;
+        private unowned Adw.SwitchRow row_regex;
         [GtkChild]
-        private unowned Adw.ActionRow row_case;
+        private unowned Adw.SwitchRow row_case;
         [GtkChild]
         private unowned Adw.ActionRow row_atop;
-        [GtkChild]
-        private unowned Gtk.Switch switch_regex;
-        [GtkChild]
-        private unowned Gtk.Switch switch_case;
         [GtkChild]
         private unowned Gtk.Switch switch_atop;
         [GtkChild]
@@ -68,14 +64,6 @@ namespace Tags {
             button_bg_color.notify["rgba"].connect (set_label_example_colors);
             button_regenerate_cs.clicked.connect (set_random_color_scheme);
 
-            row_regex.activated.connect (() => {
-                switch_regex.set_active(!switch_regex.get_active ());
-            });
-
-            row_case.activated.connect (() => {
-                switch_case.set_active(!switch_case.get_active ());
-            });
-
             row_atop.activated.connect (() => {
                 switch_atop.set_active(!switch_atop.get_active ());
             });
@@ -99,8 +87,8 @@ namespace Tags {
                 var color_scheme = new ColorScheme ("default", fg_color, bg_color);
                 var tag = new Tag (pattern, description, color_scheme); 
                 // Use a builder class
-                tag.is_regex = switch_regex.get_active ();
-                tag.is_case_sensitive = switch_case.get_active ();
+                tag.is_regex = row_regex.get_active ();
+                tag.is_case_sensitive = row_case.get_active ();
 
                 bool add_to_top = switch_atop.get_active ();
 
@@ -141,8 +129,8 @@ namespace Tags {
                 tag.description = entry_tag_name.get_text ();
                 tag.colors.fg = button_fg_color.get_rgba ();
                 tag.colors.bg = button_bg_color.get_rgba ();
-                tag.is_regex = switch_regex.get_active ();
-                tag.is_case_sensitive = switch_case.get_active ();
+                tag.is_regex = row_regex.get_active ();
+                tag.is_case_sensitive = row_case.get_active ();
                 edited (tag);
                 this.destroy ();
             });
@@ -156,8 +144,8 @@ namespace Tags {
             entry_tag_name.changed.connect (validate_entries);
             set_label_example_colors ();
 
-            switch_regex.set_active(tag.is_regex);
-            switch_case.set_active(tag.is_case_sensitive);
+            row_regex.set_active(tag.is_regex);
+            row_case.set_active(tag.is_case_sensitive);
         }
 
         private void set_label_example_colors () {

@@ -45,27 +45,13 @@
                 <property name="expanded">true</property>
             -->
             <child>
-              <object class="AdwActionRow" id="row_regex">
+              <object class="AdwSwitchRow" id="row_regex">
                 <property name="title">Regular Expression</property>
-                <property name="activatable">true</property>
-                <child>
-                  <object class="GtkSwitch" id="switch_regex">
-                    <property name="halign">start</property>
-                    <property name="valign">center</property>
-                  </object>
-                </child>
               </object>
             </child>
             <child>
-              <object class="AdwActionRow" id="row_case">
+              <object class="AdwSwitchRow" id="row_case">
                 <property name="title">Case Sensitive</property>
-                <property name="activatable">true</property>
-                <child>
-                  <object class="GtkSwitch" id="switch_case">
-                    <property name="halign">start</property>
-                    <property name="valign">center</property>
-                  </object>
-                </child>
               </object>
             </child>
             <child>

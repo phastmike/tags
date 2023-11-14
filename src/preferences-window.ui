@@ -62,16 +62,8 @@
           <object class="AdwPreferencesGroup">
             <property name="title">Line Numbers</property>
             <child>
-              <object class="AdwActionRow" id="row_ln_visible">
+              <object class="AdwSwitchRow" id="row_ln_visible">
                 <property name="title">Visible</property>
-                <property name="activatable">true</property>
-                <child type="suffix">
-                  <object class="GtkSwitch" id="switch_ln_visible">
-                    <property name="active">false</property>
-                    <property name="halign">end</property>
-                    <property name="valign">center</property>
-                  </object>
-                </child>
               </object>
             </child>
             <child>
