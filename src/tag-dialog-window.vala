@@ -11,7 +11,7 @@
 
 namespace Tags {
     [GtkTemplate (ui = "/io/github/phastmike/tags/tag-dialog-window.ui")]
-    public class TagDialogWindow : Gtk.Window {
+    public class TagDialogWindow : Adw.Window {
         [GtkChild]
         private unowned Gtk.Button button_ok;
         [GtkChild]
@@ -66,12 +66,6 @@ namespace Tags {
 
             row_atop.activated.connect (() => {
                 switch_atop.set_active(!switch_atop.get_active ());
-            });
-
-            var event_controller = new Gtk.EventControllerKey ();
-            ((Gtk.Widget) this).add_controller (event_controller);
-            event_controller.key_released.connect ((key_val, key_code, state) => {
-                if (key_val == Gdk.Key.Escape) this.close ();
             });
         }
 

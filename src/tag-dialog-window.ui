@@ -1,6 +1,219 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk" version="4.0"/>
+  <template class="TagsTagDialogWindow" parent="AdwWindow">
+    <property name="modal">True</property>
+    <property name="default-width">600</property>
+    <property name="default-height">700</property>
+    <property name="destroy-with-parent">True</property>
+    <property name="hide-on-close">True</property>
+    <child>
+      <object class="GtkShortcutController">
+        <child>
+          <object class="GtkShortcut">
+            <property name="trigger">Escape</property>
+            <property name="action">action(window.close)</property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="AdwToolbarView">
+        <child type="top">
+          <object class="AdwHeaderBar" id="titlebar">
+            <property name="show-end-title-buttons">false</property>
+            <child>
+              <object class="GtkButton" id="button_cancel">
+                <property name="label" translatable="yes">_Cancel</property>
+                <property name="use_underline">True</property>
+              </object>
+            </child>
+            <child type="title">
+              <object class="AdwWindowTitle">
+                <property name="title">Tag</property>
+              </object>
+            </child>
+            <child type="end">
+              <object class="GtkButton" id="button_ok">
+                <style>
+                  <class name="suggested-action"/>
+                </style>
+                <property name="label" translatable="yes">_Add</property>
+                <property name="sensitive">false</property>
+                <property name="use_underline">true</property>
+              </object>
+            </child>
+            <child type="end">
+              <object class="GtkButton" id="button_delete">
+                <style>
+                  <class name="destructive-action"/>
+                </style>
+                <property name="label">_Delete</property>
+                <property name="visible">false</property>
+                <property name="icon_name">app-remove-symbolic</property>
+                <property name="use_underline">True</property>
+                <child>
+                  <object class="GtkBox">
+                    <property name="orientation">horizontal</property>
+                    <property name="spacing">6</property>
+                    <child>
+                      <object class="GtkImage">
+                        <property name="icon_name">app-remove-symbolic</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label">Delete</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <property name="content">
+          <object class="AdwPreferencesPage">
+            <child>
+              <object class="AdwPreferencesGroup">
+                <property name="title">Filter</property>
+                <child>
+                  <object class="AdwEntryRow" id="entry_tag_pattern">
+                    <property name="title">Pattern</property>
+                      <style>
+                        <class name="monospace"/>
+                      </style>
+                  </object>
+                </child>
+                <child>
+                  <object class="AdwEntryRow" id="entry_tag_name">
+                    <property name="title">Description</property>
+                  </object>
+                </child>
+                <!-- check the closing tags /object/child below
+                <child>
+                  <object class="AdwExpanderRow">
+                    <property name="title">Options</property>
+                    <property name="expanded">true</property>
+                -->
+                <child>
+                  <object class="AdwSwitchRow" id="row_regex">
+                    <property name="title">Regular Expression</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="AdwSwitchRow" id="row_case">
+                    <property name="title">Case Sensitive</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="AdwActionRow" id="row_atop">
+                    <property name="title">Add to Top</property>
+                    <property name="activatable">true</property>
+                    <child>
+                      <object class="GtkBox">
+                        <property name="orientation">horizontal</property>
+                        <property name="halign">end</property>
+                        <property name="valign">center</property>
+                        <property name="spacing">6</property>
+                        <child>
+                          <object class="GtkMenuButton">
+                            <property name="has-frame">false</property>
+                            <property name="icon-name">help-about-symbolic</property>
+                            <property name="popover">popover_add_top</property>
+                            <style>
+                              <class name="toggle"/>
+                            </style>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkSwitch" id="switch_atop">
+                            <property name="halign">end</property>
+                            <property name="valign">center</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <!--
+                  </object>
+                </child>
+                -->
+              </object>
+            </child>
+            <child>
+              <object class="AdwPreferencesGroup">
+                <property name="title">Color Scheme</property>
+                <child type="header-suffix">
+                  <object class="GtkButton" id="button_regenerate_cs">
+                    <property name="label">Regenerate</property>
+                    <!--
+                    <style>
+                      <class name="flat"/>
+                    </style>
+                    -->
+                  </object>
+                </child>
+                <child>
+                  <object class="AdwActionRow">
+                    <property name="title">Foreground Color</property>
+                    <child>
+                      <object class="GtkColorDialogButton" id="button_fg_color">
+                        <property name="halign">end</property>
+                        <property name="valign">center</property>
+                        <property name="rgba">#ffffff</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="AdwActionRow">
+                    <property name="title">Background Color</property>
+                    <child>
+                      <object class="GtkColorDialogButton" id="button_bg_color">
+                        <property name="halign">end</property>
+                        <property name="valign">center</property>
+                        <property name="rgba">#26a269</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="AdwActionRow">
+                    <property name="title">Example</property>
+                      <child>
+                        <object class="GtkLabel" id="label_sample_example">
+                          <property name="halign">end</property>
+                          <property name="valign">center</property>
+                          <property name="use_markup">true</property>
+                          <property name="label" translatable="yes">Lorem ipsum dolor sit amet...</property>
+                          <property name="xalign">0</property>
+                          <property name="halign">start</property>
+                          <property name="valign">center</property>
+                          <property name="hexpand">0</property>
+                          <property name="vexpand">1</property>
+                          <property name="justify">right</property>
+                        </object>
+                      </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </property>
+      </object>
+    </child>
+  </template>
+
+  <object class="GtkSizeGroup" id="sg_header_buttons">
+    <widgets>
+      <widget name="button_cancel"/>
+      <widget name="button_delete"/>
+      <widget name="button_ok"/>
+    </widgets>
+  </object>
+
   <object class="GtkPopover" id="popover_add_top">
     <child>
       <object class="GtkLabel">
@@ -13,200 +226,6 @@
         <property name="label" translatable="yes">Adds the tag to the top which gives precedence over the other tag filters. Once a line is tagged it disregards other possible tags. The user can reorder tags with drag and drop at any time</property>
       </object>
     </child>
-  </object>
-  <template class="TagsTagDialogWindow" parent="GtkWindow">
-    <property name="title" translatable="yes">Tag</property>
-    <property name="resizable">true</property>
-    <property name="default_width">600</property>
-    <property name="default_height">670</property>
-    <property name="destroy_with_parent">True</property>
-    <child>
-      <object class="AdwPreferencesPage">
-        <child>
-          <object class="AdwPreferencesGroup">
-            <property name="title">Filter</property>
-            <child>
-              <object class="AdwEntryRow" id="entry_tag_pattern">
-                <property name="title">Pattern</property>
-                  <style>
-                    <class name="monospace"/>
-                  </style>
-              </object>
-            </child>
-            <child>
-              <object class="AdwEntryRow" id="entry_tag_name">
-                <property name="title">Description</property>
-              </object>
-            </child>
-            <!-- check the closing tags /object/child below
-            <child>
-              <object class="AdwExpanderRow">
-                <property name="title">Options</property>
-                <property name="expanded">true</property>
-            -->
-            <child>
-              <object class="AdwSwitchRow" id="row_regex">
-                <property name="title">Regular Expression</property>
-              </object>
-            </child>
-            <child>
-              <object class="AdwSwitchRow" id="row_case">
-                <property name="title">Case Sensitive</property>
-              </object>
-            </child>
-            <child>
-              <object class="AdwActionRow" id="row_atop">
-                <property name="title">Add to Top</property>
-                <property name="activatable">true</property>
-                <child>
-                  <object class="GtkBox">
-                    <property name="orientation">horizontal</property>
-                    <property name="halign">end</property>
-                    <property name="valign">center</property>
-                    <property name="spacing">6</property>
-                    <child>
-                      <object class="GtkMenuButton">
-                        <property name="has-frame">false</property>
-                        <property name="icon-name">help-about-symbolic</property>
-                        <property name="popover">popover_add_top</property>
-                        <style>
-                          <class name="toggle"/>
-                        </style>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkSwitch" id="switch_atop">
-                        <property name="halign">end</property>
-                        <property name="valign">center</property>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <!--
-              </object>
-            </child>
-            -->
-          </object>
-        </child>
-        <child>
-          <object class="AdwPreferencesGroup">
-            <property name="title">Color Scheme</property>
-            <child type="header-suffix">
-              <object class="GtkButton" id="button_regenerate_cs">
-                <property name="label">Regenerate</property>
-                <!--
-                <style>
-                  <class name="flat"/>
-                </style>
-                -->
-              </object>
-            </child>
-            <child>
-              <object class="AdwActionRow">
-                <property name="title">Foreground Color</property>
-                <child>
-                  <object class="GtkColorDialogButton" id="button_fg_color">
-                    <property name="halign">end</property>
-                    <property name="valign">center</property>
-                    <property name="rgba">#ffffff</property>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="AdwActionRow">
-                <property name="title">Background Color</property>
-                <child>
-                  <object class="GtkColorDialogButton" id="button_bg_color">
-                    <property name="halign">end</property>
-                    <property name="valign">center</property>
-                    <property name="rgba">#26a269</property>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="AdwActionRow">
-                <property name="title">Example</property>
-                  <child>
-                    <object class="GtkLabel" id="label_sample_example">
-                      <property name="halign">end</property>
-                      <property name="valign">center</property>
-                      <property name="use_markup">true</property>
-                      <property name="label" translatable="yes">Lorem ipsum dolor sit amet...</property>
-                      <property name="xalign">0</property>
-                      <property name="halign">start</property>
-                      <property name="valign">center</property>
-                      <property name="hexpand">0</property>
-                      <property name="vexpand">1</property>
-                      <property name="justify">right</property>
-                    </object>
-                  </child>
-              </object>
-            </child>
-          </object>
-        </child>
-      </object>
-    </child>
-    <child type="titlebar">
-      <object class="GtkHeaderBar" id="header_bar">
-        <property name="show_title_buttons">false</property>
-        <child>
-          <object class="GtkButton" id="button_cancel">
-            <property name="label">_Cancel</property>
-            <property name="receives_default">True</property>
-            <property name="use_underline">True</property>
-          </object>
-        </child>
-        <child type="end">
-          <object class="GtkButton" id="button_ok">
-            <style>
-              <class name="suggested-action"/>
-            </style>
-            <property name="label">_Add</property>
-            <property name="sensitive">false</property>
-            <property name="receives_default">True</property>
-            <property name="use_underline">True</property>
-          </object>
-        </child>
-        <child type="end">
-          <object class="GtkButton" id="button_delete">
-            <style>
-              <class name="destructive-action"/>
-            </style>
-            <property name="label">_Delete</property>
-            <property name="visible">false</property>
-            <property name="icon_name">app-remove-symbolic</property>
-            <property name="use_underline">True</property>
-            <child>
-              <object class="GtkBox">
-                <property name="orientation">horizontal</property>
-                <property name="spacing">6</property>
-                <child>
-                  <object class="GtkImage">
-                    <property name="icon_name">app-remove-symbolic</property>
-                    <!--<property name="opacity">0.65</property>-->
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="label">Delete</property>
-                  </object>
-                </child>
-              </object>
-            </child>
-          </object>
-        </child>
-      </object>
-    </child>
-  </template>
-  <object class="GtkSizeGroup" id="sg_header_buttons">
-    <widgets>
-      <widget name="button_cancel"/>
-      <widget name="button_ok"/>
-    </widgets>
   </object>
 </interface>
 
