@@ -1,123 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk" version="4.0"/>
-  <template class="TagsWindow" parent="GtkApplicationWindow">
+  <template class="TagsWindow" parent="AdwApplicationWindow">
     <property name="title" translatable="yes">Tags</property>
     <property name="default-width">1024</property>
     <property name="default-height">768</property>
 	  <style>
       <!--<class name="devel"/>-->
 	  </style>
-    <child type="titlebar">
-      <object class="GtkHeaderBar" id="header_bar">
-        <property name="title-widget">
-          <object class="GtkBox">
-            <property name="orientation">vertical</property>
-            <property name="homogeneous">true</property>
-            <child>
-              <object class="GtkLabel">
-                <property name="label" translatable="yes">Tags</property>
-                <property name="single-line-mode">True</property>
-                <property name="ellipsize">none</property>
-                <property name="width-chars">5</property>
-                <style>
-                  <class name="title"/>
-                </style>
+    <property name="content">
+      <object class="AdwToolbarView">
+        <child type="top">
+          <object class="AdwHeaderBar">
+            <child type="start">
+              <object class="GtkButton" id="button_open_file">
+                <property name="visible">true</property>
+                <property name="child">
+                  <object class="AdwButtonContent">
+                    <property name="icon_name">document-open-symbolic</property>
+                    <property name="label" translatable="yes">_Open</property>
+                    <property name="tooltip_text" translatable="yes">Open File</property>
+                    <property name="use-underline">true</property>
+                  </object>
+                </property>
               </object>
             </child>
-            <child>
-              <object class="GtkLabel" id="subtitle">
-                <property name="label" translatable="yes">Open a file to get started ...</property>
-                <property name="has-tooltip">true</property>
-                <property name="single-line-mode">True</property>
-                <property name="ellipsize">end</property>
-                <property name="width-chars">5</property>
-                <style>
-                  <class name="subtitle"/>
-                </style>
+            <child type="title">
+              <object class="AdwWindowTitle" id="window_title">
+                <property name="title">Tags</property>
+                <property name="subtitle">Open a file to get started ...</property>
+              </object>
+            </child>
+            <child type="end">
+              <object class="GtkMenuButton">
+                <property name="primary">true</property>
+                <property name="icon-name">open-menu-symbolic</property>
+                <property name="menu-model">primary_menu</property>
+              </object>
+            </child>
+            <child type="end">
+              <object class="AdwSplitButton" id="button_tags">
+                <property name="icon_name">bookmark-new-symbolic</property>
+                <property name="popover">file_popover</property>
               </object>
             </child>
           </object>
+        </child>
+        <property name="content">
+          <object class="AdwToastOverlay" id="overlay" />
         </property>
-        <child type="end">
-          <object class="GtkMenuButton">
-            <property name="primary">true</property>
-            <property name="icon-name">open-menu-symbolic</property>
-            <property name="menu-model">primary_menu</property>
-          </object>
-        </child>
-        <child type="start">
-          <object class="GtkButton" id="button_open_file">
-            <property name="visible">true</property>
-            <property name="child">
-              <object class="AdwButtonContent">
-                <property name="icon_name">document-open-symbolic</property>
-                <property name="label" translatable="yes">_Open</property>
-                <property name="tooltip_text" translatable="yes">Open File</property>
-                <property name="use-underline">True</property>
-              </object>
-            </property>
-          </object>
-        </child>
-        <child type="end">
-          <object class="AdwSplitButton" id="button_tags">
-            <property name="icon_name">bookmark-new-symbolic</property>
-            <property name="popover">file_popover</property>
-          </object>
-        </child>
-        <!--
-        <child type="end">
-          <object class="GtkBox">
-            <property name="orientation">horizontal</property>
-            <style>
-              <class name="linked"/>
-              <class name="flat"/>
-            </style>
-            <child>
-              <object class="GtkToggleButton">
-                <property name="icon_name">media-view-subtitles-symbolic</property>
-                <style>
-                  <class name="flat"/>
-                </style>
-              </object>
-            </child>
-            <child>
-              <object class="GtkToggleButton">
-                <property name="icon_name">user-bookmarks-symbolic</property>
-                <style>
-                  <class name="flat"/>
-                </style>
-              </object>
-            </child>
-          </object>
-        </child>
-        -->
       </object>
-    </child>
+    </property>
   </template>
 
-  <object class="GtkPopover" id="fpop">
-    <child>
-      <object class="GtkBox" id="open_button_box">
-        <property name="visible">true</property>
-        <child>
-          <object class="GtkLabel" id="open_button_name">
-            <property name="label" translatable="yes">_Open</property>
-            <property name="use-underline">true</property>
-            <property name="visible">true</property>
-            <property name="valign">baseline</property>
-          </object>
-        </child>
-        <child>
-          <object class="GtkImage" id="open_button_arrow">
-            <property name="visible">true</property>
-            <property name="valign">baseline</property>
-            <property name="icon_name">pan-down-symbolic</property>
-          </object>
-        </child>
-      </object>
-    </child>
-  </object>
+  <!-- Additional data -->
 
   <object class="GtkPopoverMenu" id="file_popover">
     <property name="menu-model">file_menu</property>

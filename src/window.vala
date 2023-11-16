@@ -10,16 +10,17 @@
 
 namespace Tags {
     [GtkTemplate (ui = "/io/github/phastmike/tags/window.ui")]
-    public class Window : Gtk.ApplicationWindow {
+    public class Window : Adw.ApplicationWindow {
         [GtkChild]
         unowned Gtk.Button button_open_file;
         [GtkChild]
         unowned Adw.SplitButton button_tags;
         [GtkChild]
-        unowned Gtk.Label subtitle;
+        unowned Adw.WindowTitle window_title;
+        [GtkChild]
+        unowned Adw.ToastOverlay overlay;
         
         private Gtk.Paned paned;
-        private Adw.ToastOverlay overlay;
         private LinesTreeView lines_treeview;
         private TagsTreeView tags_treeview;
         private double paned_last_position = 0.778086;
@@ -147,10 +148,8 @@ namespace Tags {
                 tag_dialog.show ();
             });
 
-            overlay = new Adw.ToastOverlay ();
             paned = new Gtk.Paned (Gtk.Orientation.VERTICAL);
             overlay.set_child (paned);
-            set_child (overlay);
 
             paned.notify["position"].connect ((s,p) => {
                 var view_height = paned.get_allocated_height ();
@@ -252,8 +251,8 @@ namespace Tags {
             set_title (file.get_basename ());
 
 
-            subtitle.set_label (file.get_basename ());
-            subtitle.set_tooltip_text (file.get_path ());
+            window_title.set_subtitle (file.get_basename ());
+            window_title.set_tooltip_text (file.get_path ());
             lines_treeview.set_file (file.get_path ());
             save_tagged_enable ();
 
