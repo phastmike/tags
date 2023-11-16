@@ -77,7 +77,6 @@
       <item>
         <attribute name="label" translatable="yes">Load tags</attribute>
         <attribute name="action">win.load_tags</attribute>
-        <!-- <attribute name="icon">document-open-symbolic.symbolic</attribute> -->
       </item>
       <item>
         <attribute name="label" translatable="yes">Save tags</attribute>
@@ -89,7 +88,6 @@
       </item>
     </section>
     <section>
-      <!-- <attribute name="label" translatable="yes" context="menu item" comments="Translators: ...">UI</attribute> -->
       <item>
         <attribute name="label" translatable="yes">Hide tags list</attribute>
         <attribute name="action">win.toggle_tags_view</attribute>
