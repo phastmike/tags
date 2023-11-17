@@ -50,24 +50,7 @@
                 </style>
                 <property name="label">_Delete</property>
                 <property name="visible">false</property>
-                <property name="icon_name">app-remove-symbolic</property>
                 <property name="use_underline">true</property>
-                <child>
-                  <object class="GtkBox">
-                    <property name="orientation">horizontal</property>
-                    <property name="spacing">6</property>
-                    <child>
-                      <object class="GtkImage">
-                        <property name="icon_name">app-remove-symbolic</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkLabel">
-                        <property name="label">Delete</property>
-                      </object>
-                    </child>
-                  </object>
-                </child>
               </object>
             </child>
           </object>

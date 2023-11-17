@@ -116,7 +116,7 @@ namespace Tags {
             button_fg_color.set_rgba (tag.colors.fg);
             button_bg_color.set_rgba (tag.colors.bg);
 
-            this.set_default_size (600, 600);
+            this.set_default_size (600, 620);
 
             button_ok.clicked.connect (() => { 
                 tag.pattern = entry_tag_pattern.get_text ();

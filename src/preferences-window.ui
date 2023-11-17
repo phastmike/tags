@@ -18,7 +18,7 @@
     <property name="title" translatable="yes">Preferences</property>
     <property name="resizable">true</property>
     <property name="default-width">600</property>
-    <property name="default-height">530</property>
+    <property name="default-height">520</property>
     <property name="destroy-with-parent">True</property>
     <child>
       <object class="AdwPreferencesPage">
