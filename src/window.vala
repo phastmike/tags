@@ -189,31 +189,38 @@ namespace Tags {
             //paned.queue_draw ();
 
             button_open_file.clicked.connect ( () => {
-                var file_chooser_dialog = new Gtk.FileChooserDialog (
-                    "Open File", this, Gtk.FileChooserAction.OPEN, 
-                    "Open", Gtk.ResponseType.ACCEPT, 
-                    "Cancel", Gtk.ResponseType.CANCEL, 
-                    null);
+                var file_dialog = new Gtk.FileDialog ();
+                file_dialog.set_modal (true);
+                file_dialog.set_title ("Open log file");
+                file_dialog.set_accept_label ("Open");
 
-                file_chooser_dialog.set_modal (true);
+                var file_filter1 = new Gtk.FileFilter ();
+                file_filter1.add_pattern ("*.tags");
+                file_filter1.add_mime_type ("text/plain");   // text/*
+                file_filter1.set_filter_name ("Text/Log files");
+
+                var file_filter2 = new Gtk.FileFilter ();
+                file_filter2.add_pattern ("*");
+                file_filter2.set_filter_name ("All files");
+
+                var file_filters = new ListStore (typeof (Gtk.FileFilter));
+                file_filters.append (file_filter1);
+                file_filters.append (file_filter2);
+
+                file_dialog.set_filters (file_filters);
 
                 if (file_opened != null) {
-                    try {
-                        file_chooser_dialog.set_current_folder (file_opened.get_parent ());
-                    } catch (Error e) {
-                        warning ("FileChooser::set_current_folder::error message: %s", e.message);
-                    }
+                    file_dialog.set_initial_folder (file_opened.get_parent ());
+                    message ("Set initial file '%s' ...", file_opened.get_parse_name ());
                 }
 
-                file_chooser_dialog.response.connect ( (response_id) => {
-                    if (response_id == Gtk.ResponseType.ACCEPT) {
-                        // FIXME: May block, with diolog opened, if loading takes time
-                        this.set_file(file_chooser_dialog.get_file ());
+                file_dialog.open.begin (this, null, (obj, res) => {
+                    try {
+                        this.set_file (file_dialog.open.end (res));
+                    } catch (Error e) {
+                        warning ("Error while opening log file: %s ...", e.message);
                     }
-                    file_chooser_dialog.destroy ();
                 });
-
-                file_chooser_dialog.show ();
             });
 
             button_tags.clicked.connect ( () => {
@@ -235,7 +242,6 @@ namespace Tags {
                         if (response == "discard") {
                             this.application.quit ();
                         }
-                    
                     });
                     return true;
                 } else {
@@ -389,32 +395,24 @@ namespace Tags {
         }
 
         private void save_tags () {
-            var file_chooser_dialog = new Gtk.FileChooserDialog (
-                "Save File", this, Gtk.FileChooserAction.SAVE, 
-                "Save", Gtk.ResponseType.ACCEPT, 
-                "Cancel", Gtk.ResponseType.CANCEL, 
-                null);
-
-            file_chooser_dialog.set_modal (true);
+            var file_dialog = new Gtk.FileDialog ();
+            file_dialog.set_modal (true);
+            file_dialog.set_title ("Save tags file");
+            file_dialog.set_accept_label ("Save");
 
             if (file_opened != null) {
-                try {
-                    file_chooser_dialog.set_current_folder (file_opened.get_parent ());
-                } catch (Error e) {
-                    warning ("FileChooser::set_current_folder::error message: %s", e.message);
-                }
+                file_dialog.set_initial_folder (file_opened.get_parent ());
+                file_dialog.set_initial_name ("%s.tags".printf (file_opened.get_parse_name ()));
             }
 
-            file_chooser_dialog.response.connect ( (response_id) => {
-                if (response_id == Gtk.ResponseType.ACCEPT) {
-                    var file = file_chooser_dialog.get_file ();
-                    tags_treeview.to_file (file);
-                    tags_changed = false;
+            file_dialog.save.begin (this, null, (obj, res) => {
+                try {
+                    this.tags_treeview.to_file (file_dialog.save.end (res));
+                    this.tags_changed = false;
+                } catch (Error e) {
+                    warning ("Error while saving tags file: %s ...", e.message);
                 }
-                file_chooser_dialog.destroy ();
             });
-
-            file_chooser_dialog.show ();
         }
 
         private void save_tagged_enable () {
@@ -428,32 +426,24 @@ namespace Tags {
         }
 
         private void save_tagged () {
-            var file_chooser_dialog = new Gtk.FileChooserDialog (
-                "Save File", this, Gtk.FileChooserAction.SAVE, 
-                "Save", Gtk.ResponseType.ACCEPT, 
-                "Cancel", Gtk.ResponseType.CANCEL, 
-                null);
-
-            file_chooser_dialog.set_modal (true);
+            var file_dialog = new Gtk.FileDialog ();
+            file_dialog.set_modal (true);
+            file_dialog.set_title ("Save tags file");
+            file_dialog.set_accept_label ("Save");
 
             if (file_opened != null) {
-                try {
-                    file_chooser_dialog.set_current_folder (file_opened.get_parent ());
-                } catch (Error e) {
-                    warning ("FileChooser::set_current_folder::error message: %s", e.message);
-                }
+                file_dialog.set_initial_folder (file_opened.get_parent ());
+                file_dialog.set_initial_name ("%s.tagged".printf (file_opened.get_parse_name ()));
             }
 
-            file_chooser_dialog.response.connect ( (response_id) => {
-                if (response_id == Gtk.ResponseType.ACCEPT) {
-                    var file = file_chooser_dialog.get_file ();
+            file_dialog.save.begin (this, null, (obj, res) => {
+                try {
                     hide_untagged_lines ();
-                    lines_treeview.to_file(file);
+                    lines_treeview.to_file(file_dialog.save.end (res));
+                } catch (Error e) {
+                    warning ("Error while saving tags file: %s ...", e.message);
                 }
-                file_chooser_dialog.destroy ();
             });
-
-            file_chooser_dialog.show ();
         }
 
         private void count_tag_hits () {
