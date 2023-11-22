@@ -63,11 +63,13 @@ namespace Tags {
             });
 
             /* Unselects rows on leaving the object */
+            /*
             this.state_flags_changed.connect ((flags) => {
                 if ((flags & Gtk.StateFlags.PRELIGHT) == 0) {
                     this.get_selection ().unselect_all ();
                 }
             });
+            */
         }
 
         private Tag get_tag_from_model_with_iter (Gtk.TreeModel model, Gtk.TreeIter iter) {

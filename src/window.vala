@@ -58,7 +58,8 @@ namespace Tags {
             { "only_tag_9", only_tag_9},
             { "only_tag_0", only_tag_0},
             { "enable_all_tags", enable_all_tags },
-            { "disable_all_tags", disable_all_tags }
+            { "disable_all_tags", disable_all_tags },
+            { "next_hit", next_hit }
         };
 
         public Window (Gtk.Application app) {
@@ -92,6 +93,7 @@ namespace Tags {
             app.set_accels_for_action("win.only_tag_0", {"<primary>0"});
             app.set_accels_for_action("win.enable_all_tags", {"<alt>e"});
             app.set_accels_for_action("win.disable_all_tags", {"<alt>d"});
+            app.set_accels_for_action("win.next_hit", {"F3"});
             
             save_tagged_disable ();
             
@@ -610,6 +612,40 @@ namespace Tags {
 
         private void disable_all_tags () {
             tags_treeview.tags_set_enable (false);
+        }
+
+        private void next_hit () {
+            string line; 
+            Tag tag;
+            Tag tag2;
+            Gtk.TreeIter iter;
+            Gtk.TreeModel model;
+            Gtk.TreeIter iter2;
+            Gtk.TreeModel model2;
+            Gtk.TreeIter iter3;
+
+            message ("Next hit pressed [F3] ...\n");
+
+            /* Get selected tag. Should return if no tag selected */
+            var selection = tags_treeview.get_selection ();
+            if (selection.get_selected (out model, out iter) == true) {
+                model.@get (iter, 0, out tag);
+                message ("Tag selected: %s", tag.pattern);
+
+                var line_selection = lines_treeview.get_selection ();
+                line_selection.set_mode (Gtk.SelectionMode.SINGLE);
+                if (line_selection.get_selected (out model2, out iter2) == true) {
+                    for (model2.iter_next (ref iter2); model2.iter_next (ref iter2);) {
+                        model2.@get (iter2, 1, out line);    
+                        if (tag.applies_to (line)) {
+                            message ("Found next ... selecting it ...");
+                            line_selection.select_iter (iter2);
+                            lines_treeview.scroll_to_cell (model2.get_path (iter2), null, true, (float) 0.5, (float) 0.5);
+                            break;
+                        }
+                    } 
+                }
+            }
         }
     }
 }
