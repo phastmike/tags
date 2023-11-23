@@ -59,6 +59,7 @@ namespace Tags {
             { "only_tag_0", only_tag_0},
             { "enable_all_tags", enable_all_tags },
             { "disable_all_tags", disable_all_tags },
+            { "prev_hit", prev_hit },
             { "next_hit", next_hit }
         };
 
@@ -93,6 +94,7 @@ namespace Tags {
             app.set_accels_for_action("win.only_tag_0", {"<primary>0"});
             app.set_accels_for_action("win.enable_all_tags", {"<alt>e"});
             app.set_accels_for_action("win.disable_all_tags", {"<alt>d"});
+            app.set_accels_for_action("win.prev_hit", {"F2"});
             app.set_accels_for_action("win.next_hit", {"F3"});
             
             save_tagged_disable ();
@@ -614,6 +616,53 @@ namespace Tags {
             tags_treeview.tags_set_enable (false);
         }
 
+        private void prev_hit () {
+            string line;
+            Tag tag;
+            Tag tag2;
+            Gtk.TreeIter iter;
+            Gtk.TreeModel model;
+            Gtk.TreeIter iter2;
+            Gtk.TreeModel model2;
+            Gtk.TreeIter iter3;
+            Adw.Toast toast;
+
+            /* Get selected tag. Should return if no tag selected */
+
+            if (lines_treeview.get_number_of_items () == 0 || file_opened == null) {
+                return;
+            }
+
+            tag = tags_treeview.get_selected_tag ();
+            if (tag == null) {
+                return;
+            }
+
+            if (tag.hits == 0) {
+                return;
+            }
+
+            var line_selection = lines_treeview.get_selection ();
+            line_selection.set_mode (Gtk.SelectionMode.SINGLE);
+
+            if (line_selection.get_selected (out model2, out iter2) == false) {
+                if (model2.get_iter_first (out iter2) == false) {
+                    return;
+                } else {
+                    line_selection.select_iter (iter2);
+                }
+            }
+
+            for (model2.iter_previous (ref iter2); model2.iter_previous (ref iter2);) {
+                model2.@get (iter2, 1, out line);
+                if (tag.applies_to (line)) {
+                    line_selection.select_iter (iter2);
+                    lines_treeview.scroll_to_cell (model2.get_path (iter2), null, true, (float) 0.5, (float) 0.5);
+                    break;
+                }
+            }
+        }
+
         private void next_hit () {
             string line;
             Tag tag;
@@ -623,41 +672,40 @@ namespace Tags {
             Gtk.TreeIter iter2;
             Gtk.TreeModel model2;
             Gtk.TreeIter iter3;
-
-            message ("Next hit pressed [F3] ...\n");
+            Adw.Toast toast;
 
             /* Get selected tag. Should return if no tag selected */
-            var selection = tags_treeview.get_selection ();
-            if (selection.get_selected (out model, out iter) == true) {
-                model.@get (iter, 0, out tag);
-                message ("Tag selected: %s", tag.pattern);
 
-                if (tag.hits == 0) {
-                    var toast = new Adw.Toast ("This tag has no hits ...");
-                    toast.timeout = 3;
-                    overlay.add_toast (toast);
+            if (lines_treeview.get_number_of_items () == 0 || file_opened == null) {
+                return;
+            }
+
+            tag = tags_treeview.get_selected_tag ();
+            if (tag == null) {
+                return;
+            }
+
+            if (tag.hits == 0) {
+                return;
+            }
+
+            var line_selection = lines_treeview.get_selection ();
+            line_selection.set_mode (Gtk.SelectionMode.SINGLE);
+
+            if (line_selection.get_selected (out model2, out iter2) == false) {
+                if (model2.get_iter_first (out iter2) == false) {
                     return;
-                }
-
-                var line_selection = lines_treeview.get_selection ();
-                line_selection.set_mode (Gtk.SelectionMode.SINGLE);
-
-                //if (line_selection.get_selected (out model2, out iter2) == false) {
-
-                if (line_selection.get_selected (out model2, out iter2) == true) {
-                    for (model2.iter_next (ref iter2); model2.iter_next (ref iter2);) {
-                        model2.@get (iter2, 1, out line);
-                        if (tag.applies_to (line)) {
-                            message ("Found next ... selecting it ...");
-                            line_selection.select_iter (iter2);
-                            lines_treeview.scroll_to_cell (model2.get_path (iter2), null, true, (float) 0.5, (float) 0.5);
-                            break;
-                        }
-                    }
                 } else {
-                    var toast = new Adw.Toast ("No line selected ...");
-                    toast.timeout = 3;
-                    overlay.add_toast (toast);
+                    line_selection.select_iter (iter2);
+                }
+            }
+
+            for (model2.iter_next (ref iter2); model2.iter_next (ref iter2);) {
+                model2.@get (iter2, 1, out line);
+                if (tag.applies_to (line)) {
+                    line_selection.select_iter (iter2);
+                    lines_treeview.scroll_to_cell (model2.get_path (iter2), null, true, (float) 0.5, (float) 0.5);
+                    break;
                 }
             }
         }

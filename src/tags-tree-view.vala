@@ -72,6 +72,20 @@ namespace Tags {
             */
         }
 
+        public Tag? get_selected_tag () {
+            Tag tag;
+            Gtk.TreeIter iter;
+            Gtk.TreeModel model;
+
+            var selection = this.get_selection ();
+
+            if (selection.get_selected (out model, out iter) == true) {
+                return get_tag_from_model_with_iter (model, iter);
+            } else {
+                return null;
+            }
+        }
+
         private Tag get_tag_from_model_with_iter (Gtk.TreeModel model, Gtk.TreeIter iter) {
             Tag tag;
             model.@get (iter, 0, out tag);
