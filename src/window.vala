@@ -615,7 +615,7 @@ namespace Tags {
         }
 
         private void next_hit () {
-            string line; 
+            string line;
             Tag tag;
             Tag tag2;
             Gtk.TreeIter iter;
@@ -632,18 +632,32 @@ namespace Tags {
                 model.@get (iter, 0, out tag);
                 message ("Tag selected: %s", tag.pattern);
 
+                if (tag.hits == 0) {
+                    var toast = new Adw.Toast ("This tag has no hits ...");
+                    toast.timeout = 3;
+                    overlay.add_toast (toast);
+                    return;
+                }
+
                 var line_selection = lines_treeview.get_selection ();
                 line_selection.set_mode (Gtk.SelectionMode.SINGLE);
+
+                //if (line_selection.get_selected (out model2, out iter2) == false) {
+
                 if (line_selection.get_selected (out model2, out iter2) == true) {
                     for (model2.iter_next (ref iter2); model2.iter_next (ref iter2);) {
-                        model2.@get (iter2, 1, out line);    
+                        model2.@get (iter2, 1, out line);
                         if (tag.applies_to (line)) {
                             message ("Found next ... selecting it ...");
                             line_selection.select_iter (iter2);
                             lines_treeview.scroll_to_cell (model2.get_path (iter2), null, true, (float) 0.5, (float) 0.5);
                             break;
                         }
-                    } 
+                    }
+                } else {
+                    var toast = new Adw.Toast ("No line selected ...");
+                    toast.timeout = 3;
+                    overlay.add_toast (toast);
                 }
             }
         }
