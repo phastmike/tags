@@ -617,17 +617,10 @@ namespace Tags {
         }
 
         private void prev_hit () {
-            string line;
             Tag tag;
-            Tag tag2;
+            string line;
             Gtk.TreeIter iter;
             Gtk.TreeModel model;
-            Gtk.TreeIter iter2;
-            Gtk.TreeModel model2;
-            Gtk.TreeIter iter3;
-            Adw.Toast toast;
-
-            /* Get selected tag. Should return if no tag selected */
 
             if (lines_treeview.get_number_of_items () == 0 || file_opened == null) {
                 return;
@@ -645,36 +638,29 @@ namespace Tags {
             var line_selection = lines_treeview.get_selection ();
             line_selection.set_mode (Gtk.SelectionMode.SINGLE);
 
-            if (line_selection.get_selected (out model2, out iter2) == false) {
-                if (model2.get_iter_first (out iter2) == false) {
+            if (line_selection.get_selected (out model, out iter) == false) {
+                if (model.get_iter_first (out iter) == false) {
                     return;
                 } else {
-                    line_selection.select_iter (iter2);
+                    line_selection.select_iter (iter);
                 }
             }
 
-            for (model2.iter_previous (ref iter2); model2.iter_previous (ref iter2);) {
-                model2.@get (iter2, 1, out line);
+            for (model.iter_previous (ref iter); model.iter_previous (ref iter);) {
+                model.@get (iter, LinesTreeView.Columns.LINE_TEXT, out line);
                 if (tag.applies_to (line)) {
-                    line_selection.select_iter (iter2);
-                    lines_treeview.scroll_to_cell (model2.get_path (iter2), null, true, (float) 0.5, (float) 0.5);
+                    line_selection.select_iter (iter);
+                    lines_treeview.scroll_to_cell (model.get_path (iter), null, true, (float) 0.5, (float) 0.5);
                     break;
                 }
             }
         }
 
         private void next_hit () {
-            string line;
             Tag tag;
-            Tag tag2;
+            string line;
             Gtk.TreeIter iter;
             Gtk.TreeModel model;
-            Gtk.TreeIter iter2;
-            Gtk.TreeModel model2;
-            Gtk.TreeIter iter3;
-            Adw.Toast toast;
-
-            /* Get selected tag. Should return if no tag selected */
 
             if (lines_treeview.get_number_of_items () == 0 || file_opened == null) {
                 return;
@@ -692,19 +678,19 @@ namespace Tags {
             var line_selection = lines_treeview.get_selection ();
             line_selection.set_mode (Gtk.SelectionMode.SINGLE);
 
-            if (line_selection.get_selected (out model2, out iter2) == false) {
-                if (model2.get_iter_first (out iter2) == false) {
+            if (line_selection.get_selected (out model, out iter) == false) {
+                if (model.get_iter_first (out iter) == false) {
                     return;
                 } else {
-                    line_selection.select_iter (iter2);
+                    line_selection.select_iter (iter);
                 }
             }
 
-            for (model2.iter_next (ref iter2); model2.iter_next (ref iter2);) {
-                model2.@get (iter2, 1, out line);
+            for (model.iter_next (ref iter); model.iter_next (ref iter);) {
+                model.@get (iter, LinesTreeView.Columns.LINE_TEXT, out line);
                 if (tag.applies_to (line)) {
-                    line_selection.select_iter (iter2);
-                    lines_treeview.scroll_to_cell (model2.get_path (iter2), null, true, (float) 0.5, (float) 0.5);
+                    line_selection.select_iter (iter);
+                    lines_treeview.scroll_to_cell (model.get_path (iter), null, true, (float) 0.5, (float) 0.5);
                     break;
                 }
             }

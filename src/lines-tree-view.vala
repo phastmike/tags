@@ -206,7 +206,5 @@ namespace Tags {
         public int get_number_of_items () {
             return model.iter_n_children (null);
         }
-
-        //public 
     }
 }
