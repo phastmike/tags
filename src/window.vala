@@ -654,6 +654,8 @@ namespace Tags {
                     break;
                 }
             }
+
+            line_selection.set_mode (Gtk.SelectionMode.MULTIPLE);
         }
 
         private void next_hit () {
@@ -694,6 +696,8 @@ namespace Tags {
                     break;
                 }
             }
+
+            line_selection.set_mode (Gtk.SelectionMode.MULTIPLE);
         }
     }
 }
