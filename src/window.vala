@@ -646,7 +646,7 @@ namespace Tags {
                 }
             }
 
-            for (model.iter_previous (ref iter); model.iter_previous (ref iter);) {
+            for (; model.iter_previous (ref iter);) {
                 model.@get (iter, LinesTreeView.Columns.LINE_TEXT, out line);
                 if (tag.applies_to (line)) {
                     line_selection.select_iter (iter);
@@ -688,7 +688,7 @@ namespace Tags {
                 }
             }
 
-            for (model.iter_next (ref iter); model.iter_next (ref iter);) {
+            for (; model.iter_next (ref iter);) {
                 model.@get (iter, LinesTreeView.Columns.LINE_TEXT, out line);
                 if (tag.applies_to (line)) {
                     line_selection.select_iter (iter);
