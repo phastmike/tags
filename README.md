@@ -40,6 +40,13 @@ Toggle the first ten tags with keyboard shortcuts.
 
 <kbd>Alt</kbd> + <kbd>0</kbd> : Toggle enabled status for tenth tag
 
+### Navigation
+
+-- *requires a tag to be selected on the tag list*
+
+<kbd>F2</kbd> : Previous tag hit
+
+<kbd>F3</kbd> : Next tag hit
 
 ---
 #### Notice
@@ -61,6 +68,8 @@ and hide all the others**.
 - Case sensitive support
 - Automatic load tags file when opening a file and a similarly named file with
   added `.tags` extension exists
+- Navigate thru hits with F2 and F3
+- Random color scheme on tag creation
 
 ## Development
 
