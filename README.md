@@ -10,6 +10,10 @@ Tags have a description name, a visibility toggle, a color scheme and a hit coun
 
 ![tagger](./data/screenshots/tags.png)
 
+## Download
+
+[![Download on flathub](https://dl.flathub.org/assets/badges/flathub-badge-en.png)](https://flathub.org/apps/io.github.phastmike.tags)
+
 ## Actions and Shortchuts
 
 <kbd>Ctrl</kbd> + <kbd>N</kbd> : Add a Tag
