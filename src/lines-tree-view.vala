@@ -16,6 +16,8 @@ namespace Tags {
         [GtkChild]
         public unowned Gtk.TreeModelFilter line_store_filter;
         [GtkChild]
+        public unowned Gtk.TreeViewColumn col_line_number;
+        [GtkChild]
         unowned Gtk.TreeViewColumn col_line_text;
         [GtkChild]
         unowned Gtk.CellRendererText renderer_line_text;
@@ -37,9 +39,12 @@ namespace Tags {
             update_line_number_colors (preferences);
 
             this.tags = tags;
+            this.model = line_store_filter;
+            col_line_number.set_visible (preferences.ln_visible);
 
             preferences.line_number_colors_changed.connect ((p) => {
                 update_line_number_colors (p);
+                col_line_number.set_visible (p.ln_visible);
             });
 
             this.set_search_equal_func ((model, column, key, iter) => {
@@ -74,8 +79,6 @@ namespace Tags {
                     return found ? true : false;
                 }
             });
-
-            this.model = line_store_filter;
 
             col_line_text.set_cell_data_func (renderer_line_text, (column, cell, model, iter) => {
                 Tag? tag = null;
@@ -198,6 +201,10 @@ namespace Tags {
             //renderer_line_number.size_points = 8.0;
             
             queue_draw ();
+        }
+
+        public int get_number_of_items () {
+            return model.iter_n_children (null);
         }
     }
 }

@@ -179,5 +179,29 @@
         </child>
       </object>
     </child>
+    <child>
+      <object class="GtkShortcutsSection">
+        <property name="section-name">Tag Navigation</property>
+        <property name="title">Navigation</property>
+        <property name="max-height">10</property>
+        <child>
+          <object class="GtkShortcutsGroup">
+            <property name="title" translatable="yes" context="shortcut window">Quick jump</property>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes" context="shortcut window">Previous tag hit</property>
+                <property name="action-name">win.prev_hit</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes" context="shortcut window">Next tag hit</property>
+                <property name="action-name">win.next_hit</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
   </object>
 </interface>

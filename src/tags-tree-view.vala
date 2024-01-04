@@ -63,11 +63,27 @@ namespace Tags {
             });
 
             /* Unselects rows on leaving the object */
+            /*
             this.state_flags_changed.connect ((flags) => {
                 if ((flags & Gtk.StateFlags.PRELIGHT) == 0) {
                     this.get_selection ().unselect_all ();
                 }
             });
+            */
+        }
+
+        public Tag? get_selected_tag () {
+            Tag tag;
+            Gtk.TreeIter iter;
+            Gtk.TreeModel model;
+
+            var selection = this.get_selection ();
+
+            if (selection.get_selected (out model, out iter) == true) {
+                return get_tag_from_model_with_iter (model, iter);
+            } else {
+                return null;
+            }
         }
 
         private Tag get_tag_from_model_with_iter (Gtk.TreeModel model, Gtk.TreeIter iter) {

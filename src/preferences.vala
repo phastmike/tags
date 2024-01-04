@@ -14,6 +14,7 @@ namespace Tags {
         private static Once<Preferences> _instance;
 
         /* Could use ColorScheme Classs */
+        private bool _ln_visible;
         private string _ln_fg_color;
         private string _ln_bg_color;
         private bool _tags_autoload;
@@ -24,6 +25,7 @@ namespace Tags {
         private Preferences () {
             preferences = new GLib.Settings ("io.github.phastmike.tags");
 
+            _ln_visible = preferences.get_boolean("line-numbers-visible");
             _ln_fg_color = preferences.get_string ("line-numbers-fg-color");
             _ln_bg_color = preferences.get_string ("line-numbers-bg-color");
             _tags_autoload = preferences.get_boolean ("tags-autoload");
@@ -33,6 +35,19 @@ namespace Tags {
             return _instance.once (() => {
                 return new Preferences ();
             });
+        }
+
+        public bool ln_visible {
+            get {
+                return _ln_visible;
+            }
+
+            set {
+                _ln_visible = value;
+                preferences.set_boolean ("line-numbers-visible", value);
+                // FIXME:
+                line_number_colors_changed (this);
+            }
         }
 
         public string ln_fg_color {

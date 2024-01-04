@@ -18,7 +18,7 @@
     <property name="title" translatable="yes">Preferences</property>
     <property name="resizable">true</property>
     <property name="default-width">600</property>
-    <property name="default-height">430</property>
+    <property name="default-height">520</property>
     <property name="destroy-with-parent">True</property>
     <child>
       <object class="AdwPreferencesPage">
@@ -56,208 +56,16 @@
                   </child>
                 </object>
               </child>
-            <!--
-            <child>
-              <object class="GtkBox">
-                <property name="orientation">vertical</property>
-                <property name="hexpand">true</property>
-                <property name="hexpand-set">true</property>
-                <property name="vexpand">true</property>
-                <property name="vexpand-set">true</property>
-                <property name="margin-start">60</property>
-                <property name="margin-end">60</property>
-                <property name="margin-top">30</property>
-                <property name="margin-bottom">30</property>
-                <property name="spacing">24</property>
-                <child>
-                  <object class="GtkBox">
-                    <property name="orientation">vertical</property>
-                    <property name="spacing">6</property>
-                    <child>
-                      <object class="GtkLabel">
-                        <property name="label">Tags</property>
-                        <property name="xalign">0</property>
-                        <style>
-                          <class name="title-4"/>
-                        </style>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkListBox">
-                        <property name="selection-mode">none</property>
-                        <style>
-                          <class name="rich-list"/>
-                          <class name="boxed-list"/>
-                        </style>
-                        <child>
-                          <object class="GtkListBoxRow">
-                            <property name="activatable">false</property>
-                            <property name="selectable">false</property>
-                            <property name="focusable">true</property>
-                            <child>
-                              <object class="GtkBox">
-                                <child>
-                                  <object class="GtkLabel" id="label_tags_autoloadz">
-                                    <property name="label" translatable="yes">Autoload tags file</property>
-                                    <property name="xalign">0</property>
-                                    <property name="halign">start</property>
-                                    <property name="valign">center</property>
-                                    <property name="hexpand">1</property>
-                                  </object>
-                                </child>
-                                <child>
-                                  <object class="GtkBox">
-                                    <property name="orientation">horizontal</property>
-                                    <property name="halign">end</property>
-                                    <property name="valign">center</property>
-                                    <property name="spacing">6</property>
-                                    <child>
-                                      <object class="GtkMenuButton">
-                                        <property name="has-frame">false</property>
-                                        <property name="icon-name">help-about-symbolic</property>
-                                        <property name="popover">popover_autoload</property>
-                                        <style>
-                                          <class name="toggle"/>
-                                        </style>
-                                      </object>
-                                    </child>
-                                    <child>
-                                      <object class="GtkSwitch" id="switch_tags_autoloadz">
-                                        <property name="active">false</property>
-                                        <property name="halign">end</property>
-                                        <property name="valign">center</property>
-                                      </object>
-                                    </child>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-                  </object>  
-                </child>
-                <child>
-                  <object class="GtkBox">
-                    <property name="orientation">vertical</property>
-                    <property name="spacing">6</property>
-                    <child>
-                      <object class="GtkLabel">
-                        <property name="label">Line Numbers</property>
-                        <property name="xalign">0</property>
-                        <style>
-                          <class name="title-4"/>
-                        </style>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkListBox">
-                        <property name="selection-mode">none</property>
-                        <style>
-                          <class name="rich-list"/>
-                          <class name="boxed-list"/>
-                        </style>
-                        <child>
-                          <object class="GtkListBoxRow">
-                            <property name="activatable">false</property>
-                            <property name="selectable">false</property>
-                            <property name="focusable">true</property>
-                            <child>
-                              <object class="GtkBox">
-                                <child>
-                                  <object class="GtkLabel" id="label_fg_color">
-                                    <property name="label" translatable="yes">Foreground color</property>
-                                    <property name="xalign">0</property>
-                                    <property name="halign">start</property>
-                                    <property name="valign">center</property>
-                                    <property name="hexpand">1</property>
-                                  </object>
-                                </child>
-                                <child>
-                                  <object class="GtkColorDialogButton" id="button_fg_colorz">
-                                    <property name="halign">end</property>
-                                    <property name="valign">center</property>
-                                    <property name="rgba">rgb(192,191,188)</property>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkListBoxRow">
-                            <property name="activatable">false</property>
-                            <property name="selectable">false</property>
-                            <property name="focusable">true</property>
-                            <child>
-                              <object class="GtkBox">
-                                <child>
-                                  <object class="GtkLabel" id="label_bg_color">
-                                    <property name="label" translatable="yes">Background color</property>
-                                    <property name="xalign">0</property>
-                                    <property name="halign">start</property>
-                                    <property name="valign">center</property>
-                                    <property name="hexpand">1</property>
-                                  </object>
-                                </child>
-                                <child>
-                                  <object class="GtkColorDialogButton" id="button_bg_colorz">
-                                    <property name="halign">end</property>
-                                    <property name="valign">center</property>
-                                    <property name="rgba">rgb(246,245,244)</property>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkListBoxRow">
-                            <property name="activatable">false</property>
-                            <property name="selectable">false</property>
-                            <property name="focusable">true</property>
-                            <child>
-                              <object class="GtkBox">
-                                <child>
-                                  <object class="GtkLabel">
-                                    <property name="label" translatable="yes">Example</property>
-                                    <property name="xalign">0</property>
-                                    <property name="halign">start</property>
-                                    <property name="valign">center</property>
-                                    <property name="hexpand">1</property>
-                                  </object>
-                                </child>
-                                <child>
-                                  <object class="GtkLabel" id="label_sample_examplez">
-                                    <property name="halign">end</property>
-                                    <property name="valign">center</property>
-                                    <property name="use_markup">true</property>
-                                    <property name="label" translatable="yes">123456</property>
-                                    <property name="xalign">0</property>
-                                    <property name="halign">start</property>
-                                    <property name="valign">center</property>
-                                    <property name="hexpand">0</property>
-                                    <property name="vexpand">1</property>
-                                    <property name="justify">right</property>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
-            -->
           </object>
         </child>
         <child>
           <object class="AdwPreferencesGroup">
             <property name="title">Line Numbers</property>
+            <child>
+              <object class="AdwSwitchRow" id="row_ln_visible">
+                <property name="title">Visible</property>
+              </object>
+            </child>
             <child>
               <object class="AdwActionRow">
                 <property name="title" translatable="yes">Foreground Color</property>
@@ -301,24 +109,6 @@
                 </child>
               </object>
             </child>
-
-            <!--
-            <child>
-              <object class="AdwSpinRow">
-                <property name="title" translatable="yes">Size points</property>
-                <property name="adjustment">
-                  <object class="GtkAdjustment">
-                    <property name="lower">5</property>
-                    <property name="upper">30</property>
-                    <property name="value">10</property>
-                    <property name="page-increment">1</property>
-                    <property name="step-increment">0.1</property>
-                  </object>
-                </property>
-              </object>
-            </child>
-            -->
-
           </object>
         </child>
       </object>

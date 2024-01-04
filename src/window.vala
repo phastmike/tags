@@ -10,13 +10,15 @@
 
 namespace Tags {
     [GtkTemplate (ui = "/io/github/phastmike/tags/window.ui")]
-    public class Window : Gtk.ApplicationWindow {
+    public class Window : Adw.ApplicationWindow {
         [GtkChild]
         unowned Gtk.Button button_open_file;
         [GtkChild]
         unowned Adw.SplitButton button_tags;
         [GtkChild]
-        unowned Gtk.Label subtitle;
+        unowned Adw.WindowTitle window_title;
+        [GtkChild]
+        unowned Adw.ToastOverlay overlay;
         
         private Gtk.Paned paned;
         private LinesTreeView lines_treeview;
@@ -56,7 +58,9 @@ namespace Tags {
             { "only_tag_9", only_tag_9},
             { "only_tag_0", only_tag_0},
             { "enable_all_tags", enable_all_tags },
-            { "disable_all_tags", disable_all_tags }
+            { "disable_all_tags", disable_all_tags },
+            { "prev_hit", prev_hit },
+            { "next_hit", next_hit }
         };
 
         public Window (Gtk.Application app) {
@@ -90,6 +94,8 @@ namespace Tags {
             app.set_accels_for_action("win.only_tag_0", {"<primary>0"});
             app.set_accels_for_action("win.enable_all_tags", {"<alt>e"});
             app.set_accels_for_action("win.disable_all_tags", {"<alt>d"});
+            app.set_accels_for_action("win.prev_hit", {"F2"});
+            app.set_accels_for_action("win.next_hit", {"F3"});
             
             save_tagged_disable ();
             
@@ -147,7 +153,7 @@ namespace Tags {
             });
 
             paned = new Gtk.Paned (Gtk.Orientation.VERTICAL);
-            set_child (paned);
+            overlay.set_child (paned);
 
             paned.notify["position"].connect ((s,p) => {
                 var view_height = paned.get_allocated_height ();
@@ -187,31 +193,38 @@ namespace Tags {
             //paned.queue_draw ();
 
             button_open_file.clicked.connect ( () => {
-                var file_chooser_dialog = new Gtk.FileChooserDialog (
-                    "Open File", this, Gtk.FileChooserAction.OPEN, 
-                    "Open", Gtk.ResponseType.ACCEPT, 
-                    "Cancel", Gtk.ResponseType.CANCEL, 
-                    null);
+                var file_dialog = new Gtk.FileDialog ();
+                file_dialog.set_modal (true);
+                file_dialog.set_title ("Open log file");
+                file_dialog.set_accept_label ("Open");
 
-                file_chooser_dialog.set_modal (true);
+                var file_filter1 = new Gtk.FileFilter ();
+                file_filter1.add_pattern ("*.tags");
+                file_filter1.add_mime_type ("text/plain");   // text/*
+                file_filter1.set_filter_name ("Text/Log files");
+
+                var file_filter2 = new Gtk.FileFilter ();
+                file_filter2.add_pattern ("*");
+                file_filter2.set_filter_name ("All files");
+
+                var file_filters = new ListStore (typeof (Gtk.FileFilter));
+                file_filters.append (file_filter1);
+                file_filters.append (file_filter2);
+
+                file_dialog.set_filters (file_filters);
 
                 if (file_opened != null) {
-                    try {
-                        file_chooser_dialog.set_current_folder (file_opened.get_parent ());
-                    } catch (Error e) {
-                        warning ("FileChooser::set_current_folder::error message: %s", e.message);
-                    }
+                    file_dialog.set_initial_folder (file_opened.get_parent ());
+                    message ("Set initial file '%s' ...", file_opened.get_parse_name ());
                 }
 
-                file_chooser_dialog.response.connect ( (response_id) => {
-                    if (response_id == Gtk.ResponseType.ACCEPT) {
-                        // FIXME: May block, with diolog opened, if loading takes time
-                        this.set_file(file_chooser_dialog.get_file ());
+                file_dialog.open.begin (this, null, (obj, res) => {
+                    try {
+                        this.set_file (file_dialog.open.end (res));
+                    } catch (Error e) {
+                        warning ("Error while opening log file: %s ...", e.message);
                     }
-                    file_chooser_dialog.destroy ();
                 });
-
-                file_chooser_dialog.show ();
             });
 
             button_tags.clicked.connect ( () => {
@@ -233,7 +246,6 @@ namespace Tags {
                         if (response == "discard") {
                             this.application.quit ();
                         }
-                    
                     });
                     return true;
                 } else {
@@ -244,11 +256,13 @@ namespace Tags {
         
         public void set_file (File file) {
             file_opened = file;
+
             // Sets title for gnome shell window identity
             set_title (file.get_basename ());
 
-            subtitle.set_label (file.get_basename ());
-            subtitle.set_tooltip_text (file.get_path ());
+
+            window_title.set_subtitle (file.get_basename ());
+            window_title.set_tooltip_text (file.get_path ());
             lines_treeview.set_file (file.get_path ());
             save_tagged_enable ();
 
@@ -260,6 +274,7 @@ namespace Tags {
             }
 
             count_tag_hits ();
+            //print ("Number of lines = %d\n",lines_treeview.get_number_of_items ());
         }
 
         private void add_tag () {
@@ -384,32 +399,24 @@ namespace Tags {
         }
 
         private void save_tags () {
-            var file_chooser_dialog = new Gtk.FileChooserDialog (
-                "Save File", this, Gtk.FileChooserAction.SAVE, 
-                "Save", Gtk.ResponseType.ACCEPT, 
-                "Cancel", Gtk.ResponseType.CANCEL, 
-                null);
-
-            file_chooser_dialog.set_modal (true);
+            var file_dialog = new Gtk.FileDialog ();
+            file_dialog.set_modal (true);
+            file_dialog.set_title ("Save tags file");
+            file_dialog.set_accept_label ("Save");
 
             if (file_opened != null) {
-                try {
-                    file_chooser_dialog.set_current_folder (file_opened.get_parent ());
-                } catch (Error e) {
-                    warning ("FileChooser::set_current_folder::error message: %s", e.message);
-                }
+                file_dialog.set_initial_folder (file_opened.get_parent ());
+                file_dialog.set_initial_name ("%s.tags".printf (file_opened.get_parse_name ()));
             }
 
-            file_chooser_dialog.response.connect ( (response_id) => {
-                if (response_id == Gtk.ResponseType.ACCEPT) {
-                    var file = file_chooser_dialog.get_file ();
-                    tags_treeview.to_file (file);
-                    tags_changed = false;
+            file_dialog.save.begin (this, null, (obj, res) => {
+                try {
+                    this.tags_treeview.to_file (file_dialog.save.end (res));
+                    this.tags_changed = false;
+                } catch (Error e) {
+                    warning ("Error while saving tags file: %s ...", e.message);
                 }
-                file_chooser_dialog.destroy ();
             });
-
-            file_chooser_dialog.show ();
         }
 
         private void save_tagged_enable () {
@@ -423,32 +430,24 @@ namespace Tags {
         }
 
         private void save_tagged () {
-            var file_chooser_dialog = new Gtk.FileChooserDialog (
-                "Save File", this, Gtk.FileChooserAction.SAVE, 
-                "Save", Gtk.ResponseType.ACCEPT, 
-                "Cancel", Gtk.ResponseType.CANCEL, 
-                null);
-
-            file_chooser_dialog.set_modal (true);
+            var file_dialog = new Gtk.FileDialog ();
+            file_dialog.set_modal (true);
+            file_dialog.set_title ("Save tags file");
+            file_dialog.set_accept_label ("Save");
 
             if (file_opened != null) {
-                try {
-                    file_chooser_dialog.set_current_folder (file_opened.get_parent ());
-                } catch (Error e) {
-                    warning ("FileChooser::set_current_folder::error message: %s", e.message);
-                }
+                file_dialog.set_initial_folder (file_opened.get_parent ());
+                file_dialog.set_initial_name ("%s.tagged".printf (file_opened.get_parse_name ()));
             }
 
-            file_chooser_dialog.response.connect ( (response_id) => {
-                if (response_id == Gtk.ResponseType.ACCEPT) {
-                    var file = file_chooser_dialog.get_file ();
+            file_dialog.save.begin (this, null, (obj, res) => {
+                try {
                     hide_untagged_lines ();
-                    lines_treeview.to_file(file);
+                    lines_treeview.to_file(file_dialog.save.end (res));
+                } catch (Error e) {
+                    warning ("Error while saving tags file: %s ...", e.message);
                 }
-                file_chooser_dialog.destroy ();
             });
-
-            file_chooser_dialog.show ();
         }
 
         private void count_tag_hits () {
@@ -615,6 +614,90 @@ namespace Tags {
 
         private void disable_all_tags () {
             tags_treeview.tags_set_enable (false);
+        }
+
+        private void prev_hit () {
+            Tag tag;
+            string line;
+            Gtk.TreeIter iter;
+            Gtk.TreeModel model;
+
+            if (lines_treeview.get_number_of_items () == 0 || file_opened == null) {
+                return;
+            }
+
+            tag = tags_treeview.get_selected_tag ();
+            if (tag == null) {
+                return;
+            }
+
+            if (tag.hits == 0) {
+                return;
+            }
+
+            var line_selection = lines_treeview.get_selection ();
+            line_selection.set_mode (Gtk.SelectionMode.SINGLE);
+
+            if (line_selection.get_selected (out model, out iter) == false) {
+                if (model.get_iter_first (out iter) == false) {
+                    return;
+                } else {
+                    line_selection.select_iter (iter);
+                }
+            }
+
+            for (; model.iter_previous (ref iter);) {
+                model.@get (iter, LinesTreeView.Columns.LINE_TEXT, out line);
+                if (tag.applies_to (line)) {
+                    line_selection.select_iter (iter);
+                    lines_treeview.scroll_to_cell (model.get_path (iter), null, true, (float) 0.5, (float) 0.5);
+                    break;
+                }
+            }
+
+            line_selection.set_mode (Gtk.SelectionMode.MULTIPLE);
+        }
+
+        private void next_hit () {
+            Tag tag;
+            string line;
+            Gtk.TreeIter iter;
+            Gtk.TreeModel model;
+
+            if (lines_treeview.get_number_of_items () == 0 || file_opened == null) {
+                return;
+            }
+
+            tag = tags_treeview.get_selected_tag ();
+            if (tag == null) {
+                return;
+            }
+
+            if (tag.hits == 0) {
+                return;
+            }
+
+            var line_selection = lines_treeview.get_selection ();
+            line_selection.set_mode (Gtk.SelectionMode.SINGLE);
+
+            if (line_selection.get_selected (out model, out iter) == false) {
+                if (model.get_iter_first (out iter) == false) {
+                    return;
+                } else {
+                    line_selection.select_iter (iter);
+                }
+            }
+
+            for (; model.iter_next (ref iter);) {
+                model.@get (iter, LinesTreeView.Columns.LINE_TEXT, out line);
+                if (tag.applies_to (line)) {
+                    line_selection.select_iter (iter);
+                    lines_treeview.scroll_to_cell (model.get_path (iter), null, true, (float) 0.5, (float) 0.5);
+                    break;
+                }
+            }
+
+            line_selection.set_mode (Gtk.SelectionMode.MULTIPLE);
         }
     }
 }
