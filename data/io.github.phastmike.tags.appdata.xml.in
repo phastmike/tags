@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 2022/23 José Miguel Fonte -->
+<!-- 2022/24 José Miguel Fonte -->
 <component type="desktop-application">
   <id>io.github.phastmike.tags.desktop</id>
   <metadata_license>CC0-1.0</metadata_license>
@@ -19,6 +19,7 @@
       <li>Support for regular expressions</li>
       <li>Case sensitive support</li>
       <li>Automic load tags file when opening a file and a similarly named file with added .tags extension exists</li>
+      <li>Navigate through similarly tagged lines with ease</li>
     </ul>
   </description>
   <screenshots>
@@ -39,10 +40,23 @@
     <value key="x-appcenter-suggested-price">0</value>
   </custom>
   <releases>
-    <release version="1.0.0" date="2023-10-10">
-      <description>
-        First flatpak version and global reach
+
+    <release version="1.1" date="2024-01-24">
+      <description translatable="no">
+        <p>Tags 1.1 is out</p>
+        <p>What's new:</p>
+        <ul>
+          <li>Navigate through similarly tagged lines with F3 and F2</li>
+        </ul>
+        <p>Bugs fixed: #37 #52 #55 #59</p>
       </description>
     </release>
+
+    <release version="1.0" date="2023-10-10">
+      <description translatable="no">
+        <p>First flatpak version and global reach</p>
+      </description>
+    </release>
+
   </releases>
 </component>
