@@ -18,7 +18,7 @@
       <li>Simple tags based on string containing a pattern</li>
       <li>Support for regular expressions</li>
       <li>Case sensitive support</li>
-      <li>Automic load tags file when opening a file and a similarly named file with added .tags extension exists</li>
+      <li>Automatically load tags file when opening a file and a similarly named file with added .tags extension exists</li>
       <li>Navigate through similarly tagged lines with ease</li>
     </ul>
   </description>
