@@ -9,6 +9,7 @@ tags_sources = [
   'preferences.vala',
   'preferences-window.vala',
   'application.vala',
+  'tag-store.vala',
   ]
 
 tags_deps = [

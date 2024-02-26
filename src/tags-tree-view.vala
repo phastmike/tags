@@ -38,6 +38,7 @@ namespace Tags {
         [GtkChild]
         private unowned Gtk.CellRendererPixbuf renderer_case;
 
+        public TagStore store;
         public uint ntags;
         private Gtk.Application application;
 
@@ -61,15 +62,6 @@ namespace Tags {
             tag_store.row_deleted.connect ((path, iter) => {
                 ntags--;
             });
-
-            /* Unselects rows on leaving the object */
-            /*
-            this.state_flags_changed.connect ((flags) => {
-                if ((flags & Gtk.StateFlags.PRELIGHT) == 0) {
-                    this.get_selection ().unselect_all ();
-                }
-            });
-            */
         }
 
         public Tag? get_selected_tag () {
