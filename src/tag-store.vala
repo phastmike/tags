@@ -14,7 +14,7 @@ namespace Tags {
         ListStore store;
         public uint ntags {
             get {
-                return get_model ().get_n_items ();
+                return store.get_n_items ();
             }
         }
 
@@ -22,6 +22,7 @@ namespace Tags {
             store = new ListStore (typeof(Tag));
         }
 
+        /* redundant ? */
         public ListModel get_model () {
             return (ListModel) store;
         }
@@ -37,7 +38,7 @@ namespace Tags {
         public void remove_tag (Tag to_remove) {
             Tag tag;
             for (var i = 0; i < store.get_n_items (); i++) {
-                tag = get_model ().get_object (i) as Tag;
+                tag = store.get_object (i) as Tag;
                 if (tag == to_remove) {
                     store.remove (i);
                     return;
@@ -53,7 +54,8 @@ namespace Tags {
         public void tags_set_enable (bool enable) {
             Tag tag;
             for (var i = 0; i < store.get_n_items (); i++) {
-                tag = get_model ().get_object (i) as Tag;
+                //tag = get_model ().get_object (i) as Tag;
+                tag = store.get_object (i) as Tag;
                 tag.enabled = enable;
             }
         }
@@ -64,7 +66,7 @@ namespace Tags {
 
             Tag tag;
             for (var i = 0; i < store.get_n_items (); i++) {
-                tag = get_model ().get_object (i) as Tag;
+                tag = store.get_object (i) as Tag;
                 Json.Node node = Json.gobject_serialize (tag);
                 array.add_element (node); 
             }
@@ -83,7 +85,7 @@ namespace Tags {
         public void clear_hit_counters () {
             Tag tag;
             for (var i = 0; i < store.get_n_items (); i++) {
-                tag = get_model ().get_object (i) as Tag;
+                tag = store.get_object (i) as Tag;
                 tag.hits = 0;
             }
         }
