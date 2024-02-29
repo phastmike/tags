@@ -4,6 +4,7 @@
     <file>window.ui</file>
     <file>lines-tree-view.ui</file>
     <file>tags-tree-view.ui</file>
+    <file>tags-column-view.ui</file>
     <file>tag-dialog-window.ui</file>
     <file>preferences-window.ui</file>
     <file>gtk/help-overlay.ui</file>

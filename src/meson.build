@@ -10,6 +10,7 @@ tags_sources = [
   'preferences-window.vala',
   'application.vala',
   'tag-store.vala',
+  'tags-column-view.vala',
   ]
 
 tags_deps = [
