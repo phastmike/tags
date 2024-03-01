@@ -10,11 +10,7 @@
 
 namespace Tags {
     [GtkTemplate (ui = "/io/github/phastmike/tags/tags-column-view.ui")]
-    public class TagsColumnView : Gtk.Box {
-        [GtkChild]
-        private unowned Gtk.ScrolledWindow scrolled;
-        [GtkChild]
-        private unowned Gtk.ListStore tag_store;
+    public class TagsColumnView : Adw.Bin {
 
         public TagStore store;
         public uint ntags;
@@ -33,7 +29,6 @@ namespace Tags {
                 Tag tag = get_tag_from_model_with_iter (tag_store, iter);
                 tag.enabled = !tag.enabled;
             });
-            */
 
             tag_store.row_inserted.connect ((path, iter) => {
                 ntags++;
@@ -42,6 +37,7 @@ namespace Tags {
             tag_store.row_deleted.connect ((path, iter) => {
                 ntags--;
             });
+            */
         }
 
 /*
