@@ -20,6 +20,7 @@ namespace Tags {
 
         public TagStore () {
             store = new ListStore (typeof(Tag));
+            add_tag (new Tag ("Teste", "Teste", new ColorScheme ("teste", null, null)));
         }
 
         /* redundant ? */

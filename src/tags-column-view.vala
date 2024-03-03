@@ -11,6 +11,10 @@
 namespace Tags {
     [GtkTemplate (ui = "/io/github/phastmike/tags/tags-column-view.ui")]
     public class TagsColumnView : Adw.Bin {
+        [GtkChild]
+        public Gtk.ScrolledWindow scrolled;
+        [GtkChild]
+        public Gtk.ColumnView column_view;
 
         public TagStore store;
         public uint ntags;
@@ -18,6 +22,7 @@ namespace Tags {
 
         public TagsColumnView (Gtk.Application app) {
             application = app;
+            column_view.set_model ((Gtk.SelectionModel) store);
             //setup_cell_renderers ();
             
             ntags = 0;
@@ -38,6 +43,21 @@ namespace Tags {
                 ntags--;
             });
             */
+        }
+
+        [GtkCallback]
+        private void tags_enabled_setup_handler (Gtk.SignalListItemFactory factory, GLib.Object listitemm) {
+            Gtk.ListItem listitem = (Gtk.ListItem) listitemm;
+            Gtk.CheckButton cb_enabled = new Gtk.CheckButton ();
+            listitem.child = cb_enabled;
+        }
+
+        [GtkCallback]
+        private void tags_enabled_bind_handler (Gtk.SignalListItemFactory factory, GLib.Object listitemm) {
+            Gtk.ListItem listitem = (Gtk.ListItem) listitemm;
+            Gtk.CheckButton cb_enabled = listitem.child as Gtk.CheckButton;
+            Tag tag = listitem.item as Tag;
+            cb_enabled.set_active(tag.enabled);
         }
 
 /*
