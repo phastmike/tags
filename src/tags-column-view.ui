@@ -1,77 +1,100 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk+" version="4.0"/>
-  <object class="GtkListStore" id="tag_store">
-    <columns>
-      <!-- column-name tag -->
-      <column type="GObject"/>
-    </columns>
-  </object>
   <template class="TagsTagsColumnView" parent="AdwBin">
-    <property name="visible">true</property>
-    <property name="can-focus">true</property>
-    <property name="hscroll-policy">natural</property>
-    <property name="vscroll-policy">natural</property>
-    <property name="model">tag_store</property>
-    <property name="headers-clickable">false</property>
-    <property name="enable-search">false</property>
-    <property name="search-column">1</property>
-    <property name="show-expanders">false</property>
-    <property name="enable-grid-lines">both</property>
-    <property name="reorderable">true</property>
-    <child internal-child="selection">
-      <object class="GtkTreeSelection" id="selection"/>
-    </child>
     <child>
-      <object class="GtkTreeViewColumn" id="col_checkbox">
-        <property name="title">En</property>
+      <object class="GtkScrolledWindow" id="scrolled">
+        <property name="hexpand">True</property>
+        <property name="vexpand">True</property>
         <child>
-          <object class="GtkCellRendererToggle" id="renderer_checkbox"/>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkTreeViewColumn" id="col_pattern">
-        <property name="title">Pattern</property>
-        <property name="expand">True</property>
-        <child>
-          <object class="GtkCellRendererText" id="renderer_pattern"/>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkTreeViewColumn" id="col_regex">
-        <property name="title">Re</property>
-        <child>
-          <object class="GtkCellRendererPixbuf" id="renderer_regex"/>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkTreeViewColumn" id="col_case">
-        <property name="title">Cs</property>
-        <child>
-          <object class="GtkCellRendererPixbuf" id="renderer_case"/>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkTreeViewColumn" id="col_description">
-        <property name="min-width">110</property>
-        <property name="title">Description</property>
-        <property name="sizing">GTK_TREE_VIEW_COLUMN_AUTOSIZE</property>
-        <!-- Resize needs to be after sizing, otherwise no effect -->
-        <property name="resizable">True</property>
-        <child>
-          <object class="GtkCellRendererText" id="renderer_description"/>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkTreeViewColumn" id="col_hits">
-        <property name="title">Hits</property>
-        <child>
-          <object class="GtkCellRendererText" id="renderer_hits"/>
+          <object class="GtkColumnView" id="column_view">
+            <property name="show-column-separators">True</property>
+            <property name="show-row-separators">True</property>
+            <property name="enable-rubberband">True</property>
+            <child>
+              <object class="GtkColumnViewColumn" id="column_tags_enabled">
+                <property name="title">En</property>
+                <property name="resizable">false</property>
+                <property name="expand">false</property>
+                <property name="header-menu">header_menu</property>
+                <property name="factory">
+                  <object class="GtkSignalListItemFactory">
+                    <signal name="setup" handler="tags_enabled_setup_handler"/>
+                    <signal name="bind" handler="tags_enabled_bind_handler"/>
+                  </object>
+                </property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkColumnViewColumn" id="column_tags_pattern">
+                <property name="title">Pattern</property>
+                <property name="resizable">true</property>
+                <property name="expand">true</property>
+                <property name="header-menu">header_menu</property>
+                <property name="factory">
+                  <object class="GtkSignalListItemFactory">
+                    <signal name="setup" handler="tags_pattern_setup_handler"/>
+                    <signal name="bind" handler="tags_pattern_bind_handler"/>
+                  </object>
+                </property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkColumnViewColumn" id="column_tags_regex">
+                <property name="title">Regex</property>
+                <property name="resizable">false</property>
+                <property name="expand">false</property>
+                <property name="header-menu">header_menu</property>
+                <property name="factory">
+                  <object class="GtkSignalListItemFactory">
+                    <signal name="setup" handler="tags_regex_setup_handler"/>
+                    <signal name="bind" handler="tags_regex_bind_handler"/>
+                  </object>
+                </property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkColumnViewColumn" id="column_tags_case">
+                <property name="title">Case</property>
+                <property name="resizable">false</property>
+                <property name="expand">false</property>
+                <property name="header-menu">header_menu</property>
+                <property name="factory">
+                  <object class="GtkSignalListItemFactory">
+                    <signal name="setup" handler="tags_case_setup_handler"/>
+                    <signal name="bind" handler="tags_case_bind_handler"/>
+                  </object>
+                </property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkColumnViewColumn" id="column_tags_description">
+                <property name="title">Description</property>
+                <property name="resizable">false</property>
+                <property name="expand">false</property>
+                <property name="header-menu">header_menu</property>
+                <property name="factory">
+                  <object class="GtkSignalListItemFactory">
+                    <signal name="setup" handler="tags_description_setup_handler"/>
+                    <signal name="bind" handler="tags_description_bind_handler"/>
+                  </object>
+                </property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkColumnViewColumn" id="column_tags_hits">
+                <property name="title">Hits</property>
+                <property name="resizable">false</property>
+                <property name="expand">false</property>
+                <property name="header-menu">header_menu</property>
+                <property name="factory">
+                  <object class="GtkSignalListItemFactory">
+                    <signal name="setup" handler="tags_hits_setup_handler"/>
+                    <signal name="bind" handler="tags_hits_bind_handler"/>
+                  </object>
+                </property>
+              </object>
+            </child>
+          </object>
         </child>
       </object>
     </child>
@@ -79,4 +102,26 @@
       <class name="monospace"/>
     </style>
   </template>
+  <menu id="header_menu">
+    <section>
+      <item>
+        <attribute name="enabled" translatable="yes">Enabled></attribute>
+        <attribute name="action">columnview.show-enabled</attribute>
+        <attribute name="icon">starred</attribute>
+        <attribute name="accel">&lt;Control&gt;z</attribute>
+      </item>
+      <item>
+        <attribute name="enabled" translatable="yes">pattern></attribute>
+        <attribute name="action">columnview.show-pattern</attribute>
+        <attribute name="icon">starred</attribute>
+        <attribute name="accel">&lt;Control&gt;x</attribute>
+      </item>
+      <item>
+        <attribute name="enabled" translatable="yes">regex></attribute>
+        <attribute name="action">columnview.show-regex</attribute>
+        <attribute name="icon">starred</attribute>
+        <attribute name="accel">&lt;Control&gt;c</attribute>
+      </item>
+    </section>
+  </menu>
 </interface>

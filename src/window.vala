@@ -184,7 +184,7 @@ namespace Tags {
             scrolled_tags.set_child (tags_treeview);
 
             paned.set_start_child (scrolled_lines);
-            paned.set_end_child (scrolled_tags);
+            paned.set_end_child (new TagsColumnView (app));
             paned.set_resize_start_child (true);
             paned.set_resize_end_child (true);
             paned.set_wide_handle (true);
