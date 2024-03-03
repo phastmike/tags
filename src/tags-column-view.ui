@@ -7,9 +7,10 @@
         <property name="vexpand">True</property>
         <child>
           <object class="GtkColumnView" id="column_view">
-            <property name="show-column-separators">True</property>
-            <property name="show-row-separators">True</property>
-            <property name="enable-rubberband">True</property>
+            <property name="show-column-separators">true</property>
+            <property name="show-row-separators">true</property>
+            <property name="enable-rubberband">false</property>
+            <property name="reorderable">false</property>
             <child>
               <object class="GtkColumnViewColumn" id="column_tags_enabled">
                 <property name="title">En</property>
@@ -98,9 +99,11 @@
         </child>
       </object>
     </child>
+    <!--
     <style>
       <class name="monospace"/>
     </style>
+    -->
   </template>
   <menu id="header_menu">
     <section>

@@ -11,7 +11,7 @@
 namespace Tags {
 
     public class TagStore : Object {
-        ListStore store;
+        public ListStore store;
         public uint ntags {
             get {
                 return store.get_n_items ();
@@ -20,7 +20,8 @@ namespace Tags {
 
         public TagStore () {
             store = new ListStore (typeof(Tag));
-            add_tag (new Tag ("Teste", "Teste", new ColorScheme ("teste", null, null)));
+            add_tag (new Tag ("Teste1", "1Teste", new ColorScheme ("teste", null, null)));
+            add_tag (new Tag ("Teste2", "2Teste", new ColorScheme ("teste", null, null)));
         }
 
         /* redundant ? */
@@ -90,7 +91,6 @@ namespace Tags {
                 tag.hits = 0;
             }
         }
-
     }
 }
 
