@@ -16,7 +16,6 @@ namespace Tags {
         [GtkChild]
         public Gtk.ColumnView column_view;
 
-        public uint ntags;
         public TagStore tag_store;
         private Gtk.Application application;
 
@@ -25,8 +24,8 @@ namespace Tags {
             tag_store = new TagStore ();
             Gtk.SingleSelection selection_model = new Gtk.SingleSelection (tag_store.get_model ());
             column_view.set_model (selection_model);
-            
-            ntags = 1;
+            selection_model.set_autoselect (false);
+            selection_model.set_can_unselect (true);
         }
 
         [GtkCallback]
@@ -49,6 +48,7 @@ namespace Tags {
             Gtk.ListItem listitem = (Gtk.ListItem) listitemm;
             Gtk.Label label_pattern = new Gtk.Label ("");
             listitem.child = label_pattern;
+            label_pattern.xalign = 0;
             print ("Label pattern = %s\n", label_pattern.get_text ());
         }
 
@@ -95,6 +95,7 @@ namespace Tags {
             Gtk.ListItem listitem = (Gtk.ListItem) listitemm;
             Gtk.Label label = new Gtk.Label ("");
             listitem.child = label;
+            label.xalign = 0;
             print ("Label description = %s\n", label.get_text ());
         }
 

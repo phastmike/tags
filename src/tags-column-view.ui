@@ -11,6 +11,10 @@
             <property name="show-row-separators">true</property>
             <property name="enable-rubberband">false</property>
             <property name="reorderable">false</property>
+            <property name="tab-behavior">cell</property>
+            <style>
+              <class name="data-table"/>
+            </style>
             <child>
               <object class="GtkColumnViewColumn" id="column_tags_enabled">
                 <property name="title">En</property>
