@@ -442,7 +442,7 @@ namespace Tags {
 
             file_dialog.save.begin (this, null, (obj, res) => {
                 try {
-                    hide_untagged_lines ();
+                    if (!lines_treeview.hide_untagged) hide_untagged_lines ();
                     lines_treeview.to_file(file_dialog.save.end (res));
                 } catch (Error e) {
                     warning ("Error while saving tags file: %s ...", e.message);
