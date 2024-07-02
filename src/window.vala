@@ -263,7 +263,8 @@ namespace Tags {
 
             window_title.set_subtitle (file.get_basename ());
             window_title.set_tooltip_text (file.get_path ());
-            lines_treeview.set_file (file.get_path ());
+            lines_treeview.set_file (file);
+            //lines_treeview.set_file (file.get_path ());
             save_tagged_enable ();
 
             /* Here we check if application property autoload tags is enabled*/

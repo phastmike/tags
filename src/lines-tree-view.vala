@@ -127,10 +127,10 @@ namespace Tags {
             return (string) string_builder.data;
         }
 
-        public void set_file (string file) {
-            uint8[] con;
+        public void set_file (File file) {
+        //public void set_file (string file) {
+            //uint8[] con;
             string? contents;
-            Gtk.TreeIter iter;
 
             this.model = null;
 
@@ -140,12 +140,42 @@ namespace Tags {
             line_store.clear ();
             will_clear_all = false;
 
-            try {
-                if (FileUtils.get_data(file, out con)) {
-                    /* FIXME: 
-                       Simple fix to solve problematic text files with CR+LF problems
-                       We are spliting \r\n because some files only have \r (CR)
+            file.read_async.begin (Priority.DEFAULT, null, (obj, res) => {
+                Gtk.TreeIter iter;
+                try {
+                    FileInputStream @is = file.read_async.end (res);
+                    DataInputStream dis = new DataInputStream (@is);
+                    var nr = 0;
+                    string line;
+
+                    while ((line = dis.read_line ()) != null) {
+
+                    uint8[] con;
+                    con = line.escape ().data;
+                    /*
+                    for (int i = 0; i < con.length - 2; i++) {
+                        if (con[i] == 0x00) {
+                            con[i] = 0x30;
+                        } else if (con[i] == '\r' && con[i+1] == '\n') {
+                            con[i] = ' ';
+                        }
+                    }
                     */
+                        line_store.append (out iter);
+                        line_store.@set (iter, Columns.LINE_NUMBER, ++nr, Columns.LINE_TEXT, line, -1);
+                    }
+                } catch (Error e) {
+                    warning ("%s\n", e.message);
+                }
+            });
+
+            /*
+            try {
+                if (FileUtils.get_data(file.get_path (), out con)) {
+                    // FIXME:
+                    //   Simple fix to solve problematic text files with CR+LF problems
+                    //   We are spliting \r\n because some files only have \r (CR)
+
                     for (int i = 0; i < con.length - 2; i++) {
                         if (con[i] == 0x00) {
                             con[i] = 0x30;
@@ -162,11 +192,12 @@ namespace Tags {
                         line_store.@set (iter, Columns.LINE_NUMBER, ++nr, Columns.LINE_TEXT, line, -1);
                     }
                 } else {
-                    warning ("Error opening file [%s]\n", file);
+                    warning ("Error opening file [%s]\n", file.get_path ());
                 }
             } catch (FileError err) {
                 warning ("Error: %s\n", err.message);
             }
+            */
 
             this.model = line_store_filter;
         }
