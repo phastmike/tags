@@ -127,9 +127,33 @@ namespace Tags {
             return (string) string_builder.data;
         }
 
+        /* Helper method to aid in the async read from the input stream */
+        private async void read_from_input_stream_async (DataInputStream dis) {
+            Gtk.TreeIter iter;
+            var nr = 0;
+            string? line;
+
+            try {
+                while ((line = yield dis.read_line_async ()) != null) {
+                    uint8[] con;
+                    con = line.escape ().data;
+
+                    for (int i = 0; i < con.length - 2; i++) {
+                        if (con[i] == 0x00) {
+                            con[i] = 0x30;
+                        } else if (con[i] == '\r' && con[i+1] == '\n') {
+                            con[i] = ' ';
+                        }
+                    }
+                    line_store.append (out iter);
+                    line_store.@set (iter, Columns.LINE_NUMBER, ++nr, Columns.LINE_TEXT, line, -1);
+                }
+            } catch (IOError e) {
+                warning ("%s/n", e.message);
+            }
+        }
+
         public void set_file (File file) {
-        //public void set_file (string file) {
-            //uint8[] con;
             string? contents;
 
             this.model = null;
@@ -145,80 +169,43 @@ namespace Tags {
                 try {
                     FileInputStream @is = file.read_async.end (res);
                     DataInputStream dis = new DataInputStream (@is);
-                    var nr = 0;
-                    string line;
-
-                    while ((line = dis.read_line ()) != null) {
-
-                    uint8[] con;
-                    con = line.escape ().data;
-                    /*
-                    for (int i = 0; i < con.length - 2; i++) {
-                        if (con[i] == 0x00) {
-                            con[i] = 0x30;
-                        } else if (con[i] == '\r' && con[i+1] == '\n') {
-                            con[i] = ' ';
-                        }
-                    }
-                    */
-                        line_store.append (out iter);
-                        line_store.@set (iter, Columns.LINE_NUMBER, ++nr, Columns.LINE_TEXT, line, -1);
-                    }
+                    read_from_input_stream_async (dis);
                 } catch (Error e) {
                     warning ("%s\n", e.message);
                 }
             });
 
-            /*
-            try {
-                if (FileUtils.get_data(file.get_path (), out con)) {
-                    // FIXME:
-                    //   Simple fix to solve problematic text files with CR+LF problems
-                    //   We are spliting \r\n because some files only have \r (CR)
-
-                    for (int i = 0; i < con.length - 2; i++) {
-                        if (con[i] == 0x00) {
-                            con[i] = 0x30;
-                        } else if (con[i] == '\r' && con[i+1] == '\n') {
-                            con[i] = ' ';
-                        }
-                    }
-                    contents = (string) con;
-                    var nr = 0;
-                    var lines = contents.split_set("\r\n");
-                    lines.resize (lines.length - 1);
-                    foreach (unowned var line in lines ) {
-                        line_store.append (out iter);
-                        line_store.@set (iter, Columns.LINE_NUMBER, ++nr, Columns.LINE_TEXT, line, -1);
-                    }
-                } else {
-                    warning ("Error opening file [%s]\n", file.get_path ());
-                }
-            } catch (FileError err) {
-                warning ("Error: %s\n", err.message);
-            }
-            */
-
             this.model = line_store_filter;
         }
 
-        public void to_file (File file) {
+        /*
+        private async void write_from_output_stream_async (FileOutputStream fsout, string line) {
+            try {
+                yield fsout.write_async (("%s\n".printf (line)).data, Priority.DEFAULT, null);
+            } catch (IOError e) {
+                warning("%s\n", e.message);
+            }
+        }
+        */
+
+        public async void to_file (File file) {
             FileOutputStream fsout;
+            //Mutex mutex = Mutex ();
             try {
                 fsout = file.replace (null, false, FileCreateFlags.REPLACE_DESTINATION, null); 
                 line_store_filter.foreach ((model, path, iter) => {
+                    //mutex.@lock ();
                     string line;
                     model.@get (iter, Columns.LINE_TEXT, out line);
-                    try {
-                        fsout.write(("%s\n".printf (line)).data);
-                    } catch (IOError e) {
-                        warning ("Could not write to file ...");
-                    }
+                    //write_from_output_stream_async (fsout, line);
+                    fsout.write(("%s\n".printf (line)).data);
+                    //mutex.@unlock ();
                     return false;
                 });
                 fsout.close ();
             } catch (Error e) {
-                error ("Error: %s", e.message);
+                warning ("Error: %s", e.message);
+                //error ("Error: %s", e.message);
             }
         }
 
