@@ -33,6 +33,8 @@ namespace Tags {
         public bool hide_untagged {set; get; default=false;}
         private bool will_clear_all {private set; private get; default=false;}
 
+        public signal void set_file_ended ();
+
         public LinesTreeView (Gtk.Application app, Gtk.TreeModel tags) {
             var preferences = Preferences.instance ();
 
@@ -169,7 +171,9 @@ namespace Tags {
                 try {
                     FileInputStream @is = file.read_async.end (res);
                     DataInputStream dis = new DataInputStream (@is);
-                    read_from_input_stream_async (dis);
+                    read_from_input_stream_async.begin (dis, (obj, res) => {
+                        set_file_ended();
+                    });
                 } catch (Error e) {
                     warning ("%s\n", e.message);
                 }

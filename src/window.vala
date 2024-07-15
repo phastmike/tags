@@ -260,7 +260,6 @@ namespace Tags {
             // Sets title for gnome shell window identity
             set_title (file.get_basename ());
 
-
             window_title.set_subtitle (file.get_basename ());
             window_title.set_tooltip_text (file.get_path ());
             lines_treeview.set_file (file);
@@ -273,8 +272,10 @@ namespace Tags {
                 set_tags (file_tags, false); 
             }
 
-            count_tag_hits ();
-            //print ("Number of lines = %d\n",lines_treeview.get_number_of_items ());
+            lines_treeview.set_file_ended.connect ( ()=> {
+                count_tag_hits ();
+                print ("Number of lines = %d\n",lines_treeview.get_number_of_items ());
+            });
         }
 
         private void add_tag () {
