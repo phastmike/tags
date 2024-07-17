@@ -263,18 +263,16 @@ namespace Tags {
             window_title.set_subtitle (file.get_basename ());
             window_title.set_tooltip_text (file.get_path ());
             lines_treeview.set_file (file);
-            save_tagged_enable ();
-
-            /* Here we check if application property autoload tags is enabled*/
-            if (Preferences.instance ().tags_autoload == true) {
-                // load tags for file_chooser_dialog.get_file ()
-                File file_tags = File.new_for_path (file.get_path () + ".tags");
-                set_tags (file_tags, false); 
-            }
 
             lines_treeview.set_file_ended.connect ( ()=> {
+                save_tagged_enable ();
+                /* Here we check if application property autoload tags is enabled*/
+                if (Preferences.instance ().tags_autoload == true) {
+                    // load tags for file_chooser_dialog.get_file ()
+                    File file_tags = File.new_for_path (file.get_path () + ".tags");
+                    set_tags (file_tags, false); 
+                }
                 count_tag_hits ();
-                print ("Number of lines = %d\n",lines_treeview.get_number_of_items ());
             });
         }
 
