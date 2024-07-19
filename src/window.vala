@@ -255,6 +255,11 @@ namespace Tags {
         }
         
         public void set_file (File file) {
+            Adw.Toast toast = new Adw.Toast ("Loading file '%s' ...".printf (file.get_basename ()));
+            toast.set_timeout (0);
+            overlay.add_toast (toast);
+
+
             file_opened = file;
 
             // Sets title for gnome shell window identity
@@ -265,6 +270,7 @@ namespace Tags {
             lines_treeview.set_file (file);
 
             lines_treeview.set_file_ended.connect ( ()=> {
+                toast.dismiss ();
                 save_tagged_enable ();
                 /* Here we check if application property autoload tags is enabled*/
                 if (Preferences.instance ().tags_autoload == true) {
