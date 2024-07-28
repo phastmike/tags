@@ -200,7 +200,6 @@ namespace Tags {
             try {
                 fsout = file.replace (null, false, FileCreateFlags.REPLACE_DESTINATION, null); 
                 fsout.write_all_async.begin (str.data, Priority.DEFAULT, null, (obj, res) => {
-                    fsout.write_async.end (res);
                     fsout.close ();
                 });
             } catch (Error e) {
