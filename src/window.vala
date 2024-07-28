@@ -255,10 +255,10 @@ namespace Tags {
         }
         
         public void set_file (File file) {
-            Adw.Toast toast = new Adw.Toast ("Loading file '%s' ...".printf (file.get_basename ()));
+            Adw.Toast toast = new Adw.Toast ("Loading file '%s'".printf (file.get_basename ()));
+            toast.set_use_markup (true);
             toast.set_timeout (0);
             overlay.add_toast (toast);
-
 
             file_opened = file;
 
@@ -269,7 +269,7 @@ namespace Tags {
             window_title.set_tooltip_text (file.get_path ());
             lines_treeview.set_file (file);
 
-            //this.set_sensitive (false);
+            button_open_file.set_sensitive (false);
 
             lines_treeview.set_file_ended.connect ( ()=> {
                 toast.dismiss ();
@@ -277,11 +277,14 @@ namespace Tags {
                 /* Here we check if application property autoload tags is enabled*/
                 if (Preferences.instance ().tags_autoload == true) {
                     // load tags for file_chooser_dialog.get_file ()
+                    toast.set_timeout (3);
+                    overlay.add_toast (toast);
                     File file_tags = File.new_for_path (file.get_path () + ".tags");
+                    toast.set_title ("Checking for tags file '%s'".printf (file_tags.get_basename ()));
                     set_tags (file_tags, false); 
                 }
                 count_tag_hits ();
-                //this.set_sensitive (true);
+                button_open_file.set_sensitive (true);
             });
         }
 
@@ -375,14 +378,21 @@ namespace Tags {
                     array.foreach_element ((array, index_, element_node) => {
                         Tag tag = Json.gobject_deserialize (typeof (Tag), element_node) as Tag;
                         tags_treeview.add_tag (tag);
+
                         tag.enable_changed.connect ((enabled) => {
                             lines_treeview.line_store_filter.refilter ();
                         });
 
+                        /*
                         if (lines_treeview.hide_untagged) { 
                             lines_treeview.line_store_filter.refilter ();
                         }
+                        */
                     });
+                }
+
+                if (lines_treeview.hide_untagged) {
+                    lines_treeview.line_store_filter.refilter ();
                 }
                 count_tag_hits ();
             } catch (Error e) {
