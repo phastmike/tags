@@ -182,34 +182,29 @@ namespace Tags {
             this.model = line_store_filter;
         }
 
-        /*
-        private async void write_from_output_stream_async (FileOutputStream fsout, string line) {
-            try {
-                yield fsout.write_async (("%s\n".printf (line)).data, Priority.DEFAULT, null);
-            } catch (IOError e) {
-                warning("%s\n", e.message);
-            }
-        }
-        */
-
         public async void to_file (File file) {
+            Gtk.TreeIter? i;
+            StringBuilder str;
             FileOutputStream fsout;
-            //Mutex mutex = Mutex ();
+
+            str = new StringBuilder ();
+            str.append("");     // Fixes minor bug? Buffer isn't empty !?!?
+
+            line_store_filter.foreach ((model, path, iter) => {
+                string line;
+                model.@get (iter, Columns.LINE_TEXT, out line);
+                str.append_printf ("%s\n", line);
+                return false;
+            });
+
             try {
                 fsout = file.replace (null, false, FileCreateFlags.REPLACE_DESTINATION, null); 
-                line_store_filter.foreach ((model, path, iter) => {
-                    //mutex.@lock ();
-                    string line;
-                    model.@get (iter, Columns.LINE_TEXT, out line);
-                    //write_from_output_stream_async (fsout, line);
-                    fsout.write(("%s\n".printf (line)).data);
-                    //mutex.@unlock ();
-                    return false;
+                fsout.write_all_async.begin (str.data, Priority.DEFAULT, null, (obj, res) => {
+                    fsout.write_async.end (res);
+                    fsout.close ();
                 });
-                fsout.close ();
             } catch (Error e) {
                 warning ("Error: %s", e.message);
-                //error ("Error: %s", e.message);
             }
         }
 

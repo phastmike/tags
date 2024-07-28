@@ -269,6 +269,8 @@ namespace Tags {
             window_title.set_tooltip_text (file.get_path ());
             lines_treeview.set_file (file);
 
+            //this.set_sensitive (false);
+
             lines_treeview.set_file_ended.connect ( ()=> {
                 toast.dismiss ();
                 save_tagged_enable ();
@@ -279,6 +281,7 @@ namespace Tags {
                     set_tags (file_tags, false); 
                 }
                 count_tag_hits ();
+                //this.set_sensitive (true);
             });
         }
 
@@ -437,7 +440,7 @@ namespace Tags {
         private void save_tagged () {
             var file_dialog = new Gtk.FileDialog ();
             file_dialog.set_modal (true);
-            file_dialog.set_title ("Save tags file");
+            file_dialog.set_title ("Save tagged lines to file");
             file_dialog.set_accept_label ("Save");
 
             if (file_opened != null) {
@@ -450,7 +453,7 @@ namespace Tags {
                     if (!lines_treeview.hide_untagged) hide_untagged_lines ();
                     lines_treeview.to_file(file_dialog.save.end (res));
                 } catch (Error e) {
-                    warning ("Error while saving tags file: %s ...", e.message);
+                    warning ("Error while saving tagged lines to file: %s ...", e.message);
                 }
             });
         }
