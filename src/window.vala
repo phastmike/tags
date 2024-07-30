@@ -276,11 +276,7 @@ namespace Tags {
                 save_tagged_enable ();
                 /* Here we check if application property autoload tags is enabled*/
                 if (Preferences.instance ().tags_autoload == true) {
-                    // load tags for file_chooser_dialog.get_file ()
-                    toast.set_timeout (3);
-                    overlay.add_toast (toast);
                     File file_tags = File.new_for_path (file.get_path () + ".tags");
-                    toast.set_title ("Checking for tags file '%s'".printf (file_tags.get_basename ()));
                     set_tags (file_tags, false); 
                 }
                 count_tag_hits ();
