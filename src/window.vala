@@ -274,7 +274,10 @@ namespace Tags {
             lines_treeview.set_file_ended.connect ( ()=> {
                 toast.dismiss ();
                 save_tagged_enable ();
+
                 /* Here we check if application property autoload tags is enabled*/
+                /* FIXME: What to do if we already have tags inserted, merge or replace? */
+
                 if (Preferences.instance ().tags_autoload == true) {
                     File file_tags = File.new_for_path (file.get_path () + ".tags");
                     set_tags (file_tags, false); 
