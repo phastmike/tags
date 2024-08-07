@@ -215,12 +215,15 @@ namespace Tags {
 
                 if (file_opened != null) {
                     file_dialog.set_initial_folder (file_opened.get_parent ());
-                    message ("Set initial file '%s' ...", file_opened.get_parse_name ());
+                    message ("File opened is '%s' ...", file_opened.get_parse_name ());
                 }
 
                 file_dialog.open.begin (this, null, (obj, res) => {
                     try {
-                        this.set_file (file_dialog.open.end (res));
+                        var new_file = file_dialog.open.end (res);
+                        file_opened = new_file;
+                        message ("File to open now is: %s", new_file.get_path ()); 
+                        this.set_file (new_file);
                     } catch (Error e) {
                         warning ("Error while opening log file: %s ...", e.message);
                     }
@@ -260,8 +263,6 @@ namespace Tags {
             toast.set_timeout (0);
             overlay.add_toast (toast);
 
-            file_opened = file;
-
             var dialog = new Adw.MessageDialog (this, "Loading File", file.get_path ());
             var spinner = new Gtk.Spinner ();
             spinner.set_spinning (true);
@@ -298,6 +299,7 @@ namespace Tags {
 
                 if (Preferences.instance ().tags_autoload == true) {
                     File file_tags = File.new_for_path (file.get_path () + ".tags");
+                    message ("Set tags for file: %s", file_tags.get_path ());
                     set_tags (file_tags, false); 
                 }
                 count_tag_hits ();
@@ -382,6 +384,53 @@ namespace Tags {
 
         private void set_tags (File file, bool show_ui_dialog = true) {
             try {
+                file.read_async.begin (Priority.DEFAULT, null, (obj, res) => {
+                    try {
+                        FileInputStream stream = file.read_async.end (res);
+                        Json.Parser parser = new Json.Parser ();
+                        parser.load_from_stream_async.begin (stream, null , (obj, res) => {
+                            tags_changed = false;
+                            tags_treeview.clear_tags ();
+
+                            Json.Node node = parser.get_root ();
+                            Json.Array array = new Json.Array ();
+
+                            if (node.get_node_type () == Json.NodeType.ARRAY) {
+                                array = node.get_array ();
+                                array.foreach_element ((array, index_, element_node) => {
+                                    Tag tag = Json.gobject_deserialize (typeof (Tag), element_node) as Tag;
+                                    tags_treeview.add_tag (tag);
+
+                                    tag.enable_changed.connect ((enabled) => {
+                                        lines_treeview.line_store_filter.refilter ();
+                                    });
+                                });
+                            }
+                        });
+                    } catch (Error e) {
+                            print ("Unable to parse: %s\n", e.message);
+
+                            if (show_ui_dialog == false) return;
+
+                            var dialog = new Gtk.MessageDialog.with_markup (application.active_window,
+                                                        Gtk.DialogFlags.DESTROY_WITH_PARENT |
+                                                        Gtk.DialogFlags.MODAL,
+                                                        Gtk.MessageType.WARNING,
+                                                        Gtk.ButtonsType.CLOSE,
+                                                        "Could not parse tags file");
+                            //dialog.format_secondary_text (file.get_path ());
+                            dialog.format_secondary_text (e.message);
+                            dialog.response.connect ((response_id) => {
+                                dialog.destroy ();
+                            });
+
+                            dialog.show ();
+                    }
+                    lines_treeview.line_store_filter.refilter ();
+                    count_tag_hits ();
+                });
+
+                /*
                 Json.Parser parser = new Json.Parser ();
                 parser.load_from_file (file.get_path ());
 
@@ -400,22 +449,10 @@ namespace Tags {
                             lines_treeview.line_store_filter.refilter ();
                         });
 
-                        /*
-                        if (lines_treeview.hide_untagged) { 
-                            lines_treeview.line_store_filter.refilter ();
-                        }
-                        */
                     });
                 }
 
                 lines_treeview.line_store_filter.refilter ();
-
-                /*
-                if (lines_treeview.hide_untagged) {
-                    lines_treeview.line_store_filter.refilter ();
-                }
-                */
-
                 count_tag_hits ();
 
             } catch (Error e) {
@@ -436,9 +473,12 @@ namespace Tags {
                 });
                 dialog.show ();
             }
-        
+            */
+            } catch (Error e) {
+                print ("Error: Can't read file: %s", e.message);
+            }
         }
-
+        
         private void save_tags () {
             var file_dialog = new Gtk.FileDialog ();
             file_dialog.set_modal (true);
