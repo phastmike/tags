@@ -262,17 +262,35 @@ namespace Tags {
 
             file_opened = file;
 
+            var dialog = new Adw.MessageDialog (this, "Loading File", file.get_path ());
+            var spinner = new Gtk.Spinner ();
+            spinner.set_spinning (true);
+            dialog.set_extra_child (spinner);
+            dialog.show ();
+            spinner.start ();
+
+            dialog.add_response ("cancel", "_Cancel");
+            dialog.set_response_appearance ("cancel",Adw.ResponseAppearance.SUGGESTED);
+            dialog.set_default_response ("cancel");
+            dialog.set_close_response ("cancel");
+
             // Sets title for gnome shell window identity
             set_title (file.get_basename ());
 
             window_title.set_subtitle (file.get_basename ());
             window_title.set_tooltip_text (file.get_path ());
+
+            // Actual set file 
+            // Async with reply via callback set_file_sensitive
             lines_treeview.set_file (file);
 
             button_open_file.set_sensitive (false);
 
             lines_treeview.set_file_ended.connect ( ()=> {
                 toast.dismiss ();
+                spinner.set_spinning (false);
+                spinner.hide ();
+                dialog.hide ();
                 save_tagged_enable ();
 
                 /* Here we check if application property autoload tags is enabled*/
@@ -352,11 +370,11 @@ namespace Tags {
             }
 
             file_chooser_dialog.response.connect ((response_id) => {
+                file_chooser_dialog.destroy ();
                 if (response_id == Gtk.ResponseType.ACCEPT) {
                     file_tags = file_chooser_dialog.get_file ();
-                    set_tags(file_tags);
+                    set_tags (file_tags);
                 }
-                file_chooser_dialog.destroy ();
             });
 
             file_chooser_dialog.show ();
@@ -390,10 +408,16 @@ namespace Tags {
                     });
                 }
 
+                lines_treeview.line_store_filter.refilter ();
+
+                /*
                 if (lines_treeview.hide_untagged) {
                     lines_treeview.line_store_filter.refilter ();
                 }
+                */
+
                 count_tag_hits ();
+
             } catch (Error e) {
                 print ("Unable to parse: %s\n", e.message);
 
