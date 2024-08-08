@@ -258,12 +258,12 @@ namespace Tags {
         }
         
         public void set_file (File file) {
-            Adw.Toast toast = new Adw.Toast ("Loading file '%s'".printf (file.get_basename ()));
-            toast.set_use_markup (true);
-            toast.set_timeout (0);
-            overlay.add_toast (toast);
+            //Adw.Toast toast = new Adw.Toast ("Loading file '%s'".printf (file.get_basename ()));
+            //toast.set_use_markup (true);
+            //toast.set_timeout (0);
+            //overlay.add_toast (toast);
 
-            var dialog = new Adw.MessageDialog (this, "Loading File", file.get_path ());
+            var dialog = new Adw.MessageDialog (this, "Loading File", null /*file.get_basename ()*/);
             var spinner = new Gtk.Spinner ();
             spinner.set_spinning (true);
             dialog.set_extra_child (spinner);
@@ -288,7 +288,7 @@ namespace Tags {
             button_open_file.set_sensitive (false);
 
             lines_treeview.set_file_ended.connect ( ()=> {
-                toast.dismiss ();
+                //toast.dismiss ();
                 spinner.set_spinning (false);
                 spinner.hide ();
                 dialog.hide ();
@@ -389,6 +389,7 @@ namespace Tags {
                         FileInputStream stream = file.read_async.end (res);
                         Json.Parser parser = new Json.Parser ();
                         parser.load_from_stream_async.begin (stream, null , (obj, res) => {
+                            parser.load_from_stream_async.end (res);
                             tags_changed = false;
                             tags_treeview.clear_tags ();
 
@@ -406,9 +407,11 @@ namespace Tags {
                                     });
                                 });
                             }
+                            lines_treeview.line_store_filter.refilter ();
+                            count_tag_hits ();
                         });
                     } catch (Error e) {
-                            print ("Unable to parse: %s\n", e.message);
+                            message ("Unable to parse: %s\n", e.message);
 
                             if (show_ui_dialog == false) return;
 
@@ -426,8 +429,6 @@ namespace Tags {
 
                             dialog.show ();
                     }
-                    lines_treeview.line_store_filter.refilter ();
-                    count_tag_hits ();
                 });
 
                 /*
