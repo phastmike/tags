@@ -41,7 +41,7 @@ namespace Tags {
             _enabled = true;
         }
 
-        public bool applies_to (string text) {
+        public bool applies_to (string? text = null) {
             if (text == null) return false;
 
             if (this.is_regex) {

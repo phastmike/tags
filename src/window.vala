@@ -27,6 +27,7 @@ namespace Tags {
         private File? file_opened = null;
         private File? file_tags = null;
         private bool tags_changed = false;
+        Adw.Toast toast = new Adw.Toast ("Autoload found tags file, loading it ...");
 
         private ActionEntry[] WINDOW_ACTIONS = {
             { "add_tag", add_tag },
@@ -258,12 +259,7 @@ namespace Tags {
         }
         
         public void set_file (File file) {
-            //Adw.Toast toast = new Adw.Toast ("Loading file '%s'".printf (file.get_basename ()));
-            //toast.set_use_markup (true);
-            //toast.set_timeout (0);
-            //overlay.add_toast (toast);
-
-            var dialog = new Adw.MessageDialog (this, "Loading File", null /*file.get_basename ()*/);
+            var dialog = new Adw.MessageDialog (this, "Loading File", file.get_basename ());
             var spinner = new Gtk.Spinner ();
             spinner.set_spinning (true);
             dialog.set_extra_child (spinner);
@@ -297,12 +293,17 @@ namespace Tags {
                 /* Here we check if application property autoload tags is enabled*/
                 /* FIXME: What to do if we already have tags inserted, merge or replace? */
 
+
                 if (Preferences.instance ().tags_autoload == true) {
                     File file_tags = File.new_for_path (file.get_path () + ".tags");
-                    message ("Set tags for file: %s", file_tags.get_path ());
-                    set_tags (file_tags, false); 
+                    message ("Set tags file: %s", file_tags.get_path ());
+                    if (file_tags.query_exists ()) {
+                        toast.set_timeout (3);
+                        overlay.add_toast (toast);
+                        set_tags (file_tags, false); 
+                    }
+                    count_tag_hits ();
                 }
-                count_tag_hits ();
                 button_open_file.set_sensitive (true);
             });
         }
@@ -322,7 +323,6 @@ namespace Tags {
                 if (lines_treeview.hide_untagged) { 
                     lines_treeview.line_store_filter.refilter ();
                 }
-                count_tag_hits ();
             });
 
             tag_dialog.show ();
