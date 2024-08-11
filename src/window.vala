@@ -27,6 +27,7 @@ namespace Tags {
         private File? file_opened = null;
         private File? file_tags = null;
         private bool tags_changed = false;
+        ulong handler_id;
         Adw.Toast toast = new Adw.Toast ("Autoload found tags file, loading it ...");
 
         private ActionEntry[] WINDOW_ACTIONS = {
@@ -283,7 +284,7 @@ namespace Tags {
 
             button_open_file.set_sensitive (false);
 
-            lines_treeview.set_file_ended.connect ( ()=> {
+            handler_id = lines_treeview.set_file_ended.connect ( ()=> {
                 //toast.dismiss ();
                 spinner.set_spinning (false);
                 spinner.hide ();
@@ -295,7 +296,7 @@ namespace Tags {
 
 
                 if (Preferences.instance ().tags_autoload == true) {
-                    File file_tags = File.new_for_path (file.get_path () + ".tags");
+                    file_tags = File.new_for_path (file.get_path () + ".tags");
                     message ("Set tags file: %s", file_tags.get_path ());
                     if (file_tags.query_exists ()) {
                         toast.set_timeout (3);
@@ -305,6 +306,7 @@ namespace Tags {
                     count_tag_hits ();
                 }
                 button_open_file.set_sensitive (true);
+                lines_treeview.disconnect (handler_id);
             });
         }
 
