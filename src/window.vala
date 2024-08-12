@@ -28,7 +28,6 @@ namespace Tags {
         private File? file_tags = null;
         private bool tags_changed = false;
         ulong handler_id;
-        Adw.Toast toast = new Adw.Toast ("Autoload found tags file, loading it ...");
 
         private ActionEntry[] WINDOW_ACTIONS = {
             { "add_tag", add_tag },
@@ -297,13 +296,12 @@ namespace Tags {
 
                 if (Preferences.instance ().tags_autoload == true) {
                     file_tags = File.new_for_path (file.get_path () + ".tags");
-                    message ("Set tags file: %s", file_tags.get_path ());
                     if (file_tags.query_exists ()) {
-                        toast.set_timeout (3);
-                        overlay.add_toast (toast);
+                        message ("Set tags file: %s", file_tags.get_path ());
                         set_tags (file_tags, false); 
                     }
-                    count_tag_hits ();
+
+                    if (tags_treeview.ntags > 0) count_tag_hits ();
                 }
                 button_open_file.set_sensitive (true);
                 lines_treeview.disconnect (handler_id);

@@ -137,18 +137,20 @@ namespace Tags {
 
             try {
                 while ((line = yield dis.read_line_async ()) != null) {
+                    int i = 0;
                     uint8[] con;
-                    con = line.escape ().data;
+                    con = line.data;
 
-                    for (int i = 0; i < con.length - 2; i++) {
-                        if (con[i] == 0x00) {
-                            con[i] = 0x30;
-                        } else if (con[i] == '\r' && con[i+1] == '\n') {
+                    for (i = 0; i < con.length - 1; i++) {
+                        if (con[i] == 0x00 || con[i] == 0x0a || con[i] == 0x0d) {
                             con[i] = ' ';
-                        }
+                        } 
                     }
+
+                    con[i] = 0x00; // Force string terminator to avoid junk
+
                     line_store.append (out iter);
-                    line_store.@set (iter, Columns.LINE_NUMBER, ++nr, Columns.LINE_TEXT, line, -1);
+                    line_store.@set (iter, Columns.LINE_NUMBER, ++nr, Columns.LINE_TEXT, con, -1);
                 }
             } catch (IOError e) {
                 warning ("%s/n", e.message);
