@@ -216,14 +216,14 @@ namespace Tags {
 
                 if (file_opened != null) {
                     file_dialog.set_initial_folder (file_opened.get_parent ());
-                    message ("File opened is '%s' ...", file_opened.get_parse_name ());
+                    //message ("File opened is '%s' ...", file_opened.get_parse_name ());
                 }
 
                 file_dialog.open.begin (this, null, (obj, res) => {
                     try {
                         var new_file = file_dialog.open.end (res);
                         file_opened = new_file;
-                        message ("File to open now is: %s", new_file.get_path ()); 
+                        //message ("File to open now is: %s", new_file.get_path ()); 
                         this.set_file (new_file);
                     } catch (Error e) {
                         warning ("Error while opening log file: %s ...", e.message);
