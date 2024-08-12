@@ -157,7 +157,7 @@ namespace Tags {
             }
         }
 
-        public void set_file (File file) {
+        public void set_file (File file, Cancellable cancellable) {
             string? contents;
 
             this.model = null;
@@ -168,7 +168,7 @@ namespace Tags {
             line_store.clear ();
             will_clear_all = false;
 
-            file.read_async.begin (Priority.DEFAULT, null, (obj, res) => {
+            file.read_async.begin (Priority.DEFAULT, cancellable, (obj, res) => {
                 Gtk.TreeIter iter;
                 try {
                     FileInputStream @is = file.read_async.end (res);

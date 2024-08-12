@@ -27,7 +27,7 @@ namespace Tags {
         private File? file_opened = null;
         private File? file_tags = null;
         private bool tags_changed = false;
-        ulong handler_id;
+        private ulong handler_id;
 
         private ActionEntry[] WINDOW_ACTIONS = {
             { "add_tag", add_tag },
@@ -259,8 +259,10 @@ namespace Tags {
         }
         
         public void set_file (File file) {
-            var dialog = new Adw.MessageDialog (this, "Loading File", file.get_basename ());
             var spinner = new Gtk.Spinner ();
+            var cancel_open = new Cancellable ();
+            var dialog = new Adw.MessageDialog (this, "Loading File", file.get_basename ());
+
             spinner.set_spinning (true);
             dialog.set_extra_child (spinner);
             dialog.show ();
@@ -271,6 +273,13 @@ namespace Tags {
             dialog.set_default_response ("cancel");
             dialog.set_close_response ("cancel");
 
+            dialog.response.connect ((response) => {
+                if (response == "cancel") {
+                    cancel_open.cancel ();
+                    button_open_file.set_sensitive (true);
+                }
+            });
+
             // Sets title for gnome shell window identity
             set_title (file.get_basename ());
 
@@ -279,7 +288,7 @@ namespace Tags {
 
             // Actual set file 
             // Async with reply via callback set_file_sensitive
-            lines_treeview.set_file (file);
+            lines_treeview.set_file (file, cancel_open);
 
             button_open_file.set_sensitive (false);
 
@@ -430,51 +439,6 @@ namespace Tags {
                             dialog.show ();
                     }
                 });
-
-                /*
-                Json.Parser parser = new Json.Parser ();
-                parser.load_from_file (file.get_path ());
-
-                tags_changed = false;
-                tags_treeview.clear_tags ();
-
-                Json.Node node = parser.get_root ();
-                Json.Array array = new Json.Array ();
-                if (node.get_node_type () == Json.NodeType.ARRAY) {
-                    array = node.get_array ();
-                    array.foreach_element ((array, index_, element_node) => {
-                        Tag tag = Json.gobject_deserialize (typeof (Tag), element_node) as Tag;
-                        tags_treeview.add_tag (tag);
-
-                        tag.enable_changed.connect ((enabled) => {
-                            lines_treeview.line_store_filter.refilter ();
-                        });
-
-                    });
-                }
-
-                lines_treeview.line_store_filter.refilter ();
-                count_tag_hits ();
-
-            } catch (Error e) {
-                print ("Unable to parse: %s\n", e.message);
-
-                if (show_ui_dialog == false) return;
-
-                var dialog = new Gtk.MessageDialog.with_markup (application.active_window,
-                                            Gtk.DialogFlags.DESTROY_WITH_PARENT |
-                                            Gtk.DialogFlags.MODAL,
-                                            Gtk.MessageType.WARNING,
-                                            Gtk.ButtonsType.CLOSE,
-                                            "Could not parse tags file");
-                //dialog.format_secondary_text (file.get_path ());
-                dialog.format_secondary_text (e.message);
-                dialog.response.connect ((response_id) => {
-                    dialog.destroy ();
-                });
-                dialog.show ();
-            }
-            */
             } catch (Error e) {
                 print ("Error: Can't read file: %s", e.message);
             }
