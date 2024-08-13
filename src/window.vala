@@ -306,8 +306,8 @@ namespace Tags {
                 if (Preferences.instance ().tags_autoload == true) {
                     file_tags = File.new_for_path (file.get_path () + ".tags");
                     if (file_tags.query_exists ()) {
-                        message ("Set tags file: %s", file_tags.get_path ());
-                        set_tags (file_tags, false); 
+                        //message ("Set tags file: %s", file_tags.get_path ());
+                        set_tags (file_tags, cancel_open, false);
                     }
 
                     if (tags_treeview.ntags > 0) count_tag_hits ();
@@ -391,13 +391,13 @@ namespace Tags {
             file_chooser_dialog.show ();
         }
 
-        private void set_tags (File file, bool show_ui_dialog = true) {
+        private void set_tags (File file, Cancellable? cancellable = null, bool show_ui_dialog = true) {
             try {
-                file.read_async.begin (Priority.DEFAULT, null, (obj, res) => {
+                file.read_async.begin (Priority.DEFAULT, cancellable, (obj, res) => {
                     try {
                         FileInputStream stream = file.read_async.end (res);
                         Json.Parser parser = new Json.Parser ();
-                        parser.load_from_stream_async.begin (stream, null , (obj, res) => {
+                        parser.load_from_stream_async.begin (stream, cancellable , (obj, res) => {
                             parser.load_from_stream_async.end (res);
                             tags_changed = false;
                             tags_treeview.clear_tags ();
