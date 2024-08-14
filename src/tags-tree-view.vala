@@ -40,6 +40,7 @@ namespace Tags {
 
         public uint ntags;
         private Gtk.Application application;
+        public signal void no_active_tags ();
 
         public TagsTreeView (Gtk.Application app) {
             application = app;
@@ -52,6 +53,9 @@ namespace Tags {
                 tag_store.get_iter_from_string (out iter, path);
                 Tag tag = get_tag_from_model_with_iter (tag_store, iter);
                 tag.enabled = !tag.enabled;
+                if (get_n_tags_enabled () == 0) {
+                    no_active_tags ();
+                }
             });
 
             tag_store.row_inserted.connect ((path, iter) => {
@@ -60,6 +64,7 @@ namespace Tags {
 
             tag_store.row_deleted.connect ((path, iter) => {
                 ntags--;
+                if (ntags == 0 ) no_active_tags ();
             });
 
             /* Unselects rows on leaving the object */
@@ -164,6 +169,23 @@ namespace Tags {
             });
         }
 
+        // We could have a quicker method to check if there's at least one
+        // tag enabled and exit right after, instead of iterating over all members.
+        // but we wouldn't get the number though. Is it worth it?
+        public uint get_n_tags_enabled () {
+            uint active_tags = 0;
+
+            tag_store.foreach ( (model, path, iter) => {
+                var tag = get_tag_from_model_with_iter (model, iter);
+                if (tag.enabled == true) {
+                    active_tags += 1; 
+                }
+                return false;
+            });
+
+            return active_tags;
+        }
+
         public void toggle_tag (int nr) requires (nr >= 0 && nr <= 9) {
             Gtk.TreeIter iter;
             if (model.@get_iter_from_string (out iter, nr.to_string ())) {
@@ -171,6 +193,9 @@ namespace Tags {
                 tag.enabled = !tag.enabled;
             }
             queue_draw ();
+            if (get_n_tags_enabled () == 0) {
+                no_active_tags ();
+            }
         }
 
         public void tags_set_enable (bool enable) {

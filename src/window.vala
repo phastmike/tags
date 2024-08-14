@@ -153,6 +153,12 @@ namespace Tags {
                 tag_dialog.show ();
             });
 
+            tags_treeview.no_active_tags.connect ( () => {
+                if (lines_treeview.hide_untagged == true) {
+                    inform_user_no_tagged_lines ();
+                }
+            });
+
             paned = new Gtk.Paned (Gtk.Orientation.VERTICAL);
             overlay.set_child (paned);
 
@@ -306,7 +312,6 @@ namespace Tags {
                 if (Preferences.instance ().tags_autoload == true) {
                     file_tags = File.new_for_path (file.get_path () + ".tags");
                     if (file_tags.query_exists ()) {
-                        //message ("Set tags file: %s", file_tags.get_path ());
                         set_tags (file_tags, cancel_open, false);
                     }
 
@@ -541,6 +546,11 @@ namespace Tags {
                 lines_treeview.scroll_to_cell (model.get_path (iter) , null, true, (float) 0.5, (float) 0.5);
             }
             selection.set_mode (Gtk.SelectionMode.MULTIPLE);
+
+            if (lines_treeview.hide_untagged == true &&
+               (tags_treeview.ntags == 0 || tags_treeview.get_n_tags_enabled () == 0)) {
+                inform_user_no_tagged_lines ();
+            }
         }
 
         private void toggle_tags_view () {
@@ -744,6 +754,21 @@ namespace Tags {
             }
 
             line_selection.set_mode (Gtk.SelectionMode.MULTIPLE);
+        }
+
+        private void inform_user_no_tagged_lines () {
+            Idle.add ( () => {
+                var toast = new Adw.Toast ("No visible tagged lines, toggle visibility?");
+                toast.set_button_label ("_Toggle");
+                toast.set_timeout (5);
+                toast.button_clicked.connect ( () => {
+                    hide_untagged_lines ();
+                    toast.dismiss ();
+                });
+
+                overlay.add_toast (toast);
+                return false;
+            });
         }
     }
 }
