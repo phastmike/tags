@@ -53,6 +53,7 @@ namespace Tags {
                 tag_store.get_iter_from_string (out iter, path);
                 Tag tag = get_tag_from_model_with_iter (tag_store, iter);
                 tag.enabled = !tag.enabled;
+
                 if (get_n_tags_enabled () == 0) {
                     no_active_tags ();
                 }
@@ -192,7 +193,9 @@ namespace Tags {
                 Tag tag = get_tag_from_model_with_iter (model, iter);
                 tag.enabled = !tag.enabled;
             }
+
             queue_draw ();
+
             if (get_n_tags_enabled () == 0) {
                 no_active_tags ();
             }
