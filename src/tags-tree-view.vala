@@ -178,7 +178,7 @@ namespace Tags {
 
             tag_store.foreach ( (model, path, iter) => {
                 var tag = get_tag_from_model_with_iter (model, iter);
-                if (tag.enabled == true) {
+                if (tag.enabled == true  && tag.hits > 0) {
                     active_tags += 1; 
                 }
                 return false;

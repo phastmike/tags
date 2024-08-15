@@ -758,8 +758,8 @@ namespace Tags {
 
         private void inform_user_no_tagged_lines () {
             Idle.add ( () => {
-                var toast = new Adw.Toast ("No visible tagged lines, toggle visibility?");
-                toast.set_button_label ("_Toggle");
+                var toast = new Adw.Toast ("No visible tagged lines, show untagged lines?");
+                toast.set_button_label ("_Show");
                 toast.set_timeout (5);
                 toast.button_clicked.connect ( () => {
                     hide_untagged_lines ();
