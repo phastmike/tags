@@ -337,6 +337,8 @@ namespace Tags {
                 if (lines_treeview.hide_untagged) { 
                     lines_treeview.line_store_filter.refilter ();
                 }
+
+                count_tag_hits ();
             });
 
             tag_dialog.show ();
@@ -496,7 +498,12 @@ namespace Tags {
                     if (!lines_treeview.hide_untagged) hide_untagged_lines ();
                     lines_treeview.to_file(file_dialog.save.end (res));
                 } catch (Error e) {
-                    warning ("Error while saving tagged lines to file: %s ...", e.message);
+                    var dialog = new Adw.MessageDialog (this, "Save error", "Could not save the tagged lines into file: %s".printf (e.message));
+                    dialog.add_response ("cancel", "_Cancel");
+                    dialog.set_default_response ("cancel");
+                    dialog.set_close_response ("cancel");
+                    dialog.show ();
+                    //warning ("Error while saving tagged lines to file: %s ...", e.message);
                 }
             });
         }
