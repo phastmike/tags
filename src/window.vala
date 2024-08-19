@@ -308,7 +308,6 @@ namespace Tags {
                 /* Here we check if application property autoload tags is enabled*/
                 /* FIXME: What to do if we already have tags inserted, merge or replace? */
 
-
                 if (Preferences.instance ().tags_autoload == true) {
                     file_tags = File.new_for_path (file.get_path () + ".tags");
                     if (file_tags.query_exists ()) {
@@ -466,7 +465,12 @@ namespace Tags {
                     this.tags_treeview.to_file (file_dialog.save.end (res));
                     this.tags_changed = false;
                 } catch (Error e) {
-                    warning ("Error while saving tags file: %s ...", e.message);
+                    var dialog = new Adw.MessageDialog (this, "Save error", "Could not save the tags into file: %s".printf (e.message));
+                    dialog.add_response ("cancel", "_Cancel");
+                    dialog.set_default_response ("cancel");
+                    dialog.set_close_response ("cancel");
+                    dialog.show ();
+                    //warning ("Error while saving tags file: %s ...", e.message);
                 }
             });
         }
@@ -502,7 +506,6 @@ namespace Tags {
                     dialog.set_default_response ("cancel");
                     dialog.set_close_response ("cancel");
                     dialog.show ();
-                    //warning ("Error while saving tagged lines to file: %s ...", e.message);
                 }
             });
         }
