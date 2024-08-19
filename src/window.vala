@@ -222,17 +222,19 @@ namespace Tags {
 
                 if (file_opened != null) {
                     file_dialog.set_initial_folder (file_opened.get_parent ());
-                    //message ("File opened is '%s' ...", file_opened.get_parse_name ());
                 }
 
                 file_dialog.open.begin (this, null, (obj, res) => {
                     try {
                         var new_file = file_dialog.open.end (res);
                         file_opened = new_file;
-                        //message ("File to open now is: %s", new_file.get_path ()); 
                         this.set_file (new_file);
                     } catch (Error e) {
-                        //warning ("Error while opening log file: %s ...", e.message);
+                        var dialog = new Adw.MessageDialog (this, "Open error", "Could not open file: %s".printf (e.message));
+                        dialog.add_response ("cancel", "_Cancel");
+                        dialog.set_default_response ("cancel");
+                        dialog.set_close_response ("cancel");
+                        dialog.show ();
                     }
                 });
             });
@@ -382,7 +384,7 @@ namespace Tags {
                 try {
                     file_chooser_dialog.set_current_folder (file_opened.get_parent ());
                 } catch (Error e) {
-                    warning ("FileChooser::set_current_folder::error message: %s", e.message);
+                    warning ("FileChooser::load_tags::error message: %s", e.message);
                 }
             }
 
@@ -470,7 +472,6 @@ namespace Tags {
                     dialog.set_default_response ("cancel");
                     dialog.set_close_response ("cancel");
                     dialog.show ();
-                    //warning ("Error while saving tags file: %s ...", e.message);
                 }
             });
         }
