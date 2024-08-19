@@ -232,7 +232,7 @@ namespace Tags {
                         //message ("File to open now is: %s", new_file.get_path ()); 
                         this.set_file (new_file);
                     } catch (Error e) {
-                        warning ("Error while opening log file: %s ...", e.message);
+                        //warning ("Error while opening log file: %s ...", e.message);
                     }
                 });
             });
@@ -442,12 +442,11 @@ namespace Tags {
                             dialog.response.connect ((response_id) => {
                                 dialog.destroy ();
                             });
-
                             dialog.show ();
                     }
                 });
             } catch (Error e) {
-                print ("Error: Can't read file: %s", e.message);
+                warning ("Error: Can't read file: %s", e.message);
             }
         }
         
