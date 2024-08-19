@@ -230,11 +230,13 @@ namespace Tags {
                         file_opened = new_file;
                         this.set_file (new_file);
                     } catch (Error e) {
+                        /* FIXME filter out cancel actions otherwise makes no sense
                         var dialog = new Adw.MessageDialog (this, "Open error", "Could not open file: %s".printf (e.message));
                         dialog.add_response ("cancel", "_Cancel");
                         dialog.set_default_response ("cancel");
                         dialog.set_close_response ("cancel");
                         dialog.show ();
+                        */
                     }
                 });
             });
