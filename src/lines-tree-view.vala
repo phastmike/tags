@@ -142,17 +142,24 @@ namespace Tags {
                     con = line.data;
 
                     for (i = 0; i < con.length - 1; i++) {
-                        if (con[i] == 0x00 || con[i] == 0x0a || con[i] == 0x0d) {
+                        if (con[i] == 0x0a || con[i] == 0x0d) {
                             con[i] = ' ';
                         } 
                     }
 
-                    con[i] = 0x00; // Force string terminator to avoid junk
+                    con[i] = 0x00;
 
                     line_store.append (out iter);
                     line_store.@set (iter, Columns.LINE_NUMBER, ++nr, Columns.LINE_TEXT, con, -1);
                 }
             } catch (IOError e) {
+                    /*
+                    var dialog = new Adw.MessageDialog (this, "Save error", "Could not save the tags into file: %s".printf (e.message));
+                    dialog.add_response ("cancel", "_Cancel");
+                    dialog.set_default_response ("cancel");
+                    dialog.set_close_response ("cancel");
+                    dialog.show ();
+                    */
                 warning ("%s/n", e.message);
             }
         }
@@ -177,6 +184,13 @@ namespace Tags {
                         set_file_ended();
                     });
                 } catch (Error e) {
+                    /*
+                    var dialog = new Adw.MessageDialog (this, "Save error", "Could not save the tags into file: %s".printf (e.message));
+                    dialog.add_response ("cancel", "_Cancel");
+                    dialog.set_default_response ("cancel");
+                    dialog.set_close_response ("cancel");
+                    dialog.show ();
+                    */
                     warning ("%s\n", e.message);
                 }
             });

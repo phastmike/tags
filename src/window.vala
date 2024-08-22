@@ -430,10 +430,15 @@ namespace Tags {
                             count_tag_hits ();
                         });
                     } catch (Error e) {
-                            message ("Unable to parse: %s\n", e.message);
-
                             if (show_ui_dialog == false) return;
 
+                            var dialog = new Adw.MessageDialog (application.active_window, "Load tags", "Could not parse the tags file: %s".printf (e.message));
+                            dialog.add_response ("cancel", "_Cancel");
+                            dialog.set_default_response ("cancel");
+                            dialog.set_close_response ("cancel");
+                            dialog.show ();
+
+                            /*
                             var dialog = new Gtk.MessageDialog.with_markup (application.active_window,
                                                         Gtk.DialogFlags.DESTROY_WITH_PARENT |
                                                         Gtk.DialogFlags.MODAL,
@@ -446,6 +451,7 @@ namespace Tags {
                                 dialog.destroy ();
                             });
                             dialog.show ();
+                            */
                     }
                 });
             } catch (Error e) {
