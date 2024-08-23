@@ -231,11 +231,7 @@ namespace Tags {
                         this.set_file (new_file);
                     } catch (Error e) {
                         if (e.code != 2) {
-                            var dialog = new Adw.MessageDialog (this, "Open error", "Could not open file: %s (%d)".printf (e.message, e.code));
-                            dialog.add_response ("cancel", "_Cancel");
-                            dialog.set_default_response ("cancel");
-                            dialog.set_close_response ("cancel");
-                            dialog.show ();
+                            show_dialog ("Open error", "Could not open file: %s (%d)".printf (e.message, e.code));
                         }
                     }
                 });
@@ -430,28 +426,9 @@ namespace Tags {
                             count_tag_hits ();
                         });
                     } catch (Error e) {
-                            if (show_ui_dialog == false) return;
-
-                            var dialog = new Adw.MessageDialog (application.active_window, "Load tags", "Could not parse the tags file: %s".printf (e.message));
-                            dialog.add_response ("cancel", "_Cancel");
-                            dialog.set_default_response ("cancel");
-                            dialog.set_close_response ("cancel");
-                            dialog.show ();
-
-                            /*
-                            var dialog = new Gtk.MessageDialog.with_markup (application.active_window,
-                                                        Gtk.DialogFlags.DESTROY_WITH_PARENT |
-                                                        Gtk.DialogFlags.MODAL,
-                                                        Gtk.MessageType.WARNING,
-                                                        Gtk.ButtonsType.CLOSE,
-                                                        "Could not parse tags file");
-                            //dialog.format_secondary_text (file.get_path ());
-                            dialog.format_secondary_text (e.message);
-                            dialog.response.connect ((response_id) => {
-                                dialog.destroy ();
-                            });
-                            dialog.show ();
-                            */
+                        if (show_ui_dialog == true) {
+                            show_dialog ("Load tags", "Could not load the tags file: %s".printf (e.message));
+                        }
                     }
                 });
             } catch (Error e) {
@@ -475,11 +452,7 @@ namespace Tags {
                     this.tags_treeview.to_file (file_dialog.save.end (res));
                     this.tags_changed = false;
                 } catch (Error e) {
-                    var dialog = new Adw.MessageDialog (this, "Save error", "Could not save the tags into file: %s".printf (e.message));
-                    dialog.add_response ("cancel", "_Cancel");
-                    dialog.set_default_response ("cancel");
-                    dialog.set_close_response ("cancel");
-                    dialog.show ();
+                    show_dialog ("Save Error", "Could not save the tags file: %s".printf (e.message));
                 }
             });
         }
@@ -510,11 +483,7 @@ namespace Tags {
                     if (!lines_treeview.hide_untagged) hide_untagged_lines ();
                     lines_treeview.to_file(file_dialog.save.end (res));
                 } catch (Error e) {
-                    var dialog = new Adw.MessageDialog (this, "Save error", "Could not save the tagged lines into file: %s".printf (e.message));
-                    dialog.add_response ("cancel", "_Cancel");
-                    dialog.set_default_response ("cancel");
-                    dialog.set_close_response ("cancel");
-                    dialog.show ();
+                    show_dialog ("Save Error", "Could not save the tagged lines file: %s".printf (e.message));
                 }
             });
         }
@@ -787,6 +756,14 @@ namespace Tags {
                 overlay.add_toast (toast);
                 return false;
             });
+        }
+
+        private void show_dialog (string title, string message) {
+            var dialog = new Adw.MessageDialog (this, title, message);
+            dialog.add_response ("cancel", "_Cancel");
+            dialog.set_default_response ("cancel");
+            dialog.set_close_response ("cancel");
+            dialog.show ();
         }
     }
 }

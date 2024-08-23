@@ -131,9 +131,9 @@ namespace Tags {
 
         /* Helper method to aid in the async read from the input stream */
         private async void read_from_input_stream_async (DataInputStream dis) {
-            Gtk.TreeIter iter;
             var nr = 0;
             string? line;
+            Gtk.TreeIter iter;
 
             try {
                 while ((line = yield dis.read_line_async ()) != null) {
@@ -153,13 +153,6 @@ namespace Tags {
                     line_store.@set (iter, Columns.LINE_NUMBER, ++nr, Columns.LINE_TEXT, con, -1);
                 }
             } catch (IOError e) {
-                    /*
-                    var dialog = new Adw.MessageDialog (this, "Save error", "Could not save the tags into file: %s".printf (e.message));
-                    dialog.add_response ("cancel", "_Cancel");
-                    dialog.set_default_response ("cancel");
-                    dialog.set_close_response ("cancel");
-                    dialog.show ();
-                    */
                 warning ("%s/n", e.message);
             }
         }
@@ -184,14 +177,7 @@ namespace Tags {
                         set_file_ended();
                     });
                 } catch (Error e) {
-                    /*
-                    var dialog = new Adw.MessageDialog (this, "Save error", "Could not save the tags into file: %s".printf (e.message));
-                    dialog.add_response ("cancel", "_Cancel");
-                    dialog.set_default_response ("cancel");
-                    dialog.set_close_response ("cancel");
-                    dialog.show ();
-                    */
-                    warning ("%s\n", e.message);
+                    warning (e.message);
                 }
             });
 
