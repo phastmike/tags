@@ -21,13 +21,13 @@ namespace Tags {
         unowned Adw.ToastOverlay overlay;
         
         private Gtk.Paned paned;
+        private ulong handler_id;
         private LinesTreeView lines_treeview;
         private TagsTreeView tags_treeview;
         private double paned_last_position = 0.778086;
         private File? file_opened = null;
         private File? file_tags = null;
         private bool tags_changed = false;
-        private ulong handler_id;
 
         private ActionEntry[] WINDOW_ACTIONS = {
             { "add_tag", add_tag },

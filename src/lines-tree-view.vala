@@ -132,25 +132,16 @@ namespace Tags {
         /* Helper method to aid in the async read from the input stream */
         private async void read_from_input_stream_async (DataInputStream dis) {
             var nr = 0;
-            string? line;
+            owned string? line;
             Gtk.TreeIter iter;
 
             try {
                 while ((line = yield dis.read_line_async ()) != null) {
                     int i = 0;
                     uint8[] con;
-                    con = line.data;
-
-                    for (i = 0; i < con.length - 1; i++) {
-                        if (con[i] == 0x0a || con[i] == 0x0d) {
-                            con[i] = ' ';
-                        } 
-                    }
-
-                    con[i] = 0x00;
-
+                    //line.escape ();
                     line_store.append (out iter);
-                    line_store.@set (iter, Columns.LINE_NUMBER, ++nr, Columns.LINE_TEXT, con, -1);
+                    line_store.@set (iter, Columns.LINE_NUMBER, ++nr, Columns.LINE_TEXT, line, -1);
                 }
             } catch (IOError e) {
                 warning ("%s/n", e.message);
