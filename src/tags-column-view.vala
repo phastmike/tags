@@ -26,6 +26,11 @@ namespace Tags {
             column_view.set_model (selection_model);
             selection_model.set_autoselect (false);
             selection_model.set_can_unselect (true);
+
+            // Does not work
+            column_view.activate.connect ( (pos) => {
+                info ("Row %u activated...\n", pos);
+            });
         }
 
         [GtkCallback]
