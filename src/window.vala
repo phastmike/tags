@@ -21,6 +21,7 @@ namespace Tags {
         unowned Adw.ToastOverlay overlay;
         
         private Gtk.Paned paned;
+        private ulong handler_id;
         private LinesTreeView lines_treeview;
         private TagsTreeView tags_treeview;
         private double paned_last_position = 0.778086;
@@ -152,6 +153,12 @@ namespace Tags {
                 tag_dialog.show ();
             });
 
+            tags_treeview.no_active_tags.connect ( () => {
+                if (lines_treeview.hide_untagged == true) {
+                    inform_user_no_tagged_lines ();
+                }
+            });
+
             paned = new Gtk.Paned (Gtk.Orientation.VERTICAL);
             overlay.set_child (paned);
 
@@ -215,14 +222,17 @@ namespace Tags {
 
                 if (file_opened != null) {
                     file_dialog.set_initial_folder (file_opened.get_parent ());
-                    message ("Set initial file '%s' ...", file_opened.get_parse_name ());
                 }
 
                 file_dialog.open.begin (this, null, (obj, res) => {
                     try {
-                        this.set_file (file_dialog.open.end (res));
+                        var new_file = file_dialog.open.end (res);
+                        file_opened = new_file;
+                        this.set_file (new_file);
                     } catch (Error e) {
-                        warning ("Error while opening log file: %s ...", e.message);
+                        if (e.code != 2) {
+                            show_dialog ("Open error", "Could not open file: %s (%d)".printf (e.message, e.code));
+                        }
                     }
                 });
             });
@@ -255,26 +265,60 @@ namespace Tags {
         }
         
         public void set_file (File file) {
-            file_opened = file;
+            var spinner = new Gtk.Spinner ();
+            var cancel_open = new Cancellable ();
+            var dialog = new Adw.MessageDialog (this, "Loading File", file.get_basename ());
+
+            spinner.set_spinning (true);
+            dialog.set_extra_child (spinner);
+            dialog.show ();
+            spinner.start ();
+
+            dialog.add_response ("cancel", "_Cancel");
+            dialog.set_response_appearance ("cancel",Adw.ResponseAppearance.SUGGESTED);
+            dialog.set_default_response ("cancel");
+            dialog.set_close_response ("cancel");
+
+            dialog.response.connect ((response) => {
+                if (response == "cancel") {
+                    cancel_open.cancel ();
+                    button_open_file.set_sensitive (true);
+                }
+            });
 
             // Sets title for gnome shell window identity
             set_title (file.get_basename ());
 
-
             window_title.set_subtitle (file.get_basename ());
             window_title.set_tooltip_text (file.get_path ());
-            lines_treeview.set_file (file.get_path ());
-            save_tagged_enable ();
 
-            /* Here we check if application property autoload tags is enabled*/
-            if (Preferences.instance ().tags_autoload == true) {
-                // load tags for file_chooser_dialog.get_file ()
-                File file_tags = File.new_for_path (file.get_path () + ".tags");
-                set_tags (file_tags, false); 
-            }
+            // Actual set file 
+            // Async with reply via callback set_file_sensitive
+            lines_treeview.set_file (file, cancel_open);
 
-            count_tag_hits ();
-            //print ("Number of lines = %d\n",lines_treeview.get_number_of_items ());
+            button_open_file.set_sensitive (false);
+
+            handler_id = lines_treeview.set_file_ended.connect ( ()=> {
+                //toast.dismiss ();
+                spinner.set_spinning (false);
+                spinner.hide ();
+                dialog.hide ();
+                save_tagged_enable ();
+
+                /* Here we check if application property autoload tags is enabled*/
+                /* FIXME: What to do if we already have tags inserted, merge or replace? */
+
+                if (Preferences.instance ().tags_autoload == true) {
+                    file_tags = File.new_for_path (file.get_path () + ".tags");
+                    if (file_tags.query_exists ()) {
+                        set_tags (file_tags, cancel_open, false);
+                    }
+
+                    if (tags_treeview.ntags > 0) count_tag_hits ();
+                }
+                button_open_file.set_sensitive (true);
+                lines_treeview.disconnect (handler_id);
+            });
         }
 
         private void add_tag () {
@@ -292,6 +336,7 @@ namespace Tags {
                 if (lines_treeview.hide_untagged) { 
                     lines_treeview.line_store_filter.refilter ();
                 }
+
                 count_tag_hits ();
             });
 
@@ -337,67 +382,60 @@ namespace Tags {
                 try {
                     file_chooser_dialog.set_current_folder (file_opened.get_parent ());
                 } catch (Error e) {
-                    warning ("FileChooser::set_current_folder::error message: %s", e.message);
+                    warning ("FileChooser::load_tags::error message: %s", e.message);
                 }
             }
 
             file_chooser_dialog.response.connect ((response_id) => {
+                file_chooser_dialog.destroy ();
                 if (response_id == Gtk.ResponseType.ACCEPT) {
                     file_tags = file_chooser_dialog.get_file ();
-                    set_tags(file_tags);
+                    set_tags (file_tags);
                 }
-                file_chooser_dialog.destroy ();
             });
 
             file_chooser_dialog.show ();
         }
 
-        private void set_tags (File file, bool show_ui_dialog = true) {
+        private void set_tags (File file, Cancellable? cancellable = null, bool show_ui_dialog = true) {
             try {
-                Json.Parser parser = new Json.Parser ();
-                parser.load_from_file (file.get_path ());
+                file.read_async.begin (Priority.DEFAULT, cancellable, (obj, res) => {
+                    try {
+                        FileInputStream stream = file.read_async.end (res);
+                        Json.Parser parser = new Json.Parser ();
+                        parser.load_from_stream_async.begin (stream, cancellable , (obj, res) => {
+                            parser.load_from_stream_async.end (res);
+                            tags_changed = false;
+                            tags_treeview.clear_tags ();
 
-                tags_changed = false;
-                tags_treeview.clear_tags ();
+                            Json.Node node = parser.get_root ();
+                            Json.Array array = new Json.Array ();
 
-                Json.Node node = parser.get_root ();
-                Json.Array array = new Json.Array ();
-                if (node.get_node_type () == Json.NodeType.ARRAY) {
-                    array = node.get_array ();
-                    array.foreach_element ((array, index_, element_node) => {
-                        Tag tag = Json.gobject_deserialize (typeof (Tag), element_node) as Tag;
-                        tags_treeview.add_tag (tag);
-                        tag.enable_changed.connect ((enabled) => {
+                            if (node.get_node_type () == Json.NodeType.ARRAY) {
+                                array = node.get_array ();
+                                array.foreach_element ((array, index_, element_node) => {
+                                    Tag tag = Json.gobject_deserialize (typeof (Tag), element_node) as Tag;
+                                    tags_treeview.add_tag (tag);
+
+                                    tag.enable_changed.connect ((enabled) => {
+                                        lines_treeview.line_store_filter.refilter ();
+                                    });
+                                });
+                            }
                             lines_treeview.line_store_filter.refilter ();
+                            count_tag_hits ();
                         });
-
-                        if (lines_treeview.hide_untagged) { 
-                            lines_treeview.line_store_filter.refilter ();
+                    } catch (Error e) {
+                        if (show_ui_dialog == true) {
+                            show_dialog ("Load tags", "Could not load the tags file: %s".printf (e.message));
                         }
-                    });
-                }
-                count_tag_hits ();
-            } catch (Error e) {
-                print ("Unable to parse: %s\n", e.message);
-
-                if (show_ui_dialog == false) return;
-
-                var dialog = new Gtk.MessageDialog.with_markup (application.active_window,
-                                            Gtk.DialogFlags.DESTROY_WITH_PARENT |
-                                            Gtk.DialogFlags.MODAL,
-                                            Gtk.MessageType.WARNING,
-                                            Gtk.ButtonsType.CLOSE,
-                                            "Could not parse tags file");
-                //dialog.format_secondary_text (file.get_path ());
-                dialog.format_secondary_text (e.message);
-                dialog.response.connect ((response_id) => {
-                    dialog.destroy ();
+                    }
                 });
-                dialog.show ();
+            } catch (Error e) {
+                warning ("Error: Can't read file: %s", e.message);
             }
-        
         }
-
+        
         private void save_tags () {
             var file_dialog = new Gtk.FileDialog ();
             file_dialog.set_modal (true);
@@ -414,7 +452,7 @@ namespace Tags {
                     this.tags_treeview.to_file (file_dialog.save.end (res));
                     this.tags_changed = false;
                 } catch (Error e) {
-                    warning ("Error while saving tags file: %s ...", e.message);
+                    show_dialog ("Save Error", "Could not save the tags file: %s".printf (e.message));
                 }
             });
         }
@@ -432,7 +470,7 @@ namespace Tags {
         private void save_tagged () {
             var file_dialog = new Gtk.FileDialog ();
             file_dialog.set_modal (true);
-            file_dialog.set_title ("Save tags file");
+            file_dialog.set_title ("Save tagged lines to file");
             file_dialog.set_accept_label ("Save");
 
             if (file_opened != null) {
@@ -442,10 +480,10 @@ namespace Tags {
 
             file_dialog.save.begin (this, null, (obj, res) => {
                 try {
-                    hide_untagged_lines ();
+                    if (!lines_treeview.hide_untagged) hide_untagged_lines ();
                     lines_treeview.to_file(file_dialog.save.end (res));
                 } catch (Error e) {
-                    warning ("Error while saving tags file: %s ...", e.message);
+                    show_dialog ("Save Error", "Could not save the tagged lines file: %s".printf (e.message));
                 }
             });
         }
@@ -495,6 +533,11 @@ namespace Tags {
                 lines_treeview.scroll_to_cell (model.get_path (iter) , null, true, (float) 0.5, (float) 0.5);
             }
             selection.set_mode (Gtk.SelectionMode.MULTIPLE);
+
+            if (lines_treeview.hide_untagged == true &&
+               (tags_treeview.ntags == 0 || tags_treeview.get_n_tags_enabled () == 0)) {
+                inform_user_no_tagged_lines ();
+            }
         }
 
         private void toggle_tags_view () {
@@ -698,6 +741,29 @@ namespace Tags {
             }
 
             line_selection.set_mode (Gtk.SelectionMode.MULTIPLE);
+        }
+
+        private void inform_user_no_tagged_lines () {
+            Idle.add ( () => {
+                var toast = new Adw.Toast ("No visible tagged lines, show untagged lines?");
+                toast.set_button_label ("_Show");
+                toast.set_timeout (5);
+                toast.button_clicked.connect ( () => {
+                    hide_untagged_lines ();
+                    toast.dismiss ();
+                });
+
+                overlay.add_toast (toast);
+                return false;
+            });
+        }
+
+        private void show_dialog (string title, string message) {
+            var dialog = new Adw.MessageDialog (this, title, message);
+            dialog.add_response ("cancel", "_Cancel");
+            dialog.set_default_response ("cancel");
+            dialog.set_close_response ("cancel");
+            dialog.show ();
         }
     }
 }

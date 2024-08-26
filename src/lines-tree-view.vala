@@ -33,6 +33,8 @@ namespace Tags {
         public bool hide_untagged {set; get; default=false;}
         private bool will_clear_all {private set; private get; default=false;}
 
+        public signal void set_file_ended ();
+
         public LinesTreeView (Gtk.Application app, Gtk.TreeModel tags) {
             var preferences = Preferences.instance ();
 
@@ -127,10 +129,27 @@ namespace Tags {
             return (string) string_builder.data;
         }
 
-        public void set_file (string file) {
-            uint8[] con;
-            string? contents;
+        /* Helper method to aid in the async read from the input stream */
+        private async void read_from_input_stream_async (DataInputStream dis) {
+            var nr = 0;
+            owned string? line;
             Gtk.TreeIter iter;
+
+            try {
+                while ((line = yield dis.read_line_async ()) != null) {
+                    if (line.data[line.length-1] == '\r') {
+                        line.data[line.length-1] = ' ';
+                    }
+                    line_store.append (out iter);
+                    line_store.@set (iter, Columns.LINE_NUMBER, ++nr, Columns.LINE_TEXT, line, -1);
+                }
+            } catch (IOError e) {
+                warning ("%s/n", e.message);
+            }
+        }
+
+        public void set_file (File file, Cancellable cancellable) {
+            string? contents;
 
             this.model = null;
 
@@ -140,54 +159,44 @@ namespace Tags {
             line_store.clear ();
             will_clear_all = false;
 
-            try {
-                if (FileUtils.get_data(file, out con)) {
-                    /* FIXME: 
-                       Simple fix to solve problematic text files with CR+LF problems
-                       We are spliting \r\n because some files only have \r (CR)
-                    */
-                    for (int i = 0; i < con.length - 2; i++) {
-                        if (con[i] == 0x00) {
-                            con[i] = 0x30;
-                        } else if (con[i] == '\r' && con[i+1] == '\n') {
-                            con[i] = ' ';
-                        }
-                    }
-                    contents = (string) con;
-                    var nr = 0;
-                    var lines = contents.split_set("\r\n");
-                    lines.resize (lines.length - 1);
-                    foreach (unowned var line in lines ) {
-                        line_store.append (out iter);
-                        line_store.@set (iter, Columns.LINE_NUMBER, ++nr, Columns.LINE_TEXT, line, -1);
-                    }
-                } else {
-                    warning ("Error opening file [%s]\n", file);
+            file.read_async.begin (Priority.DEFAULT, cancellable, (obj, res) => {
+                Gtk.TreeIter iter;
+                try {
+                    FileInputStream @is = file.read_async.end (res);
+                    DataInputStream dis = new DataInputStream (@is);
+                    read_from_input_stream_async.begin (dis, (obj, res) => {
+                        set_file_ended();
+                    });
+                } catch (Error e) {
+                    warning (e.message);
                 }
-            } catch (FileError err) {
-                warning ("Error: %s\n", err.message);
-            }
+            });
 
             this.model = line_store_filter;
         }
 
-        public void to_file (File file) {
+        public async void to_file (File file) {
+            Gtk.TreeIter? i;
+            StringBuilder str;
             FileOutputStream fsout;
+
+            str = new StringBuilder ();
+            str.append("");     // Fixes minor bug? Buffer isn't empty !?!?
+
+            line_store_filter.foreach ((model, path, iter) => {
+                string line;
+                model.@get (iter, Columns.LINE_TEXT, out line);
+                str.append_printf ("%s\n", line);
+                return false;
+            });
+
             try {
                 fsout = file.replace (null, false, FileCreateFlags.REPLACE_DESTINATION, null); 
-                line_store_filter.foreach ((model, path, iter) => {
-                    string line;
-                    model.@get (iter, Columns.LINE_TEXT, out line);
-                    try {
-                        fsout.write(("%s\n".printf (line)).data);
-                    } catch (IOError e) {
-                        warning ("Could not write to file ...");
-                    }
-                    return false;
+                fsout.write_all_async.begin (str.data, Priority.DEFAULT, null, (obj, res) => {
+                    fsout.close ();
                 });
-                fsout.close ();
             } catch (Error e) {
-                error ("Error: %s", e.message);
+                warning ("Error: %s", e.message);
             }
         }
 

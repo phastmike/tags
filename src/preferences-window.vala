@@ -100,6 +100,5 @@ namespace Tags {
             label_sample_example.add_css_class (PreferencesWindow.css_class);
             Gtk.StyleContext.add_provider_for_display (Gdk.Display.get_default (), provider, Gtk.STYLE_PROVIDER_PRIORITY_USER);
         }
-
     }
 }
