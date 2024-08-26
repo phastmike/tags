@@ -137,9 +137,9 @@ namespace Tags {
 
             try {
                 while ((line = yield dis.read_line_async ()) != null) {
-                    int i = 0;
-                    uint8[] con;
-                    //line.escape ();
+                    if (line.data[line.length-1] == '\r') {
+                        line.data[line.length-1] = ' ';
+                    }
                     line_store.append (out iter);
                     line_store.@set (iter, Columns.LINE_NUMBER, ++nr, Columns.LINE_TEXT, line, -1);
                 }
