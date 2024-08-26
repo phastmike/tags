@@ -13,12 +13,11 @@
       <li>Load tags</li>
       <li>Save tags</li>
       <li>Remove all tags</li>
-      <li>Open new window</li>
       <li>User defined line numbering color scheme</li>
       <li>Simple tags based on string containing a pattern</li>
       <li>Support for regular expressions</li>
       <li>Case sensitive support</li>
-      <li>Automatically load tags file when opening a file and a similarly named file with added .tags extension exists</li>
+      <li>Automatically load tags files</li>
       <li>Navigate through similarly tagged lines with ease</li>
     </ul>
   </description>
@@ -40,6 +39,17 @@
     <value key="x-appcenter-suggested-price">0</value>
   </custom>
   <releases>
+
+    <release version="1.2" date="2024-08-26">
+      <description translatable="no">
+        <p>Tags 1.2 is out</p>
+        <p>What's new:</p>
+        <ul>
+          <li>Bug fixing and code improvements</li>
+        </ul>
+        <p>Bugs fixed: #61 #58 #56 #51 #49</p>
+      </description>
+    </release>
 
     <release version="1.1" date="2024-01-24">
       <description translatable="no">
