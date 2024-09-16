@@ -137,6 +137,7 @@ namespace Tags {
 
             try {
                 while ((line = yield dis.read_line_async ()) != null) {
+                    //line = line.escape ();
                     if (line.data[line.length-1] == '\r') {
                         line.data[line.length-1] = ' ';
                     }
@@ -149,8 +150,6 @@ namespace Tags {
         }
 
         public void set_file (File file, Cancellable cancellable) {
-            string? contents;
-
             this.model = null;
 
             // Workaround to speed up removing lines
@@ -159,18 +158,22 @@ namespace Tags {
             line_store.clear ();
             will_clear_all = false;
 
-            file.read_async.begin (Priority.DEFAULT, cancellable, (obj, res) => {
-                Gtk.TreeIter iter;
-                try {
-                    FileInputStream @is = file.read_async.end (res);
-                    DataInputStream dis = new DataInputStream (@is);
-                    read_from_input_stream_async.begin (dis, (obj, res) => {
-                        set_file_ended();
-                    });
-                } catch (Error e) {
-                    warning (e.message);
-                }
-            });
+            try {
+                file.read_async.begin (Priority.DEFAULT, cancellable, (obj, res) => {
+                    Gtk.TreeIter iter;
+                    try {
+                        FileInputStream @is = file.read_async.end (res);
+                        DataInputStream dis = new DataInputStream (@is);
+                        read_from_input_stream_async.begin (dis, (obj, res) => {
+                            set_file_ended();
+                        });
+                    } catch (Error e) {
+                        warning (e.message);
+                    }
+                });
+            } catch (Error e) {
+                warning ("2: %s", e.message);
+            }
 
             this.model = line_store_filter;
         }

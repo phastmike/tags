@@ -665,6 +665,8 @@ namespace Tags {
             Gtk.TreeIter iter;
             Gtk.TreeModel model;
 
+            info ("prev_hit start");
+
             if (lines_treeview.get_number_of_items () == 0 || file_opened == null) {
                 return;
             }
@@ -745,7 +747,7 @@ namespace Tags {
 
         private void inform_user_no_tagged_lines () {
             Idle.add ( () => {
-                var toast = new Adw.Toast ("No visible tagged lines, show untagged lines?");
+                var toast = new Adw.Toast ("No tagged lines, show untagged?");
                 toast.set_button_label ("_Show");
                 toast.set_timeout (5);
                 toast.button_clicked.connect ( () => {
