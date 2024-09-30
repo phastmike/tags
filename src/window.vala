@@ -288,7 +288,7 @@ namespace Tags {
 
             // Sets title for gnome shell window identity
             set_title (file.get_basename ());
-
+            file_opened = file;
             window_title.set_subtitle (file.get_basename ());
             window_title.set_tooltip_text (file.get_path ());
 
