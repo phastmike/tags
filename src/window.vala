@@ -195,7 +195,7 @@ namespace Tags {
             paned.set_resize_start_child (true);
             paned.set_resize_end_child (true);
             paned.set_wide_handle (true);
-            paned.set_position (this.default_height - 47 - 160);
+            paned.set_position (this.default_height - 47 - 120);
 
             //paned.queue_draw ();
 
@@ -262,11 +262,29 @@ namespace Tags {
                     return false;
                 }
             });
+
+            // Hack to hide the filter list/taqg list
+            // but a better ux would be needed
+            //paned.set_position (this.default_height);
         }
         
         public void set_file (File file) {
             var spinner = new Gtk.Spinner ();
             var cancel_open = new Cancellable ();
+            var type = file.query_file_type (FileQueryInfoFlags.NONE);
+
+            file_opened = file;
+
+            if (type != FileType.REGULAR) {
+                Idle.add ( () => {
+                    var toast = new Adw.Toast ("'%s' is not a regular file ...".printf(file.get_basename ()));
+                    toast.set_timeout (3);
+                    overlay.add_toast (toast);
+                    return false;
+                });
+                return;
+            }
+
             var dialog = new Adw.MessageDialog (this, "Loading File", file.get_basename ());
 
             spinner.set_spinning (true);
@@ -288,7 +306,7 @@ namespace Tags {
 
             // Sets title for gnome shell window identity
             set_title (file.get_basename ());
-            file_opened = file;
+            //file_opened = file;
             window_title.set_subtitle (file.get_basename ());
             window_title.set_tooltip_text (file.get_path ());
 
