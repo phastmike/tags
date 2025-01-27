@@ -462,7 +462,7 @@ namespace Tags {
 
             if (file_opened != null) {
                 file_dialog.set_initial_folder (file_opened.get_parent ());
-                file_dialog.set_initial_name ("%s.tags".printf (file_opened.get_parse_name ()));
+                file_dialog.set_initial_name ("%s.tags".printf (file_opened.get_basename ()));
             }
 
             file_dialog.save.begin (this, null, (obj, res) => {
@@ -493,7 +493,7 @@ namespace Tags {
 
             if (file_opened != null) {
                 file_dialog.set_initial_folder (file_opened.get_parent ());
-                file_dialog.set_initial_name ("%s.tagged".printf (file_opened.get_parse_name ()));
+                file_dialog.set_initial_name ("%s.tagged".printf (file_opened.get_basename ()));
             }
 
             file_dialog.save.begin (this, null, (obj, res) => {
