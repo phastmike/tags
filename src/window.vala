@@ -227,7 +227,7 @@ namespace Tags {
                 file_dialog.open.begin (this, null, (obj, res) => {
                     try {
                         var new_file = file_dialog.open.end (res);
-                        file_opened = new_file;
+                        //file_opened = new_file;
                         this.set_file (new_file);
                     } catch (Error e) {
                         if (e.code != 2) {
@@ -291,6 +291,7 @@ namespace Tags {
             dialog.set_extra_child (spinner);
             dialog.show ();
             spinner.start ();
+            spinner.set_spinning (true);
 
             dialog.add_response ("cancel", "_Cancel");
             dialog.set_response_appearance ("cancel",Adw.ResponseAppearance.SUGGESTED);
@@ -328,8 +329,10 @@ namespace Tags {
 
                 if (Preferences.instance ().tags_autoload == true) {
                     file_tags = File.new_for_path (file.get_path () + ".tags");
+                    message("TagsFile: %s", file_tags.get_path ());
                     if (file_tags.query_exists ()) {
                         set_tags (file_tags, cancel_open, false);
+                        message("TagsFile: Exists");
                     }
 
                     if (tags_treeview.ntags > 0) count_tag_hits ();
@@ -461,7 +464,7 @@ namespace Tags {
             file_dialog.set_accept_label ("Save");
 
             if (file_opened != null) {
-                file_dialog.set_initial_folder (file_opened.get_parent ());
+                //file_dialog.set_initial_folder (file_opened.get_parent ());
                 file_dialog.set_initial_name ("%s.tags".printf (file_opened.get_basename ()));
             }
 
@@ -492,7 +495,7 @@ namespace Tags {
             file_dialog.set_accept_label ("Save");
 
             if (file_opened != null) {
-                file_dialog.set_initial_folder (file_opened.get_parent ());
+                //file_dialog.set_initial_folder (file_opened.get_parent ());
                 file_dialog.set_initial_name ("%s.tagged".printf (file_opened.get_basename ()));
             }
 

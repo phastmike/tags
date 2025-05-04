@@ -51,7 +51,7 @@ namespace Tags {
 
         private void on_about_action () {
             string[] authors = {
-                "Jose Miguel Fonte"
+                "José Miguel Fonte"
             };
 
             string[] artists = {
