@@ -34,15 +34,16 @@
                 <property name="action-name">win.hide_untagged_lines</property>
               </object>
             </child>
-          </object>
-        </child>
-        <child>
-          <object class="GtkShortcutsGroup">
-            <property name="title" translatable="yes" context="shortcut window">Text Lines</property>
             <child>
               <object class="GtkShortcutsShortcut">
-                <property name="title" translatable="yes" context="shortcut window">Copy selected text lines</property>
-                <property name="action-name">win.copy</property>
+                <property name="title" translatable="yes" context="shortcut window">Enable all tags</property>
+                <property name="action-name">win.enable_all_tags</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes" context="shortcut window">Disable all tags</property>
+                <property name="action-name">win.disable_all_tags</property>
               </object>
             </child>
           </object>
@@ -60,6 +61,12 @@
               <object class="GtkShortcutsShortcut">
                 <property name="title" translatable="yes" context="shortcut window">Quit</property>
                 <property name="action-name">app.quit</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes" context="shortcut window">Copy selected text lines</property>
+                <property name="action-name">win.copy</property>
               </object>
             </child>
           </object>

@@ -26,6 +26,10 @@ Tags have a description name, a visibility toggle, a color scheme and a hit coun
 
 <kbd>Ctrl</kbd> + <kbd>F</kbd> : Hide/Show Tag list (bottom)
 
+<kbd>Alt</kbd> + <kbd>E</kbd> : Enable all tags
+
+<kbd>Alt</kbd> + <kbd>D</kbd> : Disable all tags
+
 ### Tags
 
 Toggle the first ten tags with keyboard shortcuts.

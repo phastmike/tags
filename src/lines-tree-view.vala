@@ -158,28 +158,23 @@ namespace Tags {
             line_store.clear ();
             will_clear_all = false;
 
-            try {
-                file.read_async.begin (Priority.DEFAULT, cancellable, (obj, res) => {
-                    Gtk.TreeIter iter;
-                    try {
-                        FileInputStream @is = file.read_async.end (res);
-                        DataInputStream dis = new DataInputStream (@is);
-                        read_from_input_stream_async.begin (dis, (obj, res) => {
-                            set_file_ended();
-                        });
-                    } catch (Error e) {
-                        warning (e.message);
-                    }
-                });
-            } catch (Error e) {
-                warning ("2: %s", e.message);
-            }
+            file.read_async.begin (Priority.DEFAULT, cancellable, (obj, res) => {
+                Gtk.TreeIter iter;
+                try {
+                    FileInputStream @is = file.read_async.end (res);
+                    DataInputStream dis = new DataInputStream (@is);
+                    read_from_input_stream_async.begin (dis, (obj, res) => {
+                        set_file_ended();
+                    });
+                } catch (Error e) {
+                    warning (e.message);
+                }
+            });
 
             this.model = line_store_filter;
         }
 
         public async void to_file (File file) {
-            Gtk.TreeIter? i;
             StringBuilder str;
             FileOutputStream fsout;
 
