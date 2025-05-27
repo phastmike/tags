@@ -332,7 +332,7 @@ namespace Tags {
                     message("TagsFile: %s", file_tags.get_path ());
                     if (file_tags.query_exists ()) {
                         set_tags (file_tags, cancel_open, false);
-                        message("TagsFile: Exists");
+                        message("TagsFile: Exists -> Loaded");
                     }
 
                     if (tags_treeview.ntags > 0) count_tag_hits ();
