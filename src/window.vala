@@ -276,12 +276,9 @@ namespace Tags {
             file_opened = file;
 
             if (type != FileType.REGULAR) {
-                Idle.add ( () => {
-                    var toast = new Adw.Toast ("'%s' is not a regular file ...".printf(file.get_basename ()));
-                    toast.set_timeout (3);
-                    overlay.add_toast (toast);
-                    return false;
-                });
+                var toast = new Adw.Toast ("'%s' is not a regular file ...".printf(file.get_basename ()));
+                toast.set_timeout (3);
+                overlay.add_toast (toast);
                 return;
             }
 
