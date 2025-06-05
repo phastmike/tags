@@ -244,13 +244,13 @@ namespace Tags {
             close_request.connect ( () => {
                 // Here we should check for tags file changes and alert user before exit
                 if (tags_treeview.ntags > 0 && tags_changed) {
-                    var dialog = new Adw.MessageDialog (this, "Tags changed", "There are unsaved changes, discards changes?");
+                    var dialog = new Adw.AlertDialog ("Tags changed", "There are unsaved changes, discards changes?");
                     dialog.add_response ("cancel", "_Cancel");
                     dialog.add_response ("discard", "_Discard");
                     dialog.set_response_appearance ("discard",Adw.ResponseAppearance.DESTRUCTIVE);
                     dialog.set_default_response ("cancel");
                     dialog.set_close_response ("cancel");
-                    dialog.show ();
+                    dialog.present (this);
                     
                     dialog.response.connect ((response) => {
                         if (response == "discard") {
@@ -282,11 +282,11 @@ namespace Tags {
                 return;
             }
 
-            var dialog = new Adw.MessageDialog (this, "Loading File", file.get_basename ());
+            var dialog = new Adw.AlertDialog ("Loading File", file.get_basename ());
 
             spinner.set_spinning (true);
             dialog.set_extra_child (spinner);
-            dialog.show ();
+            dialog.present (this);
             spinner.start ();
             spinner.set_spinning (true);
 
@@ -363,14 +363,14 @@ namespace Tags {
 
         private void remove_all_tags () {
             if (tags_treeview.ntags > 0 && tags_changed) {
-                var dialog = new Adw.MessageDialog (this, "Tags changed", "There are unsaved changes, discards changes?");
+                var dialog = new Adw.AlertDialog ("Tags changed", "There are unsaved changes, discards changes?");
                 dialog.add_response ("cancel", "_Cancel");
                 dialog.add_response ("discard", "_Discard");
                 dialog.set_response_appearance ("discard",Adw.ResponseAppearance.DESTRUCTIVE);
                 dialog.set_response_appearance ("cancel",Adw.ResponseAppearance.SUGGESTED);
                 dialog.set_default_response ("cancel");
                 dialog.set_close_response ("cancel");
-                dialog.show ();
+                dialog.present (this);
                 
                 dialog.response.connect ((response) => {
                     if (response == "discard") {
@@ -779,11 +779,11 @@ namespace Tags {
         }
 
         private void show_dialog (string title, string message) {
-            var dialog = new Adw.MessageDialog (this, title, message);
+            var dialog = new Adw.AlertDialog (title, message);
             dialog.add_response ("cancel", "_Cancel");
             dialog.set_default_response ("cancel");
             dialog.set_close_response ("cancel");
-            dialog.show ();
+            dialog.present (this);
         }
     }
 }
