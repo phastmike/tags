@@ -14,12 +14,9 @@
       </object>
     </child>
   </object>
-  <template class="TagsPreferencesWindow" parent="AdwPreferencesWindow">
+  <template class="TagsPreferencesDialog" parent="AdwPreferencesDialog">
     <property name="title" translatable="yes">Preferences</property>
-    <property name="resizable">true</property>
-    <property name="default-width">600</property>
-    <property name="default-height">520</property>
-    <property name="destroy-with-parent">True</property>
+    <property name="search-enabled">true</property>
     <child>
       <object class="AdwPreferencesPage">
         <child>

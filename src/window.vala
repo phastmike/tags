@@ -150,7 +150,7 @@ namespace Tags {
                     }
                 });
 
-                tag_dialog.show ();
+                tag_dialog.present ();
             });
 
             tags_treeview.no_active_tags.connect ( () => {
@@ -315,10 +315,8 @@ namespace Tags {
             button_open_file.set_sensitive (false);
 
             handler_id = lines_treeview.set_file_ended.connect ( ()=> {
-                //toast.dismiss ();
                 spinner.set_spinning (false);
-                spinner.hide ();
-                dialog.hide ();
+                dialog.destroy ();
                 save_tagged_enable ();
 
                 /* Here we check if application property autoload tags is enabled*/
@@ -388,22 +386,34 @@ namespace Tags {
         }
 
         private void load_tags () {
-            var file_chooser_dialog = new Gtk.FileChooserDialog (
-                "Open File", this, Gtk.FileChooserAction.OPEN, 
-                "Open", Gtk.ResponseType.ACCEPT, 
-                "Cancel", Gtk.ResponseType.CANCEL, 
-                null);
+            var file_dialog = new Gtk.FileDialog ();
+            file_dialog.set_title ("Open Tags");
+            file_dialog.set_modal (true);
 
-            file_chooser_dialog.set_modal (true);
+            var filter = new Gtk.FileFilter();
+            filter.set_filter_name("Tag files");
+            filter.add_mime_type("text/plain");
+            filter.add_pattern("*.tags");
+
+            var file_filters = new ListStore (typeof (Gtk.FileFilter));
+            file_filters.append (filter);
+            file_dialog.set_filters (file_filters);
 
             if (file_opened != null) {
-                try {
-                    file_chooser_dialog.set_current_folder (file_opened.get_parent ());
-                } catch (Error e) {
-                    warning ("FileChooser::load_tags::error message: %s", e.message);
-                }
+                file_dialog.set_initial_folder (file_opened.get_parent ());
             }
 
+            file_dialog.open.begin (this, null, (obj, res) => {
+                try {
+                    var file = file_dialog.open.end (res);
+                    // If file is null? Possible? 
+                    set_tags (file);
+                } catch (Error e) {
+                    warning ("load_tags::error: %s", e.message);
+                }
+            });
+
+/*
             file_chooser_dialog.response.connect ((response_id) => {
                 file_chooser_dialog.destroy ();
                 if (response_id == Gtk.ResponseType.ACCEPT) {
@@ -413,45 +423,46 @@ namespace Tags {
             });
 
             file_chooser_dialog.show ();
+*/
         }
 
         private void set_tags (File file, Cancellable? cancellable = null, bool show_ui_dialog = true) {
-            try {
-                file.read_async.begin (Priority.DEFAULT, cancellable, (obj, res) => {
-                    try {
-                        FileInputStream stream = file.read_async.end (res);
-                        Json.Parser parser = new Json.Parser ();
-                        parser.load_from_stream_async.begin (stream, cancellable , (obj, res) => {
-                            parser.load_from_stream_async.end (res);
-                            tags_changed = false;
-                            tags_treeview.clear_tags ();
+            file.read_async.begin (Priority.DEFAULT, cancellable, (obj, res) => {
+                try {
+                    FileInputStream stream = file.read_async.end (res);
+                    Json.Parser parser = new Json.Parser ();
+                    parser.load_from_stream_async.begin (stream, cancellable , (obj, res) => {
+                        try{
+                        parser.load_from_stream_async.end (res);
+                        tags_changed = false;
+                        tags_treeview.clear_tags ();
 
-                            Json.Node node = parser.get_root ();
-                            Json.Array array = new Json.Array ();
+                        Json.Node node = parser.get_root ();
+                        Json.Array array = new Json.Array ();
 
-                            if (node.get_node_type () == Json.NodeType.ARRAY) {
-                                array = node.get_array ();
-                                array.foreach_element ((array, index_, element_node) => {
-                                    Tag tag = Json.gobject_deserialize (typeof (Tag), element_node) as Tag;
-                                    tags_treeview.add_tag (tag);
+                        if (node.get_node_type () == Json.NodeType.ARRAY) {
+                            array = node.get_array ();
+                            array.foreach_element ((array, index_, element_node) => {
+                                Tag tag = Json.gobject_deserialize (typeof (Tag), element_node) as Tag;
+                                tags_treeview.add_tag (tag);
 
-                                    tag.enable_changed.connect ((enabled) => {
-                                        lines_treeview.line_store_filter.refilter ();
-                                    });
+                                tag.enable_changed.connect ((enabled) => {
+                                    lines_treeview.line_store_filter.refilter ();
                                 });
-                            }
-                            lines_treeview.line_store_filter.refilter ();
-                            count_tag_hits ();
-                        });
-                    } catch (Error e) {
-                        if (show_ui_dialog == true) {
-                            show_dialog ("Load tags", "Could not load the tags file: %s".printf (e.message));
+                            });
                         }
+                        lines_treeview.line_store_filter.refilter ();
+                        count_tag_hits ();
+                        } catch (Error e) {
+                            warning ("set_tags::load_from_stream_async_end: %s", e.message);
+                        }
+                    });
+                } catch (Error e) {
+                    if (show_ui_dialog == true) {
+                        show_dialog ("Load tags", "Could not load the tags file: %s".printf (e.message));
                     }
-                });
-            } catch (Error e) {
-                warning ("Error: Can't read file: %s", e.message);
-            }
+                }
+            });
         }
         
         private void save_tags () {
@@ -559,7 +570,8 @@ namespace Tags {
         }
 
         private void toggle_tags_view () {
-            var view_height = paned.get_allocated_height ();
+            var view_height = paned.get_height ();
+            //var view_height = paned.get_allocated_height ();
             var action = this.lookup_action ("toggle_tags_view");
             
             if (paned.get_position () >= view_height - 5) {

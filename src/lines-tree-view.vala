@@ -132,7 +132,7 @@ namespace Tags {
         /* Helper method to aid in the async read from the input stream */
         private async void read_from_input_stream_async (DataInputStream dis) {
             var nr = 0;
-            owned string? line;
+            string? line;
             Gtk.TreeIter iter;
 
             try {

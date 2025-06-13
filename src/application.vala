@@ -60,7 +60,7 @@ namespace Tags {
                 "Symbolic icon by www.wishforge.games on freeicons.io"
             };
 
-            Adw.show_about_window (this.active_window,
+            Adw.show_about_dialog (this.active_window,
                                   "application-name", "Tags",
                                   "developer-name", "José Miguel Fonte",
                                   "developers", authors,
@@ -73,7 +73,7 @@ namespace Tags {
         }
 
         private void on_preferences_action () {
-            new PreferencesWindow (this).present ();
+            new PreferencesDialog ().present (active_window);
         }
 
         private void on_new_window () {

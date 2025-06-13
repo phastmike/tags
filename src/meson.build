@@ -7,7 +7,7 @@ tags_sources = [
   'color-scheme.vala',
   'tag-dialog-window.vala',
   'preferences.vala',
-  'preferences-window.vala',
+  'preferences-dialog.vala',
   'application.vala',
   ]
 

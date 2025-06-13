@@ -9,8 +9,8 @@
  */
 
 namespace Tags {
-    [GtkTemplate (ui = "/io/github/phastmike/tags/preferences-window.ui")]
-    public class PreferencesWindow : Adw.PreferencesWindow {
+    [GtkTemplate (ui = "/io/github/phastmike/tags/preferences-dialog.ui")]
+    public class PreferencesDialog : Adw.PreferencesDialog {
         [GtkChild]
         private unowned Adw.ActionRow row_autoload_tags; 
         [GtkChild]
@@ -26,17 +26,13 @@ namespace Tags {
 
         private const string css_class = "color_scheme_example";
 
-        public PreferencesWindow (Gtk.Application app) {
-            Object(application: app, transient_for: app.active_window, modal: true);
-
+        public PreferencesDialog () {
             var preferences = Preferences.instance ();
-
             var rgb = Gdk.RGBA ();
 
             if (rgb.parse (preferences.ln_fg_color)) {
                 button_fg_color.set_rgba(rgb);
             }
-
             if (rgb.parse (preferences.ln_bg_color)) {
                 button_bg_color.set_rgba(rgb);
             }
@@ -93,11 +89,11 @@ namespace Tags {
                     color: %s;
                     font-size: 0.8333em;
                 }
-            """.printf (PreferencesWindow.css_class, bg_web, fg_web);
+            """.printf (PreferencesDialog.css_class, bg_web, fg_web);
 
             var provider = new Gtk.CssProvider ();
             provider.load_from_data (lstyle.data);
-            label_sample_example.add_css_class (PreferencesWindow.css_class);
+            label_sample_example.add_css_class (PreferencesDialog.css_class);
             Gtk.StyleContext.add_provider_for_display (Gdk.Display.get_default (), provider, Gtk.STYLE_PROVIDER_PRIORITY_USER);
         }
     }
