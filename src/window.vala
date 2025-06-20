@@ -284,9 +284,7 @@ namespace Tags {
 
             var dialog = new Adw.AlertDialog ("Loading File", file.get_basename ());
 
-            spinner.set_spinning (true);
             dialog.set_extra_child (spinner);
-            dialog.present (this);
             spinner.start ();
             spinner.set_spinning (true);
 
@@ -304,21 +302,12 @@ namespace Tags {
 
             // Sets title for gnome shell window identity
             set_title (file.get_basename ());
-            //file_opened = file;
             window_title.set_subtitle (file.get_basename ());
             window_title.set_tooltip_text (file.get_path ());
 
-            // Actual set file 
-            // Async with reply via callback set_file_sensitive
-            lines_treeview.set_file (file, cancel_open);
-
-            button_open_file.set_sensitive (false);
-
             handler_id = lines_treeview.set_file_ended.connect ( ()=> {
                 spinner.set_spinning (false);
-                dialog.destroy ();
                 save_tagged_enable ();
-
                 /* Here we check if application property autoload tags is enabled*/
                 /* FIXME: What to do if we already have tags inserted, merge or replace? */
 
@@ -334,7 +323,14 @@ namespace Tags {
                 }
                 button_open_file.set_sensitive (true);
                 lines_treeview.disconnect (handler_id);
+                dialog.close ();
             });
+
+            // Actual set file 
+            // Async with reply via callback set_file_sensitive
+            dialog.present (this);
+            lines_treeview.set_file (file, cancel_open);
+            button_open_file.set_sensitive (false);
         }
 
         private void add_tag () {
