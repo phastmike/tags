@@ -20,6 +20,7 @@ namespace Tags {
         [GtkChild]
         unowned Adw.ToastOverlay overlay;
         
+        private Gtk.Box main_box;
         private Gtk.Paned paned;
         private ulong handler_id;
         private LinesTreeView lines_treeview;
@@ -159,8 +160,12 @@ namespace Tags {
                 }
             });
 
+            main_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
             paned = new Gtk.Paned (Gtk.Orientation.VERTICAL);
-            overlay.set_child (paned);
+
+            main_box.append (paned);
+            main_box.set_homogeneous (true);
+            overlay.set_child (main_box);
 
             paned.notify["position"].connect ((s,p) => {
                 var view_height = paned.get_allocated_height ();
