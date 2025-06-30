@@ -197,8 +197,6 @@ namespace Tags {
             paned.set_wide_handle (true);
             paned.set_position (this.default_height - 47 - 120);
 
-            //paned.queue_draw ();
-
             button_open_file.clicked.connect ( () => {
                 var file_dialog = new Gtk.FileDialog ();
                 file_dialog.set_modal (true);
@@ -242,7 +240,6 @@ namespace Tags {
             });
 
             close_request.connect ( () => {
-                // Here we should check for tags file changes and alert user before exit
                 if (tags_treeview.ntags > 0 && tags_changed) {
                     var dialog = new Adw.AlertDialog ("Tags changed", "There are unsaved changes, discards changes?");
                     dialog.add_response ("cancel", "_Cancel");
