@@ -22,7 +22,12 @@ namespace Tags {
         
         private Gtk.Box main_box;
         private Gtk.Paned paned;
+        private TextMinimap minimap;
+        private Gtk.ScrolledWindow scrolled_tags;
+        private Gtk.ScrolledWindow scrolled_lines;
+
         private ulong handler_id;
+        private uint scrolled_lines_timeout_id = 0;
         private LinesTreeView lines_treeview;
         private TagsTreeView tags_treeview;
         private double paned_last_position = 0.778086;
@@ -67,66 +72,123 @@ namespace Tags {
 
         public Window (Gtk.Application app) {
             Object (application: app);
-
-            this.add_action_entries(this.WINDOW_ACTIONS, this);
-            app.set_accels_for_action("win.add_tag", {"<primary>n"});
-            app.set_accels_for_action("win.save_tagged", {"<primary>s"});
-            app.set_accels_for_action("win.hide_untagged_lines", {"<primary>h"});
-            app.set_accels_for_action("win.toggle_tags_view", {"<primary>f"});
-            app.set_accels_for_action("win.copy", {"<primary>c"});
-            app.set_accels_for_action("win.toggle_tag_1", {"<alt>1"});
-            app.set_accels_for_action("win.toggle_tag_2", {"<alt>2"});
-            app.set_accels_for_action("win.toggle_tag_3", {"<alt>3"});
-            app.set_accels_for_action("win.toggle_tag_4", {"<alt>4"});
-            app.set_accels_for_action("win.toggle_tag_5", {"<alt>5"});
-            app.set_accels_for_action("win.toggle_tag_6", {"<alt>6"});
-            app.set_accels_for_action("win.toggle_tag_7", {"<alt>7"});
-            app.set_accels_for_action("win.toggle_tag_8", {"<alt>8"});
-            app.set_accels_for_action("win.toggle_tag_9", {"<alt>9"});
-            app.set_accels_for_action("win.toggle_tag_0", {"<alt>0"});
-            app.set_accels_for_action("win.only_tag_1", {"<primary>1"});
-            app.set_accels_for_action("win.only_tag_2", {"<primary>2"});
-            app.set_accels_for_action("win.only_tag_3", {"<primary>3"});
-            app.set_accels_for_action("win.only_tag_4", {"<primary>4"});
-            app.set_accels_for_action("win.only_tag_5", {"<primary>5"});
-            app.set_accels_for_action("win.only_tag_6", {"<primary>6"});
-            app.set_accels_for_action("win.only_tag_7", {"<primary>7"});
-            app.set_accels_for_action("win.only_tag_8", {"<primary>8"});
-            app.set_accels_for_action("win.only_tag_9", {"<primary>9"});
-            app.set_accels_for_action("win.only_tag_0", {"<primary>0"});
-            app.set_accels_for_action("win.enable_all_tags", {"<alt>e"});
-            app.set_accels_for_action("win.disable_all_tags", {"<alt>d"});
-            app.set_accels_for_action("win.prev_hit", {"F2"});
-            app.set_accels_for_action("win.next_hit", {"F3"});
-            
+            setup_actions ();
+            setup_minimap ();
             save_tagged_disable ();
+            setup_tags_treeview ();     // Also sets assoc scrolled
+            setup_lines_treeview ();    // Also sets assoc scrolled
+            setup_main_box ();
+            setup_paned (main_box, scrolled_tags);
+            setup_buttons ();
+
+            var vadj = scrolled_lines.get_vadjustment ();
+            vadj.notify["value"].connect (on_scrolled_lines_change);
+
+            minimap.set_viewport_change_callback (on_minimap_change);
+
+            overlay.set_child (paned);
+        }
+
+        private int get_default_font_size() {
+            var settings = Gtk.Settings.get_default();
             
-            tags_treeview = new TagsTreeView (app);
-            lines_treeview = new LinesTreeView (app, tags_treeview.get_model ());
+            string? font_name = null;
+            settings.get("gtk-font-name", out font_name);
             
-            lines_treeview.row_activated.connect ((path, column) => {
-                string line_text;
-                Gtk.TreeIter iter;
+            if (font_name != null) {
+                var font_desc = Pango.FontDescription.from_string(font_name);
+                int size = font_desc.get_size() / Pango.SCALE;
+                return size;
+            }
+            
+            return -1;
+        }
 
-                var selection = lines_treeview.get_selection ();
-                selection.set_mode (Gtk.SelectionMode.SINGLE);
-                selection.get_selected (null, out iter);
-                lines_treeview.get_model ().@get (iter, LinesTreeView.Columns.LINE_TEXT, out line_text, -1);
-                selection.set_mode (Gtk.SelectionMode.MULTIPLE);
+        private void on_minimap_change (int line) {
+            int line_height = get_default_font_size ();
+            if (line_height > 0) {
+                double target = line * line_height;
+                animate_scroll_to (target);
+            }
+        }
 
-                var tag_dialog = new TagDialogWindow (app, line_text);
-                tag_dialog.added.connect ((tag, add_to_top) => {
-                    tag.enable_changed.connect ((enabled) => {
-                        lines_treeview.line_store_filter.refilter ();
-                    });
-                    tags_treeview.add_tag (tag, add_to_top);
-                    count_tag_hits ();
-                });
+        private void animate_scroll_to (double target) {
+            var adj = scrolled_lines.get_vadjustment ();
+            var current = adj.get_value ();
+            double step = (target - current) * 0.3;
 
-                tag_dialog.show ();
+            if (Math.fabs (step) < 1) {
+                adj.set_value (target);
+                return;
+            }
+
+            adj.set_value (current + step);
+
+            Timeout.add (16, () => {
+                animate_scroll_to (target);
+                return false;
             });
+        } 
 
-            
+        private void on_scrolled_lines_change () {
+            /*
+            if (scrolled_lines_timeout_id > 0)  {
+                Source.remove (scrolled_lines_timeout_id);
+            }
+            */
+
+            scrolled_lines_timeout_id = Timeout.add (50, () => {
+                var adj = scrolled_lines.get_vadjustment ();
+                int line_height = get_default_font_size ();
+                //int line_height = 26;
+                double visible_height = adj.get_page_size ();
+                print ("Adjustment page size = %f px\n", visible_height);
+                int visible_lines = (int) (visible_height / line_height);
+                double scroll_pos = adj.get_value ();
+                print ("Scroll pos = %f\n", scroll_pos);
+                int first_line = (int) (scroll_pos / line_height); 
+                minimap.set_viewport (first_line, visible_lines); 
+                scrolled_lines_timeout_id = 0;
+                return false;
+            });
+        }
+
+        private void setup_actions () {
+            this.add_action_entries(this.WINDOW_ACTIONS, this);
+            application.set_accels_for_action("win.add_tag", {"<primary>n"});
+            application.set_accels_for_action("win.save_tagged", {"<primary>s"});
+            application.set_accels_for_action("win.hide_untagged_lines", {"<primary>h"});
+            application.set_accels_for_action("win.toggle_tags_view", {"<primary>f"});
+            application.set_accels_for_action("win.copy", {"<primary>c"});
+            application.set_accels_for_action("win.toggle_tag_1", {"<alt>1"});
+            application.set_accels_for_action("win.toggle_tag_2", {"<alt>2"});
+            application.set_accels_for_action("win.toggle_tag_3", {"<alt>3"});
+            application.set_accels_for_action("win.toggle_tag_4", {"<alt>4"});
+            application.set_accels_for_action("win.toggle_tag_5", {"<alt>5"});
+            application.set_accels_for_action("win.toggle_tag_6", {"<alt>6"});
+            application.set_accels_for_action("win.toggle_tag_7", {"<alt>7"});
+            application.set_accels_for_action("win.toggle_tag_8", {"<alt>8"});
+            application.set_accels_for_action("win.toggle_tag_9", {"<alt>9"});
+            application.set_accels_for_action("win.toggle_tag_0", {"<alt>0"});
+            application.set_accels_for_action("win.only_tag_1", {"<primary>1"});
+            application.set_accels_for_action("win.only_tag_2", {"<primary>2"});
+            application.set_accels_for_action("win.only_tag_3", {"<primary>3"});
+            application.set_accels_for_action("win.only_tag_4", {"<primary>4"});
+            application.set_accels_for_action("win.only_tag_5", {"<primary>5"});
+            application.set_accels_for_action("win.only_tag_6", {"<primary>6"});
+            application.set_accels_for_action("win.only_tag_7", {"<primary>7"});
+            application.set_accels_for_action("win.only_tag_8", {"<primary>8"});
+            application.set_accels_for_action("win.only_tag_9", {"<primary>9"});
+            application.set_accels_for_action("win.only_tag_0", {"<primary>0"});
+            application.set_accels_for_action("win.enable_all_tags", {"<alt>e"});
+            application.set_accels_for_action("win.disable_all_tags", {"<alt>d"});
+            application.set_accels_for_action("win.prev_hit", {"F2"});
+            application.set_accels_for_action("win.next_hit", {"F3"});
+        }
+
+        private void setup_tags_treeview () {
+            tags_treeview = new TagsTreeView (this.application);
+
             tags_treeview.row_activated.connect ((path, column) => {
                 Tag tag;
                 Gtk.TreeIter iter;
@@ -134,7 +196,7 @@ namespace Tags {
                 tags_treeview.get_selection ().get_selected (null, out iter);
                 tags_treeview.get_model ().@get (iter, 0, out tag);
 
-                var tag_dialog = new TagDialogWindow.for_editing (app, tag);
+                var tag_dialog = new TagDialogWindow.for_editing (this.application, tag);
 
                 tag_dialog.edited.connect ((t) => {
                     tags_changed = true;
@@ -159,13 +221,68 @@ namespace Tags {
                     inform_user_no_tagged_lines ();
                 }
             });
+            
+            setup_scrolled_tags ();
+        }
 
-            main_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
+        private void setup_lines_treeview () {
+            /* Requires tags_tv model, needs to run afterwards setup_tags... */
+            this.lines_treeview = new LinesTreeView (this.application, tags_treeview.get_model ());
+
+            lines_treeview.row_activated.connect ((path, column) => {
+                string line_text;
+                Gtk.TreeIter iter;
+
+                var selection = lines_treeview.get_selection ();
+                selection.set_mode (Gtk.SelectionMode.SINGLE);
+                selection.get_selected (null, out iter);
+                lines_treeview.get_model ().@get (iter, LinesTreeView.Columns.LINE_TEXT, out line_text, -1);
+                selection.set_mode (Gtk.SelectionMode.MULTIPLE);
+
+                var tag_dialog = new TagDialogWindow (this.application, line_text);
+                tag_dialog.added.connect ((tag, add_to_top) => {
+                    tag.enable_changed.connect ((enabled) => {
+                        lines_treeview.line_store_filter.refilter ();
+                    });
+                    tags_treeview.add_tag (tag, add_to_top);
+                    count_tag_hits ();
+                });
+
+                tag_dialog.show ();
+            });
+
+            setup_scrolled_lines ();
+        }
+
+        private void setup_scrolled_lines () {
+            scrolled_lines = new Gtk.ScrolledWindow ();
+            scrolled_lines.set_kinetic_scrolling (true);
+            scrolled_lines.set_placement (Gtk.CornerType.TOP_LEFT);
+            scrolled_lines.set_overlay_scrolling (true);
+            scrolled_lines.set_child (lines_treeview);
+            scrolled_lines.set_hexpand (true);
+            scrolled_lines.set_vexpand (true);
+        }
+
+        private void setup_scrolled_tags () {
+            scrolled_tags = new Gtk.ScrolledWindow ();
+            scrolled_tags.set_kinetic_scrolling (true);
+            scrolled_tags.set_placement (Gtk.CornerType.TOP_LEFT);
+            scrolled_tags.set_overlay_scrolling (true);
+            scrolled_tags.set_child (tags_treeview);
+            scrolled_tags.set_hexpand (true);
+            scrolled_tags.set_vexpand (true);
+        }
+
+        private void setup_paned (Gtk.Widget top, Gtk.Widget bottom) {
             paned = new Gtk.Paned (Gtk.Orientation.VERTICAL);
 
-            main_box.append (paned);
-            main_box.set_homogeneous (true);
-            overlay.set_child (main_box);
+            paned.set_start_child (top);
+            paned.set_end_child (bottom);
+            paned.set_resize_start_child (true);
+            paned.set_resize_end_child (true);
+            paned.set_wide_handle (true);
+            paned.set_position (this.default_height - 167); // - 47 - 120
 
             paned.notify["position"].connect ((s,p) => {
                 var view_height = paned.get_allocated_height ();
@@ -182,26 +299,12 @@ namespace Tags {
                 }
             });
 
-            var scrolled_lines = new Gtk.ScrolledWindow ();
-            scrolled_lines.set_kinetic_scrolling (true);
-            scrolled_lines.set_placement (Gtk.CornerType.TOP_LEFT);
-            scrolled_lines.set_overlay_scrolling (true);
-            scrolled_lines.set_child (lines_treeview);
-            //scrolled_lines.set_policy (Gtk.PolicyType.ALWAYS, Gtk.PolicyType.ALWAYS);
+            // Hack to hide the filter list/taqg list
+            // but a better ux to handle tags, is needed
+            //paned.set_position (this.default_height);
+        }
 
-            var scrolled_tags = new Gtk.ScrolledWindow ();
-            scrolled_tags.set_kinetic_scrolling (true);
-            scrolled_tags.set_placement (Gtk.CornerType.TOP_LEFT);
-            scrolled_tags.set_overlay_scrolling (true);
-            scrolled_tags.set_child (tags_treeview);
-
-            paned.set_start_child (scrolled_lines);
-            paned.set_end_child (scrolled_tags);
-            paned.set_resize_start_child (true);
-            paned.set_resize_end_child (true);
-            paned.set_wide_handle (true);
-            paned.set_position (this.default_height - 47 - 120);
-
+        private void setup_buttons () {
             button_open_file.clicked.connect ( () => {
                 var file_dialog = new Gtk.FileDialog ();
                 file_dialog.set_modal (true);
@@ -264,12 +367,19 @@ namespace Tags {
                     return false;
                 }
             });
-
-            // Hack to hide the filter list/taqg list
-            // but a better ux would be needed
-            //paned.set_position (this.default_height);
         }
-        
+
+        private void setup_minimap () {
+            minimap = new TextMinimap ();
+            minimap.set_vexpand (true);
+        }
+
+        private void setup_main_box () {
+            main_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
+            main_box.append (scrolled_lines);
+            main_box.append (minimap);
+        }
+
         public void set_file (File file) {
             var spinner = new Gtk.Spinner ();
             var cancel_open = new Cancellable ();
@@ -323,6 +433,7 @@ namespace Tags {
 
                     if (tags_treeview.ntags > 0) count_tag_hits ();
                 }
+
                 button_open_file.set_sensitive (true);
                 lines_treeview.disconnect (handler_id);
                 dialog.close ();
@@ -333,6 +444,14 @@ namespace Tags {
             dialog.present (this);
             lines_treeview.set_file (file, cancel_open);
             button_open_file.set_sensitive (false);
+            try {
+                string contents;
+                FileUtils.get_contents (file.get_path (), out contents);
+                minimap.load_file (contents);
+                
+            } catch (FileError e) {
+                warning ("%s :: get_contents from file -> Minimap :: Error: %s", GLib.Log.METHOD, e.message);
+            }
         }
 
         private void add_tag () {
@@ -404,24 +523,11 @@ namespace Tags {
             file_dialog.open.begin (this, null, (obj, res) => {
                 try {
                     var file = file_dialog.open.end (res);
-                    // If file is null? Possible? 
                     set_tags (file);
                 } catch (Error e) {
                     warning ("load_tags::error: %s", e.message);
                 }
             });
-
-/*
-            file_chooser_dialog.response.connect ((response_id) => {
-                file_chooser_dialog.destroy ();
-                if (response_id == Gtk.ResponseType.ACCEPT) {
-                    file_tags = file_chooser_dialog.get_file ();
-                    set_tags (file_tags);
-                }
-            });
-
-            file_chooser_dialog.show ();
-*/
         }
 
         private void set_tags (File file, Cancellable? cancellable = null, bool show_ui_dialog = true) {
@@ -431,26 +537,26 @@ namespace Tags {
                     Json.Parser parser = new Json.Parser ();
                     parser.load_from_stream_async.begin (stream, cancellable , (obj, res) => {
                         try{
-                        parser.load_from_stream_async.end (res);
-                        tags_changed = false;
-                        tags_treeview.clear_tags ();
+                            parser.load_from_stream_async.end (res);
+                            tags_changed = false;
+                            tags_treeview.clear_tags ();
 
-                        Json.Node node = parser.get_root ();
-                        Json.Array array = new Json.Array ();
+                            Json.Node node = parser.get_root ();
+                            Json.Array array = new Json.Array ();
 
-                        if (node.get_node_type () == Json.NodeType.ARRAY) {
-                            array = node.get_array ();
-                            array.foreach_element ((array, index_, element_node) => {
-                                Tag tag = Json.gobject_deserialize (typeof (Tag), element_node) as Tag;
-                                tags_treeview.add_tag (tag);
+                            if (node.get_node_type () == Json.NodeType.ARRAY) {
+                                array = node.get_array ();
+                                array.foreach_element ((array, index_, element_node) => {
+                                    Tag tag = Json.gobject_deserialize (typeof (Tag), element_node) as Tag;
+                                    tags_treeview.add_tag (tag);
 
-                                tag.enable_changed.connect ((enabled) => {
-                                    lines_treeview.line_store_filter.refilter ();
+                                    tag.enable_changed.connect ((enabled) => {
+                                        lines_treeview.line_store_filter.refilter ();
+                                    });
                                 });
-                            });
-                        }
-                        lines_treeview.line_store_filter.refilter ();
-                        count_tag_hits ();
+                            }
+                            lines_treeview.line_store_filter.refilter ();
+                            count_tag_hits ();
                         } catch (Error e) {
                             warning ("set_tags::load_from_stream_async_end: %s", e.message);
                         }

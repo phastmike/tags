@@ -111,10 +111,10 @@ namespace Tags {
 
             row_atop.set_visible (false);
 
-            entry_tag_pattern.set_text (tag.pattern); 
-            entry_tag_name.set_text (tag.description);
-            button_fg_color.set_rgba (tag.colors.fg);
-            button_bg_color.set_rgba (tag.colors.bg);
+            if (tag.pattern != null) entry_tag_pattern.set_text (tag.pattern); 
+            if (tag.description != null) entry_tag_name.set_text (tag.description);
+            if (tag.colors.fg != null) button_fg_color.set_rgba (tag.colors.fg);
+            if (tag.colors.bg != null ) button_bg_color.set_rgba (tag.colors.bg);
 
             this.set_default_size (600, 620);
 
