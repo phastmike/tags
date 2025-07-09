@@ -104,13 +104,24 @@ namespace Tags {
             return -1;
         }
 
-        private void on_minimap_change (int line) {
+        private void on_minimap_change (double position_ratio) {
+            // Calculate the absolute scroll position from the ratio
+            var vadj = scrolled_lines.get_vadjustment ();
+            double document_height = vadj.get_upper() - vadj.get_lower();
+            double target = position_ratio * document_height;
+            
+            // Animate scrolling to the target position
+            animate_scroll_to(target);
+        }
+
+/*
             int line_height = get_default_font_size ();
             if (line_height > 0) {
                 double target = line * line_height;
                 animate_scroll_to (target);
             }
         }
+*/
 
         private void animate_scroll_to (double target) {
             var adj = scrolled_lines.get_vadjustment ();
@@ -130,24 +141,26 @@ namespace Tags {
             });
         } 
 
+        private void update_minimap_viewport() {
+            // Calculate viewport position as ratio
+            var vadj = scrolled_lines.get_vadjustment ();
+            double document_height = vadj.get_upper() - vadj.get_lower();
+            if (document_height <= 0) return;
+            
+            double start_ratio = vadj.get_value() / document_height;
+            double height_ratio = vadj.get_page_size() / document_height;
+            
+            // Update minimap viewport with pixel ratios
+            minimap.set_viewport_ratio(start_ratio, height_ratio);
+        }
+
         private void on_scrolled_lines_change () {
-            /*
             if (scrolled_lines_timeout_id > 0)  {
                 Source.remove (scrolled_lines_timeout_id);
             }
-            */
 
             scrolled_lines_timeout_id = Timeout.add (50, () => {
-                var adj = scrolled_lines.get_vadjustment ();
-                int line_height = get_default_font_size ();
-                //int line_height = 26;
-                double visible_height = adj.get_page_size ();
-                print ("Adjustment page size = %f px\n", visible_height);
-                int visible_lines = (int) (visible_height / line_height);
-                double scroll_pos = adj.get_value ();
-                print ("Scroll pos = %f\n", scroll_pos);
-                int first_line = (int) (scroll_pos / line_height); 
-                minimap.set_viewport (first_line, visible_lines); 
+                update_minimap_viewport();
                 scrolled_lines_timeout_id = 0;
                 return false;
             });
