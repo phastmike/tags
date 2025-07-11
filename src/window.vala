@@ -89,81 +89,28 @@ namespace Tags {
             overlay.set_child (paned);
         }
 
-        private int get_default_font_size() {
-            var settings = Gtk.Settings.get_default();
-            
-            string? font_name = null;
-            settings.get("gtk-font-name", out font_name);
-            
-            if (font_name != null) {
-                var font_desc = Pango.FontDescription.from_string(font_name);
-                int size = font_desc.get_size() / Pango.SCALE;
-                return size;
-            }
-            
-            return -1;
-        }
-
         private void on_minimap_change (double position_ratio) {
-            // Calculate the absolute scroll position from the ratio
             var vadj = scrolled_lines.get_vadjustment ();
             double document_height = vadj.get_upper() - vadj.get_lower();
             double target = position_ratio * document_height;
-            
-            // Animate scrolling to the target position
-            animate_scroll_to(target);
+            vadj.set_value (target);
         }
-
-/*
-            int line_height = get_default_font_size ();
-            if (line_height > 0) {
-                double target = line * line_height;
-                animate_scroll_to (target);
-            }
-        }
-*/
-
-        private void animate_scroll_to (double target) {
-            var adj = scrolled_lines.get_vadjustment ();
-            var current = adj.get_value ();
-            double step = (target - current) * 0.3;
-
-            if (Math.fabs (step) < 1) {
-                adj.set_value (target);
-                return;
-            }
-
-            adj.set_value (current + step);
-
-            Timeout.add (16, () => {
-                animate_scroll_to (target);
-                return false;
-            });
-        } 
 
         private void update_minimap_viewport() {
-            // Calculate viewport position as ratio
             var vadj = scrolled_lines.get_vadjustment ();
             double document_height = vadj.get_upper() - vadj.get_lower();
-            if (document_height <= 0) return;
             
             double start_ratio = vadj.get_value() / document_height;
             double height_ratio = vadj.get_page_size() / document_height;
-            
-            // Update minimap viewport with pixel ratios
-            minimap.set_viewport_ratio(start_ratio, height_ratio);
         }
 
         private void on_scrolled_lines_change () {
-            if (scrolled_lines_timeout_id > 0)  {
-                Source.remove (scrolled_lines_timeout_id);
-            }
+            var vadj = scrolled_lines.get_vadjustment ();
+            double document_height = vadj.get_upper() - vadj.get_lower();
 
-            scrolled_lines_timeout_id = Timeout.add (50, () => {
-                update_minimap_viewport();
-                scrolled_lines_timeout_id = 0;
-                return false;
-            });
+            double start_ratio = vadj.get_value() / document_height;
+            double height_ratio = vadj.get_page_size() / document_height;
+            update_minimap_viewport ();
         }
 
         private void setup_actions () {
