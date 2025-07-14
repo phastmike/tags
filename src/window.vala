@@ -87,6 +87,8 @@ namespace Tags {
             minimap.set_viewport_change_callback (on_minimap_change);
 
             overlay.set_child (paned);
+
+            minimap.set_viewport_metrics (0, vadj.get_page_size (), this.get_height ());
         }
 
         private void on_minimap_change (double position_ratio) {
