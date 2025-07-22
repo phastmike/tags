@@ -4,60 +4,58 @@ public class TextMinimap : Gtk.DrawingArea {
     private string[] lines = {};
     
     // Visual settings
-    private int line_height = 2;
+    private int line_height = 3;
     private int padding = 4;
     private Gdk.RGBA highlight_color;
     private Gdk.RGBA text_color;
-    private Gdk.RGBA keyword_color;
-    private Gdk.RGBA string_color;
     private Gdk.RGBA comment_color;
     private Gdk.RGBA hover_color;
     private Gdk.RGBA drag_color;
     
-    // Document metrics
-    private double document_height = 0;       // Total document height in pixels
-    private double viewport_size = 0;         // Visible viewport size in pixels
-    private double scroll_position = 0;       // Current scroll position in document
+    // Text view adjustment (for drawing the highlight)
+    private Gtk.Adjustment viewport_adjustment;
     
     // Mouse interaction state
     private bool dragging = false;
     private bool dragging_viewport = false;
     private double drag_start_y = 0;
-    private double drag_start_position = 0;
+    private double drag_start_value = 0;
     private double? hover_y = null;
     private uint animation_source_id = 0;
-    private double? target_position = null;
+    private double? target_value = null;
     
-    // Scroll physics
-    private double last_drag_time = 0;
-    private double last_drag_y = 0;
-    private double drag_velocity = 0;
-    private uint momentum_scroll_id = 0;
-    
-    // Regular expressions for syntax highlighting
-    private Regex keyword_pattern;
-    private Regex string_pattern;
-    private Regex comment_pattern;
-    
-    // Callback for viewport changes
-    public delegate void ViewportChangeFunc(double position);
+    // Delegates
+
+    public delegate Gdk.RGBA? GetLineColorBgFunc (string? text);
+    public GetLineColorBgFunc? get_line_color_bg_callback = null;
+
+    public delegate void ViewportChangeFunc(double position_ratio);
     public ViewportChangeFunc? viewport_change_callback = null;
+
+    /**
+     * Structure to hold minimap metrics
+     */
+    private struct MiniMapMetrics {
+        public double total_minimap_height;   // Total height of the minimap content
+        public double document_to_minimap_ratio; // Ratio between document and minimap
+        public double minimap_to_document_ratio; // Ratio between minimap and document
+        public double viewport_y;             // Y position of viewport in minimap
+        public double viewport_height;        // Height of viewport in minimap
+    }
     
-    public TextMinimap() {
+    public TextMinimap(Gtk.Adjustment? text_adj = null) {
         Object();
+        
+        // Set up adjustment
+        viewport_adjustment = text_adj ?? new Gtk.Adjustment(0, 0, 0, 1, 10, 0);
+        viewport_adjustment.value_changed.connect(queue_draw);
         
         // Initialize colors
         highlight_color = Gdk.RGBA();
         highlight_color.parse("rgba(179, 179, 204, 0.5)");
         
         text_color = Gdk.RGBA();
-        text_color.parse("rgba(77, 77, 77, 0.8)");
-        
-        keyword_color = Gdk.RGBA();
-        keyword_color.parse("rgba(51, 102, 153, 0.8)");
-        
-        string_color = Gdk.RGBA();
-        string_color.parse("rgba(153, 77, 51, 0.8)");
+        text_color.parse("rgba(77, 77, 77, 0.5)"); // 0.8 original
         
         comment_color = Gdk.RGBA();
         comment_color.parse("rgba(102, 153, 102, 0.8)");
@@ -68,19 +66,10 @@ public class TextMinimap : Gtk.DrawingArea {
         drag_color = Gdk.RGBA();
         drag_color.parse("rgba(179, 179, 255, 0.7)");
         
-        // Initialize regular expressions
-        try {
-            keyword_pattern = new Regex("\\b(def|class|import|from|if|else|elif|for|while|return|try|except|with)\\b");
-            string_pattern = new Regex("(\".*?\"|'.*?')");
-            comment_pattern = new Regex("#.*$");
-        } catch (RegexError e) {
-            warning("Failed to compile regex: %s", e.message);
-        }
-        
-        // Set up drawing
         set_draw_func(draw);
         set_size_request(100, -1);
         
+/*
         // Set up gesture controllers
         var click_gesture = new Gtk.GestureClick();
         click_gesture.set_button(1); // Left mouse button
@@ -99,32 +88,26 @@ public class TextMinimap : Gtk.DrawingArea {
         motion_controller.motion.connect(on_motion);
         motion_controller.leave.connect(on_leave);
         add_controller(motion_controller);
+*/
     }
     
     /**
-     * Load a new file into the minimap
+     * Get the text adjustment used by this minimap
      */
-    public void load_file(string content) {
-        file_content = content;
-        lines = file_content.split("\n");
-        queue_draw();
+    public Gtk.Adjustment get_viewport_adjustment() {
+        return viewport_adjustment;
     }
     
     /**
-     * Update the viewport position using actual document metrics
-     * @param scroll_pos Current scroll position in document
-     * @param viewport_height Height of the visible viewport
-     * @param total_height Total document height
+     * Set the text adjustment to be used by this minimap
      */
-    public void set_viewport_metrics(double scroll_pos, double viewport_height, double total_height) {
-        // Store the actual document metrics
-        document_height = total_height > 0 ? total_height : 1;
-        viewport_size = viewport_height;
-        scroll_position = scroll_pos;
+    public void set_viewport_adjustment(Gtk.Adjustment adj) {
+        if (viewport_adjustment != null) {
+            viewport_adjustment.value_changed.disconnect(queue_draw);
+        }
         
-        // Ensure bounds
-        scroll_position = double.max(0, double.min(scroll_position, document_height - viewport_size));
-        
+        viewport_adjustment = adj;
+        viewport_adjustment.value_changed.connect(queue_draw);
         queue_draw();
     }
     
@@ -133,6 +116,20 @@ public class TextMinimap : Gtk.DrawingArea {
      */
     public void set_viewport_change_callback(ViewportChangeFunc callback) {
         viewport_change_callback = callback;
+    }
+    
+    /**
+     * Load a new file into the minimap
+     */
+    public void load_file(string content) {
+        file_content = content;
+        lines = file_content.split("\n");
+        
+        // Update the widget's natural height
+        int total_height = lines.length * line_height;
+        set_size_request(100, total_height);
+        
+        queue_draw();
     }
     
     /**
@@ -158,143 +155,75 @@ public class TextMinimap : Gtk.DrawingArea {
         // Cancel any ongoing animation
         cancel_animations();
         
-        int widget_height = get_height();
-        
-        // Calculate minimap dimensions
-        double minimap_height = calculate_minimap_height(widget_height);
-        double document_scale = get_document_scale(minimap_height);
-        
         // Calculate viewport position and height in minimap coordinates
-        double viewport_y = scroll_position * document_scale;
-        double viewport_height = viewport_size * document_scale;
+        MiniMapMetrics metrics = calculate_metrics();
         
-        // If clicking on viewport, prepare for drag operation
-        if (y >= viewport_y && y <= viewport_y + viewport_height) {
+        // Check if clicking on viewport
+        if (y >= metrics.viewport_y && y <= metrics.viewport_y + metrics.viewport_height) {
             dragging_viewport = true;
-            drag_start_position = scroll_position;
+            drag_start_value = viewport_adjustment.get_value();
         } else {
             dragging_viewport = false;
             // Update viewport immediately on click outside viewport
-            update_viewport_from_y(y, minimap_height);
+            update_viewport_from_y(y);
         }
     }
     
-    /**
-     * Handle mouse button release
-     */
     private void on_button_release(int n_press, double x, double y) {
         dragging_viewport = false;
     }
     
-    /**
-     * Handle start of drag operation
-     */
     private void on_drag_begin(double start_x, double start_y) {
         dragging = true;
         drag_start_y = start_y;
-        drag_start_position = scroll_position;
+        drag_start_value = viewport_adjustment.get_value();
         
         // Cancel any ongoing animation
         cancel_animations();
-        
-        // Initialize drag physics
-        last_drag_time = get_monotonic_time() / 1000000.0;
-        last_drag_y = start_y;
-        drag_velocity = 0;
     }
     
-    /**
-     * Handle mouse drag
-     */
     private void on_drag_update(double offset_x, double offset_y) {
         if (!dragging) {
             return;
         }
         
-        // Calculate drag physics
-        double current_time = get_monotonic_time() / 1000000.0;
-        double time_delta = current_time - last_drag_time;
-        if (time_delta > 0) {
-            double current_y = drag_start_y + offset_y;
-            double y_delta = current_y - last_drag_y;
-            drag_velocity = y_delta / time_delta;
-            last_drag_y = current_y;
-            last_drag_time = current_time;
-        }
-        
-        int widget_height = get_height();
-        double minimap_height = calculate_minimap_height(widget_height);
-        double document_scale = get_document_scale(minimap_height);
+        MiniMapMetrics metrics = calculate_metrics();
         
         if (dragging_viewport) {
-            // Drag the viewport directly - convert minimap offset to document offset
-            double document_offset = offset_y / document_scale;
-            double new_position = drag_start_position + document_offset;
+            // Convert drag offset to document offset
+            double document_offset = offset_y / metrics.document_to_minimap_ratio;
+            double new_value = drag_start_value + document_offset;
             
-            // Update viewport metrics
-            set_viewport_metrics(new_position, viewport_size, document_height);
-            
-            // Notify about viewport change
-            if (viewport_change_callback != null) {
-                viewport_change_callback(scroll_position);
-            }
+            // Update text adjustment value
+            update_viewport_adjustment(new_value);
         } else {
             // Update based on absolute position
-            update_viewport_from_y(drag_start_y + offset_y, minimap_height);
+            update_viewport_from_y(drag_start_y + offset_y);
         }
     }
     
-    /**
-     * Handle end of drag operation
-     */
     private void on_drag_end(double offset_x, double offset_y) {
         dragging = false;
         dragging_viewport = false;
-        
-        // Apply momentum scrolling if velocity is significant
-        if (Math.fabs(drag_velocity) > 100) { // Threshold for momentum
-            // Cap the velocity to prevent too fast scrolling
-            double velocity = Math.fmax(Math.fmin(drag_velocity, 2000), -2000);
-            momentum_scroll_id = Timeout.add(16, () => {
-                return momentum_scroll(velocity);
-            });
-        }
     }
     
     /**
-     * Continue scrolling with momentum
+     * Update text adjustment value with bounds checking
      */
-    private bool momentum_scroll(double velocity) {
-        // Apply friction to slow down
-        velocity *= 0.95;
+    private void update_viewport_adjustment(double value) {
+        // Ensure bounds
+        value = double.max(viewport_adjustment.get_lower(), 
+                         double.min(value, viewport_adjustment.get_upper() - viewport_adjustment.get_page_size()));
         
-        // Stop when velocity becomes too small
-        if (Math.fabs(velocity) < 10) {
-            momentum_scroll_id = 0;
-            return false;
-        }
-        
-        // Calculate distance to scroll based on velocity
-        int widget_height = get_height();
-        double minimap_height = calculate_minimap_height(widget_height);
-        double document_scale = get_document_scale(minimap_height);
-        
-        // Convert minimap velocity to document velocity
-        double document_velocity = velocity / document_scale;
-        double position_delta = document_velocity * 0.016;
-        
-        // Calculate new scroll position
-        double new_position = scroll_position + position_delta;
-        
-        // Update viewport metrics
-        set_viewport_metrics(new_position, viewport_size, document_height);
+        // Set value
+        viewport_adjustment.set_value(value);
         
         // Notify about viewport change
         if (viewport_change_callback != null) {
-            viewport_change_callback(scroll_position);
+            double document_height = viewport_adjustment.get_upper() - viewport_adjustment.get_lower() - viewport_adjustment.get_page_size();
+            double position_ratio = value / document_height;
+            viewport_change_callback(position_ratio);
         }
-        
-        return true; // Continue animation
     }
     
     /**
@@ -306,75 +235,78 @@ public class TextMinimap : Gtk.DrawingArea {
             animation_source_id = 0;
         }
         
-        if (momentum_scroll_id > 0) {
-            Source.remove(momentum_scroll_id);
-            momentum_scroll_id = 0;
-        }
+        target_value = null;
+    }
+    
+    /**
+     * Calculate all minimap metrics for consistent rendering and interaction
+     */
+    private MiniMapMetrics calculate_metrics() {
+        MiniMapMetrics metrics = MiniMapMetrics();
         
-        target_position = null;
-    }
-    
-    /**
-     * Calculate the actual height used by the minimap
-     * For small documents, this will be the actual content height
-     * For large documents, this will be the widget height
-     */
-    private double calculate_minimap_height(int widget_height) {
-        // Calculate the actual content height
-        double content_height = lines.length * line_height;
+        // Calculate the total height of the minimap content (1:1 mapping with lines)
+        metrics.total_minimap_height = lines.length * line_height;
+        //metrics.total_minimap_height = get_height ();
         
-        // For small documents, use actual content height
-        // For large documents, scale to fit the widget
-        return Math.fmin(content_height, widget_height);
+        // Calculate document height (from adjustment)
+        double document_height = viewport_adjustment.get_upper() - viewport_adjustment.get_lower();
+        
+        // Calculate ratio between document and minimap
+        metrics.document_to_minimap_ratio = document_height > 0 ? 
+                                          metrics.total_minimap_height / document_height : 1.0;
+        metrics.minimap_to_document_ratio = metrics.document_to_minimap_ratio > 0 ? 
+                                          1.0 / metrics.document_to_minimap_ratio : 1.0;
+
+    // Calculate viewport position and size in minimap coordinates
+
+        metrics.viewport_y = viewport_adjustment.get_value() * metrics.document_to_minimap_ratio;
+
+        double ratio = viewport_adjustment.get_page_size () / document_height;
+        double indicator_height = metrics.total_minimap_height * ratio;
+        double scroll_ratio = viewport_adjustment.get_value () / (document_height - viewport_adjustment.get_page_size ());
+        double indicator_y = (metrics.total_minimap_height - indicator_height) * scroll_ratio;
+
+       // metrics.viewport_y = indicator_y;
+
+        metrics.viewport_height = viewport_adjustment.get_page_size() * metrics.document_to_minimap_ratio;
+  
+        // Ensure viewport is visible even for very small ratios
+        metrics.viewport_height = Math.fmax(metrics.viewport_height, 5);
+        
+        return metrics;
     }
     
     /**
-     * Get the scale factor to convert between document and minimap coordinates
+     * Update viewport based on minimap y position
      */
-    private double get_document_scale(double minimap_height) {
-        if (document_height <= 0) {
-            return 1.0;
-        }
-        return minimap_height / document_height;
+    private void update_viewport_from_y(double y) {
+        MiniMapMetrics metrics = calculate_metrics();
+        
+        // Convert minimap position to document position
+        double document_position = y * metrics.minimap_to_document_ratio;
+        
+        // Center the viewport around the clicked position if possible
+        double half_viewport = viewport_adjustment.get_page_size() / 2;
+        double new_value = document_position - half_viewport;
+        
+        // Apply animation for smooth scrolling
+        animate_to_value(new_value);
     }
     
     /**
-     * Update viewport based on mouse y position
+     * Animate to a specific adjustment value
      */
-    private void update_viewport_from_y(double y, double minimap_height) {
-        if (minimap_height > 0 && document_height > 0) {
-            // Convert minimap y position to document position
-            double document_scale = get_document_scale(minimap_height);
-            double document_y = y / document_scale;
-            
-            // Center the viewport around the clicked position if possible
-            double half_viewport = viewport_size / 2;
-            double new_position = document_y - half_viewport;
-            
-            // Apply animation for smooth scrolling
-            animate_to_position(new_position);
-        }
-    }
-    
-    /**
-     * Animate to a specific document position
-     */
-    private void animate_to_position(double new_position) {
+    private void animate_to_value(double new_value) {
         // Ensure bounds
-        new_position = double.max(0, new_position);
-        new_position = double.min(new_position, document_height - viewport_size);
+        new_value = double.max(viewport_adjustment.get_lower(), 
+                             double.min(new_value, viewport_adjustment.get_upper() - viewport_adjustment.get_page_size()));
         
-        // Set target position for animation
-        target_position = new_position;
+        // Set target value for animation
+        target_value = new_value;
         
         // Start animation if not already running
         if (animation_source_id == 0) {
             animation_source_id = Timeout.add(16, animate_viewport);
-        }
-        
-        // Notify about viewport change immediately
-        if (viewport_change_callback != null) {
-            viewport_change_callback(new_position);
         }
     }
     
@@ -382,38 +314,28 @@ public class TextMinimap : Gtk.DrawingArea {
      * Animate viewport movement for smooth scrolling
      */
     private bool animate_viewport() {
-        if (target_position == null) {
+        if (target_value == null) {
             animation_source_id = 0;
             return false;
         }
         
         // Calculate step size (easing function)
-        double diff = target_position - scroll_position;
+        double diff = target_value - viewport_adjustment.get_value();
         if (Math.fabs(diff) < 1.0) {
             // We're close enough, snap to target
-            set_viewport_metrics(target_position, viewport_size, document_height);
+            update_viewport_adjustment(target_value);
             
-            // Notify about final position
-            if (viewport_change_callback != null) {
-                viewport_change_callback(scroll_position);
-            }
-            
-            target_position = null;
+            target_value = null;
             animation_source_id = 0;
             return false;
         }
         
         // Move toward target with easing
         double step = diff * 0.3;
-        double new_position = scroll_position + step;
+        double new_value = viewport_adjustment.get_value() + step;
         
-        // Update viewport metrics
-        set_viewport_metrics(new_position, viewport_size, document_height);
-        
-        // Notify about viewport change
-        if (viewport_change_callback != null) {
-            viewport_change_callback(scroll_position);
-        }
+        // Update adjustment value
+        update_viewport_adjustment(new_value);
         
         return true;
     }
@@ -422,18 +344,16 @@ public class TextMinimap : Gtk.DrawingArea {
      * Determine color based on line content
      */
     private Gdk.RGBA get_line_color(string line) {
-        try {
-            if (comment_pattern.match(line)) {
-                return comment_color;
-            } else if (string_pattern.match(line)) {
-                return string_color;
-            } else if (keyword_pattern.match(line)) {
-                return keyword_color;
-            }
-        } catch (RegexError e) {
-            // Fallback to default text color on error
+        Gdk.RGBA color;
+        var context = this.get_style_context ();
+        if (context.lookup_color ("theme_fg_color", out color)) {
+            color.alpha = 0.25f;
         }
         return text_color;
+    }
+
+    public void set_line_color_bg_callback (GetLineColorBgFunc? callback) {
+        get_line_color_bg_callback = callback;
     }
     
     /**
@@ -441,33 +361,23 @@ public class TextMinimap : Gtk.DrawingArea {
      */
     private void draw(Gtk.DrawingArea da, Cairo.Context cr, int width, int height) {
         // Clear the background
-        cr.set_source_rgb(0.95, 0.95, 0.95);
-        cr.paint();
+        //cr.set_source_rgb(0.95, 0.95, 0.95);
+        //cr.paint();
         
         if (lines.length == 0) {
             return;
         }
         
-        // Calculate the minimap height (actual space used for rendering)
-        double minimap_height = calculate_minimap_height(height);
+        // Calculate all metrics for consistent rendering
+        MiniMapMetrics metrics = calculate_metrics();
         
-        // Calculate scale factor for text rendering
-        double text_scale = 1.0;
-        double content_height = lines.length * line_height;
-        if (content_height > minimap_height) {
-            text_scale = minimap_height / content_height;
-        }
-        
-        // Calculate document scale factor
-        double document_scale = get_document_scale(minimap_height);
-        
-        // Draw the text representation with syntax highlighting FIRST
+        // Draw the text representation with syntax highlighting
         for (int i = 0; i < lines.length; i++) {
-            // Calculate line position based on scale factor
-            double y = i * line_height * text_scale;
+            // Calculate line position
+            double y = i * line_height;
             
             // Skip if outside visible area (with some margin)
-            if (y > minimap_height + 10) {
+            if (y > height + 10) {
                 break;
             }
             
@@ -476,35 +386,29 @@ public class TextMinimap : Gtk.DrawingArea {
             }
             
             // Set color based on line content
-            Gdk.cairo_set_source_rgba(cr, get_line_color(lines[i]));
+            var bg_color = get_line_color_bg_callback (lines[i]) ?? get_line_color (lines[i]);
+            Gdk.cairo_set_source_rgba(cr, bg_color);
             
             // Draw line representation based on content length
             double line_width = double.min(width - padding * 2, lines[i].length * 0.5);
             if (line_width > 0) {
                 cr.rectangle(padding, y + padding/2, 
-                            line_width, line_height * text_scale - padding);
+                            line_width, line_height - padding);
                 cr.fill();
             }
         }
         
         // Draw hover indicator if mouse is over the widget
-        if (hover_y != null && !dragging && hover_y < minimap_height) {
+        if (hover_y != null && !dragging) {
             // Draw hover indicator
             cr.set_source_rgba(0.8, 0.8, 0.9, 0.3);
-            cr.rectangle(0, hover_y, width, 2);
+            cr.rectangle(0, hover_y, width, line_height);
             cr.fill();
         }
         
-        // Calculate viewport position and height in minimap coordinates
-        double viewport_y = scroll_position * document_scale;
-        double viewport_height = viewport_size * document_scale;
-        
-        // Ensure viewport is visible even for very small ratios
-        viewport_height = Math.fmax(viewport_height, 5);
-        
-        // THEN draw the viewport highlight (on top of the text)
+        // Draw the viewport highlight
         Gdk.cairo_set_source_rgba(cr, highlight_color);
-        cr.rectangle(0, viewport_y, width, viewport_height * 5);
+        cr.rectangle(0, metrics.viewport_y, width, metrics.viewport_height);
         cr.fill();
         
         // Draw a border around the viewport for better visibility
@@ -517,18 +421,18 @@ public class TextMinimap : Gtk.DrawingArea {
             cr.set_line_width(1);
         }
         
-        cr.rectangle(0, viewport_y, width, viewport_height);
+        cr.rectangle(0, metrics.viewport_y, width, metrics.viewport_height);
         cr.stroke();
         
         // Draw a handle indicator on the viewport
         if (hover_y != null && !dragging) {
-            double viewport_center_y = viewport_y + viewport_height / 2;
+            double viewport_center_y = metrics.viewport_y + metrics.viewport_height / 2;
             
             // Only show handle when hovering near the viewport
-            if (Math.fabs(hover_y - viewport_center_y) < viewport_height) {
+            if (Math.fabs(hover_y - viewport_center_y) < metrics.viewport_height) {
                 int handle_width = 4;
                 cr.set_source_rgba(0.5, 0.5, 0.8, 0.9);
-                cr.rectangle(width - handle_width, viewport_y, handle_width, viewport_height);
+                cr.rectangle(width - handle_width, metrics.viewport_y, handle_width, metrics.viewport_height);
                 cr.fill();
             }
         }

@@ -19,12 +19,13 @@ namespace Tags {
         unowned Adw.WindowTitle window_title;
         [GtkChild]
         unowned Adw.ToastOverlay overlay;
-        
+
         private Gtk.Box main_box;
         private Gtk.Paned paned;
         private TextMinimap minimap;
         private Gtk.ScrolledWindow scrolled_tags;
         private Gtk.ScrolledWindow scrolled_lines;
+        private Gtk.ScrolledWindow scrolled_minimap;
 
         private ulong handler_id;
         private uint scrolled_lines_timeout_id = 0;
@@ -73,46 +74,15 @@ namespace Tags {
         public Window (Gtk.Application app) {
             Object (application: app);
             setup_actions ();
-            setup_minimap ();
             save_tagged_disable ();
-            setup_tags_treeview ();     // Also sets assoc scrolled
-            setup_lines_treeview ();    // Also sets assoc scrolled
+            setup_tags_treeview ();
+            setup_lines_treeview ();
+            setup_minimap (scrolled_lines.get_vadjustment ());
             setup_main_box ();
             setup_paned (main_box, scrolled_tags);
             setup_buttons ();
 
-            var vadj = scrolled_lines.get_vadjustment ();
-            vadj.notify["value"].connect (on_scrolled_lines_change);
-
-            minimap.set_viewport_change_callback (on_minimap_change);
-
             overlay.set_child (paned);
-
-            minimap.set_viewport_metrics (0, vadj.get_page_size (), this.get_height ());
-        }
-
-        private void on_minimap_change (double position_ratio) {
-            var vadj = scrolled_lines.get_vadjustment ();
-            double document_height = vadj.get_upper() - vadj.get_lower();
-            double target = position_ratio * document_height;
-            vadj.set_value (target);
-        }
-
-        private void update_minimap_viewport() {
-            var vadj = scrolled_lines.get_vadjustment ();
-            double document_height = vadj.get_upper() - vadj.get_lower();
-            
-            double start_ratio = vadj.get_value() / document_height;
-            double height_ratio = vadj.get_page_size() / document_height;
-        }
-
-        private void on_scrolled_lines_change () {
-            var vadj = scrolled_lines.get_vadjustment ();
-            double document_height = vadj.get_upper() - vadj.get_lower();
-
-            double start_ratio = vadj.get_value() / document_height;
-            double height_ratio = vadj.get_page_size() / document_height;
-            update_minimap_viewport ();
         }
 
         private void setup_actions () {
@@ -244,10 +214,10 @@ namespace Tags {
             paned.set_resize_start_child (true);
             paned.set_resize_end_child (true);
             paned.set_wide_handle (true);
-            paned.set_position (this.default_height - 167); // - 47 - 120
+            paned.set_position (this.default_height - 167);
 
             paned.notify["position"].connect ((s,p) => {
-                var view_height = paned.get_allocated_height ();
+                var view_height = paned.get_height ();
                 
                 if (view_height == 0) return;
 
@@ -331,15 +301,61 @@ namespace Tags {
             });
         }
 
-        private void setup_minimap () {
-            minimap = new TextMinimap ();
+        private Gdk.RGBA? gcc (string? text) {
+            return tags_treeview.get_bg_color_for_text (text);
+        }
+
+        private void setup_minimap (Gtk.Adjustment adj) {
+            minimap = new TextMinimap (adj);
             minimap.set_vexpand (true);
+
+            scrolled_minimap = new Gtk.ScrolledWindow();
+            scrolled_minimap.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.ALWAYS);
+            scrolled_minimap.set_child(minimap);
+            scrolled_minimap.set_vexpand(true);
+
+            // Create minimap manager
+            
+            var minimap_manager = new MinimapScrollManager(
+                scrolled_lines,
+                minimap,
+                scrolled_minimap
+            );
+            
+            scrolled_minimap.get_vadjustment ().bind_property (
+                "value", 
+                scrolled_lines.get_vadjustment (), 
+                "value", 
+                BindingFlags.SYNC_CREATE | BindingFlags.BIDIRECTIONAL,
+                (
+                    (b, from_value, ref to_value) => {
+                        if (scrolled_lines.get_height () <= 0) return false;
+                        var h1 = scrolled_lines.get_vadjustment ().get_upper () - scrolled_lines.get_vadjustment ().get_lower ();
+                        var h2 = scrolled_minimap.get_vadjustment ().get_upper () - scrolled_minimap.get_vadjustment ().get_lower ();
+                        message ("M1 :: h1 = %f h2 = %f ratio = %f", h1, h2, h1/h2);
+                        to_value.set_double (from_value.get_double () * (h2 / h1)); 
+                        return true;
+                    }
+                ),
+                (
+                    (b, from_value, ref to_value) => {
+                        if (scrolled_lines.get_height () <= 0) return false;
+                        var h1 = scrolled_lines.get_vadjustment ().get_upper () - scrolled_lines.get_vadjustment ().get_lower ();
+                        var h2 = scrolled_minimap.get_vadjustment ().get_upper () - scrolled_minimap.get_vadjustment ().get_lower ();
+                        message ("M2:: h1 = %f h2 = %f ratio = %f", h1, h2, h1/h2);
+                        to_value.set_double (from_value.get_double () / (h1 / h2));
+                        return true;
+                    }
+                )
+            );
+
+            minimap.set_line_color_bg_callback (gcc);
         }
 
         private void setup_main_box () {
             main_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
             main_box.append (scrolled_lines);
-            main_box.append (minimap);
+            main_box.append (scrolled_minimap);
         }
 
         public void set_file (File file) {
@@ -389,8 +405,9 @@ namespace Tags {
                     file_tags = File.new_for_path (file.get_path () + ".tags");
                     message("TagsFile: %s", file_tags.get_path ());
                     if (file_tags.query_exists ()) {
-                        set_tags (file_tags, cancel_open, false);
-                        message("TagsFile: Exists -> Loaded");
+                        message("TagsFile: Exists -> Load");
+                        set_tags (file_tags);
+                        //set_tags (file_tags, cancel_open, false);
                     }
 
                     if (tags_treeview.ntags > 0) count_tag_hits ();
@@ -399,6 +416,7 @@ namespace Tags {
                 button_open_file.set_sensitive (true);
                 lines_treeview.disconnect (handler_id);
                 dialog.close ();
+                minimap.queue_draw ();
             });
 
             // Actual set file 
@@ -410,7 +428,6 @@ namespace Tags {
                 string contents;
                 FileUtils.get_contents (file.get_path (), out contents);
                 minimap.load_file (contents);
-                
             } catch (FileError e) {
                 warning ("%s :: get_contents from file -> Minimap :: Error: %s", GLib.Log.METHOD, e.message);
             }
@@ -433,6 +450,7 @@ namespace Tags {
                 }
 
                 count_tag_hits ();
+                minimap.queue_draw ();
             });
 
             tag_dialog.show ();
@@ -498,7 +516,7 @@ namespace Tags {
                     FileInputStream stream = file.read_async.end (res);
                     Json.Parser parser = new Json.Parser ();
                     parser.load_from_stream_async.begin (stream, cancellable , (obj, res) => {
-                        try{
+                        try {
                             parser.load_from_stream_async.end (res);
                             tags_changed = false;
                             tags_treeview.clear_tags ();
@@ -637,7 +655,6 @@ namespace Tags {
 
         private void toggle_tags_view () {
             var view_height = paned.get_height ();
-            //var view_height = paned.get_allocated_height ();
             var action = this.lookup_action ("toggle_tags_view");
             
             if (paned.get_position () >= view_height - 5) {

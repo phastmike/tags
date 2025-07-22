@@ -244,5 +244,20 @@ namespace Tags {
                 error ("Json.Generator::to_file error: %s", e.message);
             }
         }
+
+        public Gdk.RGBA? get_bg_color_for_text (string text) {
+            Gdk.RGBA? ret = null;
+            tag_store.foreach ( (model, path, iter) => {
+                var tag = get_tag_from_model_with_iter (model, iter);
+                if (tag.enabled == true) {
+                    if (tag.applies_to (text)) {
+                        ret = tag.colors.bg;
+                        return true;
+                    }
+                }
+                return false;
+            });
+            return ret;
+        }
     }
 }
