@@ -33,9 +33,15 @@
                 {
                     "type" : "git",
                     "url" : "https://github.com/phastmike/tags.git",
-                    "commit": "e2042f1bb03ea4cde1e60b12c33fc2ef2677981e"
+                    "commit" : "e2042f1bb03ea4cde1e60b12c33fc2ef2677981e"
                 }
+            ],
+            "config-opts" : [
+                "--libdir=lib"
             ]
         }
-    ]
+    ],
+    "build-options" : {
+        "env" : {        }
+    }
 }
