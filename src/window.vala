@@ -175,6 +175,7 @@ namespace Tags {
                 tag_dialog.added.connect ((tag, add_to_top) => {
                     tag.enable_changed.connect ((enabled) => {
                         lines_treeview.line_store_filter.refilter ();
+                        minimap.queue_draw ();
                     });
                     tags_treeview.add_tag (tag, add_to_top);
                     count_tag_hits ();
@@ -307,48 +308,16 @@ namespace Tags {
 
         private void setup_minimap (Gtk.Adjustment adj) {
             minimap = new TextMinimap (adj);
-            minimap.set_vexpand (true);
+            minimap.set_vexpand (false);
 
             scrolled_minimap = new Gtk.ScrolledWindow();
-            scrolled_minimap.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.ALWAYS);
+            scrolled_minimap.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.EXTERNAL);
             scrolled_minimap.set_child(minimap);
-            scrolled_minimap.set_vexpand(true);
+            scrolled_minimap.set_vexpand(false);
 
-            // Create minimap manager
             
-            var minimap_manager = new MinimapScrollManager(
-                scrolled_lines,
-                minimap,
-                scrolled_minimap
-            );
+            var minimap_manager = new MinimapScrollManager (scrolled_lines, scrolled_minimap);
             
-            scrolled_minimap.get_vadjustment ().bind_property (
-                "value", 
-                scrolled_lines.get_vadjustment (), 
-                "value", 
-                BindingFlags.SYNC_CREATE | BindingFlags.BIDIRECTIONAL,
-                (
-                    (b, from_value, ref to_value) => {
-                        if (scrolled_lines.get_height () <= 0) return false;
-                        var h1 = scrolled_lines.get_vadjustment ().get_upper () - scrolled_lines.get_vadjustment ().get_lower ();
-                        var h2 = scrolled_minimap.get_vadjustment ().get_upper () - scrolled_minimap.get_vadjustment ().get_lower ();
-                        message ("M1 :: h1 = %f h2 = %f ratio = %f", h1, h2, h1/h2);
-                        to_value.set_double (from_value.get_double () * (h2 / h1)); 
-                        return true;
-                    }
-                ),
-                (
-                    (b, from_value, ref to_value) => {
-                        if (scrolled_lines.get_height () <= 0) return false;
-                        var h1 = scrolled_lines.get_vadjustment ().get_upper () - scrolled_lines.get_vadjustment ().get_lower ();
-                        var h2 = scrolled_minimap.get_vadjustment ().get_upper () - scrolled_minimap.get_vadjustment ().get_lower ();
-                        message ("M2:: h1 = %f h2 = %f ratio = %f", h1, h2, h1/h2);
-                        to_value.set_double (from_value.get_double () / (h1 / h2));
-                        return true;
-                    }
-                )
-            );
-
             minimap.set_line_color_bg_callback (gcc);
         }
 
@@ -441,6 +410,7 @@ namespace Tags {
 
                 tag.enable_changed.connect ((enabled) => {
                     lines_treeview.line_store_filter.refilter ();
+                    minimap.queue_draw ();
                 });
 
                 tags_treeview.add_tag (tag, add_to_top);
@@ -532,6 +502,7 @@ namespace Tags {
 
                                     tag.enable_changed.connect ((enabled) => {
                                         lines_treeview.line_store_filter.refilter ();
+                                        minimap.queue_draw ();
                                     });
                                 });
                             }

@@ -1,54 +1,59 @@
 public class MinimapScrollManager : GLib.Object {
-    private TextMinimap minimap;
-    private Gtk.ScrolledWindow text_scrolled;
-    private Gtk.ScrolledWindow minimap_scrolled;
+    private Gtk.Adjustment adj_text;
+    private Gtk.Adjustment adj_minimap;
     
-    private bool syncing = false;
-    
-    public MinimapScrollManager(Gtk.ScrolledWindow text_scrolled,
-                         TextMinimap minimap, Gtk.ScrolledWindow minimap_scrolled) {
-        this.text_scrolled = text_scrolled;
-        this.minimap = minimap;
-        this.minimap_scrolled = minimap_scrolled;
+    public MinimapScrollManager(Gtk.ScrolledWindow scr_text, Gtk.ScrolledWindow scr_minimap) {
+        adj_text = scr_text.get_vadjustment ();
+        adj_minimap = scr_minimap.get_vadjustment ();
         
-        minimap.set_viewport_adjustment(text_scrolled.get_vadjustment());
-        minimap.set_viewport_change_callback(on_minimap_viewport_change);
-        text_scrolled.get_vadjustment().value_changed.connect(on_text_scroll_changed);
-        
-        Idle.add(() => {
-            sync_minimap_scroll_to_text();
-            return false;
-        });
-    }
-    
-    private void on_minimap_viewport_change(double position_ratio) {
-        if (!syncing) {
-            syncing = true;
-            sync_minimap_scroll_to_text();
-            syncing = false;
-        }
-    }
-    
-    private void on_text_scroll_changed() {
-        if (!syncing) {
-            syncing = true;
-            sync_minimap_scroll_to_text();
-            syncing = false;
-        }
-    }
-    
-    private void sync_minimap_scroll_to_text() {
-        var text_adj = text_scrolled.get_vadjustment();
-        var minimap_adj = minimap_scrolled.get_vadjustment();
+        adj_text.bind_property (
+            "value", 
+            adj_minimap, 
+            "value", 
+            BindingFlags.SYNC_CREATE | BindingFlags.BIDIRECTIONAL,
+            (
+                (b, from_value, ref to_value) => {
+                    if (adj_text.get_upper () <= 0) return false;
+                    var h1 = adj_text.get_upper () - adj_text.get_lower ();
+                    var h2 = adj_minimap.get_upper () - adj_minimap.get_lower ();
 
-        double document_height = text_adj.get_upper() - text_adj.get_lower() - text_adj.get_page_size();
-        double document_position = text_adj.get_value() / document_height;
-        
-        double minimap_height = minimap_adj.get_upper() - minimap_adj.get_lower() - minimap_adj.get_page_size();
-        double minimap_position = document_position * minimap_height;
-        
-        minimap_adj.set_value(minimap_position);
-        minimap.get_viewport_adjustment ().set_value (text_adj.get_value () / document_height);
-        //minimap_scrolled.get_vadjustment ().set_value (minimap_position);
+                    double t1 = from_value.get_double () / (adj_text.get_upper () - adj_text.get_page_size ());
+                    double t2 = adj_minimap.get_upper () - adj_minimap.get_page_size ();
+                    double t3 = t1 * t2;
+                    to_value.set_double (t3);
+
+                    /*
+                    double t1 = from_value.get_double () - (adj_text.get_upper () / 2);
+                    double t2 = (t1 * (adj_minimap.get_upper () / adj_text.get_upper ())) + (adj_minimap.get_value () / 2);
+
+                    to_value.set_double (t2);
+                    */
+
+
+                    /*
+                    double r1 = h1/h2;
+                    double p1 = adj_text.get_value () / adj_text.get_upper ();
+                    message ("M1 h1 = %f h2 = %f rr = %f", h1, h2, (adj_text.get_value () / adj_text.get_upper ()));
+                    message ("hp2 = %f", p1 * adj_minimap.get_upper ());
+                    message ("value = %f", (from_value.get_double () + (adj_text.get_page_size () / h2)));
+                    //to_value.set_double (from_value.get_double () / (h1 / h2));
+                    to_value.set_double (p1 * adj_minimap.get_upper ());
+                    //to_value.set_double (from_value.get_double () * (adj_text.get_page_size () / h2));
+                    */
+                    return true;
+                }
+            ),
+            (
+                (b, from_value, ref to_value) => {
+                    if (adj_text.get_upper () <= 0) return false;
+                    double h1 = adj_text.get_upper () - adj_text.get_lower ();
+                    double h2 = adj_minimap.get_upper () - adj_minimap.get_lower ();
+                    double ratio = (h2 / h1);
+                    message ("M2 h1 = %f h2 = %f ps = %f value = %f", h1, h2, adj_text.get_page_size (), adj_text.get_page_size ());
+                    to_value.set_double (from_value.get_double () / ratio); 
+                    return true;
+                }
+            )
+        );
     }
 }

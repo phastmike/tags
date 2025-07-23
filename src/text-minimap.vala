@@ -82,13 +82,13 @@ public class TextMinimap : Gtk.DrawingArea {
         drag_gesture.drag_update.connect(on_drag_update);
         drag_gesture.drag_end.connect(on_drag_end);
         add_controller(drag_gesture);
+*/
         
         // Motion controller for hover effects
         var motion_controller = new Gtk.EventControllerMotion();
         motion_controller.motion.connect(on_motion);
         motion_controller.leave.connect(on_leave);
         add_controller(motion_controller);
-*/
     }
     
     /**
@@ -392,14 +392,13 @@ public class TextMinimap : Gtk.DrawingArea {
             // Draw line representation based on content length
             double line_width = double.min(width - padding * 2, lines[i].length * 0.5);
             if (line_width > 0) {
-                cr.rectangle(padding, y + padding/2, 
-                            line_width, line_height - padding);
+                cr.rectangle(padding, y + padding/2, line_width, line_height - padding);
                 cr.fill();
             }
         }
         
         // Draw hover indicator if mouse is over the widget
-        if (hover_y != null && !dragging) {
+        if (hover_y != null && !dragging && hover_y < (line_height * lines.length)) {
             // Draw hover indicator
             cr.set_source_rgba(0.8, 0.8, 0.9, 0.3);
             cr.rectangle(0, hover_y, width, line_height);
@@ -411,6 +410,7 @@ public class TextMinimap : Gtk.DrawingArea {
         cr.rectangle(0, metrics.viewport_y, width, metrics.viewport_height);
         cr.fill();
         
+        /*
         // Draw a border around the viewport for better visibility
         if (dragging && dragging_viewport) {
             // Use a more prominent color when dragging the viewport
@@ -436,5 +436,6 @@ public class TextMinimap : Gtk.DrawingArea {
                 cr.fill();
             }
         }
+        */
     }
 }
