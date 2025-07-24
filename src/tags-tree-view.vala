@@ -257,6 +257,7 @@ namespace Tags {
                 }
                 return false;
             });
+
             return ret;
         }
     }

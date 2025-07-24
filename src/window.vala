@@ -85,6 +85,13 @@ namespace Tags {
             overlay.set_child (paned);
         }
 
+        /*
+        protected override  void size_allocate (int w, int h, int baseline) {
+            base.size_allocate (w, h, baseline);
+            minimap.queue_draw ();
+        }
+        */
+
         private void setup_actions () {
             this.add_action_entries(this.WINDOW_ACTIONS, this);
             application.set_accels_for_action("win.add_tag", {"<primary>n"});
@@ -190,6 +197,7 @@ namespace Tags {
         private void setup_scrolled_lines () {
             scrolled_lines = new Gtk.ScrolledWindow ();
             scrolled_lines.set_kinetic_scrolling (true);
+            scrolled_lines.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
             scrolled_lines.set_placement (Gtk.CornerType.TOP_LEFT);
             scrolled_lines.set_overlay_scrolling (true);
             scrolled_lines.set_child (lines_treeview);
@@ -200,6 +208,7 @@ namespace Tags {
         private void setup_scrolled_tags () {
             scrolled_tags = new Gtk.ScrolledWindow ();
             scrolled_tags.set_kinetic_scrolling (true);
+            scrolled_tags.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
             scrolled_tags.set_placement (Gtk.CornerType.TOP_LEFT);
             scrolled_tags.set_overlay_scrolling (true);
             scrolled_tags.set_child (tags_treeview);
@@ -308,16 +317,21 @@ namespace Tags {
 
         private void setup_minimap (Gtk.Adjustment adj) {
             minimap = new TextMinimap (adj);
-            minimap.set_vexpand (false);
+            minimap.set_vexpand (true);
 
             scrolled_minimap = new Gtk.ScrolledWindow();
-            scrolled_minimap.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.EXTERNAL);
-            scrolled_minimap.set_child(minimap);
-            scrolled_minimap.set_vexpand(false);
-
+            scrolled_minimap.set_policy (Gtk.PolicyType.NEVER, Gtk.PolicyType.EXTERNAL);
+            scrolled_minimap.set_child (minimap);
+            scrolled_minimap.set_vexpand (true);
             
             var minimap_manager = new MinimapScrollManager (scrolled_lines, scrolled_minimap);
             
+            /*
+            scrolled_minimap.get_vadjustment ().changed.connect (() => {
+                minimap.queue_draw ();
+            });
+            */
+
             minimap.set_line_color_bg_callback (gcc);
         }
 
@@ -368,7 +382,7 @@ namespace Tags {
                 spinner.set_spinning (false);
                 save_tagged_enable ();
                 /* Here we check if application property autoload tags is enabled*/
-                /* FIXME: What to do if we already have tags inserted, merge or replace? */
+                /* FIXME: What to do if we already have tags inserted, merged or replace? */
 
                 if (Preferences.instance ().tags_autoload == true) {
                     file_tags = File.new_for_path (file.get_path () + ".tags");

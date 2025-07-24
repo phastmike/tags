@@ -23,12 +23,12 @@ namespace Tags {
         unowned Gtk.CellRendererText renderer_line_text;
         [GtkChild]
         unowned Gtk.CellRendererText renderer_line_number;
-        
+
         public enum Columns {
             LINE_NUMBER,
             LINE_TEXT;
         }
-            
+
         private Gtk.TreeModel tags;
         public bool hide_untagged {set; get; default=false;}
         private bool will_clear_all {private set; private get; default=false;}

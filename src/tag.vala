@@ -49,7 +49,7 @@ namespace Tags {
                     var regex = new Regex (this.pattern, is_case_sensitive ? 0 : RegexCompileFlags.CASELESS);
                     return regex.match (text);
                 } catch (RegexError e) {
-                    //warning ("RegexError: %s", e.message);
+                    warning ("RegexError: %s", e.message);
                     return false;
                 }
             } else {
