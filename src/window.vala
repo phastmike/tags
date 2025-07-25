@@ -28,7 +28,7 @@ namespace Tags {
         private Gtk.ScrolledWindow scrolled_minimap;
 
         private ulong handler_id;
-        private uint scrolled_lines_timeout_id = 0;
+        //private uint scrolled_lines_timeout_id = 0;
         private LinesTreeView lines_treeview;
         private TagsTreeView tags_treeview;
         private double paned_last_position = 0.778086;
@@ -44,6 +44,7 @@ namespace Tags {
             { "save_tagged", save_tagged },
             { "hide_untagged_lines", hide_untagged_lines, null, "false", null},
             { "toggle_tags_view", toggle_tags_view, null, "false", null},
+            { "toggle_minimap", toggle_minimap, null, "false", null},
             { "copy", copy},
             { "toggle_tag_1", toggle_tag_1},
             { "toggle_tag_2", toggle_tag_2},
@@ -85,19 +86,13 @@ namespace Tags {
             overlay.set_child (paned);
         }
 
-        /*
-        protected override  void size_allocate (int w, int h, int baseline) {
-            base.size_allocate (w, h, baseline);
-            minimap.queue_draw ();
-        }
-        */
-
         private void setup_actions () {
             this.add_action_entries(this.WINDOW_ACTIONS, this);
             application.set_accels_for_action("win.add_tag", {"<primary>n"});
             application.set_accels_for_action("win.save_tagged", {"<primary>s"});
             application.set_accels_for_action("win.hide_untagged_lines", {"<primary>h"});
             application.set_accels_for_action("win.toggle_tags_view", {"<primary>f"});
+            application.set_accels_for_action("win.toggle_minimap", {"<primary>m"});
             application.set_accels_for_action("win.copy", {"<primary>c"});
             application.set_accels_for_action("win.toggle_tag_1", {"<alt>1"});
             application.set_accels_for_action("win.toggle_tag_2", {"<alt>2"});
@@ -311,7 +306,7 @@ namespace Tags {
             });
         }
 
-        private Gdk.RGBA? gcc (string? text) {
+        private Gdk.RGBA? delegate_minimap_bgcolor_getter (string? text) {
             return tags_treeview.get_bg_color_for_text (text);
         }
 
@@ -323,16 +318,8 @@ namespace Tags {
             scrolled_minimap.set_policy (Gtk.PolicyType.NEVER, Gtk.PolicyType.EXTERNAL);
             scrolled_minimap.set_child (minimap);
             scrolled_minimap.set_vexpand (true);
-            
             var minimap_manager = new MinimapScrollManager (scrolled_lines, scrolled_minimap);
-            
-            /*
-            scrolled_minimap.get_vadjustment ().changed.connect (() => {
-                minimap.queue_draw ();
-            });
-            */
-
-            minimap.set_line_color_bg_callback (gcc);
+            minimap.set_line_color_bg_callback (delegate_minimap_bgcolor_getter);
         }
 
         private void setup_main_box () {
@@ -626,6 +613,7 @@ namespace Tags {
 
             var selection = lines_treeview.get_selection ();
             selection.set_mode (Gtk.SelectionMode.SINGLE);
+
             if (selection.get_selected (out model, out iter) == true) {
                 selection = lines_treeview.get_selection ();
                 lines_treeview.scroll_to_cell (model.get_path (iter) , null, true, (float) 0.5, (float) 0.5);
@@ -636,6 +624,12 @@ namespace Tags {
                (tags_treeview.ntags == 0 || tags_treeview.get_n_tags_enabled () == 0)) {
                 inform_user_no_tagged_lines ();
             }
+        }
+
+        private void toggle_minimap () {
+            var action = this.lookup_action ("toggle_minimap");
+            action.change_state (new Variant.boolean (minimap.get_visible ()));
+            minimap.set_visible (!minimap.get_visible ());
         }
 
         private void toggle_tags_view () {

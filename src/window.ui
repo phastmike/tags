@@ -96,6 +96,10 @@
         <attribute name="label" translatable="yes">Hide Untagged</attribute>
         <attribute name="action">win.hide_untagged_lines</attribute>
       </item>
+      <item>
+        <attribute name="label" translatable="yes">Hide Minimap</attribute>
+        <attribute name="action">win.toggle_minimap</attribute>
+      </item>
     </section>
   </menu>
 

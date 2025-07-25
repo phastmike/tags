@@ -69,6 +69,12 @@
                 <property name="action-name">win.copy</property>
               </object>
             </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes" context="shortcut window">Toggle Minimap visibility </property>
+                <property name="action-name">win.toggle_minimap</property>
+              </object>
+            </child>
           </object>
         </child>
       </object>
