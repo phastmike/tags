@@ -9,11 +9,10 @@ public class TextMinimap : Gtk.DrawingArea {
     private int width = 100;
     private Gdk.RGBA highlight_color;
     private Gdk.RGBA text_color;
-    private Gdk.RGBA hover_color;
     private Gdk.RGBA drag_color;
     
     // Text view adjustment (for drawing the highlight)
-    private Gtk.Adjustment viewport_adjustment;
+    private Gtk.Adjustment? viewport_adjustment = null;
     
     // Mouse interaction state
     private bool dragging = false;
@@ -41,46 +40,49 @@ public class TextMinimap : Gtk.DrawingArea {
         public double viewport_y;             // Y position of viewport in minimap
         public double viewport_height;        // Height of viewport in minimap
     }
-    
-    public TextMinimap (Gtk.Adjustment text_adj) {
+
+    public TextMinimap (Gtk.Adjustment text_adj = null) {
         Object();
-        
-        // Set up adjustment
+
         viewport_adjustment = text_adj ?? new Gtk.Adjustment(0, 0, 0, 1, 10, 0);
         viewport_adjustment.value_changed.connect(queue_draw);
-        
+
+        init_colors ();
+
+        set_draw_func(draw);
+        set_size_request(width, -1);
+
+        init_gestures ();
+    }
+
+    private void init_colors () {
         // Initialize colors
         highlight_color = Gdk.RGBA();
-        //highlight_color.parse("rgba(179, 179, 204, 0.5)");
         highlight_color.parse("rgba(201, 201, 201, 0.2)");
         
         text_color = Gdk.RGBA();
         text_color.parse("rgba(77, 77, 77, 0.5)"); // 0.8 original
         
-        hover_color = Gdk.RGBA();
-        //hover_color.parse("rgba(204, 204, 230, 0.3)");
-        hover_color.parse("rgba(238, 238, 238, 0.3)");
-        
         drag_color = Gdk.RGBA();
         drag_color.parse("rgba(179, 179, 255, 0.7)");
-        
-        set_draw_func(draw);
-        set_size_request(width, -1);
-        
-        // Set up gesture controllers
+    }
+
+    private void init_gestures () {
+        // Left mouse button
         var click_gesture = new Gtk.GestureClick();
-        click_gesture.set_button(1); // Left mouse button
+        click_gesture.set_button(1);
         click_gesture.pressed.connect(on_button_press);
         click_gesture.released.connect(on_button_release);
         add_controller(click_gesture);
-        
+
+        // Drag
         var drag_gesture = new Gtk.GestureDrag();
         drag_gesture.drag_begin.connect(on_drag_begin);
         drag_gesture.drag_update.connect(on_drag_update);
         drag_gesture.drag_end.connect(on_drag_end);
         add_controller(drag_gesture);
-        
-        // Motion controller for hover effects
+
+        // Motion for hover effects
         var motion_controller = new Gtk.EventControllerMotion();
         motion_controller.motion.connect(on_motion);
         motion_controller.leave.connect(on_leave);
@@ -330,9 +332,6 @@ public class TextMinimap : Gtk.DrawingArea {
         return true;
     }
     
-    /**
-     * Determine color based on line content
-     */
     private Gdk.RGBA get_line_color(string line) {
         Gdk.RGBA color;
         var context = this.get_style_context ();
@@ -346,9 +345,6 @@ public class TextMinimap : Gtk.DrawingArea {
         get_line_color_bg_callback = callback;
     }
     
-    /**
-     * Draw the minimap
-     */
     private void draw(Gtk.DrawingArea da, Cairo.Context cr, int width, int height) {
         if (lines.length == 0) {
             return;
@@ -371,7 +367,7 @@ public class TextMinimap : Gtk.DrawingArea {
                 continue;
             }
             
-            // Set color based on line content
+            // Set color based on line content (tag background color)
             var bg_color = get_line_color_bg_callback (lines[i]) ?? get_line_color (lines[i]);
             Gdk.cairo_set_source_rgba(cr, bg_color);
             
@@ -393,45 +389,20 @@ public class TextMinimap : Gtk.DrawingArea {
         
         // Draw the viewport highlight
         if (dragging && dragging_viewport) {
-            cr.set_source_rgba(201, 201, 201, 0.3);
+            highlight_color.alpha = 0.35f;
         } else if (hover_y != null && hover_y < lines.length * line_height) {
-            cr.set_source_rgba(201, 201, 201, 0.25);
+            highlight_color.alpha = 0.30f;
         } else {
-            Gdk.cairo_set_source_rgba(cr, highlight_color);
+            highlight_color.alpha = 0.25f;
         }
 
-        //Gdk.cairo_set_source_rgba(cr, highlight_color);
+        Gdk.cairo_set_source_rgba(cr, highlight_color);
         cr.rectangle(0, metrics.viewport_y, width, metrics.viewport_height);
         cr.fill();
-        
-        /*
-        // Draw a border around the viewport for better visibility
-        if (dragging && dragging_viewport) {
-            // Use a more prominent color when dragging the viewport
-            //Gdk.cairo_set_source_rgba(cr, drag_color);
-            //cr.set_line_width(2);
-        } else {
-            //cr.set_source_rgba(0.5, 0.5, 0.7, 0.8);
-            //cr.set_source_rgba(201, 201, 201, 0.8);
-            //cr.set_line_width(1);
-        }
-        
+
+        highlight_color.alpha = 0.50f;
+        cr.set_line_width(1);
         cr.rectangle(0, metrics.viewport_y, width, metrics.viewport_height);
-        //cr.stroke();
-        cr.fill();
-        
-        // Draw a handle indicator on the viewport
-        if (hover_y != null && !dragging) {
-            double viewport_center_y = metrics.viewport_y + metrics.viewport_height / 2;
-            
-            // Only show handle when hovering near the viewport
-            if (Math.fabs(hover_y - viewport_center_y) < metrics.viewport_height) {
-                int handle_width = 4;
-                cr.set_source_rgba(0.5, 0.5, 0.8, 0.9);
-                cr.rectangle(width - handle_width, metrics.viewport_y, handle_width, metrics.viewport_height);
-                cr.fill();
-            }
-        }
-        */
+        cr.stroke();
     }
 }

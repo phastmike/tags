@@ -28,7 +28,6 @@ namespace Tags {
         private Gtk.ScrolledWindow scrolled_minimap;
 
         private ulong handler_id;
-        //private uint scrolled_lines_timeout_id = 0;
         private LinesTreeView lines_treeview;
         private TagsTreeView tags_treeview;
         private double paned_last_position = 0.778086;
@@ -318,6 +317,7 @@ namespace Tags {
             scrolled_minimap.set_policy (Gtk.PolicyType.NEVER, Gtk.PolicyType.EXTERNAL);
             scrolled_minimap.set_child (minimap);
             scrolled_minimap.set_vexpand (true);
+
             var minimap_manager = new MinimapScrollManager (scrolled_lines, scrolled_minimap);
             minimap.set_line_color_bg_callback (delegate_minimap_bgcolor_getter);
         }
