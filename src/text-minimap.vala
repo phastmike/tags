@@ -9,6 +9,7 @@ public class TextMinimap : Gtk.DrawingArea {
     private Gdk.RGBA highlight_color;
     private Gdk.RGBA text_color;
 
+    // Color constants
     public const string rgba_dark_theme_hover   = "rgba (229, 229, 209, 0.25)";
     public const string rgba_light_theme_hover  = "rgba (26, 26, 26, 0.25)";
 
@@ -71,7 +72,6 @@ public class TextMinimap : Gtk.DrawingArea {
 
         var sm = Adw.StyleManager.get_default ();
         sm.notify["dark"].connect ( () => {
-            message ("Reset colors ...");
             reset_colors ();
         });
     }
@@ -135,7 +135,7 @@ public class TextMinimap : Gtk.DrawingArea {
         viewport_change_callback = callback;
     }
     
-    public void load_file(string content) {
+    public void set_contents (string content) {
         var file_content = content;
         lines = file_content.split("\n");
         

@@ -397,7 +397,7 @@ namespace Tags {
             try {
                 string contents;
                 FileUtils.get_contents (file.get_path (), out contents);
-                minimap.load_file (contents);
+                minimap.set_contents (contents);
             } catch (FileError e) {
                 warning ("%s :: get_contents from file -> Minimap :: Error: %s", GLib.Log.METHOD, e.message);
             }
