@@ -1,12 +1,10 @@
 public class MinimapScrollManager : GLib.Object {
-    private Gtk.Widget? minimap;
     private Gtk.Adjustment adj_text;
     private Gtk.Adjustment adj_minimap;
     
     public MinimapScrollManager(Gtk.ScrolledWindow scr_text, Gtk.ScrolledWindow scr_minimap) {
         adj_text = scr_text.get_vadjustment ();
         adj_minimap = scr_minimap.get_vadjustment ();
-        minimap = (scr_minimap.get_child () as Gtk.Viewport).get_child ();
 
         adj_text.bind_property (
             "value", 
@@ -32,9 +30,5 @@ public class MinimapScrollManager : GLib.Object {
                 }
             )
         );
-
-        adj_text.changed.connect (() => {
-            if (minimap != null) minimap.queue_draw ();
-        });
     }
 }
