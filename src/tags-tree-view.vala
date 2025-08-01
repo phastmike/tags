@@ -67,15 +67,6 @@ namespace Tags {
                 ntags--;
                 if (ntags == 0 ) no_active_tags ();
             });
-
-            /* Unselects rows on leaving the object */
-            /*
-            this.state_flags_changed.connect ((flags) => {
-                if ((flags & Gtk.StateFlags.PRELIGHT) == 0) {
-                    this.get_selection ().unselect_all ();
-                }
-            });
-            */
         }
 
         public Tag? get_selected_tag () {

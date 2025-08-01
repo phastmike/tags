@@ -1,4 +1,15 @@
+/* -*- Mode: Vala; indent-tabs-mode: nil; c-basic-offset: 4; tab-width: 4 -*- */
+/* vim: set tabstop=4 softtabstop=4 shiftwidth=4 expandtab :                  */
+/*
+ * minimap-scroll-manager.vala
+ *
+ * Main application Window class
+ *
+ * José Miguel Fonte
+ */
+
 public class MinimapScrollManager : GLib.Object {
+
     private Gtk.Adjustment adj_text;
     private Gtk.Adjustment adj_minimap;
     

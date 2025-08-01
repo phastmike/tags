@@ -144,8 +144,9 @@ namespace Tags {
                     line_store.append (out iter);
                     line_store.@set (iter, Columns.LINE_NUMBER, ++nr, Columns.LINE_TEXT, line, -1);
                 }
+                message ("read_async: Ended adding to the store ...");
             } catch (IOError e) {
-                warning ("%s/n", e.message);
+                warning ("%s\n", e.message);
             }
         }
 
@@ -164,6 +165,8 @@ namespace Tags {
                     FileInputStream @is = file.read_async.end (res);
                     DataInputStream dis = new DataInputStream (@is);
                     read_from_input_stream_async.begin (dis, (obj, res) => {
+                        //read_from_input_stream_async.end (res);
+                        message ("set_file: Ended callback ...");
                         set_file_ended();
                     });
                 } catch (Error e) {
@@ -172,6 +175,18 @@ namespace Tags {
             });
 
             this.model = line_store_filter;
+        }
+
+        public string[] model_to_array (TagsTreeView tags) {
+            Gee.ArrayList<string> lines = new Gee.ArrayList<string> ();
+            line_store_filter.foreach ((model, path, iter) => {
+                string line;
+                model.@get (iter, Columns.LINE_TEXT, out line);
+                lines.add (line);
+                return false;
+            });
+
+            return lines.to_array ();
         }
 
         public async void to_file (File file) {

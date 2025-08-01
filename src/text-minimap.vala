@@ -1,15 +1,12 @@
 public class TextMinimap : Gtk.DrawingArea {
-    // File content
     private string[] lines = {};
     
-    // Visual settings
     private int line_height = 3;
     private int padding = 4;
     private int width = 100;
     private Gdk.RGBA highlight_color;
     private Gdk.RGBA text_color;
 
-    // Color constants
     public const string rgba_dark_theme_hover   = "rgba (229, 229, 209, 0.25)";
     public const string rgba_light_theme_hover  = "rgba (26, 26, 26, 0.25)";
 
@@ -39,11 +36,11 @@ public class TextMinimap : Gtk.DrawingArea {
      * Structure to hold minimap metrics
      */
     private struct MiniMapMetrics {
-        public double total_minimap_height;   // Total height of the minimap content
-        public double document_to_minimap_ratio; // Ratio between document and minimap
-        public double minimap_to_document_ratio; // Ratio between minimap and document
-        public double viewport_y;             // Y position of viewport in minimap
-        public double viewport_height;        // Height of viewport in minimap
+        public double total_minimap_height;         // Total height of the minimap content
+        public double document_to_minimap_ratio;    // Ratio between document and minimap
+        public double minimap_to_document_ratio;    // Ratio between minimap and document
+        public double viewport_y;                   // Y position of viewport in minimap
+        public double viewport_height;              // Height of viewport in minimap
     }
 
     public TextMinimap (Gtk.Adjustment text_adj = null) {
@@ -51,10 +48,8 @@ public class TextMinimap : Gtk.DrawingArea {
 
         set_viewport_adjustment (text_adj);
 
-
         init_colors ();
         reset_colors ();
-
 
         set_draw_func(draw);
         set_size_request(width, -1);
@@ -62,8 +57,14 @@ public class TextMinimap : Gtk.DrawingArea {
         init_gestures ();
     }
 
+
     private void clear () {
         lines = {};
+    }
+
+    private bool get_theme_is_dark () {
+        Adw.StyleManager style_manager = Adw.StyleManager.get_default ();
+        return style_manager.get_dark ();  
     }
 
     private void init_colors () {
@@ -77,14 +78,12 @@ public class TextMinimap : Gtk.DrawingArea {
     }
 
     private void reset_colors () {
-        Adw.StyleManager style_manager = Adw.StyleManager.get_default ();
-        var is_dark = style_manager.get_dark ();
-        if (is_dark) {
+        if (get_theme_is_dark ()) {
             highlight_color.parse (rgba_dark_theme_hover);
             text_color.parse (rgba_dark_theme_text);
         } else {
-            highlight_color.parse (rgba_dark_theme_hover);
-            text_color.parse (rgba_dark_theme_text);
+            highlight_color.parse (rgba_light_theme_hover);
+            text_color.parse (rgba_light_theme_text);
         }
     }
 
@@ -129,12 +128,19 @@ public class TextMinimap : Gtk.DrawingArea {
     }
     
     /**
-     * Set callback function for viewport changes
+     * FIXME: NOT BEING USED - REMOVE but check usage for the callback
      */
     public void set_viewport_change_callback(ViewportChangeFunc callback) {
         viewport_change_callback = callback;
     }
     
+    public void set_array (string[] lines) {
+        this.lines = lines;
+        int total_height = lines.length * line_height;
+        set_size_request(width, total_height);
+        queue_draw();
+    }
+
     public void set_contents (string content) {
         var file_content = content;
         lines = file_content.split("\n");
@@ -236,9 +242,7 @@ public class TextMinimap : Gtk.DrawingArea {
         MiniMapMetrics metrics = MiniMapMetrics();
         
         metrics.total_minimap_height = lines.length * line_height;
-        //metrics.total_minimap_height = get_height ();
-        
-        // Calculate document height (from adjustment)
+
         double document_height = viewport_adjustment.get_upper() - viewport_adjustment.get_lower();
         
         // Calculate ratio between document and minimap
@@ -247,7 +251,7 @@ public class TextMinimap : Gtk.DrawingArea {
         metrics.minimap_to_document_ratio = metrics.document_to_minimap_ratio > 0 ? 
                                           1.0 / metrics.document_to_minimap_ratio : 1.0;
 
-    // Calculate viewport position and size in minimap coordinates
+        // Calculate viewport position and size in minimap coordinates
 
         metrics.viewport_y = viewport_adjustment.get_value() * metrics.document_to_minimap_ratio;
 
@@ -256,7 +260,7 @@ public class TextMinimap : Gtk.DrawingArea {
         double scroll_ratio = viewport_adjustment.get_value () / (document_height - viewport_adjustment.get_page_size ());
         double indicator_y = (metrics.total_minimap_height - indicator_height) * scroll_ratio;
 
-        // metrics.viewport_y = indicator_y;
+        //metrics.viewport_y = indicator_y;
         metrics.viewport_height = viewport_adjustment.get_page_size() * metrics.document_to_minimap_ratio;
   
         // Ensure viewport is visible even for very small ratios
@@ -326,29 +330,6 @@ public class TextMinimap : Gtk.DrawingArea {
         return true;
     }
     
-
-    private Gdk.RGBA get_default_hover_color() {
-        Gdk.RGBA color = Gdk.RGBA ();
-        Adw.StyleManager style_manager = Adw.StyleManager.get_default ();
-        var is_dark = style_manager.get_dark ();
-        if (is_dark)
-            color.parse (rgba_dark_theme_hover);
-        else
-            color.parse (rgba_light_theme_hover);
-        return color;
-    }
-
-    private Gdk.RGBA get_default_text_color() {
-        Gdk.RGBA color = Gdk.RGBA ();
-        Adw.StyleManager style_manager = Adw.StyleManager.get_default ();
-        var is_dark = style_manager.get_dark ();
-        if (is_dark)
-            color.parse ("rgba (255, 255, 255, 0.25)");
-        else
-            color.parse ("rgba(0, 0, 0, 0.25)");
-        return color;
-    }
-
     public void set_line_color_bg_callback (GetLineColorBgFunc? callback) {
         get_default_text_color_bg_callback = callback;
     }
@@ -394,8 +375,6 @@ public class TextMinimap : Gtk.DrawingArea {
             cr.fill();
         }
         
-        //highlight_color = get_default_hover_color ();
-
         // Draw the viewport highlight
         if (dragging && dragging_viewport) {
             highlight_color.alpha = 0.35f;
