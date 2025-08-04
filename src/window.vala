@@ -22,7 +22,7 @@ namespace Tags {
 
         private Gtk.Box main_box;
         private Gtk.Paned paned;
-        private TextMinimap minimap;
+        private Minimap minimap;
         private Gtk.ScrolledWindow scrolled_tags;
         private Gtk.ScrolledWindow scrolled_lines;
         private Gtk.ScrolledWindow scrolled_minimap;
@@ -37,34 +37,34 @@ namespace Tags {
 
         private ActionEntry[] WINDOW_ACTIONS = {
             { "add_tag", add_tag },
-            { "remove_all_tags", remove_all_tags },
+            { "dialog_remove_all_tags", dialog_remove_all_tags },
             { "load_tags", load_tags },
             { "save_tags", save_tags },
             { "save_tagged", save_tagged },
             { "hide_untagged_lines", hide_untagged_lines, null, "false", null},
             { "toggle_tags_view", toggle_tags_view, null, "false", null},
             { "toggle_minimap", toggle_minimap, null, "false", null},
-            { "copy", copy},
-            { "toggle_tag_1", toggle_tag_1},
-            { "toggle_tag_2", toggle_tag_2},
-            { "toggle_tag_3", toggle_tag_3},
-            { "toggle_tag_4", toggle_tag_4},
-            { "toggle_tag_5", toggle_tag_5},
-            { "toggle_tag_6", toggle_tag_6},
-            { "toggle_tag_7", toggle_tag_7},
-            { "toggle_tag_8", toggle_tag_8},
-            { "toggle_tag_9", toggle_tag_9},
-            { "toggle_tag_0", toggle_tag_0},
-            { "only_tag_1", only_tag_1},
-            { "only_tag_2", only_tag_2},
-            { "only_tag_3", only_tag_3},
-            { "only_tag_4", only_tag_4},
-            { "only_tag_5", only_tag_5},
-            { "only_tag_6", only_tag_6},
-            { "only_tag_7", only_tag_7},
-            { "only_tag_8", only_tag_8},
-            { "only_tag_9", only_tag_9},
-            { "only_tag_0", only_tag_0},
+            { "copy", copy },
+            { "toggle_tag_1", toggle_tag_1 },
+            { "toggle_tag_2", toggle_tag_2 },
+            { "toggle_tag_3", toggle_tag_3 },
+            { "toggle_tag_4", toggle_tag_4 },
+            { "toggle_tag_5", toggle_tag_5 },
+            { "toggle_tag_6", toggle_tag_6 },
+            { "toggle_tag_7", toggle_tag_7 },
+            { "toggle_tag_8", toggle_tag_8 },
+            { "toggle_tag_9", toggle_tag_9 },
+            { "toggle_tag_0", toggle_tag_0 },
+            { "only_tag_1", only_tag_1 },
+            { "only_tag_2", only_tag_2 },
+            { "only_tag_3", only_tag_3 },
+            { "only_tag_4", only_tag_4 },
+            { "only_tag_5", only_tag_5 },
+            { "only_tag_6", only_tag_6 },
+            { "only_tag_7", only_tag_7 },
+            { "only_tag_8", only_tag_8 },
+            { "only_tag_9", only_tag_9 },
+            { "only_tag_0", only_tag_0 },
             { "enable_all_tags", enable_all_tags },
             { "disable_all_tags", disable_all_tags },
             { "prev_hit", prev_hit },
@@ -131,11 +131,11 @@ namespace Tags {
         private void setup_tags_treeview () {
             tags_treeview = new TagsTreeView (this.application);
 
+            /*
             tags_treeview.get_model ().row_changed.connect ( () => {
-                //lines_treeview.queue_draw ();
-                //minimap.set_array (lines_treeview.model_to_array (tags_treeview));
-                message ("handle row-changed ...");
+                minimap.queue_draw ();
             });
+            */
 
             tags_treeview.get_model ().row_inserted.connect ( () => {
                 lines_treeview.queue_draw ();
@@ -336,7 +336,7 @@ namespace Tags {
         }
 
         private void setup_minimap (Gtk.Adjustment adj) {
-            minimap = new TextMinimap (adj);
+            minimap = new Minimap (adj);
             minimap.set_vexpand (true);
 
             scrolled_minimap = new Gtk.ScrolledWindow();
@@ -355,7 +355,7 @@ namespace Tags {
         }
 
         public void set_file (File file) {
-            var spinner = new Gtk.Spinner ();
+            //var spinner = new Gtk.Spinner ();
             var cancel_open = new Cancellable ();
             var type = file.query_file_type (FileQueryInfoFlags.NONE);
 
@@ -370,9 +370,9 @@ namespace Tags {
 
             var dialog = new Adw.AlertDialog ("Loading File", file.get_basename ());
 
-            dialog.set_extra_child (spinner);
-            spinner.start ();
-            spinner.set_spinning (true);
+            //dialog.set_extra_child (spinner);
+            //spinner.start ();
+            //spinner.set_spinning (true);
 
             dialog.add_response ("cancel", "_Cancel");
             dialog.set_response_appearance ("cancel",Adw.ResponseAppearance.SUGGESTED);
@@ -392,16 +392,15 @@ namespace Tags {
             window_title.set_tooltip_text (file.get_path ());
 
             handler_id = lines_treeview.set_file_ended.connect ( ()=> {
-                spinner.set_spinning (false);
+                //spinner.set_spinning (false);
                 save_tagged_enable ();
                 /* Here we check if application property autoload tags is enabled*/
                 /* FIXME: What to do if we already have tags inserted, merged or replace? */
 
                 if (Preferences.instance ().tags_autoload == true) {
                     file_tags = File.new_for_path (file.get_path () + ".tags");
-                    message("TagsFile: %s", file_tags.get_path ());
+                    //message("TagsFile: %s", file_tags.get_path ());
                     if (file_tags.query_exists ()) {
-                        message("TagsFile: Exists -> Load");
                         set_tags (file_tags);
                         //set_tags (file_tags, cancel_open, false);
                     }
@@ -447,13 +446,13 @@ namespace Tags {
             tag_dialog.show ();
         }
 
-        private void remove_all_tags () {
+        private void dialog_remove_all_tags () {
             if (tags_treeview.ntags > 0 && tags_changed) {
                 var dialog = new Adw.AlertDialog ("Tags changed", "There are unsaved changes, discards changes?");
                 dialog.add_response ("cancel", "_Cancel");
                 dialog.add_response ("discard", "_Discard");
-                dialog.set_response_appearance ("discard",Adw.ResponseAppearance.DESTRUCTIVE);
-                dialog.set_response_appearance ("cancel",Adw.ResponseAppearance.SUGGESTED);
+                dialog.set_response_appearance ("discard", Adw.ResponseAppearance.DESTRUCTIVE);
+                dialog.set_response_appearance ("cancel", Adw.ResponseAppearance.SUGGESTED);
                 dialog.set_default_response ("cancel");
                 dialog.set_close_response ("cancel");
                 dialog.present (this);
@@ -638,19 +637,21 @@ namespace Tags {
             var selection = lines_treeview.get_selection ();
             selection.set_mode (Gtk.SelectionMode.SINGLE);
 
-            if (selection.get_selected (out model, out iter) == true) {
-                selection = lines_treeview.get_selection ();
-                lines_treeview.scroll_to_cell (model.get_path (iter) , null, true, (float) 0.5, (float) 0.5);
-            }
-
-            selection.set_mode (Gtk.SelectionMode.MULTIPLE);
-
             if (lines_treeview.hide_untagged == true &&
                (tags_treeview.ntags == 0 || tags_treeview.get_n_tags_enabled () == 0)) {
                 inform_user_no_tagged_lines ();
             }
 
             minimap.set_array (lines_treeview.model_to_array (tags_treeview));
+            if (selection.get_selected (out model, out iter) == true) {
+                selection = lines_treeview.get_selection ();
+                lines_treeview.scroll_to_cell (model.get_path (iter) , null, true, (float) 0.5, (float) 0.5);
+            }
+
+            // Hack to force the viewport to recenter
+            var vadj_value = scrolled_lines.get_vadjustment ().get_value ();
+            scrolled_lines.get_vadjustment ().set_value (vadj_value + 1.0);
+            selection.set_mode (Gtk.SelectionMode.MULTIPLE);
         }
 
         private void toggle_minimap () {
@@ -784,13 +785,12 @@ namespace Tags {
             Gtk.TreeIter iter;
             Gtk.TreeModel model;
 
-            info ("prev_hit start");
-
-            if (lines_treeview.get_number_of_items () == 0 || file_opened == null) {
+            if (lines_treeview.get_number_of_items () == 0) /* || file_opened == null)*/ {
                 return;
             }
 
             tag = tags_treeview.get_selected_tag ();
+
             if (tag == null) {
                 return;
             }
@@ -828,7 +828,7 @@ namespace Tags {
             Gtk.TreeIter iter;
             Gtk.TreeModel model;
 
-            if (lines_treeview.get_number_of_items () == 0 || file_opened == null) {
+            if (lines_treeview.get_number_of_items () == 0 /* || file_opened == null */) {
                 return;
             }
 

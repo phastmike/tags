@@ -9,7 +9,7 @@
  */
 
 namespace Tags {
-    [GtkTemplate (ui = "/io/github/phastmike/tags/preferences-dialog.ui")]
+    [GtkTemplate (ui = "/io/github/phastmike/tags/preferences/preferences-dialog.ui")]
     public class PreferencesDialog : Adw.PreferencesDialog {
         [GtkChild]
         private unowned Adw.ActionRow row_autoload_tags; 
@@ -33,6 +33,7 @@ namespace Tags {
             if (rgb.parse (preferences.ln_fg_color)) {
                 button_fg_color.set_rgba(rgb);
             }
+
             if (rgb.parse (preferences.ln_bg_color)) {
                 button_bg_color.set_rgba(rgb);
             }

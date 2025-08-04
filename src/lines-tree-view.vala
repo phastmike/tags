@@ -144,7 +144,6 @@ namespace Tags {
                     line_store.append (out iter);
                     line_store.@set (iter, Columns.LINE_NUMBER, ++nr, Columns.LINE_TEXT, line, -1);
                 }
-                message ("read_async: Ended adding to the store ...");
             } catch (IOError e) {
                 warning ("%s\n", e.message);
             }
@@ -165,8 +164,7 @@ namespace Tags {
                     FileInputStream @is = file.read_async.end (res);
                     DataInputStream dis = new DataInputStream (@is);
                     read_from_input_stream_async.begin (dis, (obj, res) => {
-                        //read_from_input_stream_async.end (res);
-                        message ("set_file: Ended callback ...");
+                        read_from_input_stream_async.end (res);
                         set_file_ended();
                     });
                 } catch (Error e) {

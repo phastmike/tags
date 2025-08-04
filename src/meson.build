@@ -1,17 +1,16 @@
 tags_sources = [
   'main.vala',
   'window.vala',
-  'text-minimap.vala',
-  'minimap-scroll-manager.vala',
   'lines-tree-view.vala',
   'tags-tree-view.vala',
   'tag.vala',
   'color-scheme.vala',
   'tag-dialog-window.vala',
-  'preferences.vala',
-  'preferences-dialog.vala',
   'application.vala',
   ]
+
+subdir('minimap')
+subdir('preferences')
 
 libm = declare_dependency(link_args: ['-lm'])
 

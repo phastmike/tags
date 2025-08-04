@@ -1,4 +1,14 @@
-public class TextMinimap : Gtk.DrawingArea {
+/* -*- Mode: Vala; indent-tabs-mode: nil; c-basic-offset: 4; tab-width: 4 -*- */
+/* vim: set tabstop=4 softtabstop=4 shiftwidth=4 expandtab :                  */
+/*
+ * minimap.vala
+ *
+ * Minimap widget
+ *
+ * José Miguel Fonte
+ */
+
+public class Minimap : Gtk.DrawingArea {
     private string[] lines = {};
     
     private int line_height = 3;
@@ -10,8 +20,8 @@ public class TextMinimap : Gtk.DrawingArea {
     public const string rgba_dark_theme_hover   = "rgba (229, 229, 209, 0.25)";
     public const string rgba_light_theme_hover  = "rgba (26, 26, 26, 0.25)";
 
-    public const string rgba_dark_theme_text    = "rgba (255, 255, 255, 0.25)";
-    public const string rgba_light_theme_text   = "rgba (0, 0, 0, 0.25)";
+    public const string rgba_dark_theme_text    = "rgba (255, 255, 255, 0.15)";
+    public const string rgba_light_theme_text   = "rgba (0, 0, 0, 0.15)";
     
     // Text view adjustment (for drawing the highlight)
     private Gtk.Adjustment? viewport_adjustment = null;
@@ -43,7 +53,7 @@ public class TextMinimap : Gtk.DrawingArea {
         public double viewport_height;              // Height of viewport in minimap
     }
 
-    public TextMinimap (Gtk.Adjustment text_adj = null) {
+    public Minimap (Gtk.Adjustment text_adj = null) {
         Object();
 
         set_viewport_adjustment (text_adj);

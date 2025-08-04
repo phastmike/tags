@@ -84,7 +84,7 @@
       </item>
       <item>
         <attribute name="label" translatable="yes">Remove tags</attribute>
-        <attribute name="action">win.remove_all_tags</attribute>
+        <attribute name="action">win.dialog_remove_all_tags</attribute>
       </item>
     </section>
     <section>
