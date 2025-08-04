@@ -80,7 +80,7 @@ and hide all the others**.
 
 ## Development
 
-Developed with Vala + Gtk4.
+Developed in Vala + Gtk 4
 
 ### Dependencies
 
