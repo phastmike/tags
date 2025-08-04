@@ -52,6 +52,8 @@ Toggle the first ten tags with keyboard shortcuts.
 
 <kbd>F3</kbd> : Next tag hit
 
+<kbd>Ctrl</kbd> + <kbd>M</kbd> : Toggle minimap visibility
+
 ---
 #### Notice
 
@@ -74,6 +76,7 @@ and hide all the others**.
   added `.tags` extension exists
 - Navigate thru hits with F2 and F3
 - Random color scheme on tag creation
+- Document minimap with tag colors (bg-color)
 
 ## Development
 
