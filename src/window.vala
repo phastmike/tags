@@ -536,9 +536,7 @@ namespace Tags {
                         }
                     });
                 } catch (Error e) {
-                    if (show_ui_dialog == true) {
-                        show_dialog ("Load tags", "Could not load the tags file: %s".printf (e.message));
-                    }
+                        message ("Load tags :: Could not load the tags file: %s".printf (e.message));
                 }
             });
         }
@@ -559,7 +557,7 @@ namespace Tags {
                     this.tags_treeview.to_file (file_dialog.save.end (res));
                     this.tags_changed = false;
                 } catch (Error e) {
-                    show_dialog ("Save Error", "Could not save the tags file: %s".printf (e.message));
+                    message ("Save Error :: Could not save the tags file: %s".printf (e.message));
                 }
             });
         }
@@ -590,7 +588,7 @@ namespace Tags {
                     if (!lines_treeview.hide_untagged) hide_untagged_lines ();
                     lines_treeview.to_file(file_dialog.save.end (res));
                 } catch (Error e) {
-                    show_dialog ("Save Error", "Could not save the tagged lines file: %s".printf (e.message));
+                    message ("Save Error :: Could not save the tagged lines file: %s".printf (e.message));
                 }
             });
         }
