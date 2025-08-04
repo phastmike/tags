@@ -24,7 +24,7 @@
   <screenshots>
     <screenshot type="default">
       <caption>Tags main window</caption>
-      <image>https://raw.githubusercontent.com/phastmike/tags/b4fb345c2ca843976c895960a7f3d51b68567175/data/screenshots/tags.png</image>
+      <image>https://raw.githubusercontent.com/phastmike/tags/refs/heads/master/data/screenshots/tags.png</image>
     </screenshot>
   </screenshots>
   <developer_name>José Miguel Fonte</developer_name>
@@ -39,6 +39,17 @@
     <value key="x-appcenter-suggested-price">0</value>
   </custom>
   <releases>
+
+    <release version="1.3" date="2025-08-04">
+      <description translatable="no">
+        <p>Tags 1.3 is out</p>
+        <p>What's new:</p>
+        <ul>
+          <li>Added a minimap  ( Fix #53 )</li>
+        </ul>
+        <p>Issues addressed: #62 thru #68 #70 #71</p>
+      </description>
+    </release>
 
     <release version="1.2" date="2024-08-26">
       <description translatable="no">
