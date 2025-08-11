@@ -11,7 +11,7 @@
 namespace Tags {
 
     public class Tag : Object {
-        private bool _enabled;
+        private bool _enabled = true;
 
         public bool enabled { 
             get {
@@ -23,7 +23,7 @@ namespace Tags {
             }
         }
 
-        public uint hits; 
+        public uint hits { get; set; default = 0; }
         public string? pattern { get; set; } 
         public string? description { get; set; }
         public bool is_regex { get; set; default = false; }
@@ -31,14 +31,11 @@ namespace Tags {
         public ColorScheme colors { get; set; }
 
         public signal void enable_changed (bool enabled);
-        
+
         public Tag (string pattern, string description, ColorScheme colors) {
             this.pattern = pattern;
             this.description = description;
             this.colors = colors;
-
-            hits = 0;
-            _enabled = true;
         }
 
         public bool applies_to (string? text = null) {

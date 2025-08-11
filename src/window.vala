@@ -129,7 +129,7 @@ namespace Tags {
         }
 
         private void setup_tags_treeview () {
-            tags_treeview = new TagsTreeView (this.application);
+            tags_treeview = new TagsTreeView ();
 
             /*
             tags_treeview.get_model ().row_changed.connect ( () => {
@@ -153,20 +153,14 @@ namespace Tags {
 
                 tag_dialog.edited.connect ((t) => {
                     tags_changed = true;
-                    //if (lines_treeview.hide_untagged) 
+                    count_tag_hits ();
                     lines_treeview.line_store_filter.refilter ();
                     minimap.set_array (lines_treeview.model_to_array (tags_treeview));
-                    count_tag_hits ();
                 });
 
                 tag_dialog.deleted.connect ((tag) => {
                     tags_changed = true;
                     tags_treeview.remove_tag (tag);
-                    /*
-                    if (lines_treeview.hide_untagged) { 
-                        lines_treeview.line_store_filter.refilter ();
-                    }
-                    */
                     lines_treeview.line_store_filter.refilter ();
                     minimap.set_array (lines_treeview.model_to_array (tags_treeview));
                 });
@@ -178,14 +172,42 @@ namespace Tags {
                 if (lines_treeview.hide_untagged == true) {
                     inform_user_no_tagged_lines ();
                 }
-            });
-            
+        });
+
             setup_scrolled_tags ();
+        }
+
+        public bool delegate_line_filter_callback (string text) {
+            var found = false;
+            if (tags_treeview == null) return false;
+            var tags = tags_treeview.get_model ();
+            if (tags == null) return false;
+            tags.foreach ((tags_model, tag_path, tag_iter) => {
+                Tag tag;
+
+                tags_model.@get (tag_iter, 0, out tag);
+
+                if (tag.applies_to (text) && tag.enabled) {
+                    found = true;
+                }
+
+                return found;
+            });
+            return found;
+        }
+
+        public void delegate_treeview_cell_color_callback (string text, Gtk.CellRendererText cell) {
+            Gdk.RGBA? bg_color = tags_treeview.get_bg_color_for_text (text);
+            Gdk.RGBA? fg_color = tags_treeview.get_fg_color_for_text (text);
+            if (bg_color != null) cell.background_rgba = bg_color;
+            if (fg_color != null) cell.foreground_rgba = fg_color;
         }
 
         private void setup_lines_treeview () {
             /* Requires tags_tv model, needs to run afterwards setup_tags... */
-            this.lines_treeview = new LinesTreeView (this.application, tags_treeview.get_model ());
+            this.lines_treeview = new LinesTreeView (tags_treeview.get_model ());
+            lines_treeview.delegate_line_filter_set (delegate_line_filter_callback);
+            lines_treeview.delegate_line_color_set (delegate_treeview_cell_color_callback);
 
             lines_treeview.row_activated.connect ((path, column) => {
                 string line_text;
@@ -641,12 +663,14 @@ namespace Tags {
             }
 
             minimap.set_array (lines_treeview.model_to_array (tags_treeview));
+
             if (selection.get_selected (out model, out iter) == true) {
                 selection = lines_treeview.get_selection ();
                 lines_treeview.scroll_to_cell (model.get_path (iter) , null, true, (float) 0.5, (float) 0.5);
             }
 
-            // Hack to force the viewport to recenter
+            // FIXME: Hack to force the viewport to recenter
+            // does not work very well ...
             var vadj_value = scrolled_lines.get_vadjustment ().get_value ();
             scrolled_lines.get_vadjustment ().set_value (vadj_value + 1.0);
             selection.set_mode (Gtk.SelectionMode.MULTIPLE);

@@ -35,7 +35,13 @@ namespace Tags {
 
         public signal void set_file_ended ();
 
-        public LinesTreeView (Gtk.Application app, Gtk.TreeModel tags) {
+        public delegate bool LineFilterFunc (string text);
+        private LineFilterFunc? delegate_line_filter_func = null;
+
+        public delegate void LineColorFunc (string text, Gtk.CellRendererText cell);
+        private LineColorFunc? delegate_line_color_func = null;
+
+        public LinesTreeView (Gtk.TreeModel tags) {
             var preferences = Preferences.instance ();
 
             update_line_number_colors (preferences);
@@ -67,6 +73,8 @@ namespace Tags {
                     bool found = false;
 
                     model.@get (iter, 1, out line);
+
+                    /*
                     tags.foreach ((tags_model, tag_path, tag_iter) => {
                         Tag tag;
 
@@ -79,6 +87,9 @@ namespace Tags {
                         return found; 
                     });
                     return found ? true : false;
+                    */
+                    return delegate_line_filter_func != null ?
+                        delegate_line_filter_func (line) : false;
                 }
             });
 
@@ -89,6 +100,7 @@ namespace Tags {
 
                 bool found = false;
 
+                /*
                 tags.foreach ((tags_model, tag_path, tag_iter) => {
 
                     tags_model.@get (tag_iter, 0, out tag);
@@ -98,7 +110,12 @@ namespace Tags {
                     }
                     return found;
                 });
+                */
 
+                found = delegate_line_filter_func != null ?
+                    delegate_line_filter_func (renderer_line_text.text) : false;
+
+                /*
                 if (found) {
                     if (tag.colors.fg != null) {
                         cell_text.foreground_rgba = tag.colors.fg;
@@ -114,7 +131,23 @@ namespace Tags {
                     cell_text.foreground = null;
                     cell_text.background = null;
                 }
+                */
+
+                if (delegate_line_color_func != null && found) {
+                    delegate_line_color_func (renderer_line_text.text, cell_text);
+                } else {
+                    cell_text.foreground = null;
+                    cell_text.background = null;
+                }
             });
+        }
+
+        public void delegate_line_filter_set (LineFilterFunc? callback) {
+            delegate_line_filter_func = callback;
+        }
+
+        public void delegate_line_color_set (LineColorFunc? callback) {
+            delegate_line_color_func = callback;
         }
 
         public string get_selected_lines_as_string () {

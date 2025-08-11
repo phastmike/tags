@@ -25,6 +25,8 @@ public class Minimap : Gtk.DrawingArea {
     
     // Text view adjustment (for drawing the highlight)
     private Gtk.Adjustment? viewport_adjustment = null;
+
+    private Cairo.RecordingSurface? minimap_cached = null;
     
     // Mouse interaction state
     private bool dragging = false;
@@ -84,6 +86,7 @@ public class Minimap : Gtk.DrawingArea {
         var sm = Adw.StyleManager.get_default ();
         sm.notify["dark"].connect ( () => {
             reset_colors ();
+            cairo_surface_record_lines ();
         });
     }
 
@@ -143,24 +146,49 @@ public class Minimap : Gtk.DrawingArea {
     public void set_viewport_change_callback(ViewportChangeFunc callback) {
         viewport_change_callback = callback;
     }
+
+    private void cairo_surface_record_lines () {
+        minimap_cached = null;
+        int height = lines.length * line_height;
+        set_size_request(width, height);
+
+        var bounds = Cairo.Rectangle ();
+        bounds.x = 0; bounds.y = 0; bounds.width = width; bounds.height = height;
+        minimap_cached = new Cairo.RecordingSurface (Cairo.Content.COLOR_ALPHA, bounds);
+        var cr = new Cairo.Context (minimap_cached);
+
+        for (int i = 0; i < lines.length; i++) {
+            double y = i * line_height;
+
+            if (y > height + 10) {
+                break;
+            }
+
+            if (y < -10) {
+                continue;
+            }
+
+            Gdk.RGBA bg_color = text_color;
+            if (get_default_text_color_bg_callback != null) {
+                bg_color = get_default_text_color_bg_callback (lines[i]) ?? text_color;
+            }
+
+            Gdk.cairo_set_source_rgba(cr, bg_color);
+
+            double line_width = Math.fmin (width - (padding * 2), lines[i].length * 0.5);
+            if (line_width > 0) {
+                cr.rectangle(padding, y + (padding / 2), line_width, line_height - padding);
+                cr.fill();
+            }
+        }
+    }
     
     public void set_array (string[] lines) {
         this.lines = lines;
-        int total_height = lines.length * line_height;
-        set_size_request(width, total_height);
-        queue_draw();
+        cairo_surface_record_lines ();
+        queue_draw ();
     }
 
-    public void set_contents (string content) {
-        var file_content = content;
-        lines = file_content.split("\n");
-        
-        int total_height = lines.length * line_height;
-        set_size_request(width, total_height);
-        
-        queue_draw();
-    }
-    
     private void on_motion(double x, double y) {
         hover_y = y;
         queue_draw();
@@ -226,8 +254,8 @@ public class Minimap : Gtk.DrawingArea {
     
     private void update_viewport_adjustment(double value) {
         // Ensure bounds
-        value = double.max(viewport_adjustment.get_lower(), 
-                         double.min(value, viewport_adjustment.get_upper() - viewport_adjustment.get_page_size()));
+        value = Math.fmax(viewport_adjustment.get_lower(),
+                         Math.fmin(value, viewport_adjustment.get_upper() - viewport_adjustment.get_page_size()));
         
         viewport_adjustment.set_value(value);
         
@@ -256,9 +284,9 @@ public class Minimap : Gtk.DrawingArea {
         double document_height = viewport_adjustment.get_upper() - viewport_adjustment.get_lower();
         
         // Calculate ratio between document and minimap
-        metrics.document_to_minimap_ratio = document_height > 0 ? 
+        metrics.document_to_minimap_ratio = document_height > 0 ?
                                           metrics.total_minimap_height / document_height : 1.0;
-        metrics.minimap_to_document_ratio = metrics.document_to_minimap_ratio > 0 ? 
+        metrics.minimap_to_document_ratio = metrics.document_to_minimap_ratio > 0 ?
                                           1.0 / metrics.document_to_minimap_ratio : 1.0;
 
         // Calculate viewport position and size in minimap coordinates
@@ -270,7 +298,6 @@ public class Minimap : Gtk.DrawingArea {
         double scroll_ratio = viewport_adjustment.get_value () / (document_height - viewport_adjustment.get_page_size ());
         double indicator_y = (metrics.total_minimap_height - indicator_height) * scroll_ratio;
 
-        //metrics.viewport_y = indicator_y;
         metrics.viewport_height = viewport_adjustment.get_page_size() * metrics.document_to_minimap_ratio;
   
         // Ensure viewport is visible even for very small ratios
@@ -298,15 +325,15 @@ public class Minimap : Gtk.DrawingArea {
      */
     private void animate_to_value(double new_value) {
         // Ensure bounds
-        new_value = double.max(viewport_adjustment.get_lower(), 
-                             double.min(new_value, viewport_adjustment.get_upper() - viewport_adjustment.get_page_size()));
-        
+        new_value = Math.fmax(viewport_adjustment.get_lower(),
+                             Math.fmin(new_value, viewport_adjustment.get_upper() - viewport_adjustment.get_page_size()));
+
         // Set target value for animation
         target_value = new_value;
-        
+
         // Start animation if not already running
         if (animation_source_id == 0) {
-            animation_source_id = Timeout.add(32, animate_viewport);
+            animation_source_id = Timeout.add(8, animate_viewport);
         }
     }
     
@@ -348,43 +375,21 @@ public class Minimap : Gtk.DrawingArea {
         if (lines.length == 0) {
             return;
         }
-        
-        // Calculate all metrics for consistent rendering
+
         MiniMapMetrics metrics = calculate_metrics();
-        
-        // Draw the text representation with syntax highlighting
-        for (int i = 0; i < lines.length; i++) {
-            // Calculate line position
-            double y = i * line_height;
-            
-            // Skip if outside visible area (with some margin)
-            if (y > height + 10) {
-                break;
-            }
-            
-            if (y < -10) {
-                continue;
-            }
-            
-            // Set color based on line content (tag background color)
-            var bg_color = get_default_text_color_bg_callback (lines[i]) ?? text_color;
-            Gdk.cairo_set_source_rgba(cr, bg_color);
-            
-            // Draw line representation based on content length
-            double line_width = double.min(width - padding * 2, lines[i].length * 0.5);
-            if (line_width > 0) {
-                cr.rectangle(padding, y + padding/2, line_width, line_height - padding);
-                cr.fill();
-            }
+
+        if (minimap_cached != null) {
+            cr.set_source_surface (minimap_cached, 0, 0);
+            cr.paint ();
         }
-        
+
         // Draw hover indicator if mouse is over the widget
         if (hover_y != null && !dragging && hover_y < (line_height * lines.length)) {
             cr.set_source_rgba(0.8, 0.8, 0.9, 0.3);
             cr.rectangle(0, hover_y, width, line_height);
             cr.fill();
         }
-        
+
         // Draw the viewport highlight
         if (dragging && dragging_viewport) {
             highlight_color.alpha = 0.35f;

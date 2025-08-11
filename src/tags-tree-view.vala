@@ -39,11 +39,9 @@ namespace Tags {
         private unowned Gtk.CellRendererPixbuf renderer_case;
 
         public uint ntags;
-        private Gtk.Application application;
         public signal void no_active_tags ();
 
-        public TagsTreeView (Gtk.Application app) {
-            application = app;
+        public TagsTreeView () {
             setup_cell_renderers ();
             
             ntags = 0;
@@ -51,11 +49,13 @@ namespace Tags {
             renderer_checkbox.toggled.connect ((path) => {
                 Gtk.TreeIter iter;
                 tag_store.get_iter_from_string (out iter, path);
-                Tag tag = get_tag_from_model_with_iter (tag_store, iter);
-                tag.enabled = !tag.enabled;
+                Tag? tag = get_tag_from_model_with_iter (tag_store, iter);
+                if (tag != null) {
+                    tag.enabled = !tag.enabled;
 
-                if (get_n_tags_enabled () == 0) {
-                    no_active_tags ();
+                    if (get_n_tags_enabled () == 0) {
+                        no_active_tags ();
+                    }
                 }
             });
 
@@ -83,8 +83,8 @@ namespace Tags {
             }
         }
 
-        private Tag get_tag_from_model_with_iter (Gtk.TreeModel model, Gtk.TreeIter iter) {
-            Tag tag;
+        private Tag? get_tag_from_model_with_iter (Gtk.TreeModel model, Gtk.TreeIter iter) {
+            Tag? tag = null;
             model.@get (iter, 0, out tag);
             return tag;
         }
@@ -92,12 +92,15 @@ namespace Tags {
         private void setup_cell_renderers () {
             col_checkbox.set_cell_data_func (renderer_checkbox, (column, cell, model, iter) => {
                 var cell_toggle = (Gtk.CellRendererToggle) cell;
-                cell_toggle.set_active (get_tag_from_model_with_iter (model, iter).enabled);
+                Tag? tag = get_tag_from_model_with_iter (model, iter);
+                if (tag != null) cell_toggle.set_active (tag.enabled);
             });
             
             col_pattern.set_cell_data_func (renderer_pattern, (column, cell, model, iter) => {
                 var cell_text = (Gtk.CellRendererText) cell;
-                Tag tag = get_tag_from_model_with_iter (model, iter);
+                Tag? tag = get_tag_from_model_with_iter (model, iter);
+
+                if (tag == null) return;
 
                 cell_text.text = tag.pattern != null ? tag.pattern : "";
 
@@ -114,25 +117,28 @@ namespace Tags {
             });
 
             col_description.set_cell_data_func (renderer_description, (column, cell, model, iter) => {
-                Tag tag = get_tag_from_model_with_iter (model, iter);
+                Tag? tag = get_tag_from_model_with_iter (model, iter);
                 var cell_text = (Gtk.CellRendererText) cell;
-                cell_text.text = tag.description != null ? tag.description : "";
+                cell_text.text = tag.description ?? "";
             });
 
             col_hits.set_cell_data_func (renderer_hits, (column, cell, model, iter) => {
-                Tag tag = get_tag_from_model_with_iter (model, iter);
+                Tag? tag = get_tag_from_model_with_iter (model, iter);
+                if (tag == null) return;
                 var cell_text = (Gtk.CellRendererText) cell;
                 cell_text.text = "%u".printf(tag.hits);
             });
 
             col_regex.set_cell_data_func (renderer_regex, (column, cell, model, iter) => {
-                Tag tag = get_tag_from_model_with_iter (model, iter);
+                Tag? tag = get_tag_from_model_with_iter (model, iter);
+                if (tag == null) return;
                 var cell_pixbuf = (Gtk.CellRendererPixbuf) cell;
                 cell_pixbuf.icon_name = tag.is_regex ? "process-stop-symbolic" : null;
             });
 
             col_case.set_cell_data_func (renderer_case, (column, cell, model, iter) => {
-                Tag tag = get_tag_from_model_with_iter (model, iter);
+                Tag? tag = get_tag_from_model_with_iter (model, iter);
+                if (tag == null) return;
                 var cell_pixbuf = (Gtk.CellRendererPixbuf) cell;
                 cell_pixbuf.icon_name = tag.is_case_sensitive ? "process-stop-symbolic" : null;
             });
@@ -150,7 +156,9 @@ namespace Tags {
 
         public void remove_tag (Tag to_remove) {
             tag_store.foreach ((model, path, iter) => {
-                Tag tag = get_tag_from_model_with_iter (model, iter);
+                Tag? tag = get_tag_from_model_with_iter (model, iter);
+
+                if (tag == null) return false;
 
                 if (tag == to_remove) {
                     tag_store.remove (ref iter);
@@ -169,6 +177,7 @@ namespace Tags {
 
             tag_store.foreach ( (model, path, iter) => {
                 var tag = get_tag_from_model_with_iter (model, iter);
+                if (tag == null) return false;
                 if (tag.enabled == true  && tag.hits > 0) {
                     active_tags += 1; 
                 }
@@ -181,7 +190,8 @@ namespace Tags {
         public void toggle_tag (int nr) requires (nr >= 0 && nr <= 9) {
             Gtk.TreeIter iter;
             if (model.@get_iter_from_string (out iter, nr.to_string ())) {
-                Tag tag = get_tag_from_model_with_iter (model, iter);
+                Tag? tag = get_tag_from_model_with_iter (model, iter);
+                if (tag == null) return;
                 tag.enabled = !tag.enabled;
             }
 
@@ -194,7 +204,8 @@ namespace Tags {
 
         public void tags_set_enable (bool enable) {
             model.foreach ((model, path, iter) => {
-                Tag tag = get_tag_from_model_with_iter (model, iter);
+                Tag? tag = get_tag_from_model_with_iter (model, iter);
+                if (tag == null) return false;
                 tag.enabled = enable;
                 return false;
             });
@@ -203,7 +214,8 @@ namespace Tags {
 
         public void clear_hit_counters () {
             tag_store.foreach ((tags_model, tag_path, tag_iter) => {
-                Tag tag = get_tag_from_model_with_iter (tags_model, tag_iter);
+                Tag? tag = get_tag_from_model_with_iter (tags_model, tag_iter);
+                if (tag == null) return false;
                 tag.hits = 0;
                 return false;
             });
@@ -219,7 +231,8 @@ namespace Tags {
             Json.Array array = new Json.Array ();
 
             tag_store.foreach ((model, path, iter) => {
-                Tag tag = get_tag_from_model_with_iter (model, iter);
+                Tag? tag = get_tag_from_model_with_iter (model, iter);
+                if (tag == null) return false;
                 Json.Node node = Json.gobject_serialize (tag);
                 array.add_element (node); 
                 return false;
@@ -240,6 +253,7 @@ namespace Tags {
             Gdk.RGBA? ret = null;
             tag_store.foreach ( (model, path, iter) => {
                 var tag = get_tag_from_model_with_iter (model, iter);
+                if (tag == null) return false;
                 if (tag.enabled == true) {
                     if (tag.applies_to (text)) {
                         ret = tag.colors.bg;
@@ -249,6 +263,22 @@ namespace Tags {
                 return false;
             });
 
+            return ret;
+        }
+
+        public Gdk.RGBA? get_fg_color_for_text (string text) {
+            Gdk.RGBA? ret = null;
+            tag_store.foreach ( (model, path, iter) => {
+                var tag = get_tag_from_model_with_iter (model, iter);
+                if (tag == null) return false;
+                if (tag.enabled == true) {
+                    if (tag.applies_to (text)) {
+                        ret = tag.colors.fg;
+                        return true;
+                    }
+                }
+                return false;
+            });
             return ret;
         }
     }
