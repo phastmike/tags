@@ -29,11 +29,14 @@ namespace Tags {
             LINE_TEXT;
         }
 
-        private Gtk.TreeModel tags;
         public bool hide_untagged {set; get; default=false;}
-        private bool will_clear_all {private set; private get; default=false;}
 
+        /* SIGNALS */
+
+        public signal void cleared ();
         public signal void set_file_ended ();
+
+        /* DELEGATES */
 
         public delegate bool LineFilterFunc (string text);
         private LineFilterFunc? delegate_line_filter_func = null;
@@ -41,12 +44,14 @@ namespace Tags {
         public delegate void LineColorFunc (string text, Gtk.CellRendererText cell);
         private LineColorFunc? delegate_line_color_func = null;
 
-        public LinesTreeView (Gtk.TreeModel tags) {
+        /* CONTRUCTOR + METHODS */
+
+        public LinesTreeView (/*Gtk.TreeModel tags*/) {
             var preferences = Preferences.instance ();
 
             update_line_number_colors (preferences);
 
-            this.tags = tags;
+            //this.tags = tags;
             this.model = line_store_filter;
             col_line_number.set_visible (preferences.ln_visible);
 
@@ -62,32 +67,12 @@ namespace Tags {
             });
 
             line_store_filter.set_visible_func ((model, iter) => {
-                if (will_clear_all == true) {
-                    return false;
-                }
-
                 if (hide_untagged == false) {
                     return true;
                 } else {
                     string line;
                     bool found = false;
-
                     model.@get (iter, 1, out line);
-
-                    /*
-                    tags.foreach ((tags_model, tag_path, tag_iter) => {
-                        Tag tag;
-
-                        tags_model.@get (tag_iter, 0, out tag);
-                        
-                        if (tag.applies_to (line) && tag.enabled) {
-                            found = true;
-                        } 
-                        
-                        return found; 
-                    });
-                    return found ? true : false;
-                    */
                     return delegate_line_filter_func != null ?
                         delegate_line_filter_func (line) : false;
                 }
@@ -95,43 +80,11 @@ namespace Tags {
 
             col_line_text.set_cell_data_func (renderer_line_text, (column, cell, model, iter) => {
                 Tag? tag = null;
-
                 var cell_text = (Gtk.CellRendererText) cell; 
-
                 bool found = false;
-
-                /*
-                tags.foreach ((tags_model, tag_path, tag_iter) => {
-
-                    tags_model.@get (tag_iter, 0, out tag);
-                    
-                    if (tag.applies_to (renderer_line_text.text) && tag.enabled) {
-                        found = true;
-                    }
-                    return found;
-                });
-                */
 
                 found = delegate_line_filter_func != null ?
                     delegate_line_filter_func (renderer_line_text.text) : false;
-
-                /*
-                if (found) {
-                    if (tag.colors.fg != null) {
-                        cell_text.foreground_rgba = tag.colors.fg;
-                    } else {
-                        cell_text.foreground = null;
-                    }
-                    if (tag.colors.bg != null) {
-                        cell_text.background_rgba = tag.colors.bg;
-                    } else {
-                        cell_text.background = null;
-                    }
-                } else {
-                    cell_text.foreground = null;
-                    cell_text.background = null;
-                }
-                */
 
                 if (delegate_line_color_func != null && found) {
                     delegate_line_color_func (renderer_line_text.text, cell_text);
@@ -185,11 +138,8 @@ namespace Tags {
         public void set_file (File file, Cancellable cancellable) {
             this.model = null;
 
-            // Workaround to speed up removing lines
-            will_clear_all = true;
-            line_store_filter.refilter ();
             line_store.clear ();
-            will_clear_all = false;
+            cleared ();
 
             file.read_async.begin (Priority.DEFAULT, cancellable, (obj, res) => {
                 Gtk.TreeIter iter;
@@ -208,7 +158,7 @@ namespace Tags {
             this.model = line_store_filter;
         }
 
-        public string[] model_to_array (TagsTreeView tags) {
+        public string[] model_to_array () {
             Gee.ArrayList<string> lines = new Gee.ArrayList<string> ();
             line_store_filter.foreach ((model, path, iter) => {
                 string line;

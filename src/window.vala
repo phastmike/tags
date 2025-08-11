@@ -139,7 +139,7 @@ namespace Tags {
 
             tags_treeview.get_model ().row_inserted.connect ( () => {
                 lines_treeview.queue_draw ();
-                minimap.set_array (lines_treeview.model_to_array (tags_treeview));
+                minimap.set_array (lines_treeview.model_to_array ());
             });
 
             tags_treeview.row_activated.connect ((path, column) => {
@@ -155,14 +155,14 @@ namespace Tags {
                     tags_changed = true;
                     count_tag_hits ();
                     lines_treeview.line_store_filter.refilter ();
-                    minimap.set_array (lines_treeview.model_to_array (tags_treeview));
+                    minimap.set_array (lines_treeview.model_to_array ());
                 });
 
                 tag_dialog.deleted.connect ((tag) => {
                     tags_changed = true;
                     tags_treeview.remove_tag (tag);
                     lines_treeview.line_store_filter.refilter ();
-                    minimap.set_array (lines_treeview.model_to_array (tags_treeview));
+                    minimap.set_array (lines_treeview.model_to_array ());
                 });
 
                 tag_dialog.present ();
@@ -204,10 +204,13 @@ namespace Tags {
         }
 
         private void setup_lines_treeview () {
-            /* Requires tags_tv model, needs to run afterwards setup_tags... */
-            this.lines_treeview = new LinesTreeView (tags_treeview.get_model ());
+            this.lines_treeview = new LinesTreeView ();
             lines_treeview.delegate_line_filter_set (delegate_line_filter_callback);
             lines_treeview.delegate_line_color_set (delegate_treeview_cell_color_callback);
+
+            lines_treeview.cleared.connect ( () => {
+                minimap.clear ();
+            });
 
             lines_treeview.row_activated.connect ((path, column) => {
                 string line_text;
@@ -223,11 +226,11 @@ namespace Tags {
                 tag_dialog.added.connect ((tag, add_to_top) => {
                     tag.enable_changed.connect ((enabled) => {
                         lines_treeview.line_store_filter.refilter ();
-                        minimap.set_array (lines_treeview.model_to_array (tags_treeview));
+                        minimap.set_array (lines_treeview.model_to_array ());
                     });
                     tags_treeview.add_tag (tag, add_to_top);
                     count_tag_hits ();
-                    minimap.set_array (lines_treeview.model_to_array (tags_treeview));
+                    minimap.set_array (lines_treeview.model_to_array ());
                 });
 
                 tag_dialog.show ();
@@ -433,7 +436,7 @@ namespace Tags {
                 button_open_file.set_sensitive (true);
                 lines_treeview.disconnect (handler_id);
                 dialog.close ();
-                minimap.set_array (lines_treeview.model_to_array (tags_treeview));
+                minimap.set_array (lines_treeview.model_to_array ());
             });
 
             // Actual set file 
@@ -451,18 +454,18 @@ namespace Tags {
 
                 tag.enable_changed.connect ((enabled) => {
                     lines_treeview.line_store_filter.refilter ();
-                    minimap.set_array (lines_treeview.model_to_array (tags_treeview));
+                    minimap.set_array (lines_treeview.model_to_array ());
                 });
 
                 tags_treeview.add_tag (tag, add_to_top);
 
                 if (lines_treeview.hide_untagged) { 
                     lines_treeview.line_store_filter.refilter ();
-                    minimap.set_array (lines_treeview.model_to_array (tags_treeview));
+                    minimap.set_array (lines_treeview.model_to_array ());
                 }
 
                 count_tag_hits ();
-                minimap.set_array (lines_treeview.model_to_array (tags_treeview));
+                minimap.set_array (lines_treeview.model_to_array ());
             });
 
             tag_dialog.show ();
@@ -485,14 +488,14 @@ namespace Tags {
                         if (file_tags != null) file_tags = null;
                         tags_treeview.clear_tags ();
                         lines_treeview.line_store_filter.refilter ();
-                        minimap.set_array (lines_treeview.model_to_array (tags_treeview));
+                        minimap.set_array (lines_treeview.model_to_array ());
                     }
                 });
             } else {
                 if (file_tags != null) file_tags = null;
                 tags_treeview.clear_tags ();
                 lines_treeview.line_store_filter.refilter ();
-                minimap.set_array (lines_treeview.model_to_array (tags_treeview));
+                minimap.set_array (lines_treeview.model_to_array ());
             }
         }
 
@@ -546,12 +549,12 @@ namespace Tags {
 
                                     tag.enable_changed.connect ((enabled) => {
                                         lines_treeview.line_store_filter.refilter ();
-                                        minimap.set_array (lines_treeview.model_to_array (tags_treeview));
+                                        minimap.set_array (lines_treeview.model_to_array ());
                                     });
                                 });
                             }
                             lines_treeview.line_store_filter.refilter ();
-                            minimap.set_array (lines_treeview.model_to_array (tags_treeview));
+                            minimap.set_array (lines_treeview.model_to_array ());
                             count_tag_hits ();
                         } catch (Error e) {
                             warning ("set_tags::load_from_stream_async_end: %s", e.message);
@@ -662,7 +665,7 @@ namespace Tags {
                 inform_user_no_tagged_lines ();
             }
 
-            minimap.set_array (lines_treeview.model_to_array (tags_treeview));
+            minimap.set_array (lines_treeview.model_to_array ());
 
             if (selection.get_selected (out model, out iter) == true) {
                 selection = lines_treeview.get_selection ();

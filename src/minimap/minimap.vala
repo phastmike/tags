@@ -69,9 +69,9 @@ public class Minimap : Gtk.DrawingArea {
         init_gestures ();
     }
 
-
-    private void clear () {
+    public void clear () {
         lines = {};
+        cairo_surface_record_lines ();
     }
 
     private bool get_theme_is_dark () {
