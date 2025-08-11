@@ -40,6 +40,17 @@
   </custom>
   <releases>
 
+    <release version="1.4" date="2025-08-11">
+      <description translatable="no">
+        <p>Tags 1.4 is out</p>
+        <p>What's new:</p>
+        <ul>
+          <li>Improved minimap performance  ( #74 )</li>
+        </ul>
+        <p>Minor tweaks and improvments</p>
+      </description>
+    </release>
+
     <release version="1.3" date="2025-08-04">
       <description translatable="no">
         <p>Tags 1.3 is out</p>
