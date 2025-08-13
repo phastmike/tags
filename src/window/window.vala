@@ -9,7 +9,8 @@
  */
 
 namespace Tags {
-    [GtkTemplate (ui = "/io/github/phastmike/tags/window.ui")]
+    //[GtkTemplate (ui = "/io/github/phastmike/tags/window.ui")]
+    [GtkTemplate (ui = "/io/github/phastmike/tags/ui/window.ui")]
     public class Window : Adw.ApplicationWindow {
         [GtkChild]
         unowned Gtk.Button button_open_file;

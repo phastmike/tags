@@ -1,15 +1,13 @@
 tags_sources = [
   'main.vala',
-  'window.vala',
-  'lines-tree-view.vala',
-  'tags-tree-view.vala',
-  'tag.vala',
-  'color-scheme.vala',
-  'tag-dialog-window.vala',
-  'application.vala',
   ]
 
+subdir('tag')
+subdir('lines')
+subdir('colors')
+subdir('window')
 subdir('minimap')
+subdir('application')
 subdir('preferences')
 
 libm = declare_dependency(link_args: ['-lm'])
@@ -24,18 +22,21 @@ tags_deps = [
 
 gnome = import('gnome')
 
-tags_sources += gnome.compile_resources('tags-resources',
-  'tags.gresource.xml',
+tags_resources = gnome.compile_resources(
+  'tags-resources',
+  'tags.gresources.xml',
+  source_dir: meson.current_source_dir(),
   c_name: 'tags'
 )
 
 
-executable('tags',
+executable(
+  'tags',
+  tags_resources,
   tags_sources,
   config_file,
   vala_args: [
   '--target-glib=2.50',
-  '--Xcc=-lm',
   ],
   dependencies: tags_deps,
   install: true,
