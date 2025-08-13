@@ -131,11 +131,9 @@ namespace Tags {
         private void setup_tags_treeview () {
             tags_treeview = new TagsTreeView ();
 
-            /*
             tags_treeview.get_model ().row_changed.connect ( () => {
-                minimap.queue_draw ();
+                minimap.set_array (lines_treeview.model_to_array ());
             });
-            */
 
             tags_treeview.get_model ().row_inserted.connect ( () => {
                 lines_treeview.queue_draw ();
@@ -177,8 +175,9 @@ namespace Tags {
             setup_scrolled_tags ();
         }
 
-        public bool delegate_line_filter_callback (string text) {
+        public bool delegate_line_filter_callback (string? text) {
             var found = false;
+            if (text == null) return false;
             if (tags_treeview == null) return false;
             var tags = tags_treeview.get_model ();
             if (tags == null) return false;
@@ -242,6 +241,7 @@ namespace Tags {
         private void setup_scrolled_lines () {
             scrolled_lines = new Gtk.ScrolledWindow ();
             scrolled_lines.set_kinetic_scrolling (true);
+            // Use PolicyType EXTERNAL to hide the scroll from the treeview
             scrolled_lines.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
             scrolled_lines.set_placement (Gtk.CornerType.TOP_LEFT);
             scrolled_lines.set_overlay_scrolling (true);
@@ -271,6 +271,10 @@ namespace Tags {
             paned.set_wide_handle (true);
             paned.set_position (this.default_height - 167);
 
+            // Hack to hide the filter list/taqg list
+            // but a better ux to handle tags, is needed
+            //paned.set_position (this.default_height);
+
             paned.notify["position"].connect ((s,p) => {
                 var view_height = paned.get_height ();
                 
@@ -285,10 +289,6 @@ namespace Tags {
                     action.change_state (new Variant.boolean (false));
                 }
             });
-
-            // Hack to hide the filter list/taqg list
-            // but a better ux to handle tags, is needed
-            //paned.set_position (this.default_height);
         }
 
         private void setup_buttons () {
@@ -395,10 +395,6 @@ namespace Tags {
 
             var dialog = new Adw.AlertDialog ("Loading File", file.get_basename ());
 
-            //dialog.set_extra_child (spinner);
-            //spinner.start ();
-            //spinner.set_spinning (true);
-
             dialog.add_response ("cancel", "_Cancel");
             dialog.set_response_appearance ("cancel",Adw.ResponseAppearance.SUGGESTED);
             dialog.set_default_response ("cancel");
@@ -417,17 +413,14 @@ namespace Tags {
             window_title.set_tooltip_text (file.get_path ());
 
             handler_id = lines_treeview.set_file_ended.connect ( ()=> {
-                //spinner.set_spinning (false);
                 save_tagged_enable ();
                 /* Here we check if application property autoload tags is enabled*/
                 /* FIXME: What to do if we already have tags inserted, merged or replace? */
 
                 if (Preferences.instance ().tags_autoload == true) {
                     file_tags = File.new_for_path (file.get_path () + ".tags");
-                    //message("TagsFile: %s", file_tags.get_path ());
                     if (file_tags.query_exists ()) {
                         set_tags (file_tags);
-                        //set_tags (file_tags, cancel_open, false);
                     }
 
                     if (tags_treeview.ntags > 0) count_tag_hits ();
