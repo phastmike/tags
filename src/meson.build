@@ -1,5 +1,5 @@
 tags_sources = [
-  'main.vala',
+  'main.vala'
   ]
 
 subdir('tag')
