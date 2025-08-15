@@ -19,8 +19,8 @@ config_file = configure_file(
     configuration : conf_data
 )
 
+subdir('po')
 subdir('data')
 subdir('src')
-subdir('po')
 
 meson.add_install_script('build-aux/meson/postinstall.py')

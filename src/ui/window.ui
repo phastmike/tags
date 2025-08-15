@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk" version="4.0"/>
-  <template class="TagsWindow" parent="AdwApplicationWindow">
+  <template class="TagsMainWindow" parent="AdwApplicationWindow">
     <property name="title" translatable="yes">Tags</property>
     <property name="default-width">1024</property>
     <property name="default-height">768</property>

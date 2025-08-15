@@ -14,9 +14,9 @@ namespace Tags {
         [GtkChild]
         unowned Gtk.ListStore line_store;
         [GtkChild]
-        public unowned Gtk.TreeModelFilter line_store_filter;
+        unowned Gtk.TreeModelFilter line_store_filter;
         [GtkChild]
-        public unowned Gtk.TreeViewColumn col_line_number;
+        unowned Gtk.TreeViewColumn col_line_number;
         [GtkChild]
         unowned Gtk.TreeViewColumn col_line_text;
         [GtkChild]
@@ -44,14 +44,13 @@ namespace Tags {
         public delegate void LineColorFunc (string text, Gtk.CellRendererText cell);
         private LineColorFunc? delegate_line_color_func = null;
 
-        /* CONTRUCTOR + METHODS */
+        /* METHODS */
 
-        public LinesTreeView (/*Gtk.TreeModel tags*/) {
+        public LinesTreeView () {
             var preferences = Preferences.instance ();
 
             update_line_number_colors (preferences);
 
-            //this.tags = tags;
             this.model = line_store_filter;
             col_line_number.set_visible (preferences.ln_visible);
 
@@ -72,7 +71,7 @@ namespace Tags {
                 } else {
                     string line;
                     bool found = false;
-                    model.@get (iter, 1, out line);
+                    model.@get (iter, Columns.LINE_TEXT, out line);
                     return delegate_line_filter_func != null ?
                         delegate_line_filter_func (line) : false;
                 }
@@ -93,6 +92,10 @@ namespace Tags {
                     cell_text.background = null;
                 }
             });
+        }
+
+        public void refilter () {
+            line_store_filter.refilter ();
         }
 
         public void delegate_line_filter_set (LineFilterFunc? callback) {

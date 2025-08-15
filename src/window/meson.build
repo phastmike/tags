@@ -1,3 +1,3 @@
 tags_sources += files(
-	'window.vala'
+	'main-window.vala'
 	)

@@ -23,6 +23,7 @@ namespace Tags {
             }
         }
 
+        /* hits should be decoupled but for simplicity we leave the container */
         public uint hits { get; set; default = 0; }
         public string? pattern { get; set; } 
         public string? description { get; set; }
@@ -30,7 +31,11 @@ namespace Tags {
         public bool is_case_sensitive { get; set; default = false; }
         public ColorScheme colors { get; set; }
 
+        /* SIGNALS */
+
         public signal void enable_changed (bool enabled);
+
+        /* METHODS */
 
         public Tag (string pattern, string description, ColorScheme colors) {
             this.pattern = pattern;

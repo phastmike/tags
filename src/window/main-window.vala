@@ -11,7 +11,7 @@
 namespace Tags {
     //[GtkTemplate (ui = "/io/github/phastmike/tags/window.ui")]
     [GtkTemplate (ui = "/io/github/phastmike/tags/ui/window.ui")]
-    public class Window : Adw.ApplicationWindow {
+    public class MainWindow : Adw.ApplicationWindow {
         [GtkChild]
         unowned Gtk.Button button_open_file;
         [GtkChild]
@@ -72,7 +72,7 @@ namespace Tags {
             { "next_hit", next_hit }
         };
 
-        public Window (Gtk.Application app) {
+        public MainWindow (Gtk.Application app) {
             Object (application: app);
             setup_actions ();
             save_tagged_disable ();
@@ -153,14 +153,14 @@ namespace Tags {
                 tag_dialog.edited.connect ((t) => {
                     tags_changed = true;
                     count_tag_hits ();
-                    lines_treeview.line_store_filter.refilter ();
+                    lines_treeview.refilter ();
                     minimap.set_array (lines_treeview.model_to_array ());
                 });
 
                 tag_dialog.deleted.connect ((tag) => {
                     tags_changed = true;
                     tags_treeview.remove_tag (tag);
-                    lines_treeview.line_store_filter.refilter ();
+                    lines_treeview.refilter ();
                     minimap.set_array (lines_treeview.model_to_array ());
                 });
 
@@ -225,7 +225,7 @@ namespace Tags {
                 var tag_dialog = new TagDialogWindow (this.application, line_text);
                 tag_dialog.added.connect ((tag, add_to_top) => {
                     tag.enable_changed.connect ((enabled) => {
-                        lines_treeview.line_store_filter.refilter ();
+                        lines_treeview.refilter ();
                         minimap.set_array (lines_treeview.model_to_array ());
                     });
                     tags_treeview.add_tag (tag, add_to_top);
@@ -447,14 +447,14 @@ namespace Tags {
                 tags_changed = true;
 
                 tag.enable_changed.connect ((enabled) => {
-                    lines_treeview.line_store_filter.refilter ();
+                    lines_treeview.refilter ();
                     minimap.set_array (lines_treeview.model_to_array ());
                 });
 
                 tags_treeview.add_tag (tag, add_to_top);
 
                 if (lines_treeview.hide_untagged) { 
-                    lines_treeview.line_store_filter.refilter ();
+                    lines_treeview.refilter ();
                     minimap.set_array (lines_treeview.model_to_array ());
                 }
 
@@ -481,14 +481,14 @@ namespace Tags {
                         tags_changed = false;
                         if (file_tags != null) file_tags = null;
                         tags_treeview.clear_tags ();
-                        lines_treeview.line_store_filter.refilter ();
+                        lines_treeview.refilter ();
                         minimap.set_array (lines_treeview.model_to_array ());
                     }
                 });
             } else {
                 if (file_tags != null) file_tags = null;
                 tags_treeview.clear_tags ();
-                lines_treeview.line_store_filter.refilter ();
+                lines_treeview.refilter ();
                 minimap.set_array (lines_treeview.model_to_array ());
             }
         }
@@ -542,12 +542,12 @@ namespace Tags {
                                     tags_treeview.add_tag (tag);
 
                                     tag.enable_changed.connect ((enabled) => {
-                                        lines_treeview.line_store_filter.refilter ();
+                                        lines_treeview.refilter ();
                                         minimap.set_array (lines_treeview.model_to_array ());
                                     });
                                 });
                             }
-                            lines_treeview.line_store_filter.refilter ();
+                            lines_treeview.refilter ();
                             minimap.set_array (lines_treeview.model_to_array ());
                             count_tag_hits ();
                         } catch (Error e) {
@@ -649,7 +649,7 @@ namespace Tags {
             var action = this.lookup_action ("hide_untagged_lines");
             action.change_state (new Variant.boolean ((bool) lines_treeview.hide_untagged));
 
-            lines_treeview.line_store_filter.refilter ();
+            lines_treeview.refilter ();
 
             var selection = lines_treeview.get_selection ();
             selection.set_mode (Gtk.SelectionMode.SINGLE);

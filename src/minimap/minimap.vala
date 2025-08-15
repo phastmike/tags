@@ -55,7 +55,7 @@ public class Minimap : Gtk.DrawingArea {
         public double viewport_height;              // Height of viewport in minimap
     }
 
-    public Minimap (Gtk.Adjustment text_adj = null) {
+    public Minimap (Gtk.Adjustment? text_adj = null) {
         Object();
 
         set_viewport_adjustment (text_adj);
