@@ -76,11 +76,11 @@
     <section>
       <item>
         <attribute name="label" translatable="yes">Load tags</attribute>
-        <attribute name="action">win.load_tags</attribute>
+        <attribute name="action">win.action_load_tags</attribute>
       </item>
       <item>
         <attribute name="label" translatable="yes">Save tags</attribute>
-        <attribute name="action">win.save_tags</attribute>
+        <attribute name="action">win.action_save_tags</attribute>
       </item>
       <item>
         <attribute name="label" translatable="yes">Remove tags</attribute>
