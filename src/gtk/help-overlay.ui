@@ -13,7 +13,7 @@
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="title" translatable="yes" context="shortcut window">Add a Tag</property>
-                <property name="action-name">win.acrion_add_tag</property>
+                <property name="action-name">win.action_add_tag</property>
               </object>
             </child>
             <child>
