@@ -38,7 +38,7 @@ namespace Tags {
                 if (file.query_exists () == true) {
                     var win = new Tags.MainWindow (this);
                     win.present ();
-                    win.set_file (file);
+                    win.open_file (file);
                 } else {
                     warning ("file '%s' does not exist ...", file.get_basename ());
                 }

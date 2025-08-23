@@ -63,7 +63,7 @@
     <section>
       <item>
         <attribute name="label" translatable="yes">New tag</attribute>
-        <attribute name="action">win.add_tag</attribute>
+        <attribute name="action">win.action_add_tag</attribute>
       </item>
     </section>  
     <section>
@@ -84,7 +84,7 @@
       </item>
       <item>
         <attribute name="label" translatable="yes">Remove tags</attribute>
-        <attribute name="action">win.dialog_remove_all_tags</attribute>
+        <attribute name="action">win.action_remove_all_tags</attribute>
       </item>
     </section>
     <section>

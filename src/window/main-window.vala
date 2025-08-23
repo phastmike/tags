@@ -9,8 +9,7 @@
  */
 
 namespace Tags {
-    //[GtkTemplate (ui = "/io/github/phastmike/tags/window.ui")]
-    [GtkTemplate (ui = "/io/github/phastmike/tags/ui/window.ui")]
+    [GtkTemplate (ui = "/io/github/phastmike/tags/ui/main-window.ui")]
     public class MainWindow : Adw.ApplicationWindow {
         [GtkChild]
         unowned Gtk.Button button_open_file;
@@ -37,8 +36,8 @@ namespace Tags {
         private bool tags_changed = false;
 
         private ActionEntry[] WINDOW_ACTIONS = {
-            { "add_tag", add_tag },
-            { "dialog_remove_all_tags", dialog_remove_all_tags },
+            { "action_add_tag", action_add_tag },
+            { "action_remove_all_tags", action_remove_all_tags },
             { "action_load_tags", action_load_tags },
             { "action_save_tags", action_save_tags },
             { "save_tagged", save_tagged },
@@ -97,7 +96,7 @@ namespace Tags {
 
         private void setup_actions () {
             this.add_action_entries(this.WINDOW_ACTIONS, this);
-            application.set_accels_for_action("win.add_tag", {"<primary>n"});
+            application.set_accels_for_action("win.action_add_tag", {"<primary>n"});
             application.set_accels_for_action("win.save_tagged", {"<primary>s"});
             application.set_accels_for_action("win.hide_untagged_lines", {"<primary>h"});
             application.set_accels_for_action("win.toggle_tags_view", {"<primary>f"});
@@ -300,9 +299,8 @@ namespace Tags {
                 file_dialog.set_accept_label ("Open");
 
                 var file_filter1 = new Gtk.FileFilter ();
-                file_filter1.add_pattern ("*.tags");
                 file_filter1.add_mime_type ("text/plain");
-                file_filter1.set_filter_name ("Text/Log files");
+                file_filter1.set_filter_name ("Text files");
 
                 var file_filter2 = new Gtk.FileFilter ();
                 file_filter2.add_pattern ("*");
@@ -322,7 +320,7 @@ namespace Tags {
                     try {
                         var new_file = file_dialog.open.end (res);
                         //file_opened = new_file;
-                        this.set_file (new_file);
+                        this.open_file (new_file);
                     } catch (Error e) {
                         if (e.code != 2) {
                             show_dialog ("Open error", "Could not open file: %s (%d)".printf (e.message, e.code));
@@ -332,7 +330,7 @@ namespace Tags {
             });
 
             button_tags.clicked.connect ( () => {
-                add_tag ();
+                action_add_tag ();
             });
 
             close_request.connect ( () => {
@@ -380,8 +378,7 @@ namespace Tags {
             main_box.append (scrolled_minimap);
         }
 
-        public void set_file (File file) {
-            //var spinner = new Gtk.Spinner ();
+        public void open_file (File file) {
             var cancel_open = new Cancellable ();
             var type = file.query_file_type (FileQueryInfoFlags.NONE);
 
@@ -441,7 +438,7 @@ namespace Tags {
             button_open_file.set_sensitive (false);
         }
 
-        private void add_tag () {
+        private void action_add_tag () {
             var tag_dialog = new TagDialogWindow (this.application);
 
             tag_dialog.added.connect ((tag, add_to_top) => {
@@ -466,7 +463,7 @@ namespace Tags {
             tag_dialog.show ();
         }
 
-        private void dialog_remove_all_tags () {
+        private void action_remove_all_tags () {
             if (tags_treeview.ntags > 0 && tags_changed) {
                 var dialog = new Adw.AlertDialog ("Tags changed", "There are unsaved changes, discards changes?");
                 dialog.add_response ("cancel", "_Cancel");
@@ -480,18 +477,19 @@ namespace Tags {
                 dialog.response.connect ((response) => {
                     if (response == "discard") {
                         tags_changed = false;
-                        if (file_tags != null) file_tags = null;
-                        tags_treeview.clear_tags ();
-                        lines_treeview.refilter ();
-                        minimap.set_array (lines_treeview.model_to_array ());
+                        tags_remove_all ();
                     }
                 });
             } else {
-                if (file_tags != null) file_tags = null;
-                tags_treeview.clear_tags ();
-                lines_treeview.refilter ();
-                minimap.set_array (lines_treeview.model_to_array ());
+                tags_remove_all ();
             }
+        }
+
+        private void tags_remove_all () {
+            if (file_tags != null) file_tags = null;
+            tags_treeview.clear_tags ();
+            lines_treeview.refilter ();
+            minimap.set_array (lines_treeview.model_to_array ());
         }
 
         private void action_load_tags () {
@@ -499,7 +497,7 @@ namespace Tags {
         }
 
         private void load_tags_from_file (File? file = null) {
-            var persistence = new TagsPersitence ();
+            var persistence = new TagsPersistence ();
 
             persistence.loaded_from_file.connect ( (tags) => {
                 tags_changed = false;
@@ -526,7 +524,10 @@ namespace Tags {
         }
         
         private void action_save_tags () {
-            var persistance = new TagsPersitence ();
+            var persistance = new TagsPersistence ();
+            persistance.saved_to_file.connect ( (file) => {
+                tags_changed = false;
+            });
             persistance.save_tags_file_dialog (tags_treeview.get_model ());
         }
 
@@ -820,7 +821,7 @@ namespace Tags {
                 }
             }
 
-            for (; model.iter_next (ref iter);) {
+            for (; model.iter_next (ref iter) ;) {
                 model.@get (iter, LinesTreeView.Columns.LINE_TEXT, out line);
                 if (tag.applies_to (line)) {
                     line_selection.select_iter (iter);

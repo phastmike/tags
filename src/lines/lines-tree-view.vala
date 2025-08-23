@@ -138,27 +138,21 @@ namespace Tags {
             }
         }
 
-        public void set_file (File file, Cancellable cancellable) {
+        public async void set_file (File file, Cancellable cancellable) {
             this.model = null;
 
             line_store.clear ();
             cleared ();
 
-            file.read_async.begin (Priority.DEFAULT, cancellable, (obj, res) => {
-                Gtk.TreeIter iter;
-                try {
-                    FileInputStream @is = file.read_async.end (res);
-                    DataInputStream dis = new DataInputStream (@is);
-                    read_from_input_stream_async.begin (dis, (obj, res) => {
-                        read_from_input_stream_async.end (res);
-                        set_file_ended();
-                    });
-                } catch (Error e) {
+            try {
+                FileInputStream @is = yield file.read_async (Priority.DEFAULT, cancellable);
+                DataInputStream dis = new DataInputStream (@is);
+                yield read_from_input_stream_async (dis);
+                this.model = line_store_filter; // FIXME: Not very readable
+                set_file_ended();
+            } catch (Error e) {
                     warning (e.message);
-                }
-            });
-
-            this.model = line_store_filter;
+            }
         }
 
         public string[] model_to_array () {
@@ -205,7 +199,7 @@ namespace Tags {
             rgb.parse (p.ln_bg_color);
             renderer_line_number.background_rgba = rgb;
             //renderer_line_number.size_points = 8.0;
-            
+    
             queue_draw ();
         }
 

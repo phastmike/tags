@@ -11,18 +11,23 @@
 
 namespace Tags {
 
-    public sealed class TagsPersitence : Object {
+    public sealed class TagsPersistence : Object {
         private GLib.ListStore tags;
         private bool preserve_on_load = false;
     
         /* SIGNALS */
 
+        public signal void saved_to_file (File file);
         public signal void loaded_from_file (GLib.ListStore tags);
 
         /* INSTANCE METHODS */
 
-        public TagsPersitence () {
+        public TagsPersistence () {
             tags = new GLib.ListStore (typeof(Tag));
+        }
+
+        ~TagsPersistence () {
+            message ("Destroyed TagsPersistence instance...");
         }
 
         /* If loading at the end, then we should rename the method */
@@ -133,6 +138,7 @@ namespace Tags {
             generator.set_root (root);
             try {
                 generator.to_file (file.get_path ());
+                saved_to_file (file);
             } catch (Error e) {
                 error ("to_file::Json.Generator::error: %s", e.message);
             }
