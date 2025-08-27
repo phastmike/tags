@@ -17,7 +17,7 @@
                 <property name="visible">true</property>
                 <property name="child">
                   <object class="AdwButtonContent">
-                    <property name="icon_name">document-open-symbolic</property>
+                    <property name="icon-name">document-open-symbolic</property>
                     <property name="label" translatable="yes">_Open</property>
                     <property name="tooltip_text" translatable="yes">Open File</property>
                     <property name="use-underline">true</property>
@@ -40,10 +40,21 @@
             </child>
             <child type="end">
               <object class="AdwSplitButton" id="button_tags">
-                <property name="icon_name">bookmark-new-symbolic</property>
+                <property name="icon-name">bookmark-new-symbolic</property>
                 <property name="popover">file_popover</property>
               </object>
             </child>
+            <!--
+            <child type="end">
+              <object class="GtkButton">
+              <property name="child">
+                <object class="AdwButtonContent">
+                  <property name="icon-name">sidebar-show-right-symbolic</property>
+                </object>
+              </property>
+              </object>
+            </child>
+            -->
           </object>
         </child>
         <property name="content">

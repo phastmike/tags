@@ -23,8 +23,7 @@ namespace Tags {
             }
         }
 
-        /* hits should be decoupled but for simplicity we leave the container */
-        public uint hits { get; set; default = 0; }
+        public uint hits { get; set; default = 0; } // Should decouple the counter
         public string? pattern { get; set; } 
         public string? description { get; set; }
         public bool is_regex { get; set; default = false; }

@@ -36,6 +36,7 @@ namespace Tags {
         private bool tags_changed = false;
 
         private ActionEntry[] WINDOW_ACTIONS = {
+            { "toggle_line_number", toggle_line_number },
             { "action_add_tag", action_add_tag },
             { "action_remove_all_tags", action_remove_all_tags },
             { "action_load_tags", action_load_tags },
@@ -96,6 +97,7 @@ namespace Tags {
 
         private void setup_actions () {
             this.add_action_entries(this.WINDOW_ACTIONS, this);
+            application.set_accels_for_action("win.toggle_line_number", {"<primary>l"});
             application.set_accels_for_action("win.action_add_tag", {"<primary>n"});
             application.set_accels_for_action("win.save_tagged", {"<primary>s"});
             application.set_accels_for_action("win.hide_untagged_lines", {"<primary>h"});
@@ -235,7 +237,32 @@ namespace Tags {
                 tag_dialog.show ();
             });
 
+            setup_preference_lines_changes (lines_treeview);
             setup_scrolled_lines ();
+        }
+
+        // FIXME: WIP refactoring
+        // Decoupling preferences from lines-treeview
+        // Will change with new controller
+
+        private void setup_preference_lines_changes (LinesTreeView treeview) {
+            var preferences = Preferences.instance ();
+
+            preferences.line_number_visibility_changed.connect ( (v) => {
+                treeview.set_line_number_visibility (v);
+            });
+
+            preferences.line_number_color_fg_changed.connect ( (c) => {
+                treeview.set_linen_number_color_fg (c);
+            });
+
+            preferences.line_number_color_bg_changed.connect ( (c) => {
+                treeview.set_linen_number_color_bg (c);
+            });
+
+            treeview.set_line_number_visibility (preferences.ln_visible);
+            treeview.set_linen_number_color_fg (preferences.ln_fg_color);
+            treeview.set_linen_number_color_bg (preferences.ln_bg_color);
         }
 
         private void setup_scrolled_lines () {
@@ -522,6 +549,11 @@ namespace Tags {
                 persistence.from_file (file);
             }
         }
+
+        private void toggle_line_number () {
+            var preferences = Preferences.instance ();
+            preferences.ln_visible = !preferences.ln_visible; 
+        }
         
         private void action_save_tags () {
             var persistance = new TagsPersistence ();
@@ -628,6 +660,14 @@ namespace Tags {
             action.change_state (new Variant.boolean (minimap.get_visible ()));
             minimap.set_visible (!minimap.get_visible ());
         }
+
+        /*
+        private void toggle_line_number () {
+            var action = this.lookup_action ("toggle_line_number");
+            action.change_state (new Variant.boolean (minimap.get_visible ()));
+            minimap.set_visible (!minimap.get_visible ());
+        }
+        */
 
         private void toggle_tags_view () {
             var view_height = paned.get_height ();

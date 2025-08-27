@@ -83,40 +83,32 @@ namespace Tags {
         }
 
         /* Could store in a list/collection and provide as return instead of signal */
-        public void from_file (File file, Cancellable? cancellable = null) {
-            file.read_async.begin (Priority.DEFAULT, cancellable, (obj, res) => {
-                try {
-                    FileInputStream stream = file.read_async.end (res);
-                    Json.Parser parser = new Json.Parser ();
-                    parser.load_from_stream_async.begin (stream, cancellable , (obj, res) => {
-                        try {
-                            parser.load_from_stream_async.end (res);
-
-                            /* PRESERVE LOAD? Sense to add on top of other,
-                               delegate to consumer, we are just a provider
-                               for now */
-                            tags.remove_all ();
-                            /**********************************************/
-
-                            Json.Node node = parser.get_root ();
-                            Json.Array array = new Json.Array ();
-
-                            if (node.get_node_type () == Json.NodeType.ARRAY) {
-                                array = node.get_array ();
-                                array.foreach_element ((array, index_, element_node) => {
-                                    Tag tag = Json.gobject_deserialize (typeof (Tag), element_node) as Tag;
-                                    tags.append (tag);
-                                });
-                                loaded_from_file (tags);
-                            }
-                        } catch (Error e) {
-                            warning ("from_file::read_async_stream_end: %s", e.message);
-                        }
+        public async void from_file (File file, Cancellable? cancellable = null) {
+            FileInputStream stream;
+            try {
+                stream = yield file.read_async (Priority.DEFAULT, cancellable);
+                Json.Parser parser = new Json.Parser ();
+                yield parser.load_from_stream_async (stream, cancellable);
+                /* PRESERVE LOAD? Sense to add on top of other,
+                   delegate to consumer, we are just a provider
+                   for now */
+                tags.remove_all ();
+                /**********************************************/
+                Json.Node node = parser.get_root ();
+                Json.Array array = new Json.Array ();
+                if (node.get_node_type () == Json.NodeType.ARRAY) {
+                    array = node.get_array ();
+                    array.foreach_element ((array, index_, element_node) => {
+                        Tag tag = Json.gobject_deserialize (typeof (Tag), element_node) as Tag;
+                        tags.append (tag);
                     });
-                } catch (Error e) {
-                    message ("from_file::Could not load the tags file: %s".printf (e.message));
+                    loaded_from_file (tags);
+                } else {
+                    warning ("Oops!.. Something went wrong while decoding json data ...");
                 }
-            });
+            } catch (Error e) {
+                warning ("Error message: %s", e.message);
+            }
         }
 
         public void to_file (File file, Gtk.TreeModel tag_store) {
@@ -140,7 +132,7 @@ namespace Tags {
                 generator.to_file (file.get_path ());
                 saved_to_file (file);
             } catch (Error e) {
-                error ("to_file::Json.Generator::error: %s", e.message);
+                warning ("Message: %s", e.message);
             }
         }
     }

@@ -47,19 +47,9 @@ namespace Tags {
         /* METHODS */
 
         public LinesTreeView () {
-            var preferences = Preferences.instance ();
+            model = line_store_filter;
 
-            update_line_number_colors (preferences);
-
-            this.model = line_store_filter;
-            col_line_number.set_visible (preferences.ln_visible);
-
-            preferences.line_number_colors_changed.connect ((p) => {
-                update_line_number_colors (p);
-                col_line_number.set_visible (p.ln_visible);
-            });
-
-            this.set_search_equal_func ((model, column, key, iter) => {
+            set_search_equal_func ((model, column, key, iter) => {
                 string line;
                 model.@get (iter, Columns.LINE_TEXT, out line);
                 return !line.contains(key);
@@ -92,6 +82,14 @@ namespace Tags {
                     cell_text.background = null;
                 }
             });
+        }
+
+        public void set_line_number_visibility (bool visible) {
+            col_line_number.set_visible (visible);
+        }
+
+        public bool get_line_number_visibility () {
+            return col_line_number.get_visible ();
         }
 
         public void refilter () {
@@ -191,7 +189,21 @@ namespace Tags {
             }
         }
 
-        private void update_line_number_colors (Preferences p) {
+        public void set_linen_number_color_fg (string color) {
+            var rgb = Gdk.RGBA ();
+            rgb.parse (color);
+            renderer_line_number.foreground_rgba = rgb;
+            queue_draw ();
+        }
+
+        public void set_linen_number_color_bg (string color) {
+            var rgb = Gdk.RGBA ();
+            rgb.parse (color);
+            renderer_line_number.background_rgba = rgb;
+            queue_draw ();
+        }
+
+        public void update_line_number_colors (Preferences p) {
             var rgb = Gdk.RGBA ();
 
             rgb.parse (p.ln_fg_color);
