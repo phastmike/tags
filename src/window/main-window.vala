@@ -36,7 +36,7 @@ namespace Tags {
         private bool tags_changed = false;
 
         private ActionEntry[] WINDOW_ACTIONS = {
-            { "toggle_line_number", toggle_line_number },
+            { "action_toggle_line_number", action_toggle_line_number },
             { "action_add_tag", action_add_tag },
             { "action_remove_all_tags", action_remove_all_tags },
             { "action_load_tags", action_load_tags },
@@ -97,7 +97,7 @@ namespace Tags {
 
         private void setup_actions () {
             this.add_action_entries(this.WINDOW_ACTIONS, this);
-            application.set_accels_for_action("win.toggle_line_number", {"<primary>l"});
+            application.set_accels_for_action("win.action_toggle_line_number", {"<primary>l"});
             application.set_accels_for_action("win.action_add_tag", {"<primary>n"});
             application.set_accels_for_action("win.save_tagged", {"<primary>s"});
             application.set_accels_for_action("win.hide_untagged_lines", {"<primary>h"});
@@ -243,8 +243,7 @@ namespace Tags {
 
         // FIXME: WIP refactoring
         // Decoupling preferences from lines-treeview
-        // Will change with new controller
-
+        // Should be tweaking the preferences or only the session?
         private void setup_preference_lines_changes (LinesTreeView treeview) {
             var preferences = Preferences.instance ();
 
@@ -550,7 +549,7 @@ namespace Tags {
             }
         }
 
-        private void toggle_line_number () {
+        private void action_toggle_line_number () {
             var preferences = Preferences.instance ();
             preferences.ln_visible = !preferences.ln_visible; 
         }
@@ -660,14 +659,6 @@ namespace Tags {
             action.change_state (new Variant.boolean (minimap.get_visible ()));
             minimap.set_visible (!minimap.get_visible ());
         }
-
-        /*
-        private void toggle_line_number () {
-            var action = this.lookup_action ("toggle_line_number");
-            action.change_state (new Variant.boolean (minimap.get_visible ()));
-            minimap.set_visible (!minimap.get_visible ());
-        }
-        */
 
         private void toggle_tags_view () {
             var view_height = paned.get_height ();
@@ -874,18 +865,11 @@ namespace Tags {
         }
 
         private void inform_user_no_tagged_lines () {
-            Idle.add ( () => {
-                var toast = new Adw.Toast ("No tagged lines, show untagged?");
-                toast.set_button_label ("_Show");
-                toast.set_timeout (5);
-                toast.button_clicked.connect ( () => {
-                    hide_untagged_lines ();
-                    toast.dismiss ();
-                });
-
-                overlay.add_toast (toast);
-                return false;
-            });
+            overlay.dismiss_all ();
+            var toast = new Adw.Toast ("No tags enabled!..");
+            toast.set_timeout (5);
+            overlay.add_toast (toast);
+            hide_untagged_lines ();
         }
 
         private void show_dialog (string title, string message) {
