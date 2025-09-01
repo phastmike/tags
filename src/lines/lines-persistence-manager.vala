@@ -17,6 +17,10 @@ namespace Tags {
 
         }
 
+        ~LinesPersistence () {
+            message ("Destroyed LinesPersistence instance...");
+        }
+
         public async File? open_lines_file_dialog (Gtk.Window? parent_window = null, Cancellable? cancellable = null) {
             var file_filter1 = new Gtk.FileFilter ();
             file_filter1.add_mime_type ("text/plain");
@@ -44,10 +48,11 @@ namespace Tags {
 
             try {
                 var file = yield file_dialog.open (parent_window, cancellable);
-                //open_file (new_file);
                 return file;
             } catch (Error e) {
                 message (e.message);
+                // If not dismissed then present info 
+                //common code
                 /*
                 if (e.code != 2) {
                     show_dialog ("Open error", "Could not open file: %s (%d)".printf (e.message, e.code));
