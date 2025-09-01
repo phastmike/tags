@@ -38,14 +38,17 @@ namespace Tags {
         [GtkChild]
         private unowned Gtk.CellRendererPixbuf renderer_case;
 
-        public uint ntags;
+        public uint ntags {
+            public get {
+                return ((Gtk.TreeModel) tag_store).iter_n_children (null);
+            }
+        }
+
         public signal void no_active_tags ();
 
         public TagsTreeView () {
             setup_cell_renderers ();
             
-            ntags = 0;
-
             renderer_checkbox.toggled.connect ((path) => {
                 Gtk.TreeIter iter;
                 tag_store.get_iter_from_string (out iter, path);
@@ -59,21 +62,10 @@ namespace Tags {
                 }
             });
 
-            tag_store.row_inserted.connect ((path, iter) => {
-                ntags++;
-            });
-
             tag_store.row_deleted.connect ((path, iter) => {
-                ntags--;
                 if (ntags == 0 ) no_active_tags ();
             });
         }
-
-        /*
-        public int ntags () {
-            return ((TreeModel) tag_store).iter_n_children (null);
-        }
-        */
 
         public Tag? get_selected_tag () {
             Tag tag;
@@ -229,7 +221,7 @@ namespace Tags {
         
         public void clear_tags () {
             tag_store.clear ();
-            ntags = 0;
+            no_active_tags (); // OK?
         }
 
         public Gdk.RGBA? get_bg_color_for_text (string text) {
