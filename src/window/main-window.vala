@@ -320,39 +320,10 @@ namespace Tags {
 
         private void setup_buttons () {
             button_open_file.clicked.connect ( () => {
-                var file_dialog = new Gtk.FileDialog ();
-                file_dialog.set_modal (true);
-                file_dialog.set_title ("Open log file");
-                file_dialog.set_accept_label ("Open");
-
-                var file_filter1 = new Gtk.FileFilter ();
-                file_filter1.add_mime_type ("text/plain");
-                file_filter1.set_filter_name ("Text files");
-
-                var file_filter2 = new Gtk.FileFilter ();
-                file_filter2.add_pattern ("*");
-                file_filter2.set_filter_name ("All files");
-
-                var file_filters = new ListStore (typeof (Gtk.FileFilter));
-                file_filters.append (file_filter1);
-                file_filters.append (file_filter2);
-
-                file_dialog.set_filters (file_filters);
-
-                if (file_opened != null) {
-                    file_dialog.set_initial_folder (file_opened.get_parent ());
-                }
-
-                file_dialog.open.begin (this, null, (obj, res) => {
-                    try {
-                        var new_file = file_dialog.open.end (res);
-                        //file_opened = new_file;
-                        this.open_file (new_file);
-                    } catch (Error e) {
-                        if (e.code != 2) {
-                            show_dialog ("Open error", "Could not open file: %s (%d)".printf (e.message, e.code));
-                        }
-                    }
+                var persistence = new LinesPersistence ();
+                persistence.open_lines_file_dialog.begin (this, null, (obj, res) => {
+                    File? file = persistence.open_lines_file_dialog.end (res);
+                    if (file != null) open_file (file);
                 });
             });
 

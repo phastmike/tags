@@ -13,7 +13,7 @@ namespace Tags {
 
     public sealed class TagsPersistence : Object {
         private GLib.ListStore tags;
-        private bool preserve_on_load = false;
+        //private bool preserve_on_load = false;
     
         /* SIGNALS */
 
