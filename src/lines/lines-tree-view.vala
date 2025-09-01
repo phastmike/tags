@@ -30,6 +30,7 @@ namespace Tags {
         }
 
         public bool hide_untagged {set; get; default=false;}
+        private bool will_clear_all {private set; private get; default=false;}
 
         /* SIGNALS */
 
@@ -56,6 +57,10 @@ namespace Tags {
             });
 
             line_store_filter.set_visible_func ((model, iter) => {
+                if (will_clear_all == true) {
+                    return false;
+                }
+
                 if (hide_untagged == false) {
                     return true;
                 } else {
@@ -132,21 +137,25 @@ namespace Tags {
                     line_store.@set (iter, Columns.LINE_NUMBER, ++nr, Columns.LINE_TEXT, line, -1);
                 }
             } catch (IOError e) {
-                warning ("%s\n", e.message);
+                warning (e.message);
             }
         }
 
-        public async void set_file (File file, Cancellable cancellable) {
-            this.model = null;
-
+        public void remove_all_lines () {
+            will_clear_all = true;
+            line_store_filter.refilter ();
             line_store.clear ();
+            will_clear_all = false;
             cleared ();
+        }
+
+        public async void set_file (File file, Cancellable cancellable) {
+            remove_all_lines ();
 
             try {
                 FileInputStream @is = yield file.read_async (Priority.DEFAULT, cancellable);
                 DataInputStream dis = new DataInputStream (@is);
                 yield read_from_input_stream_async (dis);
-                this.model = line_store_filter; // FIXME: Not very readable
                 set_file_ended();
             } catch (Error e) {
                     warning (e.message);
@@ -185,7 +194,7 @@ namespace Tags {
                     fsout.close ();
                 });
             } catch (Error e) {
-                warning ("Error: %s", e.message);
+                warning (e.message);
             }
         }
 

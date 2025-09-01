@@ -237,6 +237,7 @@ namespace Tags {
                 tag_dialog.show ();
             });
 
+
             setup_preference_lines_changes (lines_treeview);
             setup_scrolled_lines ();
         }
@@ -432,6 +433,7 @@ namespace Tags {
             });
 
             // Sets title for gnome shell window identity
+            // Should only do it on success (set_file_ended!!!!)
             set_title (file.get_basename ());
             window_title.set_subtitle (file.get_basename ());
             window_title.set_tooltip_text (file.get_path ());
@@ -452,13 +454,29 @@ namespace Tags {
                 }
 
                 button_open_file.set_sensitive (true);
-                lines_treeview.disconnect (handler_id);
+                lines_treeview.set_file_ended.connect ( ()=> {
+                    save_tagged_enable ();
+                    /* Here we check if application property autoload tags is enabled*/
+                    /* FIXME: What to do if we already have tags inserted, merged or replace? */
+
+                    if (Preferences.instance ().tags_autoload == true) {
+                        file_tags = File.new_for_path (file_opened.get_path () + ".tags");
+                        if (file_tags.query_exists ()) {
+                            //set_tags (file_tags);
+                            load_tags_from_file (file_tags);
+                        }
+
+                        count_tag_hits ();
+                    }
+
+                    button_open_file.set_sensitive (true);
+                    dialog.close ();
+                    minimap.set_array (lines_treeview.model_to_array ());
+                });
                 dialog.close ();
                 minimap.set_array (lines_treeview.model_to_array ());
             });
 
-            // Actual set file 
-            // Async with reply via callback set_file_sensitive
             dialog.present (this);
             lines_treeview.set_file (file, cancel_open);
             button_open_file.set_sensitive (false);
@@ -588,7 +606,7 @@ namespace Tags {
                     if (!lines_treeview.hide_untagged) hide_untagged_lines ();
                     lines_treeview.to_file(file_dialog.save.end (res));
                 } catch (Error e) {
-                    message ("Save Error :: Could not save the tagged lines file: %s".printf (e.message));
+                    message (e.message);
                 }
             });
         }

@@ -69,6 +69,12 @@ namespace Tags {
             });
         }
 
+        /*
+        public int ntags () {
+            return ((TreeModel) tag_store).iter_n_children (null);
+        }
+        */
+
         public Tag? get_selected_tag () {
             Tag tag;
             Gtk.TreeIter iter;
@@ -224,29 +230,6 @@ namespace Tags {
         public void clear_tags () {
             tag_store.clear ();
             ntags = 0;
-        }
-
-        public void to_file (File file) {
-            Json.Node root = new Json.Node (Json.NodeType.ARRAY);
-            Json.Array array = new Json.Array ();
-
-            tag_store.foreach ((model, path, iter) => {
-                Tag? tag = get_tag_from_model_with_iter (model, iter);
-                if (tag == null) return false;
-                Json.Node node = Json.gobject_serialize (tag);
-                array.add_element (node); 
-                return false;
-            });
-
-            root.take_array (array);
-            Json.Generator generator = new Json.Generator ();
-            generator.pretty = true;
-            generator.set_root (root);
-            try {
-                generator.to_file (file.get_path ());
-            } catch (Error e) {
-                error ("Json.Generator::to_file error: %s", e.message);
-            }
         }
 
         public Gdk.RGBA? get_bg_color_for_text (string text) {
