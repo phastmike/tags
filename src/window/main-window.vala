@@ -321,11 +321,9 @@ namespace Tags {
             button_open_file.clicked.connect ( () => {
                 LinesPersistence.open_lines_file_dialog.begin (this, null, (obj, res) => {
                     File? file = LinesPersistence.open_lines_file_dialog.end (res);
-                    // On Success do a bunch of things
                     if (file != null) {
                         open_file (file);
                     } else {
-                        // Needs a throw error to get the error code
                         show_dialog ("Open File", "Could not open file...");
                     }
                 });

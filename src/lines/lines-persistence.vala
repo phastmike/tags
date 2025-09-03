@@ -14,6 +14,7 @@ namespace Tags {
     public sealed class LinesPersistence : Object {
         private GLib.ListStore lines;
 
+        /* SIGNALS */
         public signal void load_failed (string err_msg);
         public signal void loaded_from_file (GLib.ListStore lines);
 
@@ -48,12 +49,7 @@ namespace Tags {
                 var file = yield file_dialog.open (parent_window, cancellable);
                 return file;
             } catch (Error e) {
-                message (e.message);
-                /*
-                if (e.code != 2) {
-                    show_dialog ("Open error", "Could not open file: %s (%d)".printf (e.message, e.code));
-                }
-                */
+                warning (e.message);
                 return null;
             }
         }

@@ -16,11 +16,8 @@ namespace Tags {
         //private bool preserve_on_load = false;
     
         /* SIGNALS */
-
         public signal void saved_to_file (File file);
         public signal void loaded_from_file (GLib.ListStore tags);
-
-        /* INSTANCE METHODS */
 
         public TagsPersistence () {
             tags = new GLib.ListStore (typeof(Tag));
@@ -30,8 +27,8 @@ namespace Tags {
             message ("Destroyed TagsPersistence instance...");
         }
 
-        /* If loading at the end, then we should rename the method */
-        /* It should provide only a way to get a file from the user */
+        // FIXME: If loading at the end, then we should rename the method
+        // It should provide only a way to get a file from the user */
         public async void open_tags_file_dialog (Gtk.Window? parent_window = null, Cancellable? cancellable = null) {
             File? file = null;
 
