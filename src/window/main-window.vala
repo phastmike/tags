@@ -568,9 +568,9 @@ namespace Tags {
             Gtk.TreeModel tags;
             Gtk.TreeModel lines;
 
+            // Kinda redundant
             if (tags_treeview.ntags <= 0) return;
-
-            tags_treeview.clear_hit_counters ();
+            tags_treeview.reset_hit_counters ();
 
             tags = tags_treeview.get_model ();
             lines = (lines_treeview.get_model () as Gtk.TreeModelFilter)?.get_model ();
@@ -605,26 +605,25 @@ namespace Tags {
 
             lines_treeview.refilter ();
 
-            var selection = lines_treeview.get_selection ();
-            selection.set_mode (Gtk.SelectionMode.SINGLE);
-
             if (lines_treeview.hide_untagged == true &&
                (tags_treeview.ntags == 0 || tags_treeview.get_n_tags_enabled () == 0)) {
                 inform_user_no_tagged_lines ();
             }
 
-            minimap.set_array (lines_treeview.model_to_array ());
-
+            var selection = lines_treeview.get_selection ();
+            selection.set_mode (Gtk.SelectionMode.SINGLE);
             if (selection.get_selected (out model, out iter) == true) {
                 selection = lines_treeview.get_selection ();
                 lines_treeview.scroll_to_cell (model.get_path (iter) , null, true, (float) 0.5, (float) 0.5);
             }
+            selection.set_mode (Gtk.SelectionMode.MULTIPLE);
+
+            minimap.set_array (lines_treeview.model_to_array ());
 
             // FIXME: Hack to force the viewport to recenter
             // does not work very well ...
             var vadj_value = scrolled_lines.get_vadjustment ().get_value ();
-            scrolled_lines.get_vadjustment ().set_value (vadj_value + 1.0);
-            selection.set_mode (Gtk.SelectionMode.MULTIPLE);
+            scrolled_lines.get_vadjustment ().set_value (vadj_value + 0.1);
         }
 
         private void toggle_minimap () {

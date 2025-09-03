@@ -210,7 +210,7 @@ namespace Tags {
             queue_draw ();
         }
 
-        public void clear_hit_counters () {
+        public void reset_hit_counters () {
             tag_store.foreach ((tags_model, tag_path, tag_iter) => {
                 Tag? tag = get_tag_from_model_with_iter (tags_model, tag_iter);
                 if (tag == null) return false;
