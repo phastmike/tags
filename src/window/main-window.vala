@@ -27,7 +27,6 @@ namespace Tags {
         private Gtk.ScrolledWindow scrolled_lines;
         private Gtk.ScrolledWindow scrolled_minimap;
 
-        private ulong handler_id;
         private LinesTreeView lines_treeview;
         private TagsTreeView tags_treeview;
         private double paned_last_position = 0.778086;
@@ -268,7 +267,7 @@ namespace Tags {
         private void setup_scrolled_lines () {
             scrolled_lines = new Gtk.ScrolledWindow ();
             scrolled_lines.set_kinetic_scrolling (true);
-            // Use PolicyType EXTERNAL to hide the scroll from the treeview
+            // NOTE: Use PolicyType EXTERNAL to hide the scroll from the treeview
             scrolled_lines.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
             scrolled_lines.set_placement (Gtk.CornerType.TOP_LEFT);
             scrolled_lines.set_overlay_scrolling (true);
@@ -320,10 +319,15 @@ namespace Tags {
 
         private void setup_buttons () {
             button_open_file.clicked.connect ( () => {
-                var persistence = new LinesPersistence ();
-                persistence.open_lines_file_dialog.begin (this, null, (obj, res) => {
-                    File? file = persistence.open_lines_file_dialog.end (res);
-                    if (file != null) open_file (file);
+                LinesPersistence.open_lines_file_dialog.begin (this, null, (obj, res) => {
+                    File? file = LinesPersistence.open_lines_file_dialog.end (res);
+                    // On Success do a bunch of things
+                    if (file != null) {
+                        open_file (file);
+                    } else {
+                        // Needs a throw error to get the error code
+                        show_dialog ("Open File", "Could not open file...");
+                    }
                 });
             });
 
@@ -376,12 +380,9 @@ namespace Tags {
             main_box.append (scrolled_minimap);
         }
 
+        // NOTE: Needs to open file without the Open File Dialog
         public void open_file (File file) {
-            var cancel_open = new Cancellable ();
-            var type = file.query_file_type (FileQueryInfoFlags.NONE);
-
-            file_opened = file;
-
+            FileType type = file.query_file_type (FileQueryInfoFlags.NONE);
             if (type != FileType.REGULAR) {
                 var toast = new Adw.Toast ("'%s' is not a regular file ...".printf(file.get_basename ()));
                 toast.set_timeout (3);
@@ -389,68 +390,51 @@ namespace Tags {
                 return;
             }
 
-            var dialog = new Adw.AlertDialog ("Loading File", file.get_basename ());
+            var cancel_open = new Cancellable ();
 
+            var dialog = new Adw.AlertDialog ("Open File", file.get_basename ());
             dialog.add_response ("cancel", "_Cancel");
-            dialog.set_response_appearance ("cancel",Adw.ResponseAppearance.SUGGESTED);
+            dialog.set_response_appearance ("cancel", Adw.ResponseAppearance.SUGGESTED);
             dialog.set_default_response ("cancel");
             dialog.set_close_response ("cancel");
-
             dialog.response.connect ((response) => {
                 if (response == "cancel") {
                     cancel_open.cancel ();
-                    button_open_file.set_sensitive (true);
                 }
             });
 
-            // Sets title for gnome shell window identity
-            // Should only do it on success (set_file_ended!!!!)
-            set_title (file.get_basename ());
-            window_title.set_subtitle (file.get_basename ());
-            window_title.set_tooltip_text (file.get_path ());
+            var persistence = new LinesPersistence ();
+            persistence.load_failed.connect ( (err_msg) => {
+                dialog.close ();
+                show_dialog ("Open File", err_msg, "_Close");
+            });
 
-            handler_id = lines_treeview.set_file_ended.connect ( ()=> {
+            persistence.loaded_from_file.connect ( (lines) => {
+                dialog.close ();
+                file_opened = file;
                 save_tagged_enable ();
-                /* Here we check if application property autoload tags is enabled*/
-                /* FIXME: What to do if we already have tags inserted, merged or replace? */
+                set_title (file.get_basename ());
+                window_title.set_subtitle (file.get_basename ());
+                window_title.set_tooltip_text (file.get_path ());
+
+                lines_treeview.remove_all_lines ();
+                for (int i = 0; i < lines.get_n_items (); i++) {
+                    lines_treeview.add_line (i+1, ((Gtk.StringObject)lines.get_item (i)).get_string ());
+                } 
 
                 if (Preferences.instance ().tags_autoload == true) {
                     file_tags = File.new_for_path (file.get_path () + ".tags");
                     if (file_tags.query_exists ()) {
-                        //set_tags (file_tags);
                         load_tags_from_file (file_tags);
                     }
-
                     count_tag_hits ();
                 }
 
-                button_open_file.set_sensitive (true);
-                lines_treeview.set_file_ended.connect ( ()=> {
-                    save_tagged_enable ();
-                    /* Here we check if application property autoload tags is enabled*/
-                    /* FIXME: What to do if we already have tags inserted, merged or replace? */
-
-                    if (Preferences.instance ().tags_autoload == true) {
-                        file_tags = File.new_for_path (file_opened.get_path () + ".tags");
-                        if (file_tags.query_exists ()) {
-                            //set_tags (file_tags);
-                            load_tags_from_file (file_tags);
-                        }
-
-                        count_tag_hits ();
-                    }
-
-                    button_open_file.set_sensitive (true);
-                    dialog.close ();
-                    minimap.set_array (lines_treeview.model_to_array ());
-                });
-                dialog.close ();
                 minimap.set_array (lines_treeview.model_to_array ());
             });
 
             dialog.present (this);
-            lines_treeview.set_file (file, cancel_open);
-            button_open_file.set_sensitive (false);
+            persistence.from_file (file, cancel_open);
         }
 
         private void action_add_tag () {
@@ -585,6 +569,8 @@ namespace Tags {
         private void count_tag_hits () {
             Gtk.TreeModel tags;
             Gtk.TreeModel lines;
+
+            if (tags_treeview.ntags <= 0) return;
 
             tags_treeview.clear_hit_counters ();
 
@@ -861,9 +847,10 @@ namespace Tags {
             hide_untagged_lines ();
         }
 
-        private void show_dialog (string title, string message) {
+        private void show_dialog (string title, string message, string cancel_label = "_Cancel") {
             var dialog = new Adw.AlertDialog (title, message);
-            dialog.add_response ("cancel", "_Cancel");
+            dialog.add_response ("cancel", cancel_label);
+            dialog.set_response_appearance ("cancel", Adw.ResponseAppearance.SUGGESTED);
             dialog.set_default_response ("cancel");
             dialog.set_close_response ("cancel");
             dialog.present (this);

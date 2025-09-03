@@ -121,6 +121,12 @@ namespace Tags {
             return (string) string_builder.data;
         }
 
+        public void add_line (uint nr, string line) {
+            Gtk.TreeIter iter;
+            line_store.append (out iter);
+            line_store.@set (iter, Columns.LINE_NUMBER, ++nr, Columns.LINE_TEXT, line, -1);
+        }
+
         /* Helper method to aid in the async read from the input stream */
         private async void read_from_input_stream_async (DataInputStream dis) {
             var nr = 0;
@@ -133,8 +139,7 @@ namespace Tags {
                     if (line.data[line.length-1] == '\r') {
                         line.data[line.length-1] = ' ';
                     }
-                    line_store.append (out iter);
-                    line_store.@set (iter, Columns.LINE_NUMBER, ++nr, Columns.LINE_TEXT, line, -1);
+                    add_line (++nr, line);
                 }
             } catch (IOError e) {
                 warning (e.message);
