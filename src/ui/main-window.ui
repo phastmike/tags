@@ -76,8 +76,8 @@
         <attribute name="label" translatable="yes">New tag</attribute>
         <attribute name="action">win.action_add_tag</attribute>
       </item>
-    </section>  
-    <section>
+      <!--</section>  
+      <section>-->
       <item>
         <attribute name="label" translatable="yes">Save tagged</attribute>
         <attribute name="action">win.save_tagged</attribute>
@@ -126,8 +126,8 @@
         <attribute name="label" translatable="yes">Preferences</attribute>
         <attribute name="action">app.preferences</attribute>
       </item>
-    </section>  
-    <section>  
+      <!--</section>  
+      <section>  -->
       <item>
         <attribute name="label" translatable="yes">Keyboard Shortcuts</attribute>
         <attribute name="action">win.show-help-overlay</attribute>
@@ -136,6 +136,6 @@
         <attribute name="label" translatable="yes">About Tags</attribute>
         <attribute name="action">app.about</attribute>
       </item>
-    </section>
+      </section>
   </menu>
 </interface>
