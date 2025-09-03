@@ -26,7 +26,7 @@ namespace Tags {
             message ("Destroyed LinesPersistence instance...");
         }
 
-        public static async File? open_lines_file_dialog (Gtk.Window? parent_window = null, Cancellable? cancellable = null) {
+        public static async File? open_lines_file_dialog (Gtk.Window? parent_window = null, Cancellable? cancellable = null) throws Error {
             var file_filter1 = new Gtk.FileFilter ();
             file_filter1.add_mime_type ("text/plain");
             file_filter1.set_filter_name ("Text files");
@@ -50,6 +50,7 @@ namespace Tags {
                 return file;
             } catch (Error e) {
                 warning (e.message);
+                throw e;
                 return null;
             }
         }

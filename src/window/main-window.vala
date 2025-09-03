@@ -320,11 +320,13 @@ namespace Tags {
         private void setup_buttons () {
             button_open_file.clicked.connect ( () => {
                 LinesPersistence.open_lines_file_dialog.begin (this, null, (obj, res) => {
-                    File? file = LinesPersistence.open_lines_file_dialog.end (res);
-                    if (file != null) {
-                        open_file (file);
-                    } else {
-                        show_dialog ("Open File", "Could not open file...");
+                    try {
+                        File? file = LinesPersistence.open_lines_file_dialog.end (res);
+                        if (file != null) open_file (file);
+                    } catch (Error e) {
+                        if (e.code != 2) {
+                            show_dialog ("Open File", "Could not open file...");
+                        }
                     }
                 });
             });
