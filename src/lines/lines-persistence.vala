@@ -1,7 +1,7 @@
 /* -*- Mode: Vala; indent-tabs-mode: nil; c-basic-offset: 4; tab-width: 4 -*- */
 /* vim: set tabstop=4 softtabstop=4 shiftwidth=4 expandtab :                  */
 /*
- * lines-persistence-manager.vala
+ * lines-persistence.vala
  *
  * Class to manage tag persistence
  * Loads and Saves tag json data 
