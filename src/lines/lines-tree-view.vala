@@ -35,7 +35,7 @@ namespace Tags {
         /* SIGNALS */
 
         public signal void cleared ();
-        public signal void set_file_ended ();
+        //public signal void set_file_ended ();
 
         /* DELEGATES */
 
@@ -124,26 +124,7 @@ namespace Tags {
         public void add_line (uint nr, string line) {
             Gtk.TreeIter iter;
             line_store.append (out iter);
-            line_store.@set (iter, Columns.LINE_NUMBER, ++nr, Columns.LINE_TEXT, line, -1);
-        }
-
-        /* Helper method to aid in the async read from the input stream */
-        private async void read_from_input_stream_async (DataInputStream dis) {
-            var nr = 0;
-            string? line;
-            Gtk.TreeIter iter;
-
-            try {
-                while ((line = yield dis.read_line_async ()) != null) {
-                    //line = line.escape ();
-                    if (line.data[line.length-1] == '\r') {
-                        line.data[line.length-1] = ' ';
-                    }
-                    add_line (++nr, line);
-                }
-            } catch (IOError e) {
-                warning (e.message);
-            }
+            line_store.@set (iter, Columns.LINE_NUMBER, nr, Columns.LINE_TEXT, line, -1);
         }
 
         public void remove_all_lines () {
@@ -152,19 +133,6 @@ namespace Tags {
             line_store.clear ();
             will_clear_all = false;
             cleared ();
-        }
-
-        public async void set_file (File file, Cancellable cancellable) {
-            remove_all_lines ();
-
-            try {
-                FileInputStream @is = yield file.read_async (Priority.DEFAULT, cancellable);
-                DataInputStream dis = new DataInputStream (@is);
-                yield read_from_input_stream_async (dis);
-                set_file_ended();
-            } catch (Error e) {
-                    warning (e.message);
-            }
         }
 
         public string[] model_to_array () {
@@ -177,30 +145,6 @@ namespace Tags {
             });
 
             return lines.to_array ();
-        }
-
-        public async void to_file (File file) {
-            StringBuilder str;
-            FileOutputStream fsout;
-
-            str = new StringBuilder ();
-            str.append("");     // Fixes minor bug? Buffer isn't empty !?!?
-
-            line_store_filter.foreach ((model, path, iter) => {
-                string line;
-                model.@get (iter, Columns.LINE_TEXT, out line);
-                str.append_printf ("%s\n", line);
-                return false;
-            });
-
-            try {
-                fsout = file.replace (null, false, FileCreateFlags.REPLACE_DESTINATION, null); 
-                fsout.write_all_async.begin (str.data, Priority.DEFAULT, null, (obj, res) => {
-                    fsout.close ();
-                });
-            } catch (Error e) {
-                warning (e.message);
-            }
         }
 
         public void set_linen_number_color_fg (string color) {

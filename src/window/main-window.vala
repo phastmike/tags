@@ -546,22 +546,32 @@ namespace Tags {
         }
 
         private void save_tagged () {
-            var file_dialog = new Gtk.FileDialog ();
-            file_dialog.set_modal (true);
-            file_dialog.set_title ("Save tagged lines to file");
-            file_dialog.set_accept_label ("Save");
+            bool active_filter_status = false;
+            string? suggested_filename = null;
 
             if (file_opened != null) {
-                //file_dialog.set_initial_folder (file_opened.get_parent ());
-                file_dialog.set_initial_name ("%s.tagged".printf (file_opened.get_basename ()));
+                suggested_filename = "%s.tagged".printf (file_opened.get_basename ());
             }
-
-            file_dialog.save.begin (this, null, (obj, res) => {
+            var persistence = new LinesPersistence ();
+            persistence.save_lines_file_dialog.begin (this, suggested_filename, null, (obj, res) => {
                 try {
-                    if (!lines_treeview.hide_untagged) hide_untagged_lines ();
-                    lines_treeview.to_file(file_dialog.save.end (res));
+                    var file = persistence.save_lines_file_dialog.end (res);
+                    if (file != null) {
+                        if (lines_treeview.hide_untagged == false) {
+                            hide_untagged_lines ();
+                        } else {
+                            active_filter_status = true;
+                        }
+
+                        persistence.to_file (file, lines_treeview.get_model ());
+
+                        if (active_filter_status == false) {
+                            hide_untagged_lines ();
+                        }
+                    }
                 } catch (Error e) {
-                    message (e.message);
+                    warning (e.message);
+                    if (e.code != 2) show_dialog ("Save File", e.message);
                 }
             });
         }

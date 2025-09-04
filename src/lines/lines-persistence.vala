@@ -55,6 +55,26 @@ namespace Tags {
             }
         }
 
+        public async File? save_lines_file_dialog (Gtk.Window? parent_window, string? suggested_filename = null, Cancellable? cancellable = null) throws Error {
+            var file_dialog = new Gtk.FileDialog ();
+            file_dialog.set_modal (true);
+            file_dialog.set_title ("Save tagged lines to file");
+            file_dialog.set_accept_label ("Save");
+
+            if (suggested_filename != null) {
+                file_dialog.set_initial_name (suggested_filename);
+            }
+
+            try {
+                var file = yield file_dialog.save (parent_window, null);
+                return file;
+            } catch (Error e) {
+                message (e.message);
+                throw e;
+                return null;
+            }
+        }
+
         public async void from_file (File file, Cancellable cancellable) {
             try {
                 FileInputStream @is = yield file.read_async (Priority.DEFAULT, cancellable);
@@ -74,6 +94,30 @@ namespace Tags {
             } catch (Error e) {
                 warning (e.message);
                 load_failed (e.message);
+            }
+        }
+
+        public async void to_file (File file, Gtk.TreeModel line_store) {
+            StringBuilder str;
+            FileOutputStream fsout;
+
+            str = new StringBuilder ();
+            str.append("");     // Fixes minor bug? Buffer isn't empty !?!?
+
+            line_store.foreach ((model, path, iter) => {
+                string line;
+                model.@get (iter, LinesTreeView.Columns.LINE_TEXT, out line);
+                str.append_printf ("%s\n", line);
+                return false;
+            });
+
+            try {
+                fsout = file.replace (null, false, FileCreateFlags.REPLACE_DESTINATION, null); 
+                fsout.write_all_async.begin (str.data, Priority.DEFAULT, null, (obj, res) => {
+                    fsout.close ();
+                });
+            } catch (Error e) {
+                warning (e.message);
             }
         }
 
