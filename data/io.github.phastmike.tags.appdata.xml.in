@@ -13,6 +13,7 @@
       <li>Load tags</li>
       <li>Save tags</li>
       <li>Remove all tags</li>
+      <li>Document minimap with colors</li>
       <li>User defined line numbering color scheme</li>
       <li>Simple tags based on string containing a pattern</li>
       <li>Support for regular expressions</li>
@@ -25,6 +26,10 @@
     <screenshot type="default">
       <caption>Tags main window</caption>
       <image>https://raw.githubusercontent.com/phastmike/tags/refs/heads/master/data/screenshots/tags.png</image>
+    </screenshot>
+    <screenshot type="normal">
+      <caption>Tag dialog</caption>
+      <image>https://raw.githubusercontent.com/phastmike/tags/refs/heads/master/data/screenshots/tag-dialog.png</image>
     </screenshot>
   </screenshots>
   <developer_name>José Miguel Fonte</developer_name>
@@ -40,6 +45,17 @@
   </custom>
   <releases>
 
+    <release version="1.4" date="2025-09-05">
+      <description translatable="no">
+        <p>Tags 1.5 is out</p>
+        <p>What's new:</p>
+        <ul>
+          <li>Fixed minimap issues on Flatpak when running in a limited VM  (#75)</li>
+        </ul>
+        <p>Minor tweaks and improvements</p>
+      </description>
+    </release>
+
     <release version="1.4" date="2025-08-11">
       <description translatable="no">
         <p>Tags 1.4 is out</p>
@@ -47,7 +63,7 @@
         <ul>
           <li>Improved minimap performance  ( #74 )</li>
         </ul>
-        <p>Minor tweaks and improvments</p>
+        <p>Minor tweaks and improvements</p>
       </description>
     </release>
 

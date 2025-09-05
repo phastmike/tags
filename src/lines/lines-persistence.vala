@@ -3,8 +3,8 @@
 /*
  * lines-persistence.vala
  *
- * Class to manage tag persistence
- * Loads and Saves tag json data 
+ * Class to manage line persistence
+ * Loads files and Saves tagged lines
  *
  * José Miguel Fonte
  */
@@ -15,16 +15,11 @@ namespace Tags {
         private GLib.ListStore lines;
 
         /* SIGNALS */
+
         public signal void load_failed (string err_msg);
         public signal void loaded_from_file (GLib.ListStore lines);
 
-        public LinesPersistence () {
-            lines = new GLib.ListStore (typeof(Gtk.StringObject));
-        }
-
-        ~LinesPersistence () {
-            message ("Destroyed LinesPersistence instance...");
-        }
+        /* CLASS METHODS */
 
         public static async File? open_lines_file_dialog (Gtk.Window? parent_window = null, Cancellable? cancellable = null) throws Error {
             var file_filter1 = new Gtk.FileFilter ();
@@ -54,6 +49,13 @@ namespace Tags {
                 return null;
             }
         }
+
+        /* INSTANCE METHODS */
+
+        public LinesPersistence () {
+            lines = new GLib.ListStore (typeof(Gtk.StringObject));
+        }
+
 
         public async File? save_lines_file_dialog (Gtk.Window? parent_window, string? suggested_filename = null, Cancellable? cancellable = null) throws Error {
             var file_dialog = new Gtk.FileDialog ();

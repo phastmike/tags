@@ -23,10 +23,6 @@ namespace Tags {
             tags = new GLib.ListStore (typeof(Tag));
         }
 
-        ~TagsPersistence () {
-            message ("Destroyed TagsPersistence instance...");
-        }
-
         // FIXME: If loading at the end, then we should rename the method
         // It should provide only a way to get a file from the user */
         public async void open_tags_file_dialog (Gtk.Window? parent_window = null, Cancellable? cancellable = null) {

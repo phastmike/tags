@@ -26,6 +26,10 @@ Tags have a description name, a visibility toggle, a color scheme and a hit coun
 
 <kbd>Ctrl</kbd> + <kbd>F</kbd> : Hide/Show Tag list (bottom)
 
+<kbd>Ctrl</kbd> + <kbd>L</kbd> : Hide/Show Line numbers
+
+<kbd>Ctrl</kbd> + <kbd>M</kbd> : Hide/Show Minimap
+
 <kbd>Alt</kbd> + <kbd>E</kbd> : Enable all tags
 
 <kbd>Alt</kbd> + <kbd>D</kbd> : Disable all tags
@@ -90,6 +94,7 @@ It depends on:
 - ninja
 - valac
 - Gtk 4
+- Libgee
 - LibAdwaita-1
 - json-glib-1.0
 
