@@ -9,7 +9,7 @@
  */
 
 namespace Tags {
-    [GtkTemplate (ui = "/io/github/phastmike/tags/preferences/preferences-dialog.ui")]
+    [GtkTemplate (ui = "/io/github/phastmike/tags/ui/preferences-dialog.ui")]
     public class PreferencesDialog : Adw.PreferencesDialog {
         [GtkChild]
         private unowned Adw.ActionRow row_autoload_tags; 

@@ -55,7 +55,7 @@ public class Minimap : Gtk.DrawingArea {
         public double viewport_height;              // Height of viewport in minimap
     }
 
-    public Minimap (Gtk.Adjustment text_adj = null) {
+    public Minimap (Gtk.Adjustment? text_adj = null) {
         Object();
 
         set_viewport_adjustment (text_adj);
@@ -63,8 +63,8 @@ public class Minimap : Gtk.DrawingArea {
         init_colors ();
         reset_colors ();
 
-        set_draw_func(draw);
         set_size_request(width, -1);
+        set_draw_func(draw);
 
         init_gestures ();
     }
@@ -149,13 +149,25 @@ public class Minimap : Gtk.DrawingArea {
 
     private void cairo_surface_record_lines () {
         minimap_cached = null;
+
         int height = lines.length * line_height;
+
+        if (height == 0) return;
+
+        // FIXME Need better strategy. Fails in constrained environment
         set_size_request(width, height);
+        //set_size_request(width, (int) Math.fmin (height, 16384));
 
         var bounds = Cairo.Rectangle ();
         bounds.x = 0; bounds.y = 0; bounds.width = width; bounds.height = height;
+        //bounds.x = 0; bounds.y = 0; bounds.width = width; bounds.height = (int) Math.fmin (height, 16384);
         minimap_cached = new Cairo.RecordingSurface (Cairo.Content.COLOR_ALPHA, bounds);
+
+        //minimap_cached = new Cairo.RecordingSurface (Cairo.Content.COLOR_ALPHA);
+
         var cr = new Cairo.Context (minimap_cached);
+
+        if (cr == null) return;
 
         for (int i = 0; i < lines.length; i++) {
             double y = i * line_height;

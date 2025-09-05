@@ -32,7 +32,11 @@ namespace Tags {
             set { _bg = value; changed (); }
         }
         
+        /* SIGNALS */
+
         public signal void changed ();
+
+        /* METHODS */
 
         public ColorScheme (string name, Gdk.RGBA? fg, Gdk.RGBA? bg) {
             _name = name;

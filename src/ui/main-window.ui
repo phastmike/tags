@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk" version="4.0"/>
-  <template class="TagsWindow" parent="AdwApplicationWindow">
+  <template class="TagsMainWindow" parent="AdwApplicationWindow">
     <property name="title" translatable="yes">Tags</property>
     <property name="default-width">1024</property>
     <property name="default-height">768</property>
@@ -17,7 +17,7 @@
                 <property name="visible">true</property>
                 <property name="child">
                   <object class="AdwButtonContent">
-                    <property name="icon_name">document-open-symbolic</property>
+                    <property name="icon-name">document-open-symbolic</property>
                     <property name="label" translatable="yes">_Open</property>
                     <property name="tooltip_text" translatable="yes">Open File</property>
                     <property name="use-underline">true</property>
@@ -40,10 +40,21 @@
             </child>
             <child type="end">
               <object class="AdwSplitButton" id="button_tags">
-                <property name="icon_name">bookmark-new-symbolic</property>
+                <property name="icon-name">bookmark-new-symbolic</property>
                 <property name="popover">file_popover</property>
               </object>
             </child>
+            <!--
+            <child type="end">
+              <object class="GtkButton">
+              <property name="child">
+                <object class="AdwButtonContent">
+                  <property name="icon-name">sidebar-show-right-symbolic</property>
+                </object>
+              </property>
+              </object>
+            </child>
+            -->
           </object>
         </child>
         <property name="content">
@@ -63,10 +74,10 @@
     <section>
       <item>
         <attribute name="label" translatable="yes">New tag</attribute>
-        <attribute name="action">win.add_tag</attribute>
+        <attribute name="action">win.action_add_tag</attribute>
       </item>
-    </section>  
-    <section>
+      <!--</section>  
+      <section>-->
       <item>
         <attribute name="label" translatable="yes">Save tagged</attribute>
         <attribute name="action">win.save_tagged</attribute>
@@ -76,15 +87,15 @@
     <section>
       <item>
         <attribute name="label" translatable="yes">Load tags</attribute>
-        <attribute name="action">win.load_tags</attribute>
+        <attribute name="action">win.action_load_tags</attribute>
       </item>
       <item>
         <attribute name="label" translatable="yes">Save tags</attribute>
-        <attribute name="action">win.save_tags</attribute>
+        <attribute name="action">win.action_save_tags</attribute>
       </item>
       <item>
         <attribute name="label" translatable="yes">Remove tags</attribute>
-        <attribute name="action">win.dialog_remove_all_tags</attribute>
+        <attribute name="action">win.action_remove_all_tags</attribute>
       </item>
     </section>
     <section>
@@ -115,8 +126,8 @@
         <attribute name="label" translatable="yes">Preferences</attribute>
         <attribute name="action">app.preferences</attribute>
       </item>
-    </section>  
-    <section>  
+      <!--</section>  
+      <section>  -->
       <item>
         <attribute name="label" translatable="yes">Keyboard Shortcuts</attribute>
         <attribute name="action">win.show-help-overlay</attribute>
@@ -125,6 +136,6 @@
         <attribute name="label" translatable="yes">About Tags</attribute>
         <attribute name="action">app.about</attribute>
       </item>
-    </section>
+      </section>
   </menu>
 </interface>

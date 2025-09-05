@@ -13,7 +13,7 @@
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="title" translatable="yes" context="shortcut window">Add a Tag</property>
-                <property name="action-name">win.add_tag</property>
+                <property name="action-name">win.action_add_tag</property>
               </object>
             </child>
             <child>
@@ -53,14 +53,14 @@
             <property name="title" translatable="yes" context="shortcut window">General</property>
             <child>
               <object class="GtkShortcutsShortcut">
-                <property name="title" translatable="yes" context="shortcut window">Show Shortcuts</property>
-                <property name="action-name">win.show-help-overlay</property>
+                <property name="title" translatable="yes" context="shortcut window">Quit</property>
+                <property name="action-name">app.quit</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
-                <property name="title" translatable="yes" context="shortcut window">Quit</property>
-                <property name="action-name">app.quit</property>
+                <property name="title" translatable="yes" context="shortcut window">Show Shortcuts</property>
+                <property name="action-name">win.show-help-overlay</property>
               </object>
             </child>
             <child>
@@ -71,8 +71,14 @@
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
-                <property name="title" translatable="yes" context="shortcut window">Toggle Minimap visibility </property>
+                <property name="title" translatable="yes" context="shortcut window">Toggle minimap visibility </property>
                 <property name="action-name">win.toggle_minimap</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes" context="shortcut window">Toggle line numbers</property>
+                <property name="action-name">win.action_toggle_line_number</property>
               </object>
             </child>
           </object>

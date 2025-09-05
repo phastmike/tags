@@ -10,7 +10,7 @@
  */
 
 namespace Tags {
-    [GtkTemplate (ui = "/io/github/phastmike/tags/tag-dialog-window.ui")]
+    [GtkTemplate (ui = "/io/github/phastmike/tags/ui/tag-dialog-window.ui")]
     public class TagDialogWindow : Adw.Window {
         [GtkChild]
         private unowned Gtk.Button button_ok;
@@ -116,7 +116,7 @@ namespace Tags {
             if (tag.colors.fg != null) button_fg_color.set_rgba (tag.colors.fg);
             if (tag.colors.bg != null ) button_bg_color.set_rgba (tag.colors.bg);
 
-            this.set_default_size (600, 620);
+            //this.set_default_size (600, 620);
 
             button_ok.clicked.connect (() => { 
                 tag.pattern = entry_tag_pattern.get_text ();

@@ -9,14 +9,14 @@
  */
 
 namespace Tags {
-    [GtkTemplate (ui = "/io/github/phastmike/tags/lines-tree-view.ui")]
+    [GtkTemplate (ui = "/io/github/phastmike/tags/ui/lines-tree-view.ui")]
     public class LinesTreeView : Gtk.TreeView {
         [GtkChild]
         unowned Gtk.ListStore line_store;
         [GtkChild]
-        public unowned Gtk.TreeModelFilter line_store_filter;
+        unowned Gtk.TreeModelFilter line_store_filter;
         [GtkChild]
-        public unowned Gtk.TreeViewColumn col_line_number;
+        unowned Gtk.TreeViewColumn col_line_number;
         [GtkChild]
         unowned Gtk.TreeViewColumn col_line_text;
         [GtkChild]
@@ -30,11 +30,11 @@ namespace Tags {
         }
 
         public bool hide_untagged {set; get; default=false;}
+        private bool will_clear_all {private set; private get; default=false;}
 
         /* SIGNALS */
 
         public signal void cleared ();
-        public signal void set_file_ended ();
 
         /* DELEGATES */
 
@@ -44,35 +44,28 @@ namespace Tags {
         public delegate void LineColorFunc (string text, Gtk.CellRendererText cell);
         private LineColorFunc? delegate_line_color_func = null;
 
-        /* CONTRUCTOR + METHODS */
+        /* METHODS */
 
-        public LinesTreeView (/*Gtk.TreeModel tags*/) {
-            var preferences = Preferences.instance ();
+        public LinesTreeView () {
+            model = line_store_filter;
 
-            update_line_number_colors (preferences);
-
-            //this.tags = tags;
-            this.model = line_store_filter;
-            col_line_number.set_visible (preferences.ln_visible);
-
-            preferences.line_number_colors_changed.connect ((p) => {
-                update_line_number_colors (p);
-                col_line_number.set_visible (p.ln_visible);
-            });
-
-            this.set_search_equal_func ((model, column, key, iter) => {
+            set_search_equal_func ((model, column, key, iter) => {
                 string line;
                 model.@get (iter, Columns.LINE_TEXT, out line);
                 return !line.contains(key);
             });
 
             line_store_filter.set_visible_func ((model, iter) => {
+                if (will_clear_all == true) {
+                    return false;
+                }
+
                 if (hide_untagged == false) {
                     return true;
                 } else {
                     string line;
                     bool found = false;
-                    model.@get (iter, 1, out line);
+                    model.@get (iter, Columns.LINE_TEXT, out line);
                     return delegate_line_filter_func != null ?
                         delegate_line_filter_func (line) : false;
                 }
@@ -95,6 +88,18 @@ namespace Tags {
             });
         }
 
+        public void set_line_number_visibility (bool visible) {
+            col_line_number.set_visible (visible);
+        }
+
+        public bool get_line_number_visibility () {
+            return col_line_number.get_visible ();
+        }
+
+        public void refilter () {
+            line_store_filter.refilter ();
+        }
+
         public void delegate_line_filter_set (LineFilterFunc? callback) {
             delegate_line_filter_func = callback;
         }
@@ -115,47 +120,18 @@ namespace Tags {
             return (string) string_builder.data;
         }
 
-        /* Helper method to aid in the async read from the input stream */
-        private async void read_from_input_stream_async (DataInputStream dis) {
-            var nr = 0;
-            string? line;
+        public void add_line (uint nr, string line) {
             Gtk.TreeIter iter;
-
-            try {
-                while ((line = yield dis.read_line_async ()) != null) {
-                    //line = line.escape ();
-                    if (line.data[line.length-1] == '\r') {
-                        line.data[line.length-1] = ' ';
-                    }
-                    line_store.append (out iter);
-                    line_store.@set (iter, Columns.LINE_NUMBER, ++nr, Columns.LINE_TEXT, line, -1);
-                }
-            } catch (IOError e) {
-                warning ("%s\n", e.message);
-            }
+            line_store.append (out iter);
+            line_store.@set (iter, Columns.LINE_NUMBER, nr, Columns.LINE_TEXT, line, -1);
         }
 
-        public void set_file (File file, Cancellable cancellable) {
-            this.model = null;
-
+        public void remove_all_lines () {
+            will_clear_all = true;
+            line_store_filter.refilter ();
             line_store.clear ();
+            will_clear_all = false;
             cleared ();
-
-            file.read_async.begin (Priority.DEFAULT, cancellable, (obj, res) => {
-                Gtk.TreeIter iter;
-                try {
-                    FileInputStream @is = file.read_async.end (res);
-                    DataInputStream dis = new DataInputStream (@is);
-                    read_from_input_stream_async.begin (dis, (obj, res) => {
-                        read_from_input_stream_async.end (res);
-                        set_file_ended();
-                    });
-                } catch (Error e) {
-                    warning (e.message);
-                }
-            });
-
-            this.model = line_store_filter;
         }
 
         public string[] model_to_array () {
@@ -170,31 +146,21 @@ namespace Tags {
             return lines.to_array ();
         }
 
-        public async void to_file (File file) {
-            StringBuilder str;
-            FileOutputStream fsout;
-
-            str = new StringBuilder ();
-            str.append("");     // Fixes minor bug? Buffer isn't empty !?!?
-
-            line_store_filter.foreach ((model, path, iter) => {
-                string line;
-                model.@get (iter, Columns.LINE_TEXT, out line);
-                str.append_printf ("%s\n", line);
-                return false;
-            });
-
-            try {
-                fsout = file.replace (null, false, FileCreateFlags.REPLACE_DESTINATION, null); 
-                fsout.write_all_async.begin (str.data, Priority.DEFAULT, null, (obj, res) => {
-                    fsout.close ();
-                });
-            } catch (Error e) {
-                warning ("Error: %s", e.message);
-            }
+        public void set_linen_number_color_fg (string color) {
+            var rgb = Gdk.RGBA ();
+            rgb.parse (color);
+            renderer_line_number.foreground_rgba = rgb;
+            queue_draw ();
         }
 
-        private void update_line_number_colors (Preferences p) {
+        public void set_linen_number_color_bg (string color) {
+            var rgb = Gdk.RGBA ();
+            rgb.parse (color);
+            renderer_line_number.background_rgba = rgb;
+            queue_draw ();
+        }
+
+        public void update_line_number_colors (Preferences p) {
             var rgb = Gdk.RGBA ();
 
             rgb.parse (p.ln_fg_color);
@@ -202,7 +168,7 @@ namespace Tags {
             rgb.parse (p.ln_bg_color);
             renderer_line_number.background_rgba = rgb;
             //renderer_line_number.size_points = 8.0;
-            
+    
             queue_draw ();
         }
 

@@ -28,7 +28,7 @@ namespace Tags {
             base.activate ();
             var win = this.active_window;
             if (win == null) {
-                win = new Tags.Window (this);
+                win = new Tags.MainWindow (this);
             }
             win.present ();
         }
@@ -36,9 +36,9 @@ namespace Tags {
         public override void open (File[] files, string hint) {
             foreach (var file in files) {
                 if (file.query_exists () == true) {
-                    var win = new Tags.Window (this);
+                    var win = new Tags.MainWindow (this);
                     win.present ();
-                    win.set_file (file);
+                    win.open_file (file);
                 } else {
                     warning ("file '%s' does not exist ...", file.get_basename ());
                 }
@@ -77,7 +77,7 @@ namespace Tags {
         }
 
         private void on_new_window () {
-            new Tags.Window (this).present ();
+            new Tags.MainWindow (this).present ();
         }
     }
 }

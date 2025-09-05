@@ -1,7 +1,7 @@
 {
     "app-id" : "io.github.phastmike.tags",
     "runtime" : "org.gnome.Platform",
-    "runtime-version" : "45",
+    "runtime-version" : "47",
     "sdk" : "org.gnome.Sdk",
     "command" : "tags",
     "finish-args" : [
@@ -10,7 +10,9 @@
         "--socket=fallback-x11",
         "--device=dri",
         "--socket=wayland",
-        "--filesystem=host"
+        "--filesystem=host",
+        "--env=GSK_RENDERER=vulkan",
+        "--env=LIBGL_ALWAYS_SOFTWARE=1"
     ],
     "cleanup" : [
         "/include",
@@ -33,15 +35,9 @@
                 {
                     "type" : "git",
                     "url" : "https://github.com/phastmike/tags.git",
-                    "commit" : "e2042f1bb03ea4cde1e60b12c33fc2ef2677981e"
+                    "commit": "f1784019da74d4525962b778856531d6c80ffa69"
                 }
-            ],
-            "config-opts" : [
-                "--libdir=lib"
             ]
         }
-    ],
-    "build-options" : {
-        "env" : {        }
-    }
+    ]
 }
