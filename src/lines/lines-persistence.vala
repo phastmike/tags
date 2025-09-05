@@ -41,7 +41,7 @@ namespace Tags {
 
             var file_dialog = new Gtk.FileDialog ();
             file_dialog.set_modal (true);
-            file_dialog.set_title ("Open log file");
+            file_dialog.set_title ("Open File");
             file_dialog.set_accept_label ("Open");
             file_dialog.set_filters (file_filters);
 

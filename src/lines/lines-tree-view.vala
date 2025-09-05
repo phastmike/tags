@@ -35,7 +35,6 @@ namespace Tags {
         /* SIGNALS */
 
         public signal void cleared ();
-        //public signal void set_file_ended ();
 
         /* DELEGATES */
 

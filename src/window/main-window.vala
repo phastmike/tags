@@ -392,8 +392,8 @@ namespace Tags {
 
             var cancel_open = new Cancellable ();
 
-            var dialog = new Adw.AlertDialog ("Open File", file.get_basename ());
-            dialog.add_response ("cancel", "_Cancel");
+            var dialog = new Adw.AlertDialog ("Opening File", file.get_basename ());
+            dialog.add_response ("cancel", "_Close");
             dialog.set_response_appearance ("cancel", Adw.ResponseAppearance.SUGGESTED);
             dialog.set_default_response ("cancel");
             dialog.set_close_response ("cancel");
@@ -849,7 +849,7 @@ namespace Tags {
         }
 
         private void inform_user_no_tagged_lines () {
-            overlay.dismiss_all ();
+            //overlay.dismiss_all ();
             var toast = new Adw.Toast ("No tags enabled!..");
             toast.set_timeout (5);
             overlay.add_toast (toast);
