@@ -580,8 +580,6 @@ namespace Tags {
             Gtk.TreeModel tags;
             Gtk.TreeModel lines;
 
-            // Kinda redundant
-            if (tags_treeview.ntags <= 0) return;
             tags_treeview.reset_hit_counters ();
 
             tags = tags_treeview.get_model ();
@@ -849,10 +847,11 @@ namespace Tags {
         }
 
         private void inform_user_no_tagged_lines () {
+            //FIXME: dismiss_all -> Not available thru flatpak yet !?
             //overlay.dismiss_all ();
-            var toast = new Adw.Toast ("No tags enabled!..");
-            toast.set_timeout (5);
-            overlay.add_toast (toast);
+            //var toast = new Adw.Toast ("No tags enabled! Showing all lines ...");
+            //toast.set_timeout (3);
+            //overlay.add_toast (toast);
             hide_untagged_lines ();
         }
 
