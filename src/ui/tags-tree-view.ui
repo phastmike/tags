@@ -34,8 +34,12 @@
       <object class="GtkTreeViewColumn" id="col_pattern">
         <property name="title">Pattern</property>
         <property name="expand">True</property>
+        <!--<property name="resizable">true</property>-->
         <child>
-          <object class="GtkCellRendererText" id="renderer_pattern"/>
+          <object class="GtkCellRendererText" id="renderer_pattern">
+            <property name="ellipsize">PANGO_ELLIPSIZE_END</property>
+            <property name="ellipsize-set">true</property>
+          </object>
         </child>
       </object>
     </child>

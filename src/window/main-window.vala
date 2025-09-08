@@ -20,6 +20,7 @@ namespace Tags {
         [GtkChild]
         unowned Adw.ToastOverlay overlay;
 
+        private Adw.BottomSheet bottom_sheet;
         private Gtk.Box main_box;
         private Gtk.Paned paned;
         private Minimap minimap;
@@ -79,10 +80,20 @@ namespace Tags {
             setup_lines_treeview ();
             setup_minimap (scrolled_lines.get_vadjustment ());
             setup_main_box ();
-            setup_paned (main_box, scrolled_tags);
+
+            bottom_sheet = new Adw.BottomSheet ();
+            bottom_sheet.set_content (main_box);
+            //var bbar = new Gtk.Button ();
+            //bottom_sheet.set_bottom_bar (bbar);
+            var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
+            box.append (scrolled_tags);
+            scrolled_tags.set_size_request (-1, 200);
+            bottom_sheet.set_sheet (box);
+
+            //setup_paned (main_box, scrolled_tags);
             setup_buttons ();
 
-            overlay.set_child (paned);
+            overlay.set_child (bottom_sheet);
         }
 
         // Override the size_allocate method
@@ -641,6 +652,8 @@ namespace Tags {
         }
 
         private void toggle_tags_view () {
+            bottom_sheet.open = true;
+            return;
             var view_height = paned.get_height ();
             var action = this.lookup_action ("toggle_tags_view");
             
