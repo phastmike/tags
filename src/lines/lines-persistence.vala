@@ -50,14 +50,7 @@ namespace Tags {
             }
         }
 
-        /* INSTANCE METHODS */
-
-        public LinesPersistence () {
-            lines = new GLib.ListStore (typeof(Gtk.StringObject));
-        }
-
-
-        public async File? save_lines_file_dialog (Gtk.Window? parent_window, string? suggested_filename = null, Cancellable? cancellable = null) throws Error {
+        public static async File? save_lines_file_dialog (Gtk.Window? parent_window, string? suggested_filename = null, Cancellable? cancellable = null) throws Error {
             var file_dialog = new Gtk.FileDialog ();
             file_dialog.set_modal (true);
             file_dialog.set_title ("Save tagged lines to file");
@@ -75,6 +68,12 @@ namespace Tags {
                 throw e;
                 return null;
             }
+        }
+
+        /* INSTANCE METHODS */
+
+        public LinesPersistence () {
+            lines = new GLib.ListStore (typeof(Gtk.StringObject));
         }
 
         public async void from_file (File file, Cancellable cancellable) {
@@ -114,9 +113,20 @@ namespace Tags {
             });
 
             try {
+                if (file.query_exists () == true) file.@delete ();
                 fsout = file.replace (null, false, FileCreateFlags.REPLACE_DESTINATION, null); 
                 fsout.write_all_async.begin (str.data, Priority.DEFAULT, null, (obj, res) => {
-                    fsout.close ();
+                    size_t bytes_wr;
+                    bool ret = fsout.write_all_async.end (res, out bytes_wr);
+                    message ("write_all_async returned (%s - wrote %zu)", ret.to_string (), bytes_wr);
+                    fsout.close_async.begin (Priority.DEFAULT, null, (obj, res) => {
+                        try {
+                            bool r = fsout.close_async.end (res);
+                            message ("Closed with result (%s)", r.to_string ());
+                        } catch (IOError e) {
+                            warning (e.message);
+                        }
+                    });
                 });
             } catch (Error e) {
                 warning (e.message);

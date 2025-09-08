@@ -187,7 +187,7 @@ namespace Tags {
 
                 tags_model.@get (tag_iter, 0, out tag);
 
-                if (tag.applies_to (text) && tag.enabled) {
+                if (tag.applies_to (text) && tag.enabled == true) {
                     found = true;
                 }
 
@@ -546,28 +546,26 @@ namespace Tags {
         }
 
         private void save_tagged () {
-            bool active_filter_status = false;
+            bool revert_hide = false;
             string? suggested_filename = null;
 
             if (file_opened != null) {
                 suggested_filename = "%s.tagged".printf (file_opened.get_basename ());
             }
-            var persistence = new LinesPersistence ();
-            persistence.save_lines_file_dialog.begin (this, suggested_filename, null, (obj, res) => {
+
+            LinesPersistence.save_lines_file_dialog.begin (this, suggested_filename, null, (obj, res) => {
                 try {
-                    var file = persistence.save_lines_file_dialog.end (res);
+                    var file = LinesPersistence.save_lines_file_dialog.end (res);
                     if (file != null) {
                         if (lines_treeview.hide_untagged == false) {
                             hide_untagged_lines ();
-                        } else {
-                            active_filter_status = true;
+                            revert_hide = true;
                         }
 
-                        persistence.to_file (file, lines_treeview.get_model ());
-
-                        if (active_filter_status == false) {
-                            hide_untagged_lines ();
-                        }
+                        var persistence = new LinesPersistence ();
+                        persistence.to_file.begin (file, lines_treeview.get_model (), (obj, res) => {
+                            if (revert_hide == true) hide_untagged_lines ();
+                        });
                     }
                 } catch (Error e) {
                     warning (e.message);

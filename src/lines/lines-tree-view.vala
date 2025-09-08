@@ -47,7 +47,7 @@ namespace Tags {
         /* METHODS */
 
         public LinesTreeView () {
-            model = line_store_filter;
+            //model = line_store_filter;
 
             set_search_equal_func ((model, column, key, iter) => {
                 string line;
