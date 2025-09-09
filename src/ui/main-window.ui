@@ -15,6 +15,7 @@
             <child type="start">
               <object class="GtkButton" id="button_open_file">
                 <property name="visible">true</property>
+                <property name="tooltip-text">Open File</property>
                 <property name="child">
                   <object class="AdwButtonContent">
                     <property name="icon-name">document-open-symbolic</property>
@@ -36,25 +37,30 @@
                 <property name="primary">true</property>
                 <property name="icon-name">open-menu-symbolic</property>
                 <property name="menu-model">primary_menu</property>
+                <property name="tooltip-text">Main Menu</property>
               </object>
             </child>
             <child type="end">
               <object class="AdwSplitButton" id="button_tags">
                 <property name="icon-name">bookmark-new-symbolic</property>
                 <property name="popover">file_popover</property>
+                <property name="tooltip-text">New Tag</property>
               </object>
             </child>
-            <!--
             <child type="end">
-              <object class="GtkButton">
-              <property name="child">
-                <object class="AdwButtonContent">
-                  <property name="icon-name">sidebar-show-right-symbolic</property>
-                </object>
-              </property>
+              <object class="GtkButton" id="button_minimap">
+                <property name="visible">false</property>
+                <property name="icon-name">panel-right-symbolic</property>
+                <property name="tooltip-text">Minimap</property>
               </object>
             </child>
-            -->
+            <child type="end">
+              <object class="GtkButton" id="button_tags_list">
+                <property name="visible">true</property>
+                <property name="icon-name">panel-bottom-symbolic</property>
+                <property name="tooltip-text">Tags List</property>
+              </object>
+            </child>
           </object>
         </child>
         <property name="content">
@@ -67,17 +73,15 @@
   <!-- Additional data -->
 
   <object class="GtkPopoverMenu" id="file_popover">
-    <property name="menu-model">file_menu</property>
+    <property name="menu-model">secondary_menu</property>
   </object>
 
-  <menu id="file_menu">
+  <menu id="secondary_menu">
     <section>
       <item>
         <attribute name="label" translatable="yes">New tag</attribute>
         <attribute name="action">win.action_add_tag</attribute>
       </item>
-      <!--</section>  
-      <section>-->
       <item>
         <attribute name="label" translatable="yes">Save tagged</attribute>
         <attribute name="action">win.save_tagged</attribute>
@@ -85,6 +89,11 @@
       </item>
     </section> 
     <section>
+      <item>
+        <attribute name="label" translatable="yes">Tags</attribute>
+        <attribute name="action">none</attribute>
+        <attribute name="disabled">true</attribute>
+      </item>
       <item>
         <attribute name="label" translatable="yes">Load tags</attribute>
         <attribute name="action">win.action_load_tags</attribute>
@@ -99,6 +108,11 @@
       </item>
     </section>
     <section>
+      <item>
+        <attribute name="label" translatable="yes">View</attribute>
+        <attribute name="action">none</attribute>
+        <attribute name="disabled">true</attribute>
+      </item>
       <item>
         <attribute name="label" translatable="yes">Hide tags list</attribute>
         <attribute name="action">win.toggle_tags_view</attribute>
@@ -123,11 +137,14 @@
     </section>  
     <section>
       <item>
+        <attribute name="label" translatable="yes">Application</attribute>
+        <attribute name="action">none</attribute>
+        <attribute name="disabled">true</attribute>
+      </item>
+      <item>
         <attribute name="label" translatable="yes">Preferences</attribute>
         <attribute name="action">app.preferences</attribute>
       </item>
-      <!--</section>  
-      <section>  -->
       <item>
         <attribute name="label" translatable="yes">Keyboard Shortcuts</attribute>
         <attribute name="action">win.show-help-overlay</attribute>

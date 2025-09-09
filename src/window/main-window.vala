@@ -18,6 +18,10 @@ namespace Tags {
         [GtkChild]
         unowned Adw.WindowTitle window_title;
         [GtkChild]
+        unowned Gtk.Button button_tags_list;
+        [GtkChild]
+        unowned Gtk.Button button_minimap;
+        [GtkChild]
         unowned Adw.ToastOverlay overlay;
 
         private Adw.BottomSheet bottom_sheet;
@@ -83,10 +87,12 @@ namespace Tags {
 
             bottom_sheet = new Adw.BottomSheet ();
             bottom_sheet.set_content (main_box);
-            //var bbar = new Gtk.Button ();
-            //bottom_sheet.set_bottom_bar (bbar);
+            var bbar = new Gtk.Button ();
+            bottom_sheet.set_bottom_bar (bbar);
             var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
             box.append (scrolled_tags);
+            bottom_sheet.set_reveal_bottom_bar (false);
+            
             scrolled_tags.set_size_request (-1, 200);
             bottom_sheet.set_sheet (box);
 
@@ -344,6 +350,14 @@ namespace Tags {
 
             button_tags.clicked.connect ( () => {
                 action_add_tag ();
+            });
+
+            button_minimap.clicked.connect ( () => {
+                toggle_minimap ();
+            });
+
+            button_tags_list.clicked.connect ( () => {
+                toggle_tags_view ();
             });
 
             close_request.connect ( () => {
@@ -652,7 +666,15 @@ namespace Tags {
         }
 
         private void toggle_tags_view () {
-            bottom_sheet.open = true;
+            if (bottom_sheet.get_open () == false) {
+                int h = (int) (tags_treeview.ntags + 2) * 26;
+                //if (h < 200) h = 200;
+                if (h >= 306) h = 306;
+                scrolled_tags.set_size_request (-1, h);
+                bottom_sheet.set_open (true);
+            } else {
+                bottom_sheet.set_open (false);
+            }
             return;
             var view_height = paned.get_height ();
             var action = this.lookup_action ("toggle_tags_view");
