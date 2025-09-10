@@ -87,8 +87,13 @@ namespace Tags {
 
             bottom_sheet = new Adw.BottomSheet ();
             bottom_sheet.set_content (main_box);
+            
+            /*
             var bbar = new Gtk.Button ();
+            bbar.set_child (new Gtk.Label ("Tags List"));
             bottom_sheet.set_bottom_bar (bbar);
+            */
+            
             var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
             box.append (scrolled_tags);
             bottom_sheet.set_reveal_bottom_bar (false);
@@ -98,6 +103,9 @@ namespace Tags {
 
             //setup_paned (main_box, scrolled_tags);
             setup_buttons ();
+
+            var action = this.lookup_action ("toggle_tags_view");
+            action.change_state (new Variant.boolean (true));
 
             overlay.set_child (bottom_sheet);
         }
@@ -553,11 +561,18 @@ namespace Tags {
         }
         
         private void action_save_tags () {
+            string? suggested_filename = null;
+
+            if (file_opened != null) {
+                suggested_filename = "%s.tags".printf (file_opened.get_basename ());
+            }
+
             var persistance = new TagsPersistence ();
             persistance.saved_to_file.connect ( (file) => {
                 tags_changed = false;
             });
-            persistance.save_tags_file_dialog (tags_treeview.get_model ());
+
+            persistance.save_tags_file_dialog (tags_treeview.get_model (), this, suggested_filename);
         }
 
         private void save_tagged_enable () {
@@ -666,16 +681,20 @@ namespace Tags {
         }
 
         private void toggle_tags_view () {
+            var action = this.lookup_action ("toggle_tags_view");
             if (bottom_sheet.get_open () == false) {
+                action.change_state (new Variant.boolean (false));
                 int h = (int) (tags_treeview.ntags + 2) * 26;
-                //if (h < 200) h = 200;
+                if (h < 167) h = 167;
                 if (h >= 306) h = 306;
                 scrolled_tags.set_size_request (-1, h);
                 bottom_sheet.set_open (true);
             } else {
                 bottom_sheet.set_open (false);
+                action.change_state (new Variant.boolean (true));
             }
             return;
+            /*
             var view_height = paned.get_height ();
             var action = this.lookup_action ("toggle_tags_view");
             
@@ -687,6 +706,7 @@ namespace Tags {
                 paned.set_position (view_height - 5);
                 action.change_state (new Variant.boolean (true));
             }
+            */
         }
         
         private void copy () {

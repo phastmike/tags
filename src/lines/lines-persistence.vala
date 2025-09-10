@@ -84,7 +84,14 @@ namespace Tags {
 
                 try {
                     while ((line = yield dis.read_line_async ()) != null) {
-                        line = line.replace ("\r", "");
+                        for (int i = 0; i < line.length; i++) {
+                            if (line.data[i] == '\r') line.data[i] = 0x20;
+                        }
+
+                        //FIXME: Bug in string.replace method when replacing \r (0x0d)
+                        // WORKAROUND: Iterate and replace... (as above)
+                        //line = line.replace ("\r", " ");
+
                         lines.append (new Gtk.StringObject (line));
                     }
                     loaded_from_file (lines);

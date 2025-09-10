@@ -89,11 +89,13 @@
       </item>
     </section> 
     <section>
+      <!--
       <item>
         <attribute name="label" translatable="yes">Tags</attribute>
         <attribute name="action">none</attribute>
         <attribute name="disabled">true</attribute>
       </item>
+        -->    
       <item>
         <attribute name="label" translatable="yes">Load tags</attribute>
         <attribute name="action">win.action_load_tags</attribute>
@@ -113,10 +115,12 @@
         <attribute name="action">none</attribute>
         <attribute name="disabled">true</attribute>
       </item>
+      <!--
       <item>
         <attribute name="label" translatable="yes">Hide tags list</attribute>
         <attribute name="action">win.toggle_tags_view</attribute>
       </item>
+      -->
       <item>
         <attribute name="label" translatable="yes">Hide Untagged</attribute>
         <attribute name="action">win.hide_untagged_lines</attribute>
@@ -136,11 +140,13 @@
       </item>
     </section>  
     <section>
+      <!--
       <item>
         <attribute name="label" translatable="yes">Application</attribute>
         <attribute name="action">none</attribute>
         <attribute name="disabled">true</attribute>
-      </item>
+        </item>
+      -->
       <item>
         <attribute name="label" translatable="yes">Preferences</attribute>
         <attribute name="action">app.preferences</attribute>

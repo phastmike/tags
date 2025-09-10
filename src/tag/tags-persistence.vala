@@ -59,13 +59,17 @@ namespace Tags {
             }
         }
 
-        public async void save_tags_file_dialog (Gtk.TreeModel model, Gtk.Window? parent_window = null, Cancellable? cancellable = null) {
+        public async void save_tags_file_dialog (Gtk.TreeModel model, Gtk.Window? parent_window = null, string? suggested_filename, Cancellable? cancellable = null) {
             File? file = null;
 
             var file_dialog = new Gtk.FileDialog ();
             file_dialog.set_modal (true);
             file_dialog.set_title ("Save Tags");
             file_dialog.set_accept_label ("Save");
+
+            if (suggested_filename != null) {
+                file_dialog.set_initial_name (suggested_filename);
+            }
 
             try {
                 file = yield file_dialog.save (parent_window, cancellable);
@@ -104,13 +108,13 @@ namespace Tags {
             }
         }
 
-        public void to_file (File file, Gtk.TreeModel tag_store) {
+        public void to_file (File file, Gtk.TreeModel model) {
             Json.Node root = new Json.Node (Json.NodeType.ARRAY);
             Json.Array array = new Json.Array ();
 
-            tag_store.foreach ((model, path, iter) => {
+            model.foreach ((imodel, path, iter) => {
                 Tag? tag = null;
-                model.@get (iter, 0, out tag);
+                imodel.@get (iter, 0, out tag);
                 if (tag == null) return false;
                 Json.Node node = Json.gobject_serialize (tag);
                 array.add_element (node); 
