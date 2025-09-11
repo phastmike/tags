@@ -45,6 +45,17 @@
   </custom>
   <releases>
 
+    <release version="1.6" date="2025-09-05">
+      <description translatable="no">
+        <p>Tags 1.6 is out</p>
+        <p>What's new:</p>
+        <ul>
+          <li>Using Adw.BottomSheet instead of Gtk.Paned</li>
+        </ul>
+        <p>Minor tweaks and improvements</p>
+      </description>
+    </release>
+
     <release version="1.5" date="2025-09-05">
       <description translatable="no">
         <p>Tags 1.5 is out</p>

@@ -1,5 +1,5 @@
 project('io.github.phastmike.tags', ['c', 'vala'],
-          version: '1.5',
+          version: '1.6',
     meson_version: '>= 0.49.0',
   default_options: [ 'warning_level=2',
                    ],
