@@ -22,6 +22,10 @@
       <li>Navigate through similarly tagged lines with ease</li>
     </ul>
   </description>
+  <branding>
+    <color type="primary" scheme_preference="light">#f6f5f4</color>
+    <color type="primary" scheme_preference="dark">#3d3846</color>
+  </branding>
   <screenshots>
     <screenshot type="default">
       <caption>Tags main window</caption>
