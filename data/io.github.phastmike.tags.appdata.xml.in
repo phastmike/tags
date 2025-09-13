@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 2022/24 José Miguel Fonte -->
 <component type="desktop-application">
-  <id>io.github.phastmike.tags.desktop</id>
+  <id>io.github.phastmike.tags</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>MIT</project_license>
   <name>Tags</name>
@@ -26,6 +26,7 @@
     <color type="primary" scheme_preference="light">#f6f5f4</color>
     <color type="primary" scheme_preference="dark">#3d3846</color>
   </branding>
+  <launchable type="desktop-id">io.github.phastmike.tags.desktop</launchable>
   <screenshots>
     <screenshot type="default">
       <caption>Tags main window</caption>
