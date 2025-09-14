@@ -30,11 +30,19 @@
   <screenshots>
     <screenshot type="default">
       <caption>Tags main window</caption>
-      <image>https://raw.githubusercontent.com/phastmike/tags/refs/heads/master/data/screenshots/tags.png</image>
+      <image>https://raw.githubusercontent.com/phastmike/tags/refs/heads/master/data/screenshots/tags-default.png</image>
+    </screenshot>
+    <screenshot type="normal">
+      <caption>Tags main window</caption>
+      <image>https://raw.githubusercontent.com/phastmike/tags/refs/heads/master/data/screenshots/tags-normal-1.png</image>
     </screenshot>
     <screenshot type="normal">
       <caption>Tag dialog</caption>
-      <image>https://raw.githubusercontent.com/phastmike/tags/refs/heads/master/data/screenshots/tag-dialog.png</image>
+      <image>https://raw.githubusercontent.com/phastmike/tags/refs/heads/master/data/screenshots/tags-normal-2.png</image>
+    </screenshot>
+    <screenshot type="normal">
+      <caption>Tag dialog</caption>
+      <image>https://raw.githubusercontent.com/phastmike/tags/refs/heads/master/data/screenshots/tags-normal-3.png</image>
     </screenshot>
   </screenshots>
   <developer_name>José Miguel Fonte</developer_name>
