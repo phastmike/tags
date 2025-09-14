@@ -4,11 +4,11 @@ A GNOME text tagger inspired by the [TextAnalysisTool.NET](https://textanalysist
 tool.
 
 The main goal is to aid log analysis by tagging lines with user defined colors.
-Tags have a description name, a visibility toggle, a color scheme and a hit counter.
+Tags have a match pattern, description name, visibility toggle, color scheme and hit counter.
 
 ## Screenshot
 
-![tagger](./data/screenshots/tags.png)
+![tagger](./data/screenshots/tags-default.png)
 
 ## Download
 
@@ -115,5 +115,5 @@ Then, test it with:
 
 ---
 
-Only works with text files and uses string matching rules.
+Only works with text files and uses string matching rules or regular expressions.
 
