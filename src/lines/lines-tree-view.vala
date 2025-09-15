@@ -47,8 +47,6 @@ namespace Tags {
         /* METHODS */
 
         public LinesTreeView () {
-            //model = line_store_filter;
-
             set_search_equal_func ((model, column, key, iter) => {
                 string line;
                 model.@get (iter, Columns.LINE_TEXT, out line);
@@ -146,14 +144,14 @@ namespace Tags {
             return lines.to_array ();
         }
 
-        public void set_linen_number_color_fg (string color) {
+        public void set_line_number_color_fg (string color) {
             var rgb = Gdk.RGBA ();
             rgb.parse (color);
             renderer_line_number.foreground_rgba = rgb;
             queue_draw ();
         }
 
-        public void set_linen_number_color_bg (string color) {
+        public void set_line_number_color_bg (string color) {
             var rgb = Gdk.RGBA ();
             rgb.parse (color);
             renderer_line_number.background_rgba = rgb;

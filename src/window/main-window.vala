@@ -277,16 +277,16 @@ namespace Tags {
             });
 
             preferences.line_number_color_fg_changed.connect ( (c) => {
-                treeview.set_linen_number_color_fg (c);
+                treeview.set_line_number_color_fg (c);
             });
 
             preferences.line_number_color_bg_changed.connect ( (c) => {
-                treeview.set_linen_number_color_bg (c);
+                treeview.set_line_number_color_bg (c);
             });
 
             treeview.set_line_number_visibility (preferences.ln_visible);
-            treeview.set_linen_number_color_fg (preferences.ln_fg_color);
-            treeview.set_linen_number_color_bg (preferences.ln_bg_color);
+            treeview.set_line_number_color_fg (preferences.ln_fg_color);
+            treeview.set_line_number_color_bg (preferences.ln_bg_color);
         }
 
         private void setup_scrolled_lines () {
@@ -452,15 +452,22 @@ namespace Tags {
 
                 lines_treeview.remove_all_lines ();
                 for (int i = 0; i < lines.get_n_items (); i++) {
-                    lines_treeview.add_line (i+1, ((Gtk.StringObject)lines.get_item (i)).get_string ());
+                    lines_treeview.add_line (i+1, ((Gtk.StringObject) lines.get_item (i)).get_string ());
                 } 
 
                 if (Preferences.instance ().tags_autoload == true) {
                     file_tags = File.new_for_path (file.get_path () + ".tags");
                     if (file_tags.query_exists ()) {
                         load_tags_from_file (file_tags);
+                        /*
+                        //overlay.dismiss_all ();
+                        overlay.get_child ();
+                        var toast = new Adw.Toast ("Autoloaded Tags file ...");
+                        toast.set_timeout (8);
+                        overlay.add_toast (toast);
+                        */
                     }
-                    count_tag_hits ();
+                    count_tag_hits (); // For existing tags
                 }
 
                 minimap.set_array (lines_treeview.model_to_array ());
