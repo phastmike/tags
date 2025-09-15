@@ -23,8 +23,8 @@
     </ul>
   </description>
   <branding>
-    <color type="primary" scheme_preference="light">#f6f5f4</color>
-    <color type="primary" scheme_preference="dark">#3d3846</color>
+    <color type="primary" scheme_preference="light">#d1e3f0</color>
+    <color type="primary" scheme_preference="dark">#1a69a5</color>
   </branding>
   <launchable type="desktop-id">io.github.phastmike.tags.desktop</launchable>
   <screenshots>
