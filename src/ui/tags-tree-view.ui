@@ -53,7 +53,7 @@
     </child>
     <child>
       <object class="GtkTreeViewColumn" id="col_case">
-        <property name="title">Cs</property>
+        <property name="title">Aa</property>
         <child>
           <object class="GtkCellRendererPixbuf" id="renderer_case"/>
         </child>
