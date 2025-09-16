@@ -16,6 +16,7 @@
               <object class="GtkButton" id="button_open_file">
                 <property name="visible">true</property>
                 <property name="tooltip-text">Open File</property>
+                <property name="action-name">win.action_open_file</property>
                 <property name="child">
                   <object class="AdwButtonContent">
                     <property name="icon-name">document-open-symbolic</property>
@@ -42,10 +43,10 @@
             </child>
             <child type="end">
               <object class="AdwSplitButton" id="button_tags">
-                <!--<property name="icon-name">bookmark-new-symbolic</property>-->
                 <property name="icon-name">list-add-symbolic</property>
                 <property name="popover">file_popover</property>
                 <property name="tooltip-text">New Tag</property>
+                <property name="action-name">win.action_add_tag</property>
               </object>
             </child>
             <child type="end">
@@ -53,15 +54,15 @@
                 <property name="visible">false</property>
                 <property name="icon-name">paned-bottom-symbolic</property>
                 <property name="tooltip-text">Minimap</property>
+                <property name="action-name">win.toggle_minimap</property>
               </object>
             </child>
             <child type="end">
               <object class="GtkButton" id="button_tags_list">
                 <property name="visible">true</property>
-                <!--<property name="icon-name">user-bookmarks-symbolic</property>-->
-                <!--<property name="icon-name">paned-bottom-symbolic</property>-->
                 <property name="icon-name">view-list-symbolic</property>
                 <property name="tooltip-text">Tags List</property>
+                <property name="action-name">win.toggle_tags_view</property>
               </object>
             </child>
           </object>
@@ -92,13 +93,6 @@
       </item>
     </section> 
     <section>
-      <!--
-      <item>
-        <attribute name="label" translatable="yes">Tags</attribute>
-        <attribute name="action">none</attribute>
-        <attribute name="disabled">true</attribute>
-      </item>
-        -->    
       <item>
         <attribute name="label" translatable="yes">Load tags</attribute>
         <attribute name="action">win.action_load_tags</attribute>
@@ -143,13 +137,6 @@
       </item>
     </section>  
     <section>
-      <!--
-      <item>
-        <attribute name="label" translatable="yes">Application</attribute>
-        <attribute name="action">none</attribute>
-        <attribute name="disabled">true</attribute>
-        </item>
-      -->
       <item>
         <attribute name="label" translatable="yes">Preferences</attribute>
         <attribute name="action">app.preferences</attribute>

@@ -14,8 +14,6 @@ namespace Tags {
         [GtkChild]
         unowned Gtk.Button button_open_file;
         [GtkChild]
-        unowned Adw.SplitButton button_tags;
-        [GtkChild]
         unowned Adw.WindowTitle window_title;
         [GtkChild]
         unowned Gtk.Button button_tags_list;
@@ -40,6 +38,7 @@ namespace Tags {
         private bool tags_changed = false;
 
         private ActionEntry[] WINDOW_ACTIONS = {
+            { "action_open_file", action_open_file },
             { "action_toggle_line_number", action_toggle_line_number },
             { "action_add_tag", action_add_tag },
             { "action_remove_all_tags", action_remove_all_tags },
@@ -343,31 +342,6 @@ namespace Tags {
         }
 
         private void setup_buttons () {
-            button_open_file.clicked.connect ( () => {
-                LinesPersistence.open_lines_file_dialog.begin (this, null, (obj, res) => {
-                    try {
-                        File? file = LinesPersistence.open_lines_file_dialog.end (res);
-                        if (file != null) open_file (file);
-                    } catch (Error e) {
-                        if (e.code != 2) {
-                            show_dialog ("Open File", "Could not open file...");
-                        }
-                    }
-                });
-            });
-
-            button_tags.clicked.connect ( () => {
-                action_add_tag ();
-            });
-
-            button_minimap.clicked.connect ( () => {
-                toggle_minimap ();
-            });
-
-            button_tags_list.clicked.connect ( () => {
-                toggle_tags_view ();
-            });
-
             close_request.connect ( () => {
                 if (tags_treeview.ntags > 0 && tags_changed) {
                     var dialog = new Adw.AlertDialog ("Tags changed", "There are unsaved changes, discards changes?");
@@ -923,5 +897,19 @@ namespace Tags {
             dialog.set_close_response ("cancel");
             dialog.present (this);
         }
+
+        private void action_open_file () {
+            LinesPersistence.open_lines_file_dialog.begin (this, null, (obj, res) => {
+                try {
+                    File? file = LinesPersistence.open_lines_file_dialog.end (res);
+                    if (file != null) open_file (file);
+                } catch (Error e) {
+                    if (e.code != 2) {
+                        show_dialog ("Open File", "Could not open file...");
+                    }
+                }
+            });
+        }
+
     }
 }
