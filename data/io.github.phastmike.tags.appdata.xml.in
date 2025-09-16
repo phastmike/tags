@@ -26,6 +26,17 @@
     <color type="primary" scheme_preference="dark">#11466e</color>
   </branding>
   <launchable type="desktop-id">io.github.phastmike.tags.desktop</launchable>
+  <categories>
+    <category>Utility</category>
+    <category>TextEditor</category>
+  </categories>
+  <keywords>
+    <keyword>tags</keyword>
+    <keyword>highlight</keyword>
+    <keyword>logs</keyword>
+    <keyword>color</keyword>
+    <keyword>text</keyword>
+  </keywords>
   <screenshots>
     <screenshot type="default">
       <caption>Tags</caption>
