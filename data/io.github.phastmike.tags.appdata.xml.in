@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 2022/24 José Miguel Fonte -->
 <component type="desktop-application">
   <id>io.github.phastmike.tags</id>
   <metadata_license>CC0-1.0</metadata_license>
@@ -24,7 +23,7 @@
   </description>
   <branding>
     <color type="primary" scheme_preference="light">#d1e3f0</color>
-    <color type="primary" scheme_preference="dark">#1a69a5</color>
+    <color type="primary" scheme_preference="dark">#11466e</color>
   </branding>
   <launchable type="desktop-id">io.github.phastmike.tags.desktop</launchable>
   <screenshots>
