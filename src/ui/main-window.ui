@@ -21,7 +21,7 @@
                   <object class="AdwButtonContent">
                     <property name="icon-name">document-open-symbolic</property>
                     <property name="label" translatable="yes">_Open</property>
-                    <property name="tooltip_text" translatable="yes">Open File</property>
+                    <property name="tooltip_text" translatable="yes">Select a file</property>
                     <property name="use-underline">true</property>
                   </object>
                 </property>
