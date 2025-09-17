@@ -22,6 +22,7 @@ namespace Tags {
         [GtkChild]
         unowned Adw.ToastOverlay overlay;
 
+        private Gtk.Stack stack;
         private Adw.BottomSheet bottom_sheet;
         private Gtk.Box main_box;
         private Gtk.Paned paned;
@@ -87,12 +88,6 @@ namespace Tags {
             bottom_sheet = new Adw.BottomSheet ();
             bottom_sheet.set_content (main_box);
             
-            /*
-            var bbar = new Gtk.Button ();
-            bbar.set_child (new Gtk.Label ("Tags List"));
-            bottom_sheet.set_bottom_bar (bbar);
-            */
-            
             var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
             box.append (scrolled_tags);
             bottom_sheet.set_reveal_bottom_bar (false);
@@ -106,7 +101,12 @@ namespace Tags {
             var action = this.lookup_action ("toggle_tags_view");
             action.change_state (new Variant.boolean (true));
 
-            overlay.set_child (bottom_sheet);
+            stack = new Gtk.Stack ();
+            stack.add_named (new WelcomePage (), "welcome");
+            stack.add_named (bottom_sheet, "main");
+            stack.set_visible_child_name ("welcome");
+            overlay.set_child (stack);
+            //overlay.set_child (bottom_sheet);
         }
 
         // Override the size_allocate method
@@ -389,6 +389,7 @@ namespace Tags {
 
         // NOTE: Needs to open file without the Open File Dialog
         public void open_file (File file) {
+            stack.set_visible_child_name ("main");
             FileType type = file.query_file_type (FileQueryInfoFlags.NONE);
             if (type != FileType.REGULAR) {
                 var toast = new Adw.Toast ("'%s' is not a regular file ...".printf(file.get_basename ()));

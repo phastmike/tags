@@ -30,7 +30,7 @@
             <child type="title">
               <object class="AdwWindowTitle" id="window_title">
                 <property name="title">Tags</property>
-                <property name="subtitle">Open a file to get started ...</property>
+                <!--<property name="subtitle">Open a file to get started ...</property>-->
               </object>
             </child>
             <child type="end">
