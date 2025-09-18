@@ -387,9 +387,10 @@ namespace Tags {
             main_box.append (scrolled_minimap);
         }
 
-        // NOTE: Needs to open file without the Open File Dialog
         public void open_file (File file) {
+            //NOTE: forces UI to change visible stack child
             stack.set_visible_child_name ("main");
+
             FileType type = file.query_file_type (FileQueryInfoFlags.NONE);
             if (type != FileType.REGULAR) {
                 var toast = new Adw.Toast ("'%s' is not a regular file ...".printf(file.get_basename ()));

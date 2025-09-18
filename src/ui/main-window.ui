@@ -3,8 +3,8 @@
   <requires lib="gtk" version="4.0"/>
   <template class="TagsMainWindow" parent="AdwApplicationWindow">
     <property name="title" translatable="yes">Tags</property>
-    <property name="default-width">1024</property>
-    <property name="default-height">768</property>
+    <property name="default-width">720</property>
+    <property name="default-height">720</property>
 	  <style>
       <!--<class name="devel"/>-->
 	  </style>
@@ -15,13 +15,12 @@
             <child type="start">
               <object class="GtkButton" id="button_open_file">
                 <property name="visible">true</property>
-                <property name="tooltip-text">Open File</property>
                 <property name="action-name">win.action_open_file</property>
                 <property name="child">
                   <object class="AdwButtonContent">
                     <property name="icon-name">document-open-symbolic</property>
                     <property name="label" translatable="yes">_Open</property>
-                    <property name="tooltip_text" translatable="yes">Select a file</property>
+                    <property name="tooltip_text" translatable="yes">Select a File</property>
                     <property name="use-underline">true</property>
                   </object>
                 </property>
@@ -61,7 +60,7 @@
               <object class="GtkButton" id="button_tags_list">
                 <property name="visible">true</property>
                 <property name="icon-name">view-list-symbolic</property>
-                <property name="tooltip-text">Tags List</property>
+                <property name="tooltip-text">Tag List</property>
                 <property name="action-name">win.toggle_tags_view</property>
               </object>
             </child>

@@ -8,7 +8,7 @@
     <property name="margin-bottom">30</property>
     <property name="margin-end">30</property>
     <property name="margin-start">30</property>
-    <property name="margin-top">30</property>
+    <property name="margin-top">6</property>
     <property name="orientation">vertical</property>
     <property name="valign">center</property>
     <child>
@@ -17,7 +17,7 @@
         <property name="icon-size">normal</property>
         <property name="margin-bottom">30</property>
         <property name="name">logo</property>
-        <property name="pixel-size">195</property>
+        <property name="pixel-size">160</property>
         <style>
           <class name="icon-dropshadow"/>
         </style>
@@ -139,8 +139,8 @@
         <property name="margin-top">30</property>
         <child>
           <object class="GtkButton">
-            <property name="label" translatable="yes">Open a file to start analysis ...</property>
-            <property name="tooltip-text">Open File</property>
+            <property name="label" translatable="yes">Open a file to start coloring ...</property>
+            <property name="tooltip-text">Select a File</property>
             <property name="action-name">win.action_open_file</property>
             <style>
               <class name="suggested-action"/>
