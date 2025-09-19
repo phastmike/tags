@@ -63,6 +63,17 @@
   <content_rating type="oars-1.1" />
   <releases>
 
+    <release version="1.8" date="2025-09-19">
+      <description translatable="no">
+        <p>Tags 1.8 is out</p>
+        <p>What's new:</p>
+        <ul>
+          <li>Added a welcome page on app startup</li>
+        </ul>
+        <p>Minor tweaks and improvements</p>
+      </description>
+    </release>
+
     <release version="1.7" date="2025-09-13">
       <description translatable="no">
         <p>Tags 1.7 is out</p>
