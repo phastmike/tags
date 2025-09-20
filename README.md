@@ -115,5 +115,6 @@ Then, test it with:
 
 ---
 
+Filters have a top down priority.
 Only works with text files and uses string matching rules or regular expressions.
 
