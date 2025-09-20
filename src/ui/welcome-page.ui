@@ -13,7 +13,7 @@
     <property name="valign">center</property>
     <child>
       <object class="GtkImage">
-        <property name="file">/home/miguel/Programming/tags/data/icons/hicolor/scalable/apps/io.github.phastmike.tags.svg</property>
+        <property name="icon-name">io.github.phastmike.tags</property>
         <property name="icon-size">normal</property>
         <property name="margin-bottom">30</property>
         <property name="name">logo</property>
