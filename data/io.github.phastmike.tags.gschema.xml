@@ -21,5 +21,10 @@
          <summary>Autoload tags files</summary>
          <description>Autoload tags files if filename.tags exists</description>
       </key>
+      <key name="minimap-visible" type="b">
+        <default>true</default>
+        <summary>Minimap visibility</summary>
+        <description>Toggle minimap visibility</description>
+      </key>
    </schema>
 </schemalist>

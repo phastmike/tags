@@ -23,6 +23,8 @@ namespace Tags {
         private unowned Gtk.ColorDialogButton button_bg_color;
         [GtkChild]
         private unowned Gtk.Label label_sample_example;
+        [GtkChild]
+        private unowned Adw.SwitchRow row_minimap_visible;
 
         private const string css_class = "color_scheme_example";
 
@@ -69,6 +71,9 @@ namespace Tags {
 
             switch_tags_autoload.set_active (preferences.tags_autoload);
             preferences.bind_property("tags_autoload", switch_tags_autoload, "active", BindingFlags.SYNC_CREATE | BindingFlags.BIDIRECTIONAL);
+
+            row_minimap_visible.set_active (preferences.minimap_visible);
+            preferences.bind_property("minimap_visible", row_minimap_visible, "active", BindingFlags.SYNC_CREATE | BindingFlags.BIDIRECTIONAL);
 
             set_label_example_colors ();
         }

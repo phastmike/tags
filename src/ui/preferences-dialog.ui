@@ -108,6 +108,17 @@
             </child>
           </object>
         </child>
+        <child>
+          <object class="AdwPreferencesGroup">
+          <property name="margin-bottom">30</property>
+          <property name="title">Minimap</property>
+            <child>
+              <object class="AdwSwitchRow" id="row_minimap_visible">
+                <property name="title">Visible</property>
+              </object>
+            </child>
+          </object>
+        </child>
       </object>
     </child>
   </template>

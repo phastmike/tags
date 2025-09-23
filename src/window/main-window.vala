@@ -379,6 +379,13 @@ namespace Tags {
 
             var minimap_manager = new MinimapScrollManager (scrolled_lines, scrolled_minimap);
             minimap.set_line_color_bg_callback (delegate_minimap_bgcolor_getter);
+
+            var preferences = Preferences.instance ();
+            preferences.minimap_visibility_changed.connect ( (v) => {
+                minimap.set_visible (v);
+            });
+            preferences.bind_property("minimap_visible", minimap, "visible", BindingFlags.SYNC_CREATE | BindingFlags.BIDIRECTIONAL);
+            //minimap.set_visible (preferences.minimap_visible);
         }
 
         private void setup_main_box () {

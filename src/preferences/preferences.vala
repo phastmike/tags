@@ -18,10 +18,12 @@ namespace Tags {
         private string _ln_fg_color;
         private string _ln_bg_color;
         private bool _tags_autoload;
+        private bool _minimap_visible;
 
         public signal void line_number_color_fg_changed (string color);
         public signal void line_number_color_bg_changed (string color);
         public signal void line_number_visibility_changed (bool visibility);
+        public signal void minimap_visibility_changed (bool visibility);
 
         private Preferences () {
             preferences = new GLib.Settings ("io.github.phastmike.tags");
@@ -30,6 +32,7 @@ namespace Tags {
             _ln_fg_color = preferences.get_string ("line-numbers-fg-color");
             _ln_bg_color = preferences.get_string ("line-numbers-bg-color");
             _tags_autoload = preferences.get_boolean ("tags-autoload");
+            _minimap_visible = preferences.get_boolean ("minimap-visible");
         }
 
         public static unowned Preferences instance () {
@@ -82,6 +85,18 @@ namespace Tags {
             set {
                 _tags_autoload = value;
                 preferences.set_boolean ("tags-autoload", value);
+            }
+        }
+
+        public bool minimap_visible {
+            get {
+                return _minimap_visible;
+            }
+
+            set {
+                _minimap_visible = value;
+                preferences.set_boolean ("minimap-visible", value);
+                minimap_visibility_changed (value);
             }
         }
     }
