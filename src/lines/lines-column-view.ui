@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="TagsLinesColumnView" parent="AdwBin">
+    <property name="hexpand">true</property>
+    <child>
+      <object class="GtkColumnView" id="column_view">
+        <property name="show-column-separators">true</property>
+        <property name="show-row-separators">false</property>
+        <property name="enable-rubberband">false</property>
+        <property name="reorderable">false</property>
+        <!--<property name="tab-behavior">cell</property>-->
+        <style>
+          <class name="data-table"/>
+        </style>
+        <child>
+          <object class="GtkColumnViewColumn" id="column_line_number">
+            <property name="resizable">false</property>
+            <property name="expand">false</property>
+            <property name="factory">
+              <object class="GtkSignalListItemFactory">
+                <signal name="setup" handler="line_number_setup_handler"/>
+                <signal name="bind" handler="line_number_bind_handler"/>
+              </object>
+            </property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkColumnViewColumn" id="column_line_text">
+            <property name="resizable">false</property>
+            <property name="expand">true</property>
+            <property name="factory">
+              <object class="GtkSignalListItemFactory">
+                <signal name="setup" handler="line_text_setup_handler"/>
+                <signal name="bind" handler="line_text_bind_handler"/>
+              </object>
+            </property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <style>
+      <class name="monospace"/>
+    </style>
+  </template>
+</interface>
