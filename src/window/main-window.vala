@@ -384,6 +384,7 @@ namespace Tags {
             preferences.minimap_visibility_changed.connect ( (v) => {
                 minimap.set_visible (v);
             });
+
             preferences.bind_property("minimap_visible", minimap, "visible", BindingFlags.SYNC_CREATE | BindingFlags.BIDIRECTIONAL);
             //minimap.set_visible (preferences.minimap_visible);
         }
