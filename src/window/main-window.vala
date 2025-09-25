@@ -31,6 +31,7 @@ namespace Tags {
         private Gtk.ScrolledWindow scrolled_lines;
         private Gtk.ScrolledWindow scrolled_minimap;
 
+        private LinesColumnView lines_colview;
         private LinesTreeView lines_treeview;
         private TagsTreeView tags_treeview;
         private double paned_last_position = 0.778086;
@@ -391,8 +392,13 @@ namespace Tags {
 
         private void setup_main_box () {
             main_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
-            main_box.append (scrolled_lines);
+            lines_colview = new LinesColumnView (new LineStore ());
+            main_box.append (lines_colview);
+            //main_box.append (scrolled_lines);
             main_box.append (scrolled_minimap);
+            lines_colview.column_view.activate.connect ( (p) => {
+                print ("Activated row number %u\n", p+1);
+            });
         }
 
         public void open_file (File file) {
@@ -437,6 +443,8 @@ namespace Tags {
                 lines_treeview.remove_all_lines ();
                 for (int i = 0; i < lines.get_n_items (); i++) {
                     lines_treeview.add_line (i+1, ((Gtk.StringObject) lines.get_item (i)).get_string ());
+                    var store = lines_colview.lines.store;
+                    store.append (new Line (i+1, ((Gtk.StringObject) lines.get_item (i)).get_string (), null));
                 } 
 
                 if (Preferences.instance ().tags_autoload == true) {

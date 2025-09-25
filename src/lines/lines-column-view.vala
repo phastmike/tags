@@ -15,6 +15,10 @@ namespace Tags {
     public class LinesColumnView : Adw.Bin {
         [GtkChild]
         public Gtk.ColumnView column_view;
+        [GtkChild]
+        public Gtk.ColumnViewColumn column_line_number;
+        [GtkChild]
+        public Gtk.ColumnViewColumn column_line_text;
 
         public LineStore lines;
         public Gtk.MultiSelection selection_model;
@@ -25,8 +29,10 @@ namespace Tags {
             selection_model = new Gtk.MultiSelection (lines.store as GLib.ListModel);
 
             column_view.set_model (selection_model);
-
-            //listitem.child.add_css_class ("line-number");
+            column_view.set_header_factory (null);
+            column_view.remove_column (column_line_number);
+            // to hide/show must remove all and re-add
+            //column_view.append_column (column_line_number);
         }
 
         private void ui_css_add_styles_to_provider () {

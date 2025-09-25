@@ -14,6 +14,7 @@
         </style>
         <child>
           <object class="GtkColumnViewColumn" id="column_line_number">
+            <property name="title"></property>
             <property name="resizable">false</property>
             <property name="expand">false</property>
             <property name="factory">
@@ -26,6 +27,7 @@
         </child>
         <child>
           <object class="GtkColumnViewColumn" id="column_line_text">
+            <property name="title"></property>
             <property name="resizable">false</property>
             <property name="expand">true</property>
             <property name="factory">
