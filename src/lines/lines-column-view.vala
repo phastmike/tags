@@ -29,28 +29,27 @@ namespace Tags {
             selection_model = new Gtk.MultiSelection (lines.store as GLib.ListModel);
 
             column_view.set_model (selection_model);
-            column_view.set_header_factory (null);
-            column_view.remove_column (column_line_number);
+            //column_view.remove_column (column_line_number);
             // to hide/show must remove all and re-add
             //column_view.append_column (column_line_number);
+
+            // NOTE: It works
+            var header = column_view.get_first_child ();
+            header.set_visible (false);
         }
 
         private void ui_css_add_styles_to_provider () {
-            // Css provider
-            // StyleContext
-
             var preferences = Preferences.instance ();
             var provider_css = new Gtk.CssProvider ();
 
             provider_css.load_from_string (""" 
-                cell {
-                    padding-top: 0px;
-                    padding-bottom: 0px;
-                    padding-left: 0px;
-                    padding-right: 1px;
+                columnview cell {
+                    padding: 0px;
                 }
 
                 .line-number {
+                    padding-left: 6px;
+                    padding-right: 6px;
                     color: %s;
                     background-color: %s;
                 }
@@ -59,7 +58,8 @@ namespace Tags {
             Gtk.StyleContext.add_provider_for_display (
                 Gdk.Display.get_default (),
                 provider_css,
-                Gtk.STYLE_PROVIDER_PRIORITY_USER);
+                //Gtk.STYLE_PROVIDER_PRIORITY_USER);
+                Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
         }
 
         [GtkCallback]
@@ -69,7 +69,7 @@ namespace Tags {
             label.xalign = 1;
             listitem.child = label;
             ui_css_add_styles_to_provider ();
-            listitem.child.add_css_class ("line-number");
+            //listitem.child.add_css_class ("line-number");
         }
 
         [GtkCallback]
@@ -78,6 +78,9 @@ namespace Tags {
             var label = listitem.child as Gtk.Label;
             var line = listitem.item as Line;
             label.set_text ("%u".printf (line.number));
+            ui_css_add_styles_to_provider ();
+            listitem.child.add_css_class ("line-number");
+            //listitem.child.add_css_class ("card");
         }
 
         [GtkCallback]

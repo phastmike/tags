@@ -399,6 +399,11 @@ namespace Tags {
             lines_colview.column_view.activate.connect ( (p) => {
                 print ("Activated row number %u\n", p+1);
             });
+
+            // NOTE: It works
+            //var header = lines_colview.column_view.get_first_child ();
+            //header.set_visible (false);
+
         }
 
         public void open_file (File file) {

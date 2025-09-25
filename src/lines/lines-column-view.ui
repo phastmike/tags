@@ -10,6 +10,7 @@
         <property name="reorderable">false</property>
         <!--<property name="tab-behavior">cell</property>-->
         <style>
+          <class name="monospace"/>
           <class name="data-table"/>
         </style>
         <child>
