@@ -296,7 +296,8 @@ namespace Tags {
             scrolled_lines.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
             scrolled_lines.set_placement (Gtk.CornerType.TOP_LEFT);
             scrolled_lines.set_overlay_scrolling (true);
-            scrolled_lines.set_child (lines_treeview);
+            //scrolled_lines.set_child (lines_treeview);
+            scrolled_lines.set_child (lines_colview);
             scrolled_lines.set_hexpand (true);
             scrolled_lines.set_vexpand (true);
         }
@@ -391,10 +392,19 @@ namespace Tags {
         }
 
         private void setup_main_box () {
-            main_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
             lines_colview = new LinesColumnView (new LineStore ());
+            var scrolled = new Gtk.ScrolledWindow ();
+            //scrolled.set_kinetic_scrolling (true);
+            // NOTE: Use PolicyType EXTERNAL to hide the scroll from the treeview
+            scrolled.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
+            scrolled.set_placement (Gtk.CornerType.TOP_LEFT);
+            scrolled.set_overlay_scrolling (true);
+            //scrolled.set_child (lines_colview);
+            scrolled.set_hexpand (true);
+            scrolled.set_vexpand (true);
+            main_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
+            //main_box.append (lines_colview);
             main_box.append (lines_colview);
-            //main_box.append (scrolled_lines);
             main_box.append (scrolled_minimap);
             lines_colview.column_view.activate.connect ( (p) => {
                 print ("Activated row number %u\n", p+1);

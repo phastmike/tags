@@ -29,7 +29,7 @@ namespace Tags {
             selection_model = new Gtk.MultiSelection (lines.store as GLib.ListModel);
 
             column_view.set_model (selection_model);
-            //column_view.remove_column (column_line_number);
+            column_view.remove_column (column_line_number);
             // to hide/show must remove all and re-add
             //column_view.append_column (column_line_number);
 
@@ -70,6 +70,7 @@ namespace Tags {
             listitem.child = label;
             ui_css_add_styles_to_provider ();
             //listitem.child.add_css_class ("line-number");
+            queue_draw ();
         }
 
         [GtkCallback]
@@ -89,6 +90,7 @@ namespace Tags {
             var label = new Gtk.Label (null);
             label.xalign = 0;
             listitem.child = label;
+            queue_draw ();
         }
 
         [GtkCallback]
