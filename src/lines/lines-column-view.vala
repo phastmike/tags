@@ -29,7 +29,7 @@ namespace Tags {
             selection_model = new Gtk.MultiSelection (lines.store as GLib.ListModel);
 
             column_view.set_model (selection_model);
-            column_view.remove_column (column_line_number);
+            //column_view.remove_column (column_line_number);
             // to hide/show must remove all and re-add
             //column_view.append_column (column_line_number);
 
@@ -69,8 +69,7 @@ namespace Tags {
             label.xalign = 1;
             listitem.child = label;
             ui_css_add_styles_to_provider ();
-            //listitem.child.add_css_class ("line-number");
-            queue_draw ();
+            label.add_css_class ("line-number");
         }
 
         [GtkCallback]
@@ -90,7 +89,6 @@ namespace Tags {
             var label = new Gtk.Label (null);
             label.xalign = 0;
             listitem.child = label;
-            queue_draw ();
         }
 
         [GtkCallback]
@@ -100,32 +98,5 @@ namespace Tags {
             var line = listitem.item as Line;
             label.set_text (line.text);
         }
-
-        /*
-        private void set_label_example_colors () {
-            var fg = button_fg_color.get_rgba ();
-            var bg = button_bg_color.get_rgba ();
-            
-            var fg_web = "#%02x%02x%02x".
-                    printf((uint) (fg.red * 255), (uint) (fg.green * 255), (uint) (fg.blue * 255));
-            var bg_web = "#%02x%02x%02x".
-                    printf((uint) (bg.red * 255), (uint) (bg.green * 255), (uint) (bg.blue * 255));
-
-            string? lstyle = """
-                label.%s {
-                    padding: 6px 8px;
-                    background-color: %s;
-                    border-radius: 7px;
-                    color: %s;
-                    font-size: 0.8333em;
-                }
-            """.printf (TagDialogWindow.css_class, bg_web, fg_web);
-
-            var provider = new Gtk.CssProvider ();
-            provider.load_from_data (lstyle.data);
-            label_sample_example.add_css_class (TagDialogWindow.css_class);
-            Gtk.StyleContext.add_provider_for_display (Gdk.Display.get_default (), provider, Gtk.STYLE_PROVIDER_PRIORITY_USER);
-        }
-        */
     }
 }
