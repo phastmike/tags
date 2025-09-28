@@ -393,6 +393,7 @@ namespace Tags {
 
         private void setup_main_box () {
             lines_colview = new LinesColumnView (new LineStore ());
+            /*
             var scrolled = new Gtk.ScrolledWindow ();
             scrolled.set_kinetic_scrolling (true);
             scrolled.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
@@ -401,17 +402,21 @@ namespace Tags {
             scrolled.set_child (lines_colview);
             scrolled.set_hexpand (true);
             scrolled.set_vexpand (true);
+            */
             main_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
-            main_box.append (scrolled);
+            //main_box.append (scrolled);
+            main_box.append (lines_colview);
             main_box.append (scrolled_minimap);
             lines_colview.column_view.activate.connect ( (p) => {
                 print ("Activated row number %u\n", p+1);
             });
 
+            /*
             var vadjustment = scrolled.get_vadjustment ();
             vadjustment.value_changed.connect (() => {
                 lines_colview.queue_draw ();
             });
+            */
 
 
             // NOTE: It works

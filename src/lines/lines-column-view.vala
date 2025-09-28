@@ -12,7 +12,7 @@
 
 namespace Tags {
     [GtkTemplate (ui = "/io/github/phastmike/tags/lines/lines-column-view.ui")]
-    public class LinesColumnView : Adw.Bin {
+    public class LinesColumnView : Gtk.Box {
         [GtkChild]
         public Gtk.ColumnView column_view;
         [GtkChild]
@@ -21,19 +21,19 @@ namespace Tags {
         public Gtk.ColumnViewColumn column_line_text;
 
         public LineStore lines;
-        public Gtk.MultiSelection selection_model;
+        public Gtk.SingleSelection selection_model;
 
         public LinesColumnView (LineStore lines) {
             this.lines = lines;
 
-            selection_model = new Gtk.MultiSelection (lines.store as GLib.ListModel);
+            selection_model = new Gtk.SingleSelection (lines.store as GLib.ListModel);
 
             column_view.set_model (selection_model);
             //column_view.remove_column (column_line_number);
             // to hide/show must remove all and re-add
             //column_view.append_column (column_line_number);
 
-            // NOTE: It works
+            // NOTE: Hide header hack - It works
             var header = column_view.get_first_child ();
             header.set_visible (false);
         }
@@ -68,8 +68,9 @@ namespace Tags {
             var label = new Gtk.Label (null);
             label.xalign = 1;
             listitem.child = label;
-            ui_css_add_styles_to_provider ();
-            label.add_css_class ("line-number");
+            //ui_css_add_styles_to_provider ();
+            //label.add_css_class ("line-number");
+            label.add_css_class ("dimmed");
         }
 
         [GtkCallback]
@@ -78,9 +79,8 @@ namespace Tags {
             var label = listitem.child as Gtk.Label;
             var line = listitem.item as Line;
             label.set_text ("%u".printf (line.number));
-            ui_css_add_styles_to_provider ();
-            listitem.child.add_css_class ("line-number");
-            //listitem.child.add_css_class ("card");
+            //ui_css_add_styles_to_provider ();
+            //listitem.child.add_css_class ("line-number");
         }
 
         [GtkCallback]
