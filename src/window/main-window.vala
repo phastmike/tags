@@ -464,12 +464,19 @@ namespace Tags {
                 window_title.set_subtitle (file.get_basename ());
                 window_title.set_tooltip_text (file.get_path ());
 
-                lines_treeview.remove_all_lines ();
+                var store = new LineStore ();
+                //store.store.remove_all ();
+                //lines_treeview.remove_all_lines ();
                 for (int i = 0; i < lines.get_n_items (); i++) {
-                    lines_treeview.add_line (i+1, ((Gtk.StringObject) lines.get_item (i)).get_string ());
-                    var store = lines_colview.lines.store;
-                    store.append (new Line (i+1, ((Gtk.StringObject) lines.get_item (i)).get_string (), null));
+                    //lines_treeview.add_line (i+1, ((Gtk.StringObject) lines.get_item (i)).get_string ());
+                    store.store.append (new Line (i+1, ((Gtk.StringObject) lines.get_item (i)).get_string (), null));
                 } 
+
+                main_box.remove (lines_colview);
+                lines_colview = new LinesColumnView (store);
+                main_box.append (lines_colview);
+                //lines_colview.lines = store;
+                //lines_colview.column_view.set_model (store);
 
                 if (Preferences.instance ().tags_autoload == true) {
                     file_tags = File.new_for_path (file.get_path () + ".tags");
@@ -486,7 +493,7 @@ namespace Tags {
                     count_tag_hits (); // For existing tags
                 }
 
-                minimap.set_array (lines_treeview.model_to_array ());
+                //minimap.set_array (lines_treeview.model_to_array ());
             });
 
             dialog.present (this);

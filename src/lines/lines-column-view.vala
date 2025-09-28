@@ -21,12 +21,12 @@ namespace Tags {
         public Gtk.ColumnViewColumn column_line_text;
 
         public LineStore lines;
-        public Gtk.SingleSelection selection_model;
+        public Gtk.MultiSelection selection_model;
 
         public LinesColumnView (LineStore lines) {
             this.lines = lines;
 
-            selection_model = new Gtk.SingleSelection (lines.store as GLib.ListModel);
+            selection_model = new Gtk.MultiSelection (lines.store as GLib.ListModel);
 
             column_view.set_model (selection_model);
             //column_view.remove_column (column_line_number);
