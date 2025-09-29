@@ -17,10 +17,12 @@ public class Minimap : Gtk.DrawingArea {
     private Gdk.RGBA highlight_color;
     private Gdk.RGBA text_color;
 
+    //public const string rgba_dark_theme_hover   = "rgba (52, 52, 54, 0.25)";
     public const string rgba_dark_theme_hover   = "rgba (229, 229, 209, 0.25)";
     public const string rgba_light_theme_hover  = "rgba (26, 26, 26, 0.25)";
 
-    public const string rgba_dark_theme_text    = "rgba (255, 255, 255, 0.15)";
+    public const string rgba_dark_theme_text    = "rgba (221, 221, 222, 0.15)";
+    //public const string rgba_dark_theme_text    = "rgba (255, 255, 255, 0.15)";
     public const string rgba_light_theme_text   = "rgba (0, 0, 0, 0.15)";
     
     // Text view adjustment (for drawing the highlight)
@@ -154,15 +156,11 @@ public class Minimap : Gtk.DrawingArea {
 
         if (height == 0) return;
 
-        // FIXME Need better strategy. Fails in constrained environment
         set_size_request(width, height);
-        //set_size_request(width, (int) Math.fmin (height, 16384));
 
         var bounds = Cairo.Rectangle ();
         bounds.x = 0; bounds.y = 0; bounds.width = width; bounds.height = height;
-        //bounds.x = 0; bounds.y = 0; bounds.width = width; bounds.height = (int) Math.fmin (height, 16384);
         minimap_cached = new Cairo.RecordingSurface (Cairo.Content.COLOR_ALPHA, bounds);
-
         //minimap_cached = new Cairo.RecordingSurface (Cairo.Content.COLOR_ALPHA);
 
         var cr = new Cairo.Context (minimap_cached);
@@ -404,20 +402,22 @@ public class Minimap : Gtk.DrawingArea {
 
         // Draw the viewport highlight
         if (dragging && dragging_viewport) {
-            highlight_color.alpha = 0.35f;
-        } else if (hover_y != null && hover_y < lines.length * line_height) {
-            highlight_color.alpha = 0.30f;
-        } else {
             highlight_color.alpha = 0.25f;
+        } else if (hover_y != null && hover_y < lines.length * line_height) {
+            highlight_color.alpha = 0.20f;
+        } else {
+            highlight_color.alpha = 0.15f;
         }
 
         Gdk.cairo_set_source_rgba(cr, highlight_color);
         cr.rectangle(0, metrics.viewport_y, width, metrics.viewport_height);
         cr.fill();
 
+        /*
         highlight_color.alpha = 0.75f;
         cr.set_line_width(1);
         cr.rectangle(0, metrics.viewport_y, width, metrics.viewport_height);
         cr.stroke();
+        */
     }
 }

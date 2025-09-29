@@ -16,6 +16,8 @@ namespace Tags {
         [GtkChild]
         public Gtk.ColumnView column_view;
         [GtkChild]
+        public Gtk.ScrolledWindow scrolled;
+        [GtkChild]
         public Gtk.ColumnViewColumn column_line_number;
         [GtkChild]
         public Gtk.ColumnViewColumn column_line_text;
@@ -43,15 +45,18 @@ namespace Tags {
             var provider_css = new Gtk.CssProvider ();
 
             provider_css.load_from_string (""" 
-                columnview cell {
+                columnview {
                     padding: 0px;
                 }
 
                 .line-number {
-                    padding-left: 6px;
-                    padding-right: 6px;
+                /*.line-number:not(:hover):not(:selected) {*/
                     color: %s;
                     background-color: %s;
+                }
+
+                .line-number:selected {
+                    font-weight: 700;
                 }
             """.printf (preferences.ln_fg_color, preferences.ln_bg_color));
 
@@ -68,7 +73,7 @@ namespace Tags {
             var label = new Gtk.Label (null);
             label.xalign = 1;
             listitem.child = label;
-            //ui_css_add_styles_to_provider ();
+            ui_css_add_styles_to_provider ();
             //label.add_css_class ("line-number");
             label.add_css_class ("dimmed");
         }
@@ -89,6 +94,8 @@ namespace Tags {
             var label = new Gtk.Label (null);
             label.xalign = 0;
             listitem.child = label;
+            //ui_css_add_styles_to_provider ();
+            //label.add_css_class ("line-number");
         }
 
         [GtkCallback]
@@ -97,6 +104,9 @@ namespace Tags {
             var label = listitem.child as Gtk.Label;
             var line = listitem.item as Line;
             label.set_text (line.text);
+            //label.set_tooltip_text ("%u".printf (listitem.position + 1));
+            //ui_css_add_styles_to_provider ();
+            //listitem.add_css_class ("line-number");
         }
     }
 }

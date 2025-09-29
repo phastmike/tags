@@ -99,7 +99,7 @@
             </child>
             <child>
               <object class="GtkLabel">
-                <property name="label" translatable="yes">To toggle tag list visibility</property>
+                <property name="label" translatable="yes">Toggle tag list visibility</property>
               </object>
             </child>
           </object>

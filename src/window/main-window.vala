@@ -82,8 +82,10 @@ namespace Tags {
             setup_actions ();
             save_tagged_disable ();
             setup_tags_treeview ();
-            setup_lines_treeview ();
-            setup_minimap (scrolled_lines.get_vadjustment ());
+            //setup_lines_treeview ();
+            setup_lines_view ();
+            //setup_minimap (scrolled_lines.get_vadjustment ());
+            setup_minimap (lines_colview.scrolled.get_vadjustment ());
             setup_main_box ();
 
             bottom_sheet = new Adw.BottomSheet ();
@@ -158,12 +160,14 @@ namespace Tags {
             tags_treeview = new TagsTreeView ();
 
             tags_treeview.get_model ().row_changed.connect ( () => {
-                minimap.set_array (lines_treeview.model_to_array ());
+                minimap.set_array (lines_colview.lines.to_array ());
+                //minimap.set_array (lines_treeview.model_to_array ());
             });
 
             tags_treeview.get_model ().row_inserted.connect ( () => {
                 lines_treeview.queue_draw ();
-                minimap.set_array (lines_treeview.model_to_array ());
+                minimap.set_array (lines_colview.lines.to_array ());
+                //minimap.set_array (lines_treeview.model_to_array ());
             });
 
             tags_treeview.row_activated.connect ((path, column) => {
@@ -179,14 +183,16 @@ namespace Tags {
                     tags_changed = true;
                     count_tag_hits ();
                     lines_treeview.refilter ();
-                    minimap.set_array (lines_treeview.model_to_array ());
+                    minimap.set_array (lines_colview.lines.to_array ());
+                    //minimap.set_array (lines_treeview.model_to_array ());
                 });
 
                 tag_dialog.deleted.connect ((tag) => {
                     tags_changed = true;
                     tags_treeview.remove_tag (tag);
                     lines_treeview.refilter ();
-                    minimap.set_array (lines_treeview.model_to_array ());
+                    minimap.set_array (lines_colview.lines.to_array ());
+                    //minimap.set_array (lines_treeview.model_to_array ());
                 });
 
                 tag_dialog.present ();
@@ -251,11 +257,13 @@ namespace Tags {
                 tag_dialog.added.connect ((tag, add_to_top) => {
                     tag.enable_changed.connect ((enabled) => {
                         lines_treeview.refilter ();
-                        minimap.set_array (lines_treeview.model_to_array ());
+                        minimap.set_array (lines_colview.lines.to_array ());
+                        //minimap.set_array (lines_treeview.model_to_array ());
                     });
                     tags_treeview.add_tag (tag, add_to_top);
                     count_tag_hits ();
-                    minimap.set_array (lines_treeview.model_to_array ());
+                    minimap.set_array (lines_colview.lines.to_array ());
+                    //minimap.set_array (lines_treeview.model_to_array ());
                 });
 
                 tag_dialog.show ();
@@ -289,17 +297,15 @@ namespace Tags {
             treeview.set_line_number_color_bg (preferences.ln_bg_color);
         }
 
+        private void setup_lines_view () {
+            lines_colview = new LinesColumnView (new LineStore ());
+            lines_colview.column_view.activate.connect ( (p) => {
+                print ("Activated row number %u\n", p+1);
+            });
+        }
+
         private void setup_scrolled_lines () {
-            scrolled_lines = new Gtk.ScrolledWindow ();
-            scrolled_lines.set_kinetic_scrolling (true);
             // NOTE: Use PolicyType EXTERNAL to hide the scroll from the treeview
-            scrolled_lines.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
-            scrolled_lines.set_placement (Gtk.CornerType.TOP_LEFT);
-            scrolled_lines.set_overlay_scrolling (true);
-            //scrolled_lines.set_child (lines_treeview);
-            scrolled_lines.set_child (lines_colview);
-            scrolled_lines.set_hexpand (true);
-            scrolled_lines.set_vexpand (true);
         }
 
         private void setup_scrolled_tags () {
@@ -367,6 +373,9 @@ namespace Tags {
         }
 
         private Gdk.RGBA? delegate_minimap_bgcolor_getter (string? text) {
+            //message ("minimap-delegate-color -> Text:\n%s\nColor: %s",
+            //    text,
+            //    tags_treeview.get_bg_color_for_text (text).to_string ());
             return tags_treeview.get_bg_color_for_text (text);
         }
 
@@ -379,7 +388,8 @@ namespace Tags {
             scrolled_minimap.set_child (minimap);
             scrolled_minimap.set_vexpand (true);
 
-            var minimap_manager = new MinimapScrollManager (scrolled_lines, scrolled_minimap);
+            var minimap_manager = new MinimapScrollManager (lines_colview.scrolled, scrolled_minimap);
+            //var minimap_manager = new MinimapScrollManager (scrolled_lines, scrolled_minimap);
             minimap.set_line_color_bg_callback (delegate_minimap_bgcolor_getter);
 
             var preferences = Preferences.instance ();
@@ -392,24 +402,9 @@ namespace Tags {
         }
 
         private void setup_main_box () {
-            lines_colview = new LinesColumnView (new LineStore ());
-            /*
-            var scrolled = new Gtk.ScrolledWindow ();
-            scrolled.set_kinetic_scrolling (true);
-            scrolled.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
-            scrolled.set_placement (Gtk.CornerType.TOP_LEFT);
-            scrolled.set_overlay_scrolling (true);
-            scrolled.set_child (lines_colview);
-            scrolled.set_hexpand (true);
-            scrolled.set_vexpand (true);
-            */
             main_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
-            //main_box.append (scrolled);
             main_box.append (lines_colview);
             main_box.append (scrolled_minimap);
-            lines_colview.column_view.activate.connect ( (p) => {
-                print ("Activated row number %u\n", p+1);
-            });
 
             /*
             var vadjustment = scrolled.get_vadjustment ();
@@ -464,17 +459,21 @@ namespace Tags {
                 window_title.set_subtitle (file.get_basename ());
                 window_title.set_tooltip_text (file.get_path ());
 
-                var store = new LineStore ();
-                //store.store.remove_all ();
+                lines_colview.set_visible (false);
+
+                //var store = new LineStore ();
+                var store = lines_colview.lines.store;
+                store.remove_all ();
                 //lines_treeview.remove_all_lines ();
                 for (int i = 0; i < lines.get_n_items (); i++) {
                     //lines_treeview.add_line (i+1, ((Gtk.StringObject) lines.get_item (i)).get_string ());
-                    store.store.append (new Line (i+1, ((Gtk.StringObject) lines.get_item (i)).get_string (), null));
+                    store.append (new Line (i+1, ((Gtk.StringObject) lines.get_item (i)).get_string (), null));
                 } 
 
-                main_box.remove (lines_colview);
-                lines_colview = new LinesColumnView (store);
-                main_box.append (lines_colview);
+                //main_box.remove (lines_colview);
+                //lines_colview = new LinesColumnView (store);
+                lines_colview.set_visible (true);
+                //main_box.append (lines_colview);
                 //lines_colview.lines = store;
                 //lines_colview.column_view.set_model (store);
 
@@ -494,6 +493,7 @@ namespace Tags {
                 }
 
                 //minimap.set_array (lines_treeview.model_to_array ());
+                minimap.set_array (lines_colview.lines.to_array ());
             });
 
             dialog.present (this);
@@ -508,18 +508,21 @@ namespace Tags {
 
                 tag.enable_changed.connect ((enabled) => {
                     lines_treeview.refilter ();
-                    minimap.set_array (lines_treeview.model_to_array ());
+                    minimap.set_array (lines_colview.lines.to_array ());
+                    //minimap.set_array (lines_treeview.model_to_array ());
                 });
 
                 tags_treeview.add_tag (tag, add_to_top);
 
                 if (lines_treeview.hide_untagged) { 
                     lines_treeview.refilter ();
-                    minimap.set_array (lines_treeview.model_to_array ());
+                    minimap.set_array (lines_colview.lines.to_array ());
+                    //minimap.set_array (lines_treeview.model_to_array ());
                 }
 
                 count_tag_hits ();
-                minimap.set_array (lines_treeview.model_to_array ());
+                minimap.set_array (lines_colview.lines.to_array ());
+                //minimap.set_array (lines_treeview.model_to_array ());
             });
 
             tag_dialog.show ();
@@ -551,7 +554,8 @@ namespace Tags {
             if (file_tags != null) file_tags = null;
             tags_treeview.clear_tags ();
             lines_treeview.refilter ();
-            minimap.set_array (lines_treeview.model_to_array ());
+            minimap.set_array (lines_colview.lines.to_array ());
+            //minimap.set_array (lines_treeview.model_to_array ());
         }
 
         private void action_load_tags () {
@@ -570,11 +574,13 @@ namespace Tags {
 
                     tag.enable_changed.connect ((enabled) => {
                         lines_treeview.refilter ();
-                        minimap.set_array (lines_treeview.model_to_array ());
+                        minimap.set_array (lines_colview.lines.to_array ());
+                        //minimap.set_array (lines_treeview.model_to_array ());
                     });
                 }
                 lines_treeview.refilter ();
-                minimap.set_array (lines_treeview.model_to_array ());
+                minimap.set_array (lines_colview.lines.to_array ());
+                //minimap.set_array (lines_treeview.model_to_array ());
                 count_tag_hits ();
             });
 
@@ -696,12 +702,14 @@ namespace Tags {
             }
             selection.set_mode (Gtk.SelectionMode.MULTIPLE);
 
-            minimap.set_array (lines_treeview.model_to_array ());
+            minimap.set_array (lines_colview.lines.to_array ());
+            //minimap.set_array (lines_treeview.model_to_array ());
 
             // FIXME: Hack to force the viewport to recenter
             // does not work very well ...
-            var vadj_value = scrolled_lines.get_vadjustment ().get_value ();
-            scrolled_lines.get_vadjustment ().set_value (vadj_value + 0.1);
+            
+            //var vadj_value = scrolled_lines.get_vadjustment ().get_value ();
+            //scrolled_lines.get_vadjustment ().set_value (vadj_value + 0.1);
         }
 
         private void toggle_minimap () {

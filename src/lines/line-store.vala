@@ -35,11 +35,15 @@ namespace Tags {
 
         public LineStore () {
             store = new GLib.ListStore (typeof(Line));
-            /*
-            store.append (new Line (1, "Linha 1"));
-            store.append (new Line (20, "Linha 2"));
-            store.append (new Line (3000, "Linha 3"));
-            */
+        }
+
+        public string[] to_array () {
+            Gee.ArrayList<string> lines = new Gee.ArrayList<string> ();
+            for ( uint i = 0; i < store.get_n_items (); i++) {
+                var line = (Line) store.get_item (i);
+                lines.add (line.text);
+            }
+            return lines.to_array ();
         }
     }
 
