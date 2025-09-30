@@ -1,6 +1,9 @@
 tags_sources += files(
-	'line-store.vala',
-	'lines-column-view.vala',
+	'line.vala',
+	'lines.vala',
+	'filter.vala',
+	'filterer.vala',
 	'lines-tree-view.vala',
-	'lines-persistence.vala'
+	'lines-column-view.vala',
+	'lines-persistence.vala',
 	)
