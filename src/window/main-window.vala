@@ -25,7 +25,6 @@ namespace Tags {
         private Gtk.Stack stack;
         private Adw.BottomSheet bottom_sheet;
         private Gtk.Box main_box;
-        private Gtk.Paned paned;
         private Minimap minimap;
         private Gtk.ScrolledWindow scrolled_tags;
         private Gtk.ScrolledWindow scrolled_lines;
@@ -36,7 +35,6 @@ namespace Tags {
         private LinesColumnView lines_colview;
         private LinesTreeView lines_treeview;
         private TagsTreeView tags_treeview;
-        private double paned_last_position = 0.778086;
         private File? file_opened = null;
         private File? file_tags = null;
         private bool tags_changed = false;
@@ -100,7 +98,6 @@ namespace Tags {
             scrolled_tags.set_size_request (-1, 200);
             bottom_sheet.set_sheet (box);
 
-            //setup_paned (main_box, scrolled_tags);
             setup_buttons ();
 
             var action = this.lookup_action ("toggle_tags_view");
@@ -112,6 +109,7 @@ namespace Tags {
             stack.set_visible_child_name ("welcome");
             overlay.set_child (stack);
             //overlay.set_child (bottom_sheet);
+            setup_preferences ();
         }
 
         // Override the size_allocate method
@@ -163,13 +161,10 @@ namespace Tags {
 
             tags_treeview.get_model ().row_changed.connect ( () => {
                 minimap.set_array (Lines.model_to_array(lines_colview.lines));
-                //minimap.set_array (lines_treeview.model_to_array ());
             });
 
             tags_treeview.get_model ().row_inserted.connect ( () => {
-                lines_treeview.queue_draw ();
                 minimap.set_array (Lines.model_to_array(lines_colview.lines));
-                //minimap.set_array (lines_treeview.model_to_array ());
             });
 
             tags_treeview.row_activated.connect ((path, column) => {
@@ -186,7 +181,6 @@ namespace Tags {
                     count_tag_hits ();
                     //lines_treeview.refilter ();
                     minimap.set_array (Lines.model_to_array(lines_colview.lines));
-                    //minimap.set_array (lines_treeview.model_to_array ());
                 });
 
                 tag_dialog.deleted.connect ((tag) => {
@@ -194,14 +188,13 @@ namespace Tags {
                     tags_treeview.remove_tag (tag);
                     //lines_treeview.refilter ();
                     minimap.set_array (Lines.model_to_array(lines_colview.lines));
-                    //minimap.set_array (lines_treeview.model_to_array ());
                 });
 
                 tag_dialog.present ();
             });
 
             tags_treeview.no_active_tags.connect ( () => {
-                if (lines_treeview.hide_untagged == true) {
+                if (filter.active  == true) {
                     inform_user_no_tagged_lines ();
                 }
         });
@@ -236,67 +229,30 @@ namespace Tags {
             if (fg_color != null) cell.foreground_rgba = fg_color;
         }
 
-        private void setup_lines_treeview () {
-            this.lines_treeview = new LinesTreeView ();
-            lines_treeview.delegate_line_filter_set (delegate_line_filter_callback);
-            lines_treeview.delegate_line_color_set (delegate_treeview_cell_color_callback);
-
-            lines_treeview.cleared.connect ( () => {
-                minimap.clear ();
-            });
-
-            lines_treeview.row_activated.connect ((path, column) => {
-                string line_text;
-                Gtk.TreeIter iter;
-
-                var selection = lines_treeview.get_selection ();
-                selection.set_mode (Gtk.SelectionMode.SINGLE);
-                selection.get_selected (null, out iter);
-                lines_treeview.get_model ().@get (iter, LinesTreeView.Columns.LINE_TEXT, out line_text, -1);
-                selection.set_mode (Gtk.SelectionMode.MULTIPLE);
-
-                var tag_dialog = new TagDialogWindow (this.application, line_text);
-                tag_dialog.added.connect ((tag, add_to_top) => {
-                    tag.enable_changed.connect ((enabled) => {
-                        //lines_treeview.refilter ();
-                        minimap.set_array (Lines.model_to_array(lines_colview.lines));
-                        //minimap.set_array (lines_treeview.model_to_array ());
-                    });
-                    tags_treeview.add_tag (tag, add_to_top);
-                    count_tag_hits ();
-                    minimap.set_array (Lines.model_to_array(lines_colview.lines));
-                    //minimap.set_array (lines_treeview.model_to_array ());
-                });
-
-                tag_dialog.show ();
-            });
-
-
-            setup_preference_lines_changes (lines_treeview);
-            setup_scrolled_lines ();
-        }
-
-        // FIXME: WIP refactoring
-        // Decoupling preferences from lines-treeview
-        // Should be tweaking the preferences or only the session?
-        private void setup_preference_lines_changes (LinesTreeView treeview) {
+        private void setup_preferences () {
             var preferences = Preferences.instance ();
 
             preferences.line_number_visibility_changed.connect ( (v) => {
-                treeview.set_line_number_visibility (v);
             });
 
             preferences.line_number_color_fg_changed.connect ( (c) => {
-                treeview.set_line_number_color_fg (c);
             });
 
             preferences.line_number_color_bg_changed.connect ( (c) => {
-                treeview.set_line_number_color_bg (c);
             });
 
+            preferences.minimap_visibility_changed.connect ( (v) => {
+                minimap.set_visible (v);
+            });
+
+            preferences.bind_property("minimap_visible", minimap, "visible", 
+                BindingFlags.SYNC_CREATE | BindingFlags.BIDIRECTIONAL);
+
+            /*
             treeview.set_line_number_visibility (preferences.ln_visible);
             treeview.set_line_number_color_fg (preferences.ln_fg_color);
             treeview.set_line_number_color_bg (preferences.ln_bg_color);
+            */
         }
 
         private void setup_lines_view () {
@@ -305,7 +261,17 @@ namespace Tags {
             var filterer = new Filterer (lines, filter);
             lines_colview = new LinesColumnView (filterer.model);
             lines_colview.column_view.activate.connect ( (p) => {
-                print ("Activated row number %u\n", p+1);
+                var line = lines_colview.lines.get_item (p) as Line;
+                var tag_dialog = new TagDialogWindow (this.application, line.text);
+                tag_dialog.added.connect ((tag, add_to_top) => {
+                    tag.enable_changed.connect ((enabled) => {
+                        minimap.set_array (Lines.model_to_array(lines_colview.lines));
+                    });
+                    tags_treeview.add_tag (tag, add_to_top);
+                    count_tag_hits ();
+                    minimap.set_array (Lines.model_to_array(lines_colview.lines));
+                });
+                tag_dialog.show ();
             });
         }
 
@@ -322,36 +288,6 @@ namespace Tags {
             scrolled_tags.set_child (tags_treeview);
             scrolled_tags.set_hexpand (true);
             scrolled_tags.set_vexpand (true);
-        }
-
-        private void setup_paned (Gtk.Widget top, Gtk.Widget bottom) {
-            paned = new Gtk.Paned (Gtk.Orientation.VERTICAL);
-
-            paned.set_start_child (top);
-            paned.set_end_child (bottom);
-            paned.set_resize_start_child (true);
-            paned.set_resize_end_child (true);
-            paned.set_wide_handle (true);
-            paned.set_position (this.default_height - 167);
-
-            // Hack to hide the filter list/taqg list
-            // but a better ux to handle tags, is needed
-            //paned.set_position (this.default_height);
-
-            paned.notify["position"].connect ((s,p) => {
-                var view_height = paned.get_height ();
-                
-                if (view_height == 0) return;
-
-                var action = this.lookup_action ("toggle_tags_view");
-
-                /* Change menu action state if manually hidden */
-                if (paned.get_position () >= view_height - 5) {
-                    action.change_state (new Variant.boolean (true));
-                } else {
-                    action.change_state (new Variant.boolean (false));
-                }
-            });
         }
 
         private void setup_buttons () {
@@ -394,35 +330,13 @@ namespace Tags {
             scrolled_minimap.set_vexpand (true);
 
             var minimap_manager = new MinimapScrollManager (lines_colview.scrolled, scrolled_minimap);
-            //var minimap_manager = new MinimapScrollManager (scrolled_lines, scrolled_minimap);
             minimap.set_line_color_bg_callback (delegate_minimap_bgcolor_getter);
-
-            var preferences = Preferences.instance ();
-            preferences.minimap_visibility_changed.connect ( (v) => {
-                minimap.set_visible (v);
-            });
-
-            preferences.bind_property("minimap_visible", minimap, "visible", BindingFlags.SYNC_CREATE | BindingFlags.BIDIRECTIONAL);
-            //minimap.set_visible (preferences.minimap_visible);
         }
 
         private void setup_main_box () {
             main_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
             main_box.append (lines_colview);
             main_box.append (scrolled_minimap);
-
-            /*
-            var vadjustment = scrolled.get_vadjustment ();
-            vadjustment.value_changed.connect (() => {
-                lines_colview.queue_draw ();
-            });
-            */
-
-
-            // NOTE: It works
-            //var header = lines_colview.column_view.get_first_child ();
-            //header.set_visible (false);
-
         }
 
         public void open_file (File file) {
@@ -504,7 +418,38 @@ namespace Tags {
             });
 
             dialog.present (this);
-            persistence.from_file (file, cancel_open);
+            //persistence.from_file (file, cancel_open);
+            main_box.set_visible (false);
+            lines.from_file (file, cancel_open);
+            lines.load_failed.connect ( (err_msg) => {
+                dialog.close ();
+                show_dialog ("Open File", err_msg, "_Close");
+                lines_colview.set_visible (true);
+            });
+            lines.loaded_from_file.connect ( () => {
+                main_box.set_visible (true);
+                dialog.close ();
+                file_opened = file;
+                save_tagged_enable ();
+                set_title (file.get_basename ());
+                window_title.set_subtitle (file.get_basename ());
+                window_title.set_tooltip_text (file.get_path ());
+                if (Preferences.instance ().tags_autoload == true) {
+                    file_tags = File.new_for_path (file.get_path () + ".tags");
+                    if (file_tags.query_exists ()) {
+                        load_tags_from_file (file_tags);
+                        /*
+                        //overlay.dismiss_all ();
+                        overlay.get_child ();
+                        var toast = new Adw.Toast ("Autoloaded Tags file ...");
+                        toast.set_timeout (8);
+                        overlay.add_toast (toast);
+                        */
+                    }
+                    count_tag_hits (); // For existing tags
+                }
+                minimap.set_array (Lines.model_to_array(lines_colview.lines));
+            });
         }
 
         private void action_add_tag () {
@@ -741,19 +686,6 @@ namespace Tags {
                 action.change_state (new Variant.boolean (true));
             }
             return;
-            /*
-            var view_height = paned.get_height ();
-            var action = this.lookup_action ("toggle_tags_view");
-            
-            if (paned.get_position () >= view_height - 5) {
-                paned.set_position ((int) (paned_last_position * view_height));
-                action.change_state (new Variant.boolean (false));
-            } else {
-                paned_last_position = ((float) paned.get_position () / (float) view_height);
-                paned.set_position (view_height - 5);
-                action.change_state (new Variant.boolean (true));
-            }
-            */
         }
         
         private void copy () {

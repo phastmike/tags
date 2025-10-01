@@ -5,6 +5,9 @@
  *
  * Actual line visibility filter.
  * Gtk.Filter subclass to filter the ListModel
+ * 
+ * NOTE:
+ * Depends on tags model which will be changed
  */
 
 namespace Tags {
@@ -21,11 +24,11 @@ namespace Tags {
             }
         }
 
-        private Gtk.TreeModel? tags;
+        private Gtk.TreeModel? tags_model;
         private Gtk.ListStore? tag_store;
 
         public Filter (Gtk.TreeModel? tags = null) {
-            tags = tags;
+            tags_model = tags;
             tag_store = tags as Gtk.ListStore;
         }
 

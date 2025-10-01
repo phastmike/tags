@@ -71,6 +71,7 @@ namespace Tags {
         [GtkCallback]
         private void line_number_setup_handler (Gtk.SignalListItemFactory factory, GLib.Object listitemm) {
             Gtk.ListItem listitem = (Gtk.ListItem) listitemm;
+            listitem.activatable = false;
             var label = new Gtk.Label (null);
             label.xalign = 1;
             listitem.child = label;
@@ -92,6 +93,7 @@ namespace Tags {
         [GtkCallback]
         private void line_text_setup_handler (Gtk.SignalListItemFactory factory, GLib.Object listitemm) {
             Gtk.ListItem listitem = (Gtk.ListItem) listitemm;
+            listitem.set_activatable (false);
             var label = new Gtk.Label (null);
             label.xalign = 0;
             listitem.child = label;

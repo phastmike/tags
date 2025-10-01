@@ -21,6 +21,9 @@ namespace Tags {
 
         public GLib.ListModel model;
 
+        public signal void loaded_from_file ();
+        public signal void load_failed (string err_msg); 
+
         public Lines () {
             model = new GLib.ListStore (typeof(Line));
         }
@@ -28,8 +31,12 @@ namespace Tags {
         public async void from_file (File file, Cancellable cancellable) {
             try {
                 string? line;
+                uint count = 0;
                 FileInputStream @is = yield file.read_async (Priority.DEFAULT, cancellable);
                 DataInputStream dis = new DataInputStream (@is);
+
+                var store = model as GLib.ListStore;
+                store.remove_all ();
 
                 try {
                     while ((line = yield dis.read_line_async ()) != null) {
@@ -39,20 +46,17 @@ namespace Tags {
 
                         //FIXME: Bug in string.replace method when replacing \r (0x0d)
                         // WORKAROUND: Iterate and replace... (as above)
-                        //line = line.replace ("\r", " ");
-
-                        var store = (GLib.ListStore) model;
-                        store.remove_all ();
-                        store.append (new Gtk.StringObject (line));
+                        // line = line.replace ("\r", " ");
+                        store.append (new Line (++count, line));
                     }
-                    //loaded_from_file (lines);
+                    loaded_from_file ();
                 } catch (IOError e) {
                     warning (e.message);
-                    //load_failed (e.message);
+                    load_failed (e.message);
                 }
             } catch (Error e) {
                 warning (e.message);
-                //load_failed (e.message);
+                load_failed (e.message);
             }
         }
     }

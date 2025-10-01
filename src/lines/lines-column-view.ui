@@ -56,8 +56,10 @@
         </child>
       </object>
     </child>
+    <!--
     <style>
       <class name="monospace"/>
-    </style>
+      </style>
+    -->
   </template>
 </interface>
