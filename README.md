@@ -1,14 +1,16 @@
-# Tags
+<div align="center">
+  <span align="center"> <img width="128" height="128" class="center" src="data/icons/hicolor/scalable/apps/io.github.phastmike.tags.svg" alt="Tags Icon"></span>
+  <h1 align="center">Tags</h1>
+  <h3 align="center">Add colors to your logs</h3>
+</div>
+
+![tagger](./data/screenshots/tags-default.png)
 
 A GNOME text tagger inspired by the [TextAnalysisTool.NET](https://textanalysistool.github.io/)
 tool.
 
 The main goal is to aid log analysis by tagging lines with user defined colors.
 Tags have a match pattern, description name, visibility toggle, color scheme and hit counter.
-
-## Screenshot
-
-![tagger](./data/screenshots/tags-default.png)
 
 ## Download
 

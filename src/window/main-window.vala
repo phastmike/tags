@@ -49,7 +49,7 @@ namespace Tags {
             { "save_tagged", save_tagged },
             { "hide_untagged_lines", hide_untagged_lines, null, "false", null},
             { "toggle_tags_view", toggle_tags_view, null, "false", null},
-            { "toggle_minimap", toggle_minimap, null, "false", null},
+            { "action_toggle_minimap", action_toggle_minimap, null, "false", null},
             { "copy", copy },
             { "toggle_tag_1", toggle_tag_1 },
             { "toggle_tag_2", toggle_tag_2 },
@@ -82,11 +82,15 @@ namespace Tags {
             setup_actions ();
             save_tagged_disable ();
             setup_tags_treeview ();
-            //setup_lines_treeview ();
             setup_lines_view ();
-            //setup_minimap (scrolled_lines.get_vadjustment ());
             setup_minimap (lines_colview.scrolled.get_vadjustment ());
             setup_main_box ();
+
+            /*
+            var navsplit = new Adw.NavigationSplitView ();
+            navsplit.content = main_box;;
+            */
+            
 
             bottom_sheet = new Adw.BottomSheet ();
             bottom_sheet.set_content (main_box);
@@ -128,7 +132,7 @@ namespace Tags {
             application.set_accels_for_action("win.save_tagged", {"<primary>s"});
             application.set_accels_for_action("win.hide_untagged_lines", {"<primary>h"});
             application.set_accels_for_action("win.toggle_tags_view", {"<primary>f"});
-            application.set_accels_for_action("win.toggle_minimap", {"<primary>m"});
+            application.set_accels_for_action("win.action_toggle_minimap", {"<primary>m"});
             application.set_accels_for_action("win.copy", {"<primary>c"});
             application.set_accels_for_action("win.toggle_tag_1", {"<alt>1"});
             application.set_accels_for_action("win.toggle_tag_2", {"<alt>2"});
@@ -364,68 +368,12 @@ namespace Tags {
                 }
             });
 
-            var persistence = new LinesPersistence ();
-            persistence.load_failed.connect ( (err_msg) => {
-                dialog.close ();
-                show_dialog ("Open File", err_msg, "_Close");
-            });
-
-            persistence.loaded_from_file.connect ( (lines) => {
-                dialog.close ();
-                file_opened = file;
-                save_tagged_enable ();
-                set_title (file.get_basename ());
-                window_title.set_subtitle (file.get_basename ());
-                window_title.set_tooltip_text (file.get_path ());
-
-                lines_colview.set_visible (false);
-
-                //var store = new LineStore ();
-                var store = (GLib.ListStore) this.lines.model;
-                store.remove_all ();
-                //lines_treeview.remove_all_lines ();
-                for (int i = 0; i < lines.get_n_items (); i++) {
-                    //lines_treeview.add_line (i+1, ((Gtk.StringObject) lines.get_item (i)).get_string ());
-                    store.append (new Line (i+1, ((Gtk.StringObject) lines.get_item (i)).get_string ()));
-                } 
-
-                //main_box.remove (lines_colview);
-                //lines_colview = new LinesColumnView (store);
-                //lines_colview.set_visible (true);
-                //main_box.append (lines_colview);
-                //lines_colview.lines = store;
-                //lines_colview.column_view.set_model (store);
-
-                if (Preferences.instance ().tags_autoload == true) {
-                    file_tags = File.new_for_path (file.get_path () + ".tags");
-                    if (file_tags.query_exists ()) {
-                        load_tags_from_file (file_tags);
-                        /*
-                        //overlay.dismiss_all ();
-                        overlay.get_child ();
-                        var toast = new Adw.Toast ("Autoloaded Tags file ...");
-                        toast.set_timeout (8);
-                        overlay.add_toast (toast);
-                        */
-                    }
-                    count_tag_hits (); // For existing tags
-                }
-
-                lines_colview.set_visible (true);
-
-                //minimap.set_array (lines_treeview.model_to_array ());
-                minimap.set_array (Lines.model_to_array(lines_colview.lines));
-            });
-
-            dialog.present (this);
-            //persistence.from_file (file, cancel_open);
-            main_box.set_visible (false);
-            lines.from_file (file, cancel_open);
             lines.load_failed.connect ( (err_msg) => {
+                lines_colview.set_visible (true);
                 dialog.close ();
                 show_dialog ("Open File", err_msg, "_Close");
-                lines_colview.set_visible (true);
             });
+
             lines.loaded_from_file.connect ( () => {
                 main_box.set_visible (true);
                 dialog.close ();
@@ -450,6 +398,10 @@ namespace Tags {
                 }
                 minimap.set_array (Lines.model_to_array(lines_colview.lines));
             });
+
+            dialog.present (this);
+            main_box.set_visible (false);
+            lines.from_file (file, cancel_open);
         }
 
         private void action_add_tag () {
@@ -461,7 +413,6 @@ namespace Tags {
                 tag.enable_changed.connect ((enabled) => {
                     //lines_treeview.refilter ();
                     minimap.set_array (Lines.model_to_array(lines_colview.lines));
-                    //minimap.set_array (lines_treeview.model_to_array ());
                 });
 
                 tags_treeview.add_tag (tag, add_to_top);
@@ -469,12 +420,10 @@ namespace Tags {
                 if (lines_treeview.hide_untagged) { 
                     //lines_treeview.refilter ();
                     minimap.set_array (Lines.model_to_array(lines_colview.lines));
-                    //minimap.set_array (lines_treeview.model_to_array ());
                 }
 
                 count_tag_hits ();
                 minimap.set_array (Lines.model_to_array(lines_colview.lines));
-                //minimap.set_array (lines_treeview.model_to_array ());
             });
 
             tag_dialog.show ();
@@ -507,7 +456,6 @@ namespace Tags {
             tags_treeview.clear_tags ();
             //lines_treeview.refilter ();
             minimap.set_array (Lines.model_to_array(lines_colview.lines));
-            //minimap.set_array (lines_treeview.model_to_array ());
         }
 
         private void action_load_tags () {
@@ -527,12 +475,10 @@ namespace Tags {
                     tag.enable_changed.connect ((enabled) => {
                         //lines_treeview.refilter ();
                         minimap.set_array (Lines.model_to_array(lines_colview.lines));
-                        //minimap.set_array (lines_treeview.model_to_array ());
                     });
                 }
                 //lines_treeview.refilter ();
                 minimap.set_array (Lines.model_to_array(lines_colview.lines));
-                //minimap.set_array (lines_treeview.model_to_array ());
                 count_tag_hits ();
             });
 
@@ -666,8 +612,8 @@ namespace Tags {
             //scrolled_lines.get_vadjustment ().set_value (vadj_value + 0.1);
         }
 
-        private void toggle_minimap () {
-            var action = this.lookup_action ("toggle_minimap");
+        private void action_toggle_minimap () {
+            var action = this.lookup_action ("action_toggle_minimap");
             action.change_state (new Variant.boolean (minimap.get_visible ()));
             minimap.set_visible (!minimap.get_visible ());
         }

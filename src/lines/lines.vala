@@ -59,5 +59,38 @@ namespace Tags {
                 load_failed (e.message);
             }
         }
+
+        public async void to_file (File file) {
+            Line line;
+            StringBuilder str;
+            FileOutputStream fsout;
+
+            str = new StringBuilder ();
+            str.append("");     // Fixes minor bug? Buffer isn't empty !?!?
+
+            // Buffers data to be written
+            for (uint i = 0; i < model.get_n_items (); i++) {
+                line = model.get_item (i) as Line;
+                str.append_printf ("%s\n", line.text);
+            }
+
+            try {
+                if (file.query_exists () == true) file.@delete ();
+                fsout = file.replace (null, false, FileCreateFlags.REPLACE_DESTINATION, null); 
+                fsout.write_all_async.begin (str.data, Priority.DEFAULT, null, (obj, res) => {
+                    size_t bytes_wr;
+                    bool ret = fsout.write_all_async.end (res, out bytes_wr);
+                    fsout.close_async.begin (Priority.DEFAULT, null, (obj, res) => {
+                        try {
+                            bool r = fsout.close_async.end (res);
+                        } catch (IOError e) {
+                            warning (e.message);
+                        }
+                    });
+                });
+            } catch (Error e) {
+                warning (e.message);
+            }
+        }
     }
 }
