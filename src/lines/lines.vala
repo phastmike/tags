@@ -66,6 +66,7 @@ namespace Tags {
             FileOutputStream fsout;
 
             str = new StringBuilder ();
+            str.erase ();
             str.append("");     // Fixes minor bug? Buffer isn't empty !?!?
 
             // Buffers data to be written

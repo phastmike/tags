@@ -53,7 +53,7 @@ namespace Tags {
         public static async File? save_lines_file_dialog (Gtk.Window? parent_window, string? suggested_filename = null, Cancellable? cancellable = null) throws Error {
             var file_dialog = new Gtk.FileDialog ();
             file_dialog.set_modal (true);
-            file_dialog.set_title ("Save tagged lines to file");
+            file_dialog.set_title ("Save tagged");
             file_dialog.set_accept_label ("Save");
 
             if (suggested_filename != null) {

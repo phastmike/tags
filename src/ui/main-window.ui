@@ -120,7 +120,7 @@
       </item>
       -->
       <item>
-        <attribute name="label" translatable="yes">Hide Untagged</attribute>
+        <attribute name="label" translatable="yes">Hide untagged</attribute>
         <attribute name="action">win.hide_untagged_lines</attribute>
       </item>
       <!--

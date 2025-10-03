@@ -30,8 +30,10 @@ namespace Tags {
         private Gtk.ScrolledWindow scrolled_lines;
         private Gtk.ScrolledWindow scrolled_minimap;
 
+        private Gtk.Revealer revealer;
         private Lines lines;
         private Tags.Filter filter;
+        private Filterer filterer;
         private LinesColumnView lines_colview;
         private LinesTreeView lines_treeview;
         private TagsTreeView tags_treeview;
@@ -246,7 +248,8 @@ namespace Tags {
             });
 
             preferences.minimap_visibility_changed.connect ( (v) => {
-                minimap.set_visible (v);
+                //redundant with the bind below
+                //minimap.set_visible (v);
             });
 
             preferences.bind_property("minimap_visible", minimap, "visible", 
@@ -262,7 +265,7 @@ namespace Tags {
         private void setup_lines_view () {
             lines = new Lines ();
             filter = new Tags.Filter (tags_treeview.get_model ());
-            var filterer = new Filterer (lines, filter);
+            filterer = new Filterer (lines, filter);
             lines_colview = new LinesColumnView (filterer.model);
             lines_colview.column_view.activate.connect ( (p) => {
                 var line = lines_colview.lines.get_item (p) as Line;
@@ -341,6 +344,15 @@ namespace Tags {
             main_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
             main_box.append (lines_colview);
             main_box.append (scrolled_minimap);
+
+            /*
+            revealer = new Gtk.Revealer ();
+            revealer.set_child (scrolled_minimap);
+            revealer.set_reveal_child (true);
+            revealer.set_transition_duration (1000);
+            revealer.set_transition_type (Gtk.RevealerTransitionType.SLIDE_RIGHT);
+            main_box.append (revealer);
+            */
         }
 
         public void open_file (File file) {
@@ -531,13 +543,17 @@ namespace Tags {
                 try {
                     var file = LinesPersistence.save_lines_file_dialog.end (res);
                     if (file != null) {
-                        if (lines_treeview.hide_untagged == false) {
+                        if (filter.active == false) {
                             hide_untagged_lines ();
                             revert_hide = true;
                         }
-
+                        /*
                         var persistence = new LinesPersistence ();
                         persistence.to_file.begin (file, lines_treeview.get_model (), (obj, res) => {
+                            if (revert_hide == true) hide_untagged_lines ();
+                        });
+                        */
+                        filterer.to_file.begin (file, (obj, res) => {
                             if (revert_hide == true) hide_untagged_lines ();
                         });
                     }
@@ -615,6 +631,7 @@ namespace Tags {
         private void action_toggle_minimap () {
             var action = this.lookup_action ("action_toggle_minimap");
             action.change_state (new Variant.boolean (minimap.get_visible ()));
+            //revealer.set_reveal_child (!revealer.get_reveal_child ());
             minimap.set_visible (!minimap.get_visible ());
         }
 

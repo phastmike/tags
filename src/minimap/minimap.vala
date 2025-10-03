@@ -65,7 +65,8 @@ public class Minimap : Gtk.DrawingArea {
         init_colors ();
         reset_colors ();
 
-        set_size_request(width, -1);
+        set_size_request(0, -1);
+        set_content_width (width);
         set_draw_func(draw);
 
         init_gestures ();
