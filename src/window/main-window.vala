@@ -35,7 +35,6 @@ namespace Tags {
         private Tags.Filter filter;
         private Filterer filterer;
         private LinesColumnView lines_colview;
-        private LinesTreeView lines_treeview;
         private TagsTreeView tags_treeview;
         private File? file_opened = null;
         private File? file_tags = null;
@@ -203,7 +202,7 @@ namespace Tags {
                 if (filter.active  == true) {
                     inform_user_no_tagged_lines ();
                 }
-        });
+            });
 
             setup_scrolled_tags ();
         }
@@ -254,12 +253,13 @@ namespace Tags {
 
             preferences.bind_property("minimap_visible", minimap, "visible", 
                 BindingFlags.SYNC_CREATE | BindingFlags.BIDIRECTIONAL);
+        }
 
-            /*
-            treeview.set_line_number_visibility (preferences.ln_visible);
-            treeview.set_line_number_color_fg (preferences.ln_fg_color);
-            treeview.set_line_number_color_bg (preferences.ln_bg_color);
-            */
+        public ColorScheme? get_cs_for_line (string text) {
+            if (tags_treeview != null) {
+                return tags_treeview.get_color_scheme_for_text (text);
+            }
+            return null;
         }
 
         private void setup_lines_view () {
@@ -267,6 +267,8 @@ namespace Tags {
             filter = new Tags.Filter (tags_treeview.get_model ());
             filterer = new Filterer (lines, filter);
             lines_colview = new LinesColumnView (filterer.model);
+            //lines_colview.delegate_get_line_color_scheme_func = (LinesColumnView.GetLineColorSchemeFunc) tags_treeview.get_color_scheme_for_text;
+            lines_colview.delegate_get_line_color_scheme_func = get_cs_for_line;
             lines_colview.column_view.activate.connect ( (p) => {
                 var line = lines_colview.lines.get_item (p) as Line;
                 var tag_dialog = new TagDialogWindow (this.application, line.text);
@@ -278,7 +280,7 @@ namespace Tags {
                     count_tag_hits ();
                     minimap.set_array (Lines.model_to_array(lines_colview.lines));
                 });
-                tag_dialog.show ();
+                tag_dialog.present ();
             });
         }
 
@@ -429,7 +431,7 @@ namespace Tags {
 
                 tags_treeview.add_tag (tag, add_to_top);
 
-                if (lines_treeview.hide_untagged) { 
+                if (filter.active == true) { 
                     //lines_treeview.refilter ();
                     minimap.set_array (Lines.model_to_array(lines_colview.lines));
                 }
@@ -547,12 +549,7 @@ namespace Tags {
                             hide_untagged_lines ();
                             revert_hide = true;
                         }
-                        /*
-                        var persistence = new LinesPersistence ();
-                        persistence.to_file.begin (file, lines_treeview.get_model (), (obj, res) => {
-                            if (revert_hide == true) hide_untagged_lines ();
-                        });
-                        */
+
                         filterer.to_file.begin (file, (obj, res) => {
                             if (revert_hide == true) hide_untagged_lines ();
                         });
@@ -566,27 +563,23 @@ namespace Tags {
 
         private void count_tag_hits () {
             Gtk.TreeModel tags;
-            Gtk.TreeModel lines;
 
             tags_treeview.reset_hit_counters ();
-
             tags = tags_treeview.get_model ();
-            lines = (lines_treeview.get_model () as Gtk.TreeModelFilter)?.get_model ();
 
-            lines.foreach ((model, path, iter) => {
-                string? line;
-                model.@get (iter, LinesTreeView.Columns.LINE_TEXT, out line, -1);
+            var model = lines.model;
+            for (uint i = 0; i < model.get_n_items (); i++) {
+                Line line = model.get_item (i) as Line;
                 tags.foreach ((model, path, iter) => {
                     Tag? tag;
                     model.@get (iter, 0, out tag, -1);
 
-                    if (tag.applies_to (line)) {
+                    if (tag.applies_to (line.text)) {
                         tag.hits += 1;
                     }
                     return false;
                 });
-                return false;
-            });
+            }
 
             tags_treeview.queue_draw ();
         }
@@ -594,45 +587,31 @@ namespace Tags {
         private void hide_untagged_lines () {
             filter.active = !filter.active;
 
-            Gtk.TreeIter iter;
-            Gtk.TreeModel model;
-
-            lines_treeview.hide_untagged = !lines_treeview.hide_untagged; 
-
             // Should bind this property !
             var action = this.lookup_action ("hide_untagged_lines");
-            action.change_state (new Variant.boolean ((bool) lines_treeview.hide_untagged));
+            action.change_state (new Variant.boolean ((bool) filter.active));
 
-            //lines_treeview.refilter ();
+            while (filterer.model.pending != 0) {
+                message(".");
+            }
 
-            if (lines_treeview.hide_untagged == true &&
-               (tags_treeview.ntags == 0 || tags_treeview.get_n_tags_enabled () == 0)) {
+            if (filterer.model.get_n_items () == 0) {
                 inform_user_no_tagged_lines ();
+                filter.active = !filter.active;
+                action.change_state (new Variant.boolean ((bool) filter.active));
             }
 
-            var selection = lines_treeview.get_selection ();
-            selection.set_mode (Gtk.SelectionMode.SINGLE);
-            if (selection.get_selected (out model, out iter) == true) {
-                selection = lines_treeview.get_selection ();
-                lines_treeview.scroll_to_cell (model.get_path (iter) , null, true, (float) 0.5, (float) 0.5);
-            }
-            selection.set_mode (Gtk.SelectionMode.MULTIPLE);
-
+            // FIXME: Set with callback to model changed
+            //lines_treeview.refilter ();
             minimap.set_array (Lines.model_to_array(lines_colview.lines));
-            //minimap.set_array (lines_treeview.model_to_array ());
 
-            // FIXME: Hack to force the viewport to recenter
-            // does not work very well ...
-            
-            //var vadj_value = scrolled_lines.get_vadjustment ().get_value ();
-            //scrolled_lines.get_vadjustment ().set_value (vadj_value + 0.1);
         }
 
         private void action_toggle_minimap () {
-            var action = this.lookup_action ("action_toggle_minimap");
-            action.change_state (new Variant.boolean (minimap.get_visible ()));
             //revealer.set_reveal_child (!revealer.get_reveal_child ());
             minimap.set_visible (!minimap.get_visible ());
+            var action = this.lookup_action ("action_toggle_minimap");
+            action.change_state (new Variant.boolean (minimap.get_visible ()));
         }
 
         private void toggle_tags_view () {
@@ -652,9 +631,9 @@ namespace Tags {
         }
         
         private void copy () {
-            var text = lines_treeview.get_selected_lines_as_string ();
+            var text = lines_colview.get_selected_lines_as_string (); 
             if (text.length > 0) {
-                lines_treeview.get_clipboard ().set_text (text);
+                get_clipboard ().set_text (text);
             }
         }
 
@@ -757,16 +736,7 @@ namespace Tags {
         }
 
         private void prev_hit () {
-            Tag tag;
-            string line;
-            Gtk.TreeIter iter;
-            Gtk.TreeModel model;
-
-            if (lines_treeview.get_number_of_items () == 0) {
-                return;
-            }
-
-            tag = tags_treeview.get_selected_tag ();
+            Tag tag = tags_treeview.get_selected_tag ();
 
             if (tag == null) {
                 return;
@@ -776,40 +746,21 @@ namespace Tags {
                 return;
             }
 
-            var line_selection = lines_treeview.get_selection ();
-            line_selection.set_mode (Gtk.SelectionMode.SINGLE);
-
-            if (line_selection.get_selected (out model, out iter) == false) {
-                if (model.get_iter_first (out iter) == false) {
-                    return;
-                } else {
-                    line_selection.select_iter (iter);
-                }
+            var line_selection = lines_colview.selection_model;
+            var bitset = line_selection.get_selection ();
+            if (bitset.get_size () != 1) {
+                message ("Multiple linoes selected ... Can't figure out what to do ...");
+                // Maybe choose the first or the **last** from the bitset
+                return;
             }
-
-            for (; model.iter_previous (ref iter);) {
-                model.@get (iter, LinesTreeView.Columns.LINE_TEXT, out line);
-                if (tag.applies_to (line)) {
-                    line_selection.select_iter (iter);
-                    lines_treeview.scroll_to_cell (model.get_path (iter), null, true, (float) 0.5, (float) 0.5);
-                    break;
-                }
-            }
-
-            line_selection.set_mode (Gtk.SelectionMode.MULTIPLE);
+            
+            var model = filterer.model; 
+            var line  = model.get_item (bitset.get_nth (0)) as Line;
+            message ("Got line %zu: %s", line.number, line.text); 
         }
 
         private void next_hit () {
-            Tag tag;
-            string line;
-            Gtk.TreeIter iter;
-            Gtk.TreeModel model;
-
-            if (lines_treeview.get_number_of_items () == 0) {
-                return;
-            }
-
-            tag = tags_treeview.get_selected_tag ();
+            Tag tag = tags_treeview.get_selected_tag ();
             if (tag == null) {
                 return;
             }
@@ -818,31 +769,21 @@ namespace Tags {
                 return;
             }
 
-            var line_selection = lines_treeview.get_selection ();
-            line_selection.set_mode (Gtk.SelectionMode.SINGLE);
-
-            if (line_selection.get_selected (out model, out iter) == false) {
-                if (model.get_iter_first (out iter) == false) {
-                    return;
-                } else {
-                    line_selection.select_iter (iter);
-                }
+            var line_selection = lines_colview.selection_model;
+            var bitset = line_selection.get_selection ();
+            if (bitset.get_size () != 1) {
+                message ("Multiple linoes selected ... Can't figure out what to do ...");
+                // Maybe choose the first or the **last** from the bitset
+                return;
             }
-
-            for (; model.iter_next (ref iter) ;) {
-                model.@get (iter, LinesTreeView.Columns.LINE_TEXT, out line);
-                if (tag.applies_to (line)) {
-                    line_selection.select_iter (iter);
-                    lines_treeview.scroll_to_cell (model.get_path (iter), null, true, (float) 0.5, (float) 0.5);
-                    break;
-                }
-            }
-
-            line_selection.set_mode (Gtk.SelectionMode.MULTIPLE);
+            
+            var model = filterer.model; 
+            var line  = model.get_item (bitset.get_nth (0)) as Line;
+            message ("Got line %zu: %s", line.number, line.text); 
+            
         }
 
         private void inform_user_no_tagged_lines () {
-            //FIXME: dismiss_all -> Not available thru flatpak yet !?
             //overlay.dismiss_all ();
             //var toast = new Adw.Toast ("No tags enabled! Showing all lines ...");
             //toast.set_timeout (3);
@@ -871,6 +812,5 @@ namespace Tags {
                 }
             });
         }
-
     }
 }

@@ -3,7 +3,6 @@ tags_sources += files(
 	'lines.vala',
 	'filter.vala',
 	'filterer.vala',
-	'lines-tree-view.vala',
 	'lines-column-view.vala',
 	'lines-persistence.vala',
 	)

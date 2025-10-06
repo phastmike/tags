@@ -25,6 +25,9 @@ namespace Tags {
         public ListModel lines;
         public Gtk.MultiSelection selection_model;
 
+        public delegate ColorScheme? GetLineColorSchemeFunc (string text);
+        public GetLineColorSchemeFunc? delegate_get_line_color_scheme_func = null;
+
         public LinesColumnView (GLib.ListModel model) {
         //public LinesColumnView (LineStore lines) {
             this.lines = model;
@@ -41,25 +44,27 @@ namespace Tags {
             header.set_visible (false);
         }
 
-        private void ui_css_add_styles_to_provider () {
-            var preferences = Preferences.instance ();
+        public string get_selected_lines_as_string () {
+            var str = new StringBuilder ();
+            var bitset = selection_model.get_selection ();
+            for (uint i = 0; i < bitset.get_size (); i++) {
+                Line line = selection_model.get_item (bitset.get_nth (i)) as Line;
+                str.append (line.text);
+                str.append ("\n");
+            }
+            return str.str;
+        }
+
+
+        private void ui_css_add_styles_to_provider (string klassname, ColorScheme color_scheme) {
             var provider_css = new Gtk.CssProvider ();
 
             provider_css.load_from_string (""" 
-                columnview {
-                    padding: 0px;
-                }
-
-                .line-number {
-                /*.line-number:not(:hover):not(:selected) {*/
+                .%s {
                     color: %s;
                     background-color: %s;
                 }
-
-                .line-number:selected {
-                    font-weight: 700;
-                }
-            """.printf (preferences.ln_fg_color, preferences.ln_bg_color));
+            """.printf (klassname, color_scheme.fg.to_string (), color_scheme.bg.to_string ()));
 
             Gtk.StyleContext.add_provider_for_display (
                 Gdk.Display.get_default (),
@@ -75,7 +80,7 @@ namespace Tags {
             var label = new Gtk.Label (null);
             label.xalign = 1;
             listitem.child = label;
-            ui_css_add_styles_to_provider ();
+            //ui_css_add_styles_to_provider ();
             //label.add_css_class ("line-number");
             label.add_css_class ("dimmed");
         }
@@ -93,7 +98,7 @@ namespace Tags {
         [GtkCallback]
         private void line_text_setup_handler (Gtk.SignalListItemFactory factory, GLib.Object listitemm) {
             Gtk.ListItem listitem = (Gtk.ListItem) listitemm;
-            listitem.set_activatable (false);
+            //listitem.set_activatable (false);
             var label = new Gtk.Label (null);
             label.xalign = 0;
             listitem.child = label;
@@ -106,10 +111,25 @@ namespace Tags {
             Gtk.ListItem listitem = (Gtk.ListItem) listitemm;
             var label = listitem.child as Gtk.Label;
             var line = listitem.item as Line;
-            label.set_text (line.text);
+            string text = line.text;
+            label.set_text (text);
             //label.set_tooltip_text ("%u".printf (listitem.position + 1));
             //ui_css_add_styles_to_provider ();
             //listitem.add_css_class ("line-number");
+            if (delegate_get_line_color_scheme_func != null) {
+                ColorScheme? cs = null;
+                cs = delegate_get_line_color_scheme_func (text);
+                if (cs != null) {
+                    ui_css_add_styles_to_provider ("line-number-%u".printf (line.number), cs);
+                    string klassname = "line-number-%u".printf (line.number);
+                    listitem.child.add_css_class (klassname);
+                    //listitem.child.add_css_class ("card");
+                } else {
+                    string klassname = "line-number-%u".printf (line.number);
+                    listitem.child.remove_css_class (klassname);
+                    //listitem.child.remove_css_class ("card");
+                }
+            }
         }
     }
 }

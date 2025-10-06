@@ -224,6 +224,25 @@ namespace Tags {
             no_active_tags (); // OK?
         }
 
+        public ColorScheme? get_color_scheme_for_text (string text) {
+            ColorScheme? ret = null;
+            if (ntags == 0) return null;
+            tag_store.foreach ( (model, path, iter) => {
+                Tag? tag = null;
+                model.@get (iter, 0, out tag);
+                if (tag == null) return true;
+                if (tag.enabled == true) {
+                    if (tag.applies_to (text)) {
+                        ret = tag.colors;
+                        return true;
+                    }
+                }
+                return false;
+            });
+
+            return ret;
+        }
+
         public Gdk.RGBA? get_bg_color_for_text (string text) {
             Gdk.RGBA? ret = null;
             tag_store.foreach ( (model, path, iter) => {

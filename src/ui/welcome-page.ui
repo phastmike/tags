@@ -4,148 +4,169 @@
   <!-- interface-name test2.ui -->
   <requires lib="gtk" version="4.0"/>
   <template class="TagsWelcomePage" parent="GtkBox">
-    <property name="halign">center</property>
+    <property name="halign">fill</property>
+    <!--
     <property name="margin-bottom">30</property>
     <property name="margin-end">30</property>
     <property name="margin-start">30</property>
     <property name="margin-top">6</property>
+    -->
     <property name="orientation">vertical</property>
-    <property name="valign">center</property>
+    <property name="valign">fill</property>
     <child>
-      <object class="GtkImage">
-        <property name="icon-name">io.github.phastmike.tags</property>
-        <property name="icon-size">normal</property>
-        <property name="margin-bottom">30</property>
-        <property name="name">logo</property>
-        <property name="pixel-size">160</property>
-        <style>
-          <class name="icon-dropshadow"/>
-        </style>
-      </object>
-    </child>
-    <child>
-      <object class="GtkLabel">
-        <property name="label" translatable="yes">Welcome to Tags</property>
-        <property name="margin-bottom">30</property>
-        <style>
-          <class name="title-1"/>
-        </style>
-      </object>
-    </child>
-    <child>
-      <object class="GtkBox" id="subtitle">
-        <property name="halign">center</property>
-        <property name="margin-bottom">30</property>
-        <property name="orientation">vertical</property>
-        <child>
-          <object class="GtkLabel">
-            <property name="justify">center</property>
-            <property name="label">Give color to your log files</property>
-            <style>
-              <class name="title-4"/>
-            </style>
-          </object>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkBox">
-        <property name="halign">center</property>
-        <property name="homogeneous">true</property>
-        <property name="orientation">vertical</property>
+      <object class="GtkScrolledWindow">
+        <property name="vexpand">true</property>
         <child>
           <object class="GtkBox">
-            <property name="margin-bottom">6</property>
+            <property name="vexpand">true</property>
+            <property name="halign">center</property>
+            <!--
+            <property name="margin-bottom">30</property>
+            <property name="margin-end">30</property>
+            <property name="margin-start">30</property>
+            <property name="margin-top">6</property>
+            -->
+            <property name="orientation">vertical</property>
+            <property name="valign">center</property>
             <child>
               <object class="GtkImage">
-                <property name="icon-name">folder-open-symbolic</property>
+                <property name="icon-name">io.github.phastmike.tags</property>
                 <property name="icon-size">normal</property>
-                <property name="margin-end">12</property>
+                <property name="margin-bottom">30</property>
+                <property name="name">logo</property>
+                <property name="pixel-size">160</property>
+                <style>
+                  <class name="icon-dropshadow"/>
+                </style>
               </object>
             </child>
             <child>
               <object class="GtkLabel">
-                <property name="label" translatable="yes">Open a log file to start using tags</property>
-              </object>
-            </child>
-          </object>
-        </child>
-        <child>
-          <object class="GtkBox">
-            <property name="margin-bottom">6</property>
-            <child>
-              <object class="GtkImage">
-                <property name="icon-name">list-add-symbolic</property>
-                <property name="icon-size">normal</property>
-                <property name="margin-end">12</property>
+                <property name="label" translatable="yes">Welcome to Tags</property>
+                <property name="margin-bottom">30</property>
+                <style>
+                  <class name="title-1"/>
+                </style>
               </object>
             </child>
             <child>
-              <object class="GtkLabel">
-                <property name="label" translatable="yes">Add a tag filter</property>
-              </object>
-            </child>
-          </object>
-        </child>
-        <child>
-          <object class="GtkBox">
-            <property name="margin-bottom">6</property>
-            <child>
-              <object class="GtkImage">
-                <property name="icon-name">view-list-symbolic</property>
-                <property name="icon-size">normal</property>
-                <property name="margin-end">12</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkLabel">
-                <property name="label" translatable="yes">Toggle tag list visibility</property>
-              </object>
-            </child>
-          </object>
-        </child>
-        <child>
-          <object class="GtkBox">
-            <property name="margin-bottom">6</property>
-            <child>
-              <object class="GtkImage">
-                <property name="icon-name">input-keyboard-symbolic</property>
-                <property name="margin-end">12</property>
+              <object class="GtkBox" id="subtitle">
+                <property name="halign">center</property>
+                <property name="margin-bottom">30</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="justify">center</property>
+                    <property name="label">Give color to your log files</property>
+                    <style>
+                      <class name="title-4"/>
+                    </style>
+                  </object>
+                </child>
               </object>
             </child>
             <child>
-              <object class="GtkLabel">
-                <property name="label" translatable="yes">Hit</property>
+              <object class="GtkBox">
+                <property name="halign">center</property>
+                <property name="homogeneous">true</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkBox">
+                    <property name="margin-bottom">6</property>
+                    <child>
+                      <object class="GtkImage">
+                        <property name="icon-name">folder-open-symbolic</property>
+                        <property name="icon-size">normal</property>
+                        <property name="margin-end">12</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label" translatable="yes">Open a log file to start using tags</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="margin-bottom">6</property>
+                    <child>
+                      <object class="GtkImage">
+                        <property name="icon-name">list-add-symbolic</property>
+                        <property name="icon-size">normal</property>
+                        <property name="margin-end">12</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label" translatable="yes">Add a tag filter</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="margin-bottom">6</property>
+                    <child>
+                      <object class="GtkImage">
+                        <property name="icon-name">view-list-symbolic</property>
+                        <property name="icon-size">normal</property>
+                        <property name="margin-end">12</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label" translatable="yes">Toggle tag list visibility</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="margin-bottom">6</property>
+                    <child>
+                      <object class="GtkImage">
+                        <property name="icon-name">input-keyboard-symbolic</property>
+                        <property name="margin-end">12</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label" translatable="yes">Hit</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkShortcutsShortcut">
+                        <property name="accelerator">&lt;Control&gt;H</property>
+                        <property name="margin-start">12</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label" translatable="yes">to hide untagged lines</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
               </object>
             </child>
             <child>
-              <object class="GtkShortcutsShortcut">
-                <property name="accelerator">&lt;Control&gt;H</property>
-                <property name="margin-start">12</property>
+              <object class="GtkBox">
+                <property name="halign">center</property>
+                <property name="margin-top">30</property>
+                <child>
+                  <object class="GtkButton">
+                    <property name="label" translatable="yes">Open a file to start coloring ...</property>
+                    <property name="tooltip-text">Select a File</property>
+                    <property name="action-name">win.action_open_file</property>
+                    <style>
+                      <class name="suggested-action"/>
+                      <class name="pill"/>
+                    </style>
+                  </object>
+                </child>
               </object>
             </child>
-            <child>
-              <object class="GtkLabel">
-                <property name="label" translatable="yes">to hide untagged lines</property>
-              </object>
-            </child>
-          </object>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkBox">
-        <property name="halign">center</property>
-        <property name="margin-top">30</property>
-        <child>
-          <object class="GtkButton">
-            <property name="label" translatable="yes">Open a file to start coloring ...</property>
-            <property name="tooltip-text">Select a File</property>
-            <property name="action-name">win.action_open_file</property>
-            <style>
-              <class name="suggested-action"/>
-              <class name="pill"/>
-            </style>
           </object>
         </child>
       </object>
