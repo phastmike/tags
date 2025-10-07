@@ -19,7 +19,7 @@ namespace Tags {
             set {
                 if (_active != value) {
                     _active = value;
-                    changed(Gtk.FilterChange.DIFFERENT);
+                    changed (Gtk.FilterChange.DIFFERENT);
                 }
             }
         }

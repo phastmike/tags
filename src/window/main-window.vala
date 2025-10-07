@@ -267,7 +267,6 @@ namespace Tags {
             filter = new Tags.Filter (tags_treeview.get_model ());
             filterer = new Filterer (lines, filter);
             lines_colview = new LinesColumnView (filterer.model);
-            //lines_colview.delegate_get_line_color_scheme_func = (LinesColumnView.GetLineColorSchemeFunc) tags_treeview.get_color_scheme_for_text;
             lines_colview.delegate_get_line_color_scheme_func = get_cs_for_line;
             lines_colview.column_view.activate.connect ( (p) => {
                 var line = lines_colview.lines.get_item (p) as Line;
@@ -282,10 +281,6 @@ namespace Tags {
                 });
                 tag_dialog.present ();
             });
-        }
-
-        private void setup_scrolled_lines () {
-            // NOTE: Use PolicyType EXTERNAL to hide the scroll from the treeview
         }
 
         private void setup_scrolled_tags () {
