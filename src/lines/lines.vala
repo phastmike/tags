@@ -9,6 +9,14 @@
 
 namespace Tags {
     public class Lines : Object {
+        public GLib.ListModel model;
+
+        /* SIGNALS */
+
+        public signal void loaded_from_file ();
+        public signal void load_failed (string err_msg); 
+
+        /* CLASS METHODS */
 
         public static  string[] model_to_array (GLib.ListModel model) {
             var result = new string[model.get_n_items()];
@@ -19,10 +27,7 @@ namespace Tags {
             return result;
         }
 
-        public GLib.ListModel model;
-
-        public signal void loaded_from_file ();
-        public signal void load_failed (string err_msg); 
+        /* INSTANCE METHODS */
 
         public Lines () {
             model = new GLib.ListStore (typeof(Line));

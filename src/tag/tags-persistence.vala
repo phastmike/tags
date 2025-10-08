@@ -25,7 +25,7 @@ namespace Tags {
 
         // FIXME: If loading at the end, then we should rename the method
         // It should provide only a way to get a file from the user */
-        public async void open_tags_file_dialog (Gtk.Window? parent_window = null, Cancellable? cancellable = null) {
+        public async File? open_tags_file_dialog (Gtk.Window? parent_window = null, Cancellable? cancellable = null) {
             File? file = null;
 
             var file_dialog = new Gtk.FileDialog ();
@@ -54,9 +54,11 @@ namespace Tags {
             try {
                 file = yield file_dialog.open (parent_window, cancellable); 
                 from_file (file);
+                return file;
             } catch (Error e) {
                 message ("Error message: %s".printf (e.message));
             }
+            return null;
         }
 
         public async void save_tags_file_dialog (Gtk.TreeModel model, Gtk.Window? parent_window = null, string? suggested_filename, Cancellable? cancellable = null) {

@@ -31,9 +31,11 @@ namespace Tags {
         private Gtk.ScrolledWindow scrolled_minimap;
 
         private Gtk.Revealer revealer;
+        private TagStore tags;
         private Lines lines;
         private Tags.Filter filter;
         private Filterer filterer;
+        private TagsColumnView tags_colview;
         private LinesColumnView lines_colview;
         private TagsTreeView tags_treeview;
         private File? file_opened = null;
@@ -97,7 +99,11 @@ namespace Tags {
             bottom_sheet.set_content (main_box);
             
             var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
-            box.append (scrolled_tags);
+            //box.append (scrolled_tags);
+            tags = new TagStore ();
+            tags_colview = new TagsColumnView (tags.model);
+            tags_colview.set_size_request (-1, 200);
+            box.append (tags_colview);
             bottom_sheet.set_reveal_bottom_bar (false);
             
             scrolled_tags.set_size_request (-1, 200);
@@ -492,9 +498,13 @@ namespace Tags {
             });
 
             if (file == null) {
-                persistence.open_tags_file_dialog (this);
+                persistence.open_tags_file_dialog.begin (this, null, (obj, res) => {
+                    File? tfile = persistence.open_tags_file_dialog.end (res);
+                    if (tfile != null) tags.from_file (tfile);
+                });
             } else {
                 persistence.from_file (file);
+                tags.from_file (file);    
             }
         }
 
@@ -613,10 +623,13 @@ namespace Tags {
             var action = this.lookup_action ("toggle_tags_view");
             if (bottom_sheet.get_open () == false) {
                 action.change_state (new Variant.boolean (false));
-                int h = (int) (tags_treeview.ntags + 2) * 26;
+                /*
+                int h = (int) (tags.ntags + 2) * 26;
                 if (h < 167) h = 167;
                 if (h >= 306) h = 306;
-                scrolled_tags.set_size_request (-1, h);
+                */
+                int h = 406;
+                tags_colview.set_size_request (-1, h);
                 bottom_sheet.set_open (true);
             } else {
                 bottom_sheet.set_open (false);
