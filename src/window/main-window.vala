@@ -103,7 +103,8 @@ namespace Tags {
             tags = new TagStore ();
             tags_colview = new TagsColumnView (tags.model);
             tags_colview.set_size_request (-1, 200);
-            box.append (tags_colview);
+            //box.append (tags_colview);
+            box.append (new TagsView (tags.model));
             bottom_sheet.set_reveal_bottom_bar (false);
             
             scrolled_tags.set_size_request (-1, 200);

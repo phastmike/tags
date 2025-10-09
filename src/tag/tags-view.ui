@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="TagsTagsView" parent="GtkBox">
+    <property name="valign">start</property>
+    <property name="orientation">horizontal</property>
+    <property name="hexpand">true</property>
+    <property name="margin-top">38</property>
+    <property name="margin-start">12</property>
+    <property name="margin-end">12</property>
+    <!--<property name="margin-bottom">24</property>-->
+    <child>
+      <object class="GtkScrolledWindow" id="scrolled">
+        <property name="hexpand">True</property>
+        <property name="vexpand">True</property>
+        <child>
+          <object class="GtkBox" id="clamp1">
+            <!--<property name="maximum-size">600</property>-->
+            <child>
+              <object class="GtkListBox" id="listbox">
+                <property name="margin-bottom">12</property>
+                <style>
+                  <class name="boxed-list"/>
+                </style>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <!--
+    <style>
+      <class name="monospace"/>
+    </style>
+    -->
+  </template>
+</interface>
