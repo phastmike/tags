@@ -30,6 +30,7 @@ namespace Tags {
         private Gtk.ScrolledWindow scrolled_lines;
         private Gtk.ScrolledWindow scrolled_minimap;
 
+        private Adw.OverlaySplitView oversplit;
         private Gtk.Revealer revealer;
         private TagStore tags;
         private Lines lines;
@@ -89,26 +90,12 @@ namespace Tags {
             setup_minimap (lines_colview.scrolled.get_vadjustment ());
             setup_main_box ();
 
-            /*
-            var navsplit = new Adw.NavigationSplitView ();
-            navsplit.content = main_box;;
-            */
             
-
-            bottom_sheet = new Adw.BottomSheet ();
-            bottom_sheet.set_content (main_box);
-            
-            var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
-            //box.append (scrolled_tags);
             tags = new TagStore ();
             tags_colview = new TagsColumnView (tags.model);
-            tags_colview.set_size_request (-1, 200);
-            //box.append (tags_colview);
+            var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
             box.append (new TagsView (tags.model));
-            bottom_sheet.set_reveal_bottom_bar (false);
-            
-            scrolled_tags.set_size_request (-1, 200);
-            bottom_sheet.set_sheet (box);
+            //box.append (tags_colview);
 
             setup_buttons ();
 
@@ -117,10 +104,17 @@ namespace Tags {
 
             stack = new Gtk.Stack ();
             stack.add_named (new WelcomePage (), "welcome");
-            stack.add_named (bottom_sheet, "main");
+            stack.add_named (main_box, "main");
             stack.set_visible_child_name ("welcome");
-            overlay.set_child (stack);
-            //overlay.set_child (bottom_sheet);
+
+            oversplit = new Adw.OverlaySplitView ();
+            //oversplit.min_sidebar_width = 260;
+            oversplit.max_sidebar_width = 360;
+            oversplit.content = stack;
+            oversplit.sidebar = box;
+            //oversplit.show_sidebar = false;
+            overlay.set_child (oversplit);
+
             setup_preferences ();
         }
 
@@ -274,7 +268,7 @@ namespace Tags {
             filter = new Tags.Filter (tags_treeview.get_model ());
             filterer = new Filterer (lines, filter);
             lines_colview = new LinesColumnView (filterer.model);
-            lines_colview.delegate_get_line_color_scheme_func = get_cs_for_line;
+            //lines_colview.delegate_get_line_color_scheme_func = get_cs_for_line;
             lines_colview.column_view.activate.connect ( (p) => {
                 var line = lines_colview.lines.get_item (p) as Line;
                 var tag_dialog = new TagDialogWindow (this.application, line.text);
@@ -339,6 +333,7 @@ namespace Tags {
             scrolled_minimap.set_policy (Gtk.PolicyType.NEVER, Gtk.PolicyType.EXTERNAL);
             scrolled_minimap.set_child (minimap);
             scrolled_minimap.set_vexpand (true);
+            //scrolled_minimap.add_css_class ("frame");
 
             var minimap_manager = new MinimapScrollManager (lines_colview.scrolled, scrolled_minimap);
             minimap.set_line_color_bg_callback (delegate_minimap_bgcolor_getter);
@@ -348,7 +343,6 @@ namespace Tags {
             main_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
             main_box.append (lines_colview);
             main_box.append (scrolled_minimap);
-
             /*
             revealer = new Gtk.Revealer ();
             revealer.set_child (scrolled_minimap);
@@ -360,8 +354,6 @@ namespace Tags {
         }
 
         public void open_file (File file) {
-            //NOTE: forces UI to change visible stack child
-            stack.set_visible_child_name ("main");
 
             FileType type = file.query_file_type (FileQueryInfoFlags.NONE);
             if (type != FileType.REGULAR) {
@@ -391,7 +383,8 @@ namespace Tags {
             });
 
             lines.loaded_from_file.connect ( () => {
-                main_box.set_visible (true);
+                //main_box.set_visible (true);
+                stack.set_visible_child_name ("main");
                 dialog.close ();
                 file_opened = file;
                 save_tagged_enable ();
@@ -416,7 +409,7 @@ namespace Tags {
             });
 
             dialog.present (this);
-            main_box.set_visible (false);
+            //main_box.set_visible (false);
             lines.from_file (file, cancel_open);
         }
 
@@ -621,6 +614,7 @@ namespace Tags {
         }
 
         private void toggle_tags_view () {
+            oversplit.show_sidebar = !oversplit.show_sidebar;
             var action = this.lookup_action ("toggle_tags_view");
             if (bottom_sheet.get_open () == false) {
                 action.change_state (new Variant.boolean (false));

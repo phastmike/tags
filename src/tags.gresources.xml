@@ -6,6 +6,8 @@
     <file>lines/lines-column-view.ui</file>
     <file>tag/tags-column-view.ui</file>
     <file>tag/tag-row.ui</file>
+    <file>tag/tag-row2.ui</file>
+    <file>tag/tag-row3.ui</file>
     <file>tag/tags-view.ui</file>
     <file>ui/tags-tree-view.ui</file>
     <file>ui/tag-dialog-window.ui</file>

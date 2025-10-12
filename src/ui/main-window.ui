@@ -10,6 +10,7 @@
 	  </style>
     <property name="content">
       <object class="AdwToolbarView">
+        <property name="top_bar_style">raised-border</property>
         <child type="top">
           <object class="AdwHeaderBar">
             <child type="start">
@@ -59,7 +60,7 @@
             <child type="end">
               <object class="GtkButton" id="button_tags_list">
                 <property name="visible">true</property>
-                <property name="icon-name">view-list-symbolic</property>
+                <property name="icon-name">sidebar-show</property>
                 <property name="tooltip-text">Tag List</property>
                 <property name="action-name">win.toggle_tags_view</property>
               </object>
