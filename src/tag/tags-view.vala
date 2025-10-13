@@ -16,29 +16,17 @@ namespace Tags {
         [GtkChild]
         public Gtk.ListBox listbox;
 
-        //public TagStore tag_store;
         public GLib.ListModel model;
         private Gtk.Application application;
 
         public TagsView (GLib.ListModel model) {
             this.model = model; 
-            //Gtk.SingleSelection selection_model = new Gtk.SingleSelection (model);
-            //column_view.set_model (selection_model);
-            //selection_model.set_autoselect (false);
-            //selection_model.set_can_unselect (true);
 
-            // Does not work
-            //column_view.activate.connect ( (pos) => {
-            //    message ("Row %u activated...", pos);
-            //});
-
-            set_size_request (-1, 400);
-            listbox.bind_model (model, (obj) => {
+            listbox.bind_model (this.model, (obj) => {
                 var tag = obj as Tag;
                 var row = new TagRow (tag);
 
-
-                return row as Gtk.Widget;;
+                return row as Gtk.Widget;
             });
         }
     }

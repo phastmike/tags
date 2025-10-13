@@ -9,7 +9,7 @@
  */
 
 namespace Tags {
-    [GtkTemplate (ui = "/io/github/phastmike/tags/tag/tag-row3.ui")]
+    [GtkTemplate (ui = "/io/github/phastmike/tags/tag/tag-row.ui")]
     public class TagRow : Gtk.ListBoxRow {
         [GtkChild]
         public Gtk.Label title;
@@ -19,67 +19,69 @@ namespace Tags {
         public Gtk.CheckButton enabled;
         [GtkChild]
         public Gtk.Label hitcounter;
-        /*
-        [GtkChild]
-        public Gtk.Frame colorscheme;
-        [GtkChild]
-        public Gtk.CenterBox bottombar;
-        */
 
-        Tag tag;
-        string uuid;
+        public Tag tag;
+        private Gtk.CssProvider style_provider;
+        public string style_class {get; private set;}
 
         public TagRow (Tag tag) {
-            uuid = generate_random_hash ();
+            this.tag = tag;
+            style_class = generate_unique_name ();
+
+            style_provider = new Gtk.CssProvider ();
+
+            var style_ctx = get_style_context ();
+            style_ctx.add_provider_for_display (
+                Gdk.Display.get_default (),
+                this.style_provider,
+                Gtk.STYLE_PROVIDER_PRIORITY_USER
+            );
+
+            style_update_css ();
+
+            set_tooltip_text (tag.description);
             enabled.active = tag.enabled;
+            enabled.add_css_class (style_class);
             title.label = tag.description;
+            title.add_css_class(style_class);
             subtitle.label = tag.pattern;
             hitcounter.label = "%u".printf (tag.hits);
             if (tag.description.length == 0) {
                 title.visible = false;
-            } else {
-                title.add_css_class ("dimmed");
             }
 
-            /*
-            foreach (var child in get_children()) {
-                if (child is Gtk.Label) {
-                    var label = child as Gtk.Label;
-                    label.set_ellipzise (Pango.EllipsizeMode.MIDDLE);
-                }
-            }
-            */
+            this.tag.bind_property ("enabled", enabled,  "active", BindingFlags.SYNC_CREATE | BindingFlags.BIDIRECTIONAL);
+            this.tag.bind_property ("description", title, "label", BindingFlags.SYNC_CREATE);
+            this.tag.bind_property ("pattern", subtitle, "label", BindingFlags.SYNC_CREATE);
 
+            this.tag.colors.changed.connect ( (cs) => {
+                style_update_css ();
+            });
+        }
+
+        ~TagRow () {
+            remove_css_class (style_class);
+        }
+
+        void style_update_css () {
             string? lstyle = """
+                .%s {
+                    font-size: 0.8333em;
+                }
+
                 .%s check {
                     color: %s;
                     background-color: %s;
                     /*font-size: 0.8333em;*/
                 }
+            """.printf (style_class, style_class, tag.colors.fg.to_string (), tag.colors.bg.to_string ());
 
-                .%s {
-                    font-size: 0.8333em;
-                }
-            """.printf (uuid, tag.colors.fg.to_string (), tag.colors.bg.to_string (), uuid);
-
-            //message ("Style:\n%s", lstyle);
-
-            var provider = new Gtk.CssProvider ();
-            provider.load_from_data (lstyle.data);
-            //bottombar.parent.add_css_class (uuid);
-            enabled.add_css_class (uuid);
-            title.add_css_class(uuid);
-            Gtk.StyleContext.add_provider_for_display (Gdk.Display.get_default (), provider, Gtk.STYLE_PROVIDER_PRIORITY_USER);
+            style_provider.load_from_data (lstyle.data);
         }
 
-        ~TagRow () {
-            remove_css_class (uuid);
-        }
-
-        string generate_random_hash() {
-            // Create a random string using GLib.Random
-            string random_input = "%u-%u-%u".printf(GLib.Random.next_int (), GLib.Random.next_int (), GLib.Random.next_int());
-            // Hash it
+        private string generate_unique_name () {
+            string random_input = "%u-%u-%u".
+                printf(GLib.Random.next_int (), GLib.Random.next_int (), GLib.Random.next_int());
             var checksum = new Checksum(ChecksumType.SHA256);
             checksum.update(random_input.data, random_input.length);
             return "row-" + checksum.get_string();

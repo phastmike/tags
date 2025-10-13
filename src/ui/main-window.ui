@@ -9,66 +9,70 @@
       <!--<class name="devel"/>-->
 	  </style>
     <property name="content">
-      <object class="AdwToolbarView">
-        <property name="top_bar_style">raised-border</property>
-        <child type="top">
-          <object class="AdwHeaderBar">
-            <child type="start">
-              <object class="GtkButton" id="button_open_file">
-                <property name="visible">true</property>
-                <property name="action-name">win.action_open_file</property>
-                <property name="child">
-                  <object class="AdwButtonContent">
-                    <property name="icon-name">document-open-symbolic</property>
-                    <property name="label" translatable="yes">_Open</property>
-                    <property name="tooltip_text" translatable="yes">Select a File</property>
-                    <property name="use-underline">true</property>
-                  </object>
-                </property>
-              </object>
-            </child>
-            <child type="title">
-              <object class="AdwWindowTitle" id="window_title">
-                <property name="title">Tags</property>
-                <!--<property name="subtitle">Open a file to get started ...</property>-->
-              </object>
-            </child>
-            <child type="end">
-              <object class="GtkMenuButton">
-                <property name="primary">true</property>
-                <property name="icon-name">open-menu-symbolic</property>
-                <property name="menu-model">primary_menu</property>
-                <property name="tooltip-text">Main Menu</property>
-              </object>
-            </child>
-            <child type="end">
-              <object class="AdwSplitButton" id="button_tags">
-                <property name="icon-name">list-add-symbolic</property>
-                <property name="popover">file_popover</property>
-                <property name="tooltip-text">New Tag</property>
-                <property name="action-name">win.action_add_tag</property>
-              </object>
-            </child>
-            <child type="end">
-              <object class="GtkButton" id="button_minimap">
-                <property name="visible">false</property>
-                <property name="icon-name">paned-bottom-symbolic</property>
-                <property name="tooltip-text">Minimap</property>
-                <property name="action-name">win.toggle_minimap</property>
-              </object>
-            </child>
-            <child type="end">
-              <object class="GtkButton" id="button_tags_list">
-                <property name="visible">true</property>
-                <property name="icon-name">sidebar-show</property>
-                <property name="tooltip-text">Tag List</property>
-                <property name="action-name">win.toggle_tags_view</property>
-              </object>
-            </child>
-          </object>
-        </child>
+      <object class="AdwOverlaySplitView" id="oversplit">
         <property name="content">
-          <object class="AdwToastOverlay" id="overlay" />
+          <object class="AdwToolbarView">
+            <property name="top_bar_style">flat</property>
+            <child type="top">
+              <object class="AdwHeaderBar">
+                <child type="start">
+                  <object class="GtkButton" id="button_open_file">
+                    <property name="visible">true</property>
+                    <property name="action-name">win.action_open_file</property>
+                    <property name="child">
+                      <object class="AdwButtonContent">
+                        <property name="icon-name">document-open-symbolic</property>
+                        <property name="label" translatable="yes">_Open</property>
+                        <property name="tooltip_text" translatable="yes">Select a File</property>
+                        <property name="use-underline">true</property>
+                      </object>
+                    </property>
+                  </object>
+                </child>
+                <child type="title">
+                  <object class="AdwWindowTitle" id="window_title">
+                    <property name="title">Tags</property>
+                    <!--<property name="subtitle">Open a file to get started ...</property>-->
+                  </object>
+                </child>
+                <child type="end">
+                  <object class="GtkMenuButton">
+                    <property name="primary">true</property>
+                    <property name="icon-name">open-menu-symbolic</property>
+                    <property name="menu-model">primary_menu</property>
+                    <property name="tooltip-text">Main Menu</property>
+                  </object>
+                </child>
+                <child type="end">
+                  <object class="AdwSplitButton" id="button_tags">
+                    <property name="icon-name">list-add-symbolic</property>
+                    <property name="popover">file_popover</property>
+                    <property name="tooltip-text">New Tag</property>
+                    <property name="action-name">win.action_add_tag</property>
+                  </object>
+                </child>
+                <child type="end">
+                  <object class="GtkButton" id="button_minimap">
+                    <property name="visible">false</property>
+                    <property name="icon-name">paned-bottom-symbolic</property>
+                    <property name="tooltip-text">Minimap</property>
+                    <property name="action-name">win.toggle_minimap</property>
+                  </object>
+                </child>
+                <child type="end">
+                  <object class="GtkButton" id="button_tags_list">
+                    <property name="visible">true</property>
+                    <property name="icon-name">sidebar-show</property>
+                    <property name="tooltip-text">Tag List</property>
+                    <property name="action-name">win.toggle_tags_view</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <property name="content">
+              <object class="AdwToastOverlay" id="overlay" />
+            </property>
+          </object>
         </property>
       </object>
     </property>

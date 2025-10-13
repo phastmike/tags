@@ -11,8 +11,8 @@
 namespace Tags {
 
     public class TagStore : Object {
-        public GLib.ListModel model;
         public ListStore store;
+        public GLib.ListModel model;
 
         public uint ntags {
             get {
@@ -21,9 +21,8 @@ namespace Tags {
         }
 
         public TagStore () {
-            model = new ListStore (typeof(Tag));
-            //add_tag (new Tag ("Teste1", "1Teste", new ColorScheme ("teste", null, null)));
-            //add_tag (new Tag ("Teste2", "2Teste", new ColorScheme ("teste", null, null)));
+            store = new ListStore (typeof(Tag));
+            model = store;
         }
 
         /* redundant ? */
@@ -32,8 +31,6 @@ namespace Tags {
         }
 
         public void add_tag (Tag tag, bool prepend = false) {
-            var store = model as GLib.ListStore;
-
             if (prepend == true) { 
                 store.insert (0, tag);
             } else {
@@ -52,7 +49,7 @@ namespace Tags {
             }
         }
 
-        public void clear_tags () {
+        public void remove_all () {
             store.remove_all ();
         }
 

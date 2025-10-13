@@ -1,42 +1,192 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <template class="TagsTagsView" parent="GtkBox">
-    <!--
-      <property name="valign">start</property>
-    -->
     <property name="orientation">horizontal</property>
+    <!--
     <property name="hexpand">true</property>
     <property name="margin-top">12</property>
     <property name="margin-start">12</property>
     <property name="margin-end">12</property>
-      <property name="margin-bottom">12</property>
+    <property name="margin-bottom">12</property>
+    -->
     <child>
-      <object class="GtkScrolledWindow" id="scrolled">
-        <property name="hexpand">True</property>
-        <property name="vexpand">True</property>
-        <child>
-          <object class="GtkBox" id="clamp1">
-            <property name="orientation">vertical</property>
-            <property name="spacing">12</property>
-            <!--<property name="maximum-size">600</property>-->
-            <child>
-              <object class="GtkLabel">
-                <property name="label">Tags</property>
-                <property name="halign">start</property>
-                <property name="margin-start">12</property>
-                <property name="visible">false</property>
+      <object class="AdwToolbarView">
+        <property name="bottom_bar_style">flat</property>
+        <child type="top">
+          <object class="AdwHeaderBar">
+            <property name="margin-top">6</property>
+            <property name="margin-bottom">6</property>
+            <property name="margin-start">6</property>
+            <property name="margin-end">6</property>
+            <child type="start">
+              <object class="GtkButton">
                 <style>
-                  <class name="heading"/>
+                  <class name="accent"/>
+                  <!--<class name="flat"/>-->
                 </style>
+                <property name="tooltip-text">Add</property>
+                <property name="action-name">win.action_add_tag</property>
+                <property name="child">
+                  <object class="AdwButtonContent">
+                    <property name="icon-name">list-add-symbolic</property>
+                  </object>
+                </property>
               </object>
             </child>
+            <child type="end">
+              <object class="GtkBox">
+                <child>
+                  <object class="GtkMenuButton">
+                    <style>
+                      <class name="flat"/>
+                    </style>
+                    <property name="primary">true</property>
+                    <property name="icon-name">view-more-symbolic</property>
+                    <!--<property name="menu-model">primary_menu</property>-->
+                    <property name="tooltip-text">Main Menu</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkScrolledWindow" id="scrolled">
+            <property name="hexpand">True</property>
+            <property name="vexpand">True</property>
             <child>
-              <object class="GtkListBox" id="listbox">
-                <property name="valign">start</property>
-                <property name="margin-bottom">12</property>
+              <object class="GtkBox" id="clamp1">
+    <property name="hexpand">true</property>
+    <property name="margin-top">12</property>
+    <property name="margin-start">12</property>
+    <property name="margin-end">12</property>
+    <property name="margin-bottom">12</property>
+                <property name="orientation">vertical</property>
+                <property name="spacing">12</property>
+                <!--<property name="maximum-size">600</property>-->
+                <child>
+                  <object class="GtkLabel">
+                    <property name="label">Tags</property>
+                    <property name="halign">start</property>
+                    <property name="margin-start">12</property>
+                    <property name="visible">false</property>
+                    <style>
+                      <class name="heading"/>
+                    </style>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkListBox" id="listbox">
+                    <property name="valign">start</property>
+                    <property name="margin-bottom">12</property>
+                    <style>
+                      <class name="boxed-list"/>
+                    </style>
+                    <child type="placeholder">
+                      <object class="AdwStatusPage">
+                        <style>
+                          <class name="compact"/>
+                        </style>
+                        <property name="title">No Tags</property>
+                        <!--<property name="icon-name">help-about-symbolic</property>-->
+                        <property name="description">There are no tags to list</property>
+                        <child>
+                          <object class="GtkBox">
+                            <property name="spacing">6</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <object class="GtkButton">
+                                <style>
+                                  <class name="flat"/>
+                                  <class name="accent"/>
+                                </style>
+                                <property name="action-name">win.action_add_tag</property>
+                                <property name="child">
+                                  <object class="AdwButtonContent">
+                                    <property name="label">Add a tag</property>
+                                    <property name="icon-name">list-add-symbolic</property>
+                                  </object>
+                                </property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkButton">
+                                <style>
+                                  <class name="flat"/>
+                                  <class name="success"/>
+                                </style>
+                                <property name="action-name">win.action_load_tags</property>
+                                <property name="child">
+                                  <object class="AdwButtonContent">
+                                    <property name="label">Load tags</property>
+                                    <property name="icon-name">folder-new-symbolic</property>
+                                  </object>
+                                </property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child type="bottom">
+          <object class="GtkCenterBox">
+            <property name="margin-top">6</property>
+            <property name="margin-bottom">6</property>
+            <property name="margin-start">6</property>
+            <property name="margin-end">6</property>
+            <child type="start">
+              <object class="GtkButton">
                 <style>
-                  <class name="boxed-list"/>
+                  <class name="flat"/>
                 </style>
+                <property name="tooltip-text">Load</property>
+                <property name="action-name">win.action_load_tags</property>
+                <property name="child">
+                  <object class="AdwButtonContent">
+                    <property name="icon-name">folder-new-symbolic</property>
+                  </object>
+                </property>
+              </object>
+            </child>
+            <child type="end">
+              <object class="GtkBox">
+                <child>
+                  <object class="GtkButton">
+                    <style>
+                      <class name="flat"/>
+                    </style>
+                    <property name="tooltip-text">Save</property>
+                    <property name="action-name">win.action_save_tags</property>
+                    <property name="child">
+                      <object class="AdwButtonContent">
+                        <!--<property name="label">Load tags</property>-->
+                        <property name="icon-name">folder-download-symbolic</property>
+                      </object>
+                    </property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkButton">
+                    <property name="tooltip-text">Remove all</property>
+                    <style>
+                      <class name="flat"/>
+                      <class name="error"/>
+                    </style>
+                    <property name="action-name">win.action_remove_all_tags</property>
+                    <property name="child">
+                      <object class="AdwButtonContent">
+                        <!--<property name="label">Load tags</property>-->
+                        <property name="icon-name">user-trash-full-symbolic</property>
+                      </object>
+                    </property>
+                  </object>
+                </child>
               </object>
             </child>
           </object>

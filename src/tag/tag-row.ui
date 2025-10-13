@@ -1,38 +1,62 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Created with Cambalache 0.96.1 -->
 <interface>
-  <template class="TagsTagRow" parent="AdwActionRow">
-    <style>
-      <class name="property"/>
-      <class name="monospace"/>
-    </style>
-    <property name="hexpand">true</property>
-    <child type="prefix">
-      <object class="GtkCheckButton" id="enabled">
-        <!--
-        <style>
-          <class name="selection-mode"/>
-        </style>
-        -->
-      </object>
-    </child>
-    <child type="suffix">
+  <requires lib="gtk" version="4.18"/>
+  <template class="TagsTagRow" parent="GtkListBoxRow">
+    <property name="selectable">false</property>
+    <property name="child">
       <object class="GtkBox">
-        <!--
-        <style>
-          <class name="card"/>
-        </style>
-        -->
+        <property name="valign">center</property>
         <child>
-          <object class="GtkLabel" id="hitcounter">
+          <object class="GtkBox">
+            <property name="margin-bottom">6</property>
+            <property name="margin-end">6</property>
             <property name="margin-start">6</property>
-            <property name="label">0</property>
-            <style>
-              <class name="numeric"/>
-              <class name="heading"/>
-            </style>
+            <property name="margin-top">6</property>
+            <property name="spacing">12</property>
+            <child>
+              <object class="GtkCheckButton" id="enabled">
+                <property name="css-classes">selection-mode</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkBox">
+                <property name="hexpand">True</property>
+                <property name="orientation">vertical</property>
+                <property name="valign">center</property>
+                <child>
+                  <object class="GtkLabel" id="title">
+                    <property name="ellipsize">middle</property>
+                    <property name="halign">start</property>
+                    <property name="css-classes">dimmed</property>
+                    <property name="visible">false</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="subtitle">
+                    <property name="ellipsize">middle</property>
+                    <property name="halign">start</property>
+                    <!--<property name="css-classes">monospace</property>-->
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkBox">
+                <property name="halign">center</property>
+                <property name="margin-end">6</property>
+                <property name="valign">center</property>
+                <child>
+                  <object class="GtkLabel" id="hitcounter">
+                    <property name="css-classes">heading
+</property>
+                  </object>
+                </child>
+              </object>
+            </child>
           </object>
         </child>
       </object>
-    </child>
+    </property>
   </template>
 </interface>

@@ -21,6 +21,8 @@ namespace Tags {
         unowned Gtk.Button button_minimap;
         [GtkChild]
         unowned Adw.ToastOverlay overlay;
+        [GtkChild]
+        unowned Adw.OverlaySplitView oversplit;
 
         private Gtk.Stack stack;
         private Adw.BottomSheet bottom_sheet;
@@ -30,7 +32,7 @@ namespace Tags {
         private Gtk.ScrolledWindow scrolled_lines;
         private Gtk.ScrolledWindow scrolled_minimap;
 
-        private Adw.OverlaySplitView oversplit;
+        //private Adw.OverlaySplitView oversplit;
         private Gtk.Revealer revealer;
         private TagStore tags;
         private Lines lines;
@@ -92,9 +94,31 @@ namespace Tags {
 
             
             tags = new TagStore ();
-            tags_colview = new TagsColumnView (tags.model);
+            //tags_colview = new TagsColumnView (tags.model);
             var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
-            box.append (new TagsView (tags.model));
+            var tags_view = new TagsView (tags.model);
+            box.append (tags_view);
+            tags_view.listbox.row_activated.connect ( (r) => {
+                var tag = (r as TagRow).tag;
+                message ("Tag pattern = %s", tag.pattern);
+                var tag_dialog =  new TagDialogWindow.for_editing (application, tag);
+                tag_dialog.edited.connect ((t) => {
+                    tags_changed = true;
+                    count_tag_hits ();
+                    //lines_treeview.refilter ();
+                    minimap.set_array (Lines.model_to_array(lines_colview.lines));
+                });
+
+                tag_dialog.deleted.connect ((tag) => {
+                    tags_changed = true;
+                    tags_treeview.remove_tag (tag);
+                    tags.remove_tag (tag);
+                    //lines_treeview.refilter ();
+                    minimap.set_array (Lines.model_to_array(lines_colview.lines));
+                });
+
+                tag_dialog.present ();
+            });
             //box.append (tags_colview);
 
             setup_buttons ();
@@ -107,13 +131,13 @@ namespace Tags {
             stack.add_named (main_box, "main");
             stack.set_visible_child_name ("welcome");
 
-            oversplit = new Adw.OverlaySplitView ();
+            //oversplit = new Adw.OverlaySplitView ();
             //oversplit.min_sidebar_width = 260;
             oversplit.max_sidebar_width = 360;
-            oversplit.content = stack;
+            //oversplit.content = stack;
             oversplit.sidebar = box;
-            //oversplit.show_sidebar = false;
-            overlay.set_child (oversplit);
+            oversplit.show_sidebar = false;
+            overlay.set_child (stack);
 
             setup_preferences ();
         }
@@ -192,6 +216,7 @@ namespace Tags {
                 tag_dialog.deleted.connect ((tag) => {
                     tags_changed = true;
                     tags_treeview.remove_tag (tag);
+                    tags.remove_tag (tag);
                     //lines_treeview.refilter ();
                     minimap.set_array (Lines.model_to_array(lines_colview.lines));
                 });
@@ -277,6 +302,7 @@ namespace Tags {
                         minimap.set_array (Lines.model_to_array(lines_colview.lines));
                     });
                     tags_treeview.add_tag (tag, add_to_top);
+                    tags.add_tag (tag, add_to_top);
                     count_tag_hits ();
                     minimap.set_array (Lines.model_to_array(lines_colview.lines));
                 });
@@ -425,6 +451,7 @@ namespace Tags {
                 });
 
                 tags_treeview.add_tag (tag, add_to_top);
+                tags.add_tag (tag, add_to_top);
 
                 if (filter.active == true) { 
                     //lines_treeview.refilter ();
@@ -444,7 +471,7 @@ namespace Tags {
                 dialog.add_response ("cancel", "_Cancel");
                 dialog.add_response ("discard", "_Discard");
                 dialog.set_response_appearance ("discard", Adw.ResponseAppearance.DESTRUCTIVE);
-                dialog.set_response_appearance ("cancel", Adw.ResponseAppearance.SUGGESTED);
+                //dialog.set_response_appearance ("cancel", Adw.ResponseAppearance.SUGGESTED);
                 dialog.set_default_response ("cancel");
                 dialog.set_close_response ("cancel");
                 dialog.present (this);
@@ -457,12 +484,14 @@ namespace Tags {
                 });
             } else {
                 tags_remove_all ();
+                tags.remove_all ();
             }
         }
 
         private void tags_remove_all () {
             if (file_tags != null) file_tags = null;
             tags_treeview.clear_tags ();
+            tags.remove_all ();
             //lines_treeview.refilter ();
             minimap.set_array (Lines.model_to_array(lines_colview.lines));
         }
@@ -616,21 +645,6 @@ namespace Tags {
         private void toggle_tags_view () {
             oversplit.show_sidebar = !oversplit.show_sidebar;
             var action = this.lookup_action ("toggle_tags_view");
-            if (bottom_sheet.get_open () == false) {
-                action.change_state (new Variant.boolean (false));
-                /*
-                int h = (int) (tags.ntags + 2) * 26;
-                if (h < 167) h = 167;
-                if (h >= 306) h = 306;
-                */
-                int h = 406;
-                tags_colview.set_size_request (-1, h);
-                bottom_sheet.set_open (true);
-            } else {
-                bottom_sheet.set_open (false);
-                action.change_state (new Variant.boolean (true));
-            }
-            return;
         }
         
         private void copy () {
