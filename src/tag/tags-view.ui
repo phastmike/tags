@@ -14,10 +14,6 @@
         <property name="bottom_bar_style">flat</property>
         <child type="top">
           <object class="AdwHeaderBar">
-            <property name="margin-top">6</property>
-            <property name="margin-bottom">6</property>
-            <property name="margin-start">6</property>
-            <property name="margin-end">6</property>
             <child type="start">
               <object class="GtkButton">
                 <style>
@@ -31,6 +27,12 @@
                     <property name="icon-name">list-add-symbolic</property>
                   </object>
                 </property>
+              </object>
+            </child>
+            <child type="title">
+              <object class="GtkLabel">
+                <property name="label">Tags</property>
+                <property name="css-classes">heading</property>
               </object>
             </child>
             <child type="end">
@@ -135,11 +137,7 @@
           </object>
         </child>
         <child type="bottom">
-          <object class="GtkCenterBox">
-            <property name="margin-top">6</property>
-            <property name="margin-bottom">6</property>
-            <property name="margin-start">6</property>
-            <property name="margin-end">6</property>
+          <object class="AdwHeaderBar">
             <child type="start">
               <object class="GtkButton">
                 <style>
@@ -152,6 +150,10 @@
                     <property name="icon-name">folder-new-symbolic</property>
                   </object>
                 </property>
+              </object>
+            </child>
+            <child type="title">
+              <object class="GtkLabel">
               </object>
             </child>
             <child type="end">
