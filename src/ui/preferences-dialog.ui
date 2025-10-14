@@ -65,6 +65,7 @@
             </child>
             <child>
               <object class="AdwActionRow">
+                <property name="visible">false</property>
                 <property name="title" translatable="yes">Foreground Color</property>
                 <child>
                   <object class="GtkColorDialogButton" id="button_fg_color">
@@ -77,6 +78,7 @@
             </child>
             <child>
               <object class="AdwActionRow">
+                <property name="visible">false</property>
                 <property name="title" translatable="yes">Background Color</property>
                 <child>
                   <object class="GtkColorDialogButton" id="button_bg_color">
@@ -89,6 +91,7 @@
             </child>
             <child>
               <object class="AdwActionRow">
+                <property name="visible">false</property>
                 <property name="title" translatable="yes">Example</property>
                 <child>
                   <object class="GtkLabel" id="label_sample_example">

@@ -45,6 +45,7 @@
                 </child>
                 <child type="end">
                   <object class="AdwSplitButton" id="button_tags">
+                    <property name="visible">false</property>
                     <property name="icon-name">list-add-symbolic</property>
                     <property name="popover">file_popover</property>
                     <property name="tooltip-text">New Tag</property>

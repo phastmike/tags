@@ -15,10 +15,16 @@
         <child type="top">
           <object class="AdwHeaderBar">
             <child type="start">
+                  <object class="AdwSplitButton" id="button_tags">
+                    <property name="icon-name">list-add-symbolic</property>
+                    <property name="popover">file_popover</property>
+                    <property name="tooltip-text">New Tag</property>
+                    <property name="action-name">win.action_add_tag</property>
+                  </object>
+              <!--
               <object class="GtkButton">
                 <style>
-                  <class name="accent"/>
-                  <!--<class name="flat"/>-->
+                  <class name="flat"/>
                 </style>
                 <property name="tooltip-text">Add</property>
                 <property name="action-name">win.action_add_tag</property>
@@ -28,6 +34,7 @@
                   </object>
                 </property>
               </object>
+              -->
             </child>
             <child type="title">
               <object class="GtkLabel">
@@ -58,11 +65,11 @@
             <property name="vexpand">True</property>
             <child>
               <object class="GtkBox" id="clamp1">
-    <property name="hexpand">true</property>
-    <property name="margin-top">12</property>
-    <property name="margin-start">12</property>
-    <property name="margin-end">12</property>
-    <property name="margin-bottom">12</property>
+                <property name="hexpand">true</property>
+                <property name="margin-top">12</property>
+                <property name="margin-start">12</property>
+                <property name="margin-end">12</property>
+                <property name="margin-bottom">12</property>
                 <property name="orientation">vertical</property>
                 <property name="spacing">12</property>
                 <!--<property name="maximum-size">600</property>-->
@@ -139,6 +146,17 @@
         <child type="bottom">
           <object class="AdwHeaderBar">
             <child type="start">
+              <object class="GtkMenuButton">
+              <style>
+                <class name="flat"/>
+              </style>
+                <property name="primary">false</property>
+                <!--<property name="icon-name">folder-new-symbolic</property>-->
+                <property name="icon-name">document-send-symbolic</property>
+                <property name="menu-model">tags_load_menu</property>
+                <property name="tooltip-text">Load</property>
+              </object>
+                  <!--
               <object class="GtkButton">
                 <style>
                   <class name="flat"/>
@@ -151,6 +169,7 @@
                   </object>
                 </property>
               </object>
+                  -->
             </child>
             <child type="title">
               <object class="GtkLabel">
@@ -201,4 +220,46 @@
     </style>
     -->
   </template>
+
+  <object class="GtkPopoverMenu" id="file_popover">
+    <property name="menu-model">secondary_menu</property>
+  </object>
+
+  <menu id="secondary_menu">
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">New tag</attribute>
+        <attribute name="action">win.action_add_tag</attribute>
+      </item>
+    </section> 
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">Load tags</attribute>
+        <attribute name="action">win.action_load_tags</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Save tags</attribute>
+        <attribute name="action">win.action_save_tags</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Remove all tags</attribute>
+        <attribute name="action">win.action_remove_all_tags</attribute>
+      </item>
+    </section>
+    <section>
+    </section>
+  </menu>
+
+  <menu id="tags_load_menu">
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">Load from file</attribute>
+        <attribute name="action">win.action_load_tags</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Import from file</attribute>
+        <attribute name="action">app.preferences</attribute>
+      </item>
+      </section>
+  </menu>
 </interface>

@@ -27,7 +27,7 @@ namespace Tags {
 
         /* redundant ? */
         public ListModel get_model () {
-            return (ListModel) model;
+            return model;
         }
 
         public void add_tag (Tag tag, bool prepend = false) {

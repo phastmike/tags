@@ -53,6 +53,10 @@ namespace Tags {
             this.tag.bind_property ("enabled", enabled,  "active", BindingFlags.SYNC_CREATE | BindingFlags.BIDIRECTIONAL);
             this.tag.bind_property ("description", title, "label", BindingFlags.SYNC_CREATE);
             this.tag.bind_property ("pattern", subtitle, "label", BindingFlags.SYNC_CREATE);
+            this.tag.bind_property ("hits", hitcounter, "label", BindingFlags.SYNC_CREATE, (binding, source_value, ref target_value) => {
+                target_value.set_string (source_value.get_uint ().to_string ());
+                return true;
+            }, null);
 
             this.tag.colors.changed.connect ( (cs) => {
                 style_update_css ();

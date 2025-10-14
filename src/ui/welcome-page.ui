@@ -102,7 +102,7 @@
                     <property name="margin-bottom">6</property>
                     <child>
                       <object class="GtkImage">
-                        <property name="icon-name">view-list-symbolic</property>
+                        <property name="icon-name">sidebar-show</property>
                         <property name="icon-size">normal</property>
                         <property name="margin-end">12</property>
                       </object>

@@ -94,13 +94,11 @@ namespace Tags {
 
             
             tags = new TagStore ();
-            //tags_colview = new TagsColumnView (tags.model);
             var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
             var tags_view = new TagsView (tags.model);
             box.append (tags_view);
             tags_view.listbox.row_activated.connect ( (r) => {
                 var tag = (r as TagRow).tag;
-                message ("Tag pattern = %s", tag.pattern);
                 var tag_dialog =  new TagDialogWindow.for_editing (application, tag);
                 tag_dialog.edited.connect ((t) => {
                     tags_changed = true;
@@ -119,7 +117,6 @@ namespace Tags {
 
                 tag_dialog.present ();
             });
-            //box.append (tags_colview);
 
             setup_buttons ();
 
@@ -131,14 +128,14 @@ namespace Tags {
             stack.add_named (main_box, "main");
             stack.set_visible_child_name ("welcome");
 
-            //oversplit = new Adw.OverlaySplitView ();
-            //oversplit.min_sidebar_width = 260;
             oversplit.max_sidebar_width = 360;
-            //oversplit.content = stack;
             oversplit.sidebar = box;
             oversplit.show_sidebar = false;
-            overlay.set_child (stack);
 
+            // FIXME: Should show the subtitle!
+            oversplit.bind_property ("show-sidebar", window_title, "visible", BindingFlags.SYNC_CREATE | BindingFlags.INVERT_BOOLEAN);
+
+            overlay.set_child (stack);
             setup_preferences ();
         }
 
@@ -330,6 +327,7 @@ namespace Tags {
                     dialog.set_response_appearance ("discard",Adw.ResponseAppearance.DESTRUCTIVE);
                     dialog.set_default_response ("cancel");
                     dialog.set_close_response ("cancel");
+                    dialog.set_prefer_wide_layout (true);
                     dialog.present (this);
                     
                     dialog.response.connect ((response) => {
@@ -468,6 +466,7 @@ namespace Tags {
         private void action_remove_all_tags () {
             if (tags_treeview.ntags > 0 && tags_changed) {
                 var dialog = new Adw.AlertDialog ("Tags changed", "There are unsaved changes, discards changes?");
+                dialog.set_prefer_wide_layout (true);
                 dialog.add_response ("cancel", "_Cancel");
                 dialog.add_response ("discard", "_Discard");
                 dialog.set_response_appearance ("discard", Adw.ResponseAppearance.DESTRUCTIVE);
@@ -590,12 +589,27 @@ namespace Tags {
         }
 
         private void count_tag_hits () {
+            for (uint j = 0; j < tags.ntags; j++) {
+                var tag = tags.model.get_item (j) as Tag;
+                tag.hits = 0;
+            }
+
+            for (uint i = 0; i < lines.model.get_n_items (); i++) {
+                var line = lines.model.get_item (i) as Line;
+                for (uint j = 0; j < tags.ntags; j++) {
+                    var tag = tags.model.get_item (j) as Tag;
+                    if (tag.applies_to (line.text)) {
+                        tag.hits += 1;
+                    }
+                }
+            }
+            
+            /*
             Gtk.TreeModel tags;
 
             tags_treeview.reset_hit_counters ();
             tags = tags_treeview.get_model ();
 
-            var model = lines.model;
             for (uint i = 0; i < model.get_n_items (); i++) {
                 Line line = model.get_item (i) as Line;
                 tags.foreach ((model, path, iter) => {
@@ -610,6 +624,7 @@ namespace Tags {
             }
 
             tags_treeview.queue_draw ();
+            */
         }
 
         private void hide_untagged_lines () {
