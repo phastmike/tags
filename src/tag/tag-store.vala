@@ -11,8 +11,13 @@
 namespace Tags {
 
     public class TagStore : Object {
-        public ListStore store;
-        public GLib.ListModel model;
+        private ListStore store;
+
+        public GLib.ListModel model {
+            get {
+                return store as GLib.ListModel;
+            }
+        }
 
         public uint ntags {
             get {
@@ -22,12 +27,26 @@ namespace Tags {
 
         public TagStore () {
             store = new ListStore (typeof(Tag));
-            model = store;
         }
 
-        /* redundant ? */
-        public ListModel get_model () {
-            return model;
+        public void hitcounter_reset_all () {
+            for (uint j = 0; j < ntags; j++) {
+                var tag = model.get_item (j) as Tag;
+                tag.hits = 0;
+            }
+        }
+
+        public void toggle_tag (int nr) requires (nr >= 0 && nr <= 9) {
+            if (nr >= ntags) return;
+
+            var tag = model.get_item (nr) as Tag;
+            tag.enabled = !tag.enabled;
+
+            /* FIXME
+            if (get_n_tags_enabled () == 0) {
+                no_active_tags ();
+            }
+            */
         }
 
         public void add_tag (Tag tag, bool prepend = false) {
@@ -53,13 +72,12 @@ namespace Tags {
             store.remove_all ();
         }
 
-        /* Is this really needed? Remind me again about the purpose */
-        /* Enable all ? */
+        /* Enable/Disable all tags */
         public void tags_set_enable (bool enable) {
             Tag tag;
-            for (var i = 0; i < store.get_n_items (); i++) {
+            for (var i = 0; i < model.get_n_items (); i++) {
                 //tag = get_model ().get_object (i) as Tag;
-                tag = store.get_object (i) as Tag;
+                tag = model.get_object (i) as Tag;
                 tag.enabled = enable;
             }
         }
@@ -70,7 +88,7 @@ namespace Tags {
 
             Tag tag;
             for (var i = 0; i < store.get_n_items (); i++) {
-                tag = store.get_object (i) as Tag;
+                tag = model.get_object (i) as Tag;
                 Json.Node node = Json.gobject_serialize (tag);
                 array.add_element (node); 
             }
@@ -88,7 +106,6 @@ namespace Tags {
 
         public async void from_file (File file, Cancellable? cancellable = null) {
             FileInputStream stream;
-            var store = model as GLib.ListStore;
 
             try {
                 stream = yield file.read_async (Priority.DEFAULT, cancellable);
@@ -113,14 +130,6 @@ namespace Tags {
                 }
             } catch (Error e) {
                 warning ("Error message: %s", e.message);
-            }
-        }
-
-        public void clear_hit_counters () {
-            Tag tag;
-            for (var i = 0; i < store.get_n_items (); i++) {
-                tag = store.get_object (i) as Tag;
-                tag.hits = 0;
             }
         }
     }

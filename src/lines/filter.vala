@@ -24,12 +24,19 @@ namespace Tags {
             }
         }
 
-        private Gtk.TreeModel? tags_model;
-        private Gtk.ListStore? tag_store;
+        private GLib.ListModel tags;
 
-        public Filter (Gtk.TreeModel? tags = null) {
-            tags_model = tags;
-            tag_store = tags as Gtk.ListStore;
+        public Filter (GLib.ListModel tags) {
+            this.tags = tags;
+            //FIXME NOTE TODO It's a Hackm it could be better
+            this.tags.items_changed.connect ( (pos, add, removed) => {
+                var tag = tags.get_item (pos) as Tag; 
+                if (tag != null) {
+                    tag.enable_changed.connect ( (v) => {
+                        changed (Gtk.FilterChange.DIFFERENT);
+                    });
+                }
+            });
         }
 
         public override Gtk.FilterMatch get_strictness () {
@@ -38,25 +45,17 @@ namespace Tags {
  
         public override bool match (Object? item) {
             if (active == false) return true;
-
-            bool ret = false;
             Line line = (Line) item;
-            tag_store.foreach ( (model, path, iter) => {
-                Tag? tag = null;
-                model.@get (iter, 0, out tag);
-                if (tag == null) return false;
-                if (tag.enabled == true) {
-                    if (tag.applies_to (line.text)) {
-                        ret = true;
-                        return true;
-                    }
+            for (uint i = 0; i < tags.get_n_items (); i++) {
+                var tag = tags.get_item (i) as Tag;
+                if (tag.enabled == true && tag.applies_to (line.text)) {
+                    return true;
                 }
-                return false;
-            });
+            }
             
+            return false;
             // Apply filter conditions to line, if matches
             // a tag then return true
-            return ret;
         }
     }
 }

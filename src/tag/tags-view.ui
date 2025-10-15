@@ -15,13 +15,6 @@
         <child type="top">
           <object class="AdwHeaderBar">
             <child type="start">
-                  <object class="AdwSplitButton" id="button_tags">
-                    <property name="icon-name">list-add-symbolic</property>
-                    <property name="popover">file_popover</property>
-                    <property name="tooltip-text">New Tag</property>
-                    <property name="action-name">win.action_add_tag</property>
-                  </object>
-              <!--
               <object class="GtkButton">
                 <style>
                   <class name="flat"/>
@@ -34,7 +27,6 @@
                   </object>
                 </property>
               </object>
-              -->
             </child>
             <child type="title">
               <object class="GtkLabel">
@@ -51,8 +43,8 @@
                     </style>
                     <property name="primary">true</property>
                     <property name="icon-name">view-more-symbolic</property>
-                    <!--<property name="menu-model">primary_menu</property>-->
-                    <property name="tooltip-text">Main Menu</property>
+                    <property name="menu-model">secondary_menu</property>
+                    <property name="tooltip-text">View more</property>
                   </object>
                 </child>
               </object>
@@ -106,7 +98,7 @@
                             <child>
                               <object class="GtkButton">
                                 <style>
-                                  <class name="flat"/>
+                                  <!--<class name="flat"/>-->
                                   <class name="accent"/>
                                 </style>
                                 <property name="action-name">win.action_add_tag</property>
@@ -121,14 +113,14 @@
                             <child>
                               <object class="GtkButton">
                                 <style>
-                                  <class name="flat"/>
+                                  <!--<class name="flat"/>-->
                                   <class name="success"/>
                                 </style>
                                 <property name="action-name">win.action_load_tags</property>
                                 <property name="child">
                                   <object class="AdwButtonContent">
                                     <property name="label">Load tags</property>
-                                    <property name="icon-name">folder-new-symbolic</property>
+                                    <property name="icon-name">document-new-symbolic</property>
                                   </object>
                                 </property>
                               </object>
@@ -146,16 +138,26 @@
         <child type="bottom">
           <object class="AdwHeaderBar">
             <child type="start">
+                  <object class="AdwSplitButton" id="button_tagsz">
+                    <!--<property name="icon-name">system-file-manager-symbolic</property>-->
+                    <property name="icon-name">document-new-symbolic</property>
+                    <property name="popover">popover_import_tags</property>
+                    <property name="tooltip-text">Load</property>
+                    <property name="action-name">win.action_load_tags</property>
+                  </object>
+                  <!--
               <object class="GtkMenuButton">
               <style>
                 <class name="flat"/>
               </style>
                 <property name="primary">false</property>
                 <!--<property name="icon-name">folder-new-symbolic</property>-->
+                <!--
                 <property name="icon-name">document-send-symbolic</property>
                 <property name="menu-model">tags_load_menu</property>
                 <property name="tooltip-text">Load</property>
-              </object>
+                  </object>
+                -->
                   <!--
               <object class="GtkButton">
                 <style>
@@ -172,7 +174,27 @@
                   -->
             </child>
             <child type="title">
-              <object class="GtkLabel">
+              <object class="GtkBox">
+                <child>
+                  <object class="GtkButton">
+                    <style>
+                      <class name="accent" />
+                    </style>
+                    <property name="icon_name">zoom-in-symbolic</property>
+                    <property name="visible">false</property>
+                    <property name="tooltip-text">Create tag from selected line</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkButton">
+                    <style>
+                      <class name="success" />
+                    </style>
+                    <property name="icon_name">view-conceal-symbolic</property>
+                    <property name="tooltip-text">Create tag from selected line</property>
+                    <property name="action-name">win.hide_untagged_lines</property>
+                  </object>
+                </child>
               </object>
             </child>
             <child type="end">
@@ -197,13 +219,13 @@
                     <property name="tooltip-text">Remove all</property>
                     <style>
                       <class name="flat"/>
-                      <class name="error"/>
+                      <!--<class name="error"/>-->
                     </style>
                     <property name="action-name">win.action_remove_all_tags</property>
                     <property name="child">
                       <object class="AdwButtonContent">
                         <!--<property name="label">Load tags</property>-->
-                        <property name="icon-name">user-trash-full-symbolic</property>
+                        <property name="icon-name">user-trash-symbolic</property>
                       </object>
                     </property>
                   </object>
@@ -226,12 +248,14 @@
   </object>
 
   <menu id="secondary_menu">
+    <!--
     <section>
       <item>
         <attribute name="label" translatable="yes">New tag</attribute>
         <attribute name="action">win.action_add_tag</attribute>
       </item>
-    </section> 
+      </section> 
+    -->
     <section>
       <item>
         <attribute name="label" translatable="yes">Load tags</attribute>
@@ -247,6 +271,19 @@
       </item>
     </section>
     <section>
+    </section>
+  </menu>
+
+  <object class="GtkPopoverMenu" id="popover_import_tags">
+    <property name="menu-model">menu_import_tags</property>
+  </object>
+
+  <menu id="menu_import_tags">
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">Import</attribute>
+        <attribute name="action">win.action_import_tags</attribute>
+      </item>
     </section>
   </menu>
 

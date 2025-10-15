@@ -30,10 +30,38 @@
                   </object>
                 </child>
                 <child type="title">
-                  <object class="AdwWindowTitle" id="window_title">
-                    <property name="title">Tags</property>
-                    <!--<property name="subtitle">Open a file to get started ...</property>-->
+                  <object class="GtkBox">
+                    <property name="valign">center</property>
+                    <property name="halign">center</property>
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="GtkLabel" id="title_title">
+                        <style>
+                          <class name="heading" />
+                        </style>
+                        <property name="label">Tags</property>
+                        <property name="visible">false</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="title_focus">
+                        <style>
+                          <class name="dimmed" />
+                        </style>
+                        <property name="label"></property>
+                        <property name="visible">false</property>
+                        <property name="ellipsize">middle</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="AdwWindowTitle" id="window_title">
+                        <property name="visible">false</property>
+                        <property name="title">Tags</property>
+                        <!--<property name="subtitle">Open a file to get started ...</property>-->
+                        </object>
+                    </child>
                   </object>
+                  
                 </child>
                 <child type="end">
                   <object class="GtkMenuButton">

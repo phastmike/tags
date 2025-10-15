@@ -25,7 +25,7 @@
             <child>
               <object class="GtkButton" id="button_cancel">
                 <style>
-                  <class name="flat" />
+                  <!--<class name="flat" />-->
                 </style>
                 <property name="label" translatable="yes">_Cancel</property>
                 <property name="use_underline">true</property>
@@ -39,7 +39,7 @@
             <child type="end">
               <object class="GtkButton" id="button_ok">
                 <style>
-                  <class name="flat"/>
+                  <!--<class name="flat"/>-->
                   <class name="accent"/>
                   <!--<class name="suggested-action"/>-->
                 </style>
@@ -52,7 +52,7 @@
               <object class="GtkButton" id="button_delete">
                 <style>
                   <!--<class name="destructive-action"/>-->
-                  <class name="flat"/>
+                  <!--<class name="flat"/>-->
                   <class name="error"/>
                 </style>
                 <property name="label">_Delete</property>
