@@ -186,12 +186,12 @@
                   </object>
                 </child>
                 <child>
-                  <object class="GtkButton">
+                  <object class="GtkToggleButton">
                     <style>
                       <class name="success" />
                     </style>
                     <property name="icon_name">view-conceal-symbolic</property>
-                    <property name="tooltip-text">Create tag from selected line</property>
+                    <property name="tooltip-text">Hide </property>
                     <property name="action-name">win.hide_untagged_lines</property>
                   </object>
                 </child>

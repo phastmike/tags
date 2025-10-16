@@ -3,11 +3,10 @@
   <gresource prefix="/io/github/phastmike/tags">
     <file>ui/main-window.ui</file>
     <file>ui/welcome-page.ui</file>
-    <file>lines/lines-column-view.ui</file>
-    <file>tag/tags-column-view.ui</file>
-    <file>tag/tag-row.ui</file>
-    <file>tag/tags-view.ui</file>
-    <file>ui/tags-tree-view.ui</file>
+    <file>ui/lines-column-view.ui</file>
+    <file>ui/tags-column-view.ui</file>
+    <file>ui/tag-row.ui</file>
+    <file>ui/tags-view.ui</file>
     <file>ui/tag-dialog-window.ui</file>
     <file>ui/preferences-dialog.ui</file>
     <file>gtk/help-overlay.ui</file>

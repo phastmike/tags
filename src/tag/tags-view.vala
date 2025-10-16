@@ -9,7 +9,7 @@
  */
 
 namespace Tags {
-    [GtkTemplate (ui = "/io/github/phastmike/tags/tag/tags-view.ui")]
+    [GtkTemplate (ui = "/io/github/phastmike/tags/ui/tags-view.ui")]
     public class TagsView : Gtk.Box {
         [GtkChild]
         public Gtk.ScrolledWindow scrolled;

@@ -9,7 +9,7 @@
  */
 
 namespace Tags {
-    [GtkTemplate (ui = "/io/github/phastmike/tags/tag/tag-row.ui")]
+    [GtkTemplate (ui = "/io/github/phastmike/tags/ui/tag-row.ui")]
     public class TagRow : Gtk.ListBoxRow {
         [GtkChild]
         public Gtk.Label title;

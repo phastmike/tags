@@ -36,7 +36,6 @@ namespace Tags {
         private Gtk.ScrolledWindow scrolled_lines;
         private Gtk.ScrolledWindow scrolled_minimap;
 
-        //private Adw.OverlaySplitView oversplit;
         private Gtk.Revealer revealer;
         private TagStore tags;
         private Lines lines;
@@ -44,7 +43,6 @@ namespace Tags {
         private Filterer filterer;
         private TagsColumnView tags_colview;
         private LinesColumnView lines_colview;
-        private TagsTreeView tags_treeview;
         private File? file_opened = null;
         private File? file_tags = null;
         private bool tags_changed = false;
@@ -91,7 +89,7 @@ namespace Tags {
             Object (application: app);
             setup_actions ();
             save_tagged_disable ();
-            setup_tags_treeview ();
+            //setup_tags_treeview ();
 
             
             tags = new TagStore ();
@@ -104,14 +102,13 @@ namespace Tags {
                 tag_dialog.edited.connect ((t) => {
                     //tags_changed = true;
                     count_tag_hits ();
-                    //minimap.set_array (Lines.model_to_array(lines_colview.lines));
+                    minimap.set_array (Lines.model_to_array(lines_colview.lines));
                 });
 
                 tag_dialog.deleted.connect ((tag) => {
                     //tags_changed = true;
-                    //tags_treeview.remove_tag (tag);
                     tags.remove_tag (tag);
-                    //minimap.set_array (Lines.model_to_array(lines_colview.lines));
+                    minimap.set_array (Lines.model_to_array(lines_colview.lines));
                 });
 
                 tag_dialog.present ();
@@ -191,53 +188,6 @@ namespace Tags {
             application.set_accels_for_action("win.next_hit", {"F3"});
         }
 
-        private void setup_tags_treeview () {
-            tags_treeview = new TagsTreeView ();
-
-            tags_treeview.get_model ().row_changed.connect ( () => {
-                minimap.set_array (Lines.model_to_array(lines_colview.lines));
-            });
-
-            tags_treeview.get_model ().row_inserted.connect ( () => {
-                minimap.set_array (Lines.model_to_array(lines_colview.lines));
-            });
-
-            tags_treeview.row_activated.connect ((path, column) => {
-                Tag tag;
-                Gtk.TreeIter iter;
-
-                tags_treeview.get_selection ().get_selected (null, out iter);
-                tags_treeview.get_model ().@get (iter, 0, out tag);
-
-                var tag_dialog = new TagDialogWindow.for_editing (this.application, tag);
-
-                tag_dialog.edited.connect ((t) => {
-                    tags_changed = true;
-                    count_tag_hits ();
-                    //lines_treeview.refilter ();
-                    minimap.set_array (Lines.model_to_array(lines_colview.lines));
-                });
-
-                tag_dialog.deleted.connect ((tag) => {
-                    tags_changed = true;
-                    tags_treeview.remove_tag (tag);
-                    tags.remove_tag (tag);
-                    //lines_treeview.refilter ();
-                    minimap.set_array (Lines.model_to_array(lines_colview.lines));
-                });
-
-                tag_dialog.present ();
-            });
-
-            tags_treeview.no_active_tags.connect ( () => {
-                if (filter.active  == true) {
-                    inform_user_no_tagged_lines ();
-                }
-            });
-
-            setup_scrolled_tags ();
-        }
-
         public bool delegate_line_filter_callback (string? text) {
             var found = false;
             if (text == null) return false;
@@ -251,15 +201,6 @@ namespace Tags {
             
             return false;
         }
-
-        /*
-        public void delegate_treeview_cell_color_callback (string text, Gtk.CellRendererText cell) {
-            Gdk.RGBA? bg_color = tags_treeview.get_bg_color_for_text (text);
-            Gdk.RGBA? fg_color = tags_treeview.get_fg_color_for_text (text);
-            if (bg_color != null) cell.background_rgba = bg_color;
-            if (fg_color != null) cell.foreground_rgba = fg_color;
-        }
-        */
 
         private void setup_preferences () {
             var preferences = Preferences.instance ();
@@ -325,14 +266,14 @@ namespace Tags {
             scrolled_tags.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
             scrolled_tags.set_placement (Gtk.CornerType.TOP_LEFT);
             scrolled_tags.set_overlay_scrolling (true);
-            scrolled_tags.set_child (tags_treeview);
+            //scrolled_tags.set_child (tags_treeview);
             scrolled_tags.set_hexpand (true);
             scrolled_tags.set_vexpand (true);
         }
 
         private void setup_buttons () {
             close_request.connect ( () => {
-                if (tags_treeview.ntags > 0 && tags_changed) {
+                if (tags.ntags > 0 && tags_changed) {
                     var dialog = new Adw.AlertDialog ("Tags changed", "There are unsaved changes, discards changes?");
                     dialog.add_response ("cancel", "_Cancel");
                     dialog.add_response ("discard", "_Discard");
@@ -428,12 +369,12 @@ namespace Tags {
                     if (file_tags.query_exists ()) {
                         load_tags_from_file (file_tags);
                         count_tag_hits ();
+                    } else {
                     }
                 }
                 minimap.set_array (Lines.model_to_array(lines_colview.lines));
             });
 
-            //main_box.set_visible (false);
             lines.from_file (file, cancel_open);
         }
 
@@ -443,20 +384,11 @@ namespace Tags {
             tag_dialog.added.connect ((tag, add_to_top) => {
                 tags_changed = true;
 
+                tags.add_tag (tag, add_to_top);
                 tag.enable_changed.connect ((enabled) => {
-                    //lines_treeview.refilter ();
                     minimap.set_array (Lines.model_to_array(lines_colview.lines));
                 });
 
-                //tags_treeview.add_tag (tag, add_to_top);
-                tags.add_tag (tag, add_to_top);
-
-                if (filter.active == true) { 
-                    //lines_treeview.refilter ();
-                    minimap.set_array (Lines.model_to_array(lines_colview.lines));
-                }
-
-                //count_tag_hits ();
                 count_hits_for_tag (tag);
                 minimap.set_array (Lines.model_to_array(lines_colview.lines));
             });
@@ -465,52 +397,48 @@ namespace Tags {
         }
 
         private void action_remove_all_tags () {
-            if (tags_treeview.ntags > 0 && tags_changed) {
+            if (tags.ntags > 0 && tags_changed) {
                 var dialog = new Adw.AlertDialog ("Tags changed", "There are unsaved changes, discards changes?");
                 dialog.set_prefer_wide_layout (true);
                 dialog.add_response ("cancel", "_Cancel");
                 dialog.add_response ("discard", "_Discard");
                 dialog.set_response_appearance ("discard", Adw.ResponseAppearance.DESTRUCTIVE);
-                //dialog.set_response_appearance ("cancel", Adw.ResponseAppearance.SUGGESTED);
                 dialog.set_default_response ("cancel");
                 dialog.set_close_response ("cancel");
                 dialog.present (this);
                 
                 dialog.response.connect ((response) => {
                     if (response == "discard") {
-                        tags_changed = false;
                         tags_remove_all ();
                     }
                 });
             } else {
-                tags_remove_all ();
                 tags.remove_all ();
             }
         }
 
         private void tags_remove_all () {
             if (file_tags != null) file_tags = null;
-            tags_treeview.clear_tags ();
+            tags_changed = false;
             tags.remove_all ();
-            //lines_treeview.refilter ();
             minimap.set_array (Lines.model_to_array(lines_colview.lines));
         }
 
         private void action_load_tags () {
             TagsPersistence.open_tags_file_dialog.begin (this, null, (obj, res) => {
                 var f = TagsPersistence.open_tags_file_dialog.end (res);
-                if (f == null) return;
-                load_tags_from_file (f);
+                if (f != null) load_tags_from_file (f);
             });
         }
 
         private void load_tags_from_file (File file) {
             tags.from_file.begin  (file, null, (obj, res) => {
+                message ("Ended load tags");
                 tags_changed = false;
                 for (int i = 0; i < tags.ntags; i++) {
                     var tag = tags.model.get_object (i) as Tag;
                     tag.enable_changed.connect ((enabled) => {
-                    minimap.set_array (Lines.model_to_array(lines_colview.lines));
+                        minimap.set_array (Lines.model_to_array(lines_colview.lines));
                     });
                 }
                 minimap.set_array (Lines.model_to_array(lines_colview.lines));
@@ -521,6 +449,7 @@ namespace Tags {
         private void action_toggle_line_number () {
             var preferences = Preferences.instance ();
             preferences.ln_visible = !preferences.ln_visible; 
+            //FIXME: Needs implementation on LinesColumn view to manage columns "visibility"
         }
         
         private void action_save_tags () {
@@ -530,12 +459,13 @@ namespace Tags {
                 suggested_filename = "%s.tags".printf (file_opened.get_basename ());
             }
 
-            var persistance = new TagsPersistence ();
-            persistance.saved_to_file.connect ( (file) => {
-                tags_changed = false;
+            TagsPersistence.save_tags_file_dialog.begin (this, suggested_filename, null, (obj, res) => {
+                var file = TagsPersistence.save_tags_file_dialog.end (res);
+                if (file != null) {
+                    tags.to_file (file);
+                    tags_changed = false;
+                }
             });
-
-            persistance.save_tags_file_dialog (tags_treeview.get_model (), this, suggested_filename);
         }
 
         private void save_tagged_enable () {
@@ -614,10 +544,7 @@ namespace Tags {
             }
             */
 
-            // FIXME: Set with callback to model changed
-            //lines_treeview.refilter ();
             minimap.set_array (Lines.model_to_array(lines_colview.lines));
-
         }
 
         private void action_toggle_minimap () {
@@ -739,7 +666,7 @@ namespace Tags {
         }
 
         private void prev_hit () {
-            Tag tag = tags_treeview.get_selected_tag ();
+            Tag tag = null; //tags_treeview.get_selected_tag ();
 
             if (tag == null) {
                 return;
@@ -763,7 +690,7 @@ namespace Tags {
         }
 
         private void next_hit () {
-            Tag tag = tags_treeview.get_selected_tag ();
+            Tag tag = null; //tags_treeview.get_selected_tag ();
             if (tag == null) {
                 return;
             }

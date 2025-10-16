@@ -85,14 +85,22 @@ namespace Tags {
                 fsout = file.replace (null, false, FileCreateFlags.REPLACE_DESTINATION, null); 
                 fsout.write_all_async.begin (str.data, Priority.DEFAULT, null, (obj, res) => {
                     size_t bytes_wr;
-                    bool ret = fsout.write_all_async.end (res, out bytes_wr);
-                    fsout.close_async.begin (Priority.DEFAULT, null, (obj, res) => {
+                    try {
+                        fsout.write_all_async.end (res, out bytes_wr);
                         try {
-                            bool r = fsout.close_async.end (res);
+                            fsout.close_async.begin (Priority.DEFAULT, null, (obj, res) => {
+                                try {
+                                    fsout.close_async.end (res);
+                                } catch (IOError e) {
+                                    warning (e.message);
+                                }
+                            });
                         } catch (IOError e) {
                             warning (e.message);
                         }
-                    });
+                    } catch (Error e) {
+                        warning (e.message);
+                    }
                 });
             } catch (Error e) {
                 warning (e.message);

@@ -11,7 +11,7 @@
  */
 
 namespace Tags {
-    [GtkTemplate (ui = "/io/github/phastmike/tags/lines/lines-column-view.ui")]
+    [GtkTemplate (ui = "/io/github/phastmike/tags/ui/lines-column-view.ui")]
     public class LinesColumnView : Gtk.Box {
         [GtkChild]
         public Gtk.ColumnView column_view;

@@ -17,10 +17,10 @@ namespace Tags {
         public Gtk.FilterListModel model;
 
         public Filterer (Lines lines, Tags.Filter filter) {
-            lines = lines;
-            filter = filter;
+            this.lines = lines;
+            this.filter = filter;
             model = new Gtk.FilterListModel (lines.model, filter); 
-            //model.set_incremental (true);
+            model.set_incremental (true);
             //a changed connect to filter and have a signal
             //at the end of long task op.
         }
@@ -37,7 +37,13 @@ namespace Tags {
                 str.append_printf ("%s\n", line.text);
             }
 
-            if (file.query_exists () == true) file.@delete ();
+            if (file.query_exists () == true) {
+                try {
+                    file.@delete ();
+                } catch (Error e) {
+                    warning (e.message);
+                }
+            }
 
             try {
                 fsout = yield file.replace_async (null, false, FileCreateFlags.REPLACE_DESTINATION); 
