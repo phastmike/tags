@@ -24,7 +24,13 @@ namespace Tags {
         private Gtk.CssProvider style_provider;
         public string style_class {get; private set;}
 
+        public double drag_x;
+        public double drag_y;
+
         public TagRow (Tag tag) {
+            drag_x = 0.0;
+            drag_y = 0.0;
+
             this.tag = tag;
             style_class = generate_unique_name ();
 
@@ -61,13 +67,21 @@ namespace Tags {
             this.tag.colors.changed.connect ( (cs) => {
                 style_update_css ();
             });
+
+            tag.enable_changed.connect ( (enabled) => {
+                if (enabled == true) {
+                    remove_css_class ("dimmed");
+                } else {
+                    add_css_class ("dimmed");
+                }
+            });
         }
 
         ~TagRow () {
             remove_css_class (style_class);
         }
 
-        void style_update_css () {
+        private void style_update_css () {
             string? lstyle = """
                 .%s {
                     font-size: 0.8333em;

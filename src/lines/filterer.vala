@@ -20,9 +20,9 @@ namespace Tags {
             this.lines = lines;
             this.filter = filter;
             model = new Gtk.FilterListModel (lines.model, filter); 
-            model.set_incremental (true);
-            //a changed connect to filter and have a signal
-            //at the end of long task op.
+            // NOTE:model.set_incremental (true);
+            // Huge impact. Need to dwell on how to handle this
+            // might be nice + using pending, is it?
         }
 
         public async void to_file (File file) {

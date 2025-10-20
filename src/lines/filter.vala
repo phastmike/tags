@@ -57,5 +57,9 @@ namespace Tags {
             // Apply filter conditions to line, if matches
             // a tag then return true
         }
+
+        public void update () {
+            changed (Gtk.FilterChange.DIFFERENT);
+        }
     }
 }

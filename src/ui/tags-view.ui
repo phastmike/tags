@@ -88,8 +88,8 @@
                         <style>
                           <class name="compact"/>
                         </style>
-                        <property name="title">No Tags</property>
-                        <!--<property name="icon-name">help-about-symbolic</property>-->
+                        <!--<property name="title">No Tags</property>-->
+                        <!--<property name="icon-name">user-bookmarks-symbolic</property>-->
                         <property name="description">There are no tags to list</property>
                         <child>
                           <object class="GtkBox">
@@ -259,12 +259,22 @@
     <section>
       <item>
         <attribute name="label" translatable="yes">Load tags</attribute>
+        <attribute name="icon">document-open-symbolic</attribute>
         <attribute name="action">win.action_load_tags</attribute>
       </item>
+      <item>
+        <attribute name="label" translatable="yes">Import tags</attribute>
+        <attribute name="icon">document-open-symbolic</attribute>
+        <attribute name="action">win.action_import_tags</attribute>
+      </item>
+    </section>
+    <section>
       <item>
         <attribute name="label" translatable="yes">Save tags</attribute>
         <attribute name="action">win.action_save_tags</attribute>
       </item>
+    </section>
+    <section>
       <item>
         <attribute name="label" translatable="yes">Remove all tags</attribute>
         <attribute name="action">win.action_remove_all_tags</attribute>

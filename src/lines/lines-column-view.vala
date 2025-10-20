@@ -48,7 +48,7 @@ namespace Tags {
             var str = new StringBuilder ();
             var bitset = selection_model.get_selection ();
             for (uint i = 0; i < bitset.get_size (); i++) {
-                Line line = selection_model.get_item (bitset.get_nth (i)) as Line;
+                var line = selection_model.get_item (bitset.get_nth (i)) as Line;
                 str.append (line.text);
                 str.append ("\n");
             }

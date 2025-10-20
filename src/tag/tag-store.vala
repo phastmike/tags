@@ -76,7 +76,6 @@ namespace Tags {
         public void tags_set_enable (bool enable) {
             Tag tag;
             for (var i = 0; i < model.get_n_items (); i++) {
-                //tag = get_model ().get_object (i) as Tag;
                 tag = model.get_object (i) as Tag;
                 tag.enabled = enable;
             }
@@ -100,7 +99,7 @@ namespace Tags {
             try {
                 generator.to_file (file.get_path ());
             } catch (Error e) {
-                error ("Json.Generator::to_file error: %s", e.message);
+                error ("to_file:error: %s", e.message);
             }
         }
 
@@ -129,7 +128,7 @@ namespace Tags {
                     warning ("Oops!.. Something went wrong while decoding json data ...");
                 }
             } catch (Error e) {
-                warning ("Error message: %s", e.message);
+                warning ("from_file:error: %s", e.message);
             }
         }
     }

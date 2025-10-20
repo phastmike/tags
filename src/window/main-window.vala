@@ -100,13 +100,15 @@ namespace Tags {
                 var tag = (r as TagRow).tag;
                 var tag_dialog =  new TagDialogWindow.for_editing (application, tag);
                 tag_dialog.edited.connect ((t) => {
-                    //tags_changed = true;
+                    tags_changed = true;
+                    filter.update ();
                     count_tag_hits ();
                     minimap.set_array (Lines.model_to_array(lines_colview.lines));
                 });
 
                 tag_dialog.deleted.connect ((tag) => {
-                    //tags_changed = true;
+                    tags_changed = true;
+                    filter.update ();
                     tags.remove_tag (tag);
                     minimap.set_array (Lines.model_to_array(lines_colview.lines));
                 });
@@ -116,6 +118,10 @@ namespace Tags {
 
             tags.model.items_changed.connect  ( (pos, added, removed) => {
                 tags_changed = true;
+                filter.update ();
+                if (filter.active == true && filterer.model.n_items == 0) {
+                    filter.active = false;
+                }
                 minimap.set_array (Lines.model_to_array(lines_colview.lines));
             });
 
@@ -132,7 +138,7 @@ namespace Tags {
             stack.add_named (main_box, "main");
             stack.set_visible_child_name ("welcome");
 
-            oversplit.max_sidebar_width = 320;
+            oversplit.max_sidebar_width = 280;
             oversplit.sidebar = box;
             oversplit.show_sidebar = false;
 
@@ -142,6 +148,31 @@ namespace Tags {
 
             overlay.set_child (stack);
             setup_preferences ();
+
+            var bpc1 = new Adw.BreakpointCondition.length (Adw.BreakpointConditionLengthType.MIN_WIDTH, 575, Adw.LengthUnit.PX);
+            var bp = new Adw.Breakpoint (bpc1);
+            //bp.add_setter (oversplit, "show-sidebar", false);
+            //bp.add_setter (oversplit, "collapsed", true);
+            add_breakpoint (bp);
+
+            bp.apply.connect ( () => {
+                if (oversplit.show_sidebar) {
+                    oversplit.collapsed = false;
+                } else {
+                    oversplit.collapsed = false;
+                    oversplit.show_sidebar = false;
+                }
+            });
+
+            bp.unapply.connect ( () => {
+                if (oversplit.show_sidebar) {
+                    oversplit.collapsed = true;
+                    oversplit.show_sidebar = true;
+                } else { 
+                    oversplit.collapsed = true;
+                    oversplit.show_sidebar = false;
+                }
+            });
         }
 
         // Override the size_allocate method
@@ -369,9 +400,9 @@ namespace Tags {
                     if (file_tags.query_exists ()) {
                         load_tags_from_file (file_tags);
                         count_tag_hits ();
-                    } else {
                     }
                 }
+                count_tag_hits ();
                 minimap.set_array (Lines.model_to_array(lines_colview.lines));
             });
 
@@ -406,21 +437,21 @@ namespace Tags {
                 dialog.set_default_response ("cancel");
                 dialog.set_close_response ("cancel");
                 dialog.present (this);
-                
                 dialog.response.connect ((response) => {
                     if (response == "discard") {
                         tags_remove_all ();
                     }
                 });
             } else {
-                tags.remove_all ();
+                tags_remove_all ();
             }
         }
 
         private void tags_remove_all () {
-            if (file_tags != null) file_tags = null;
+            file_tags = null;
             tags_changed = false;
             tags.remove_all ();
+            filter.update ();
             minimap.set_array (Lines.model_to_array(lines_colview.lines));
         }
 
@@ -433,7 +464,6 @@ namespace Tags {
 
         private void load_tags_from_file (File file) {
             tags.from_file.begin  (file, null, (obj, res) => {
-                message ("Ended load tags");
                 tags_changed = false;
                 for (int i = 0; i < tags.ntags; i++) {
                     var tag = tags.model.get_object (i) as Tag;
