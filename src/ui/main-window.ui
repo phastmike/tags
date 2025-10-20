@@ -4,7 +4,7 @@
   <template class="TagsMainWindow" parent="AdwApplicationWindow">
     <property name="title" translatable="yes">Tags</property>
     <property name="default-width">720</property>
-    <property name="default-height">720</property>
+      <property name="default-height">720</property>
 	  <style>
       <!--<class name="devel"/>-->
 	  </style>

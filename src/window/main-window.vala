@@ -156,6 +156,8 @@ namespace Tags {
             add_breakpoint (bp);
 
             bp.apply.connect ( () => {
+                oversplit.max_sidebar_width = 280;
+                oversplit.min_sidebar_width = 180;
                 if (oversplit.show_sidebar) {
                     oversplit.collapsed = false;
                 } else {
@@ -165,6 +167,8 @@ namespace Tags {
             });
 
             bp.unapply.connect ( () => {
+                oversplit.max_sidebar_width = 180;
+                oversplit.min_sidebar_width = 180;
                 if (oversplit.show_sidebar) {
                     oversplit.collapsed = true;
                     oversplit.show_sidebar = true;
