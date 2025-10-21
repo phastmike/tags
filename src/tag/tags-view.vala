@@ -17,13 +17,14 @@ namespace Tags {
         public Gtk.ListBox listbox;
 
         public GLib.ListModel model;
+
         private Gtk.Application application;
 
 
         public TagsView (GLib.ListModel model) {
             this.model = model; 
 
-            // FIXME: Will check need to toggle drag feature
+            // FIXME: check need to toggle drag feature
             Gtk.DropTarget drop_target;
             drop_target = new Gtk.DropTarget (typeof (TagRow), Gdk.DragAction.MOVE);
             listbox.add_controller (drop_target);

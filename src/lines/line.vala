@@ -13,9 +13,10 @@ namespace Tags {
         public string? text {get; private set; default = null;}
         public Tag? tag {get; set; default = null;} // Should be decoupled
 
-        public Line (uint number, string? text) {
+        public Line (uint number, string? text, Tag? tag = null) {
             this.number = number;
             this.text = text;
+            this.tag = tag;
         }
     }
 }

@@ -20,8 +20,9 @@ namespace Tags {
         private bool _tags_autoload;
         private bool _minimap_visible;
 
-        public signal void line_number_color_fg_changed (string color);
-        public signal void line_number_color_bg_changed (string color);
+        // FIXME: REMOVE ALL SIGNALS IF NOT USED
+        //public signal void line_number_color_fg_changed (string color);
+        //public signal void line_number_color_bg_changed (string color);
         public signal void line_number_visibility_changed (bool visibility);
         public signal void minimap_visibility_changed (bool visibility);
 
@@ -61,7 +62,6 @@ namespace Tags {
             set {
                 _ln_fg_color = value;
                 preferences.set_string ("line-numbers-fg-color", value);
-                line_number_color_fg_changed (value);
             }
         }
 
@@ -73,7 +73,6 @@ namespace Tags {
             set {
                 _ln_bg_color = value;
                 preferences.set_string ("line-numbers-bg-color", value);
-                line_number_color_bg_changed (_ln_bg_color);
             }
         }
 

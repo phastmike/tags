@@ -12,14 +12,6 @@
 namespace Tags {
 
     public sealed class LinesPersistence : Object {
-        private GLib.ListStore lines;
-
-        /* SIGNALS */
-
-        public signal void load_failed (string err_msg);
-        public signal void loaded_from_file (GLib.ListStore lines);
-
-        /* CLASS METHODS */
 
         public static async File? open_lines_file_dialog (Gtk.Window? parent_window = null, Cancellable? cancellable = null) throws Error {
             var file_filter1 = new Gtk.FileFilter ();
@@ -68,12 +60,6 @@ namespace Tags {
                 throw e;
                 return null;
             }
-        }
-
-        /* INSTANCE METHODS */
-
-        public LinesPersistence () {
-            lines = new GLib.ListStore (typeof(Gtk.StringObject));
         }
     }
 }

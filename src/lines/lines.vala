@@ -43,8 +43,8 @@ namespace Tags {
                             if (line.data[i] == '\r') line.data[i] = 0x20;
                         }
 
-                        //FIXME: Bug in string.replace method when replacing \r (0x0d)
-                        // WORKAROUND: Iterate and replace... (as above)
+                        // NOTE: Bug in string.replace method when replacing \r (0x0d)
+                        // WORKAROUND - Iterate and replace... (as above)
                         // line = line.replace ("\r", " ");
                         store.append (new Line (++count, line));
                     }

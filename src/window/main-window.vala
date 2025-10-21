@@ -53,6 +53,7 @@ namespace Tags {
             { "action_add_tag", action_add_tag },
             { "action_remove_all_tags", action_remove_all_tags },
             { "action_load_tags", action_load_tags },
+            { "action_import_tags", action_import_tags },
             { "action_save_tags", action_save_tags },
             { "save_tagged", save_tagged },
             { "hide_untagged_lines", hide_untagged_lines, null, "false", null},
@@ -89,9 +90,7 @@ namespace Tags {
             Object (application: app);
             setup_actions ();
             save_tagged_disable ();
-            //setup_tags_treeview ();
 
-            
             tags = new TagStore ();
             var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
             var tags_view = new TagsView (tags.model);
@@ -147,7 +146,6 @@ namespace Tags {
             oversplit.bind_property ("show-sidebar", title_focus, "visible", BindingFlags.SYNC_CREATE);
 
             overlay.set_child (stack);
-            setup_preferences ();
 
             var bpc1 = new Adw.BreakpointCondition.length (Adw.BreakpointConditionLengthType.MIN_WIDTH, 575, Adw.LengthUnit.PX);
             var bp = new Adw.Breakpoint (bpc1);
@@ -177,6 +175,8 @@ namespace Tags {
                     oversplit.show_sidebar = false;
                 }
             });
+
+            setup_preferences ();
         }
 
         // Override the size_allocate method
@@ -240,21 +240,9 @@ namespace Tags {
         private void setup_preferences () {
             var preferences = Preferences.instance ();
 
-            preferences.line_number_visibility_changed.connect ( (v) => {
-            });
-
-            preferences.line_number_color_fg_changed.connect ( (c) => {
-            });
-
-            preferences.line_number_color_bg_changed.connect ( (c) => {
-            });
-
-            preferences.minimap_visibility_changed.connect ( (v) => {
-                //redundant with the bind below
-                //minimap.set_visible (v);
-            });
-
             preferences.bind_property("minimap_visible", minimap, "visible", 
+                BindingFlags.SYNC_CREATE | BindingFlags.BIDIRECTIONAL);
+            preferences.bind_property("ln_visible", lines_colview.column_line_number, "visible", 
                 BindingFlags.SYNC_CREATE | BindingFlags.BIDIRECTIONAL);
         }
 
@@ -466,8 +454,15 @@ namespace Tags {
             });
         }
 
-        private void load_tags_from_file (File file) {
-            tags.from_file.begin  (file, null, (obj, res) => {
+        private void action_import_tags () {
+            TagsPersistence.open_tags_file_dialog.begin (this, null, (obj, res) => {
+                var f = TagsPersistence.open_tags_file_dialog.end (res);
+                if (f != null) load_tags_from_file (f, true);
+            });
+        }
+
+        private void load_tags_from_file (File file, bool import = false) {
+            tags.from_file.begin  (file, null, import, (obj, res) => {
                 tags_changed = false;
                 for (int i = 0; i < tags.ntags; i++) {
                     var tag = tags.model.get_object (i) as Tag;
@@ -483,7 +478,6 @@ namespace Tags {
         private void action_toggle_line_number () {
             var preferences = Preferences.instance ();
             preferences.ln_visible = !preferences.ln_visible; 
-            //FIXME: Needs implementation on LinesColumn view to manage columns "visibility"
         }
         
         private void action_save_tags () {
@@ -671,7 +665,6 @@ namespace Tags {
         }
 
         private void only_tag_7 () {
-            tags.tags_set_enable (false);
             disable_all_tags ();
             toggle_tag_7 ();
         }
@@ -692,11 +685,11 @@ namespace Tags {
         }
 
         private void enable_all_tags () {
-            tags.tags_set_enable (true);
+            tags.set_enable_all (true);
         }
 
         private void disable_all_tags () {
-            tags.tags_set_enable (false);
+            tags.set_enable_all (false);
         }
 
         private void prev_hit () {

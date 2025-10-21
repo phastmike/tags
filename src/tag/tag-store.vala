@@ -3,7 +3,7 @@
 /*
  * tag-store.vala
  *
- * Class containing the tags - the TagStore 
+ * Class containing tags - the TagStore 
  *
  * José Miguel Fonte
  */
@@ -38,15 +38,21 @@ namespace Tags {
 
         public void toggle_tag (int nr) requires (nr >= 0 && nr <= 9) {
             if (nr >= ntags) return;
-
             var tag = model.get_item (nr) as Tag;
             tag.enabled = !tag.enabled;
+        }
 
-            /* FIXME
-            if (get_n_tags_enabled () == 0) {
-                no_active_tags ();
-            }
-            */
+        public void create_tag_css_class (Tag tag) {
+            var css_provider = new Gtk.CssProvider ();
+            string css = ".tag-%s { background-color: %s; foregound-color: %s; }".printf (
+                                        tag.pattern.replace (" ", "-").down (),
+                                        tag.colors.bg.to_string (),
+                                        tag.colors.fg.to_string ());
+            css_provider.load_from_string (css);
+            Gtk.StyleContext.add_provider_for_display (Gdk.Display.get_default (),
+                                                      css_provider,
+                                                      Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+            message ("Created CSS class for tag: %s\n%s\n", tag.pattern, css);
         }
 
         public void add_tag (Tag tag, bool prepend = false) {
@@ -55,12 +61,12 @@ namespace Tags {
             } else {
                 store.append(tag);
             }
+            create_tag_css_class (tag);
         }
 
         public void remove_tag (Tag to_remove) {
-            Tag tag;
             for (var i = 0; i < store.get_n_items (); i++) {
-                tag = store.get_object (i) as Tag;
+                var tag = store.get_object (i) as Tag;
                 if (tag == to_remove) {
                     store.remove (i);
                     return;
@@ -73,7 +79,7 @@ namespace Tags {
         }
 
         /* Enable/Disable all tags */
-        public void tags_set_enable (bool enable) {
+        public void set_enable_all (bool enable) {
             Tag tag;
             for (var i = 0; i < model.get_n_items (); i++) {
                 tag = model.get_object (i) as Tag;
@@ -85,9 +91,8 @@ namespace Tags {
             Json.Node root = new Json.Node (Json.NodeType.ARRAY);
             Json.Array array = new Json.Array ();
 
-            Tag tag;
-            for (var i = 0; i < store.get_n_items (); i++) {
-                tag = model.get_object (i) as Tag;
+            for (uint i = 0; i < store.get_n_items (); i++) {
+                var tag = model.get_object (i) as Tag;
                 Json.Node node = Json.gobject_serialize (tag);
                 array.add_element (node); 
             }
@@ -103,27 +108,24 @@ namespace Tags {
             }
         }
 
-        public async void from_file (File file, Cancellable? cancellable = null) {
+        public async void from_file (File file, Cancellable? cancellable = null, bool preserve_load = false) {
             FileInputStream stream;
 
             try {
                 stream = yield file.read_async (Priority.DEFAULT, cancellable);
                 Json.Parser parser = new Json.Parser ();
                 yield parser.load_from_stream_async (stream, cancellable);
-                /* PRESERVE LOAD? Sense to add on top of other,
-                   delegate to consumer, we are just a provider
-                   for now */
-                store.remove_all ();
-                /**********************************************/
+
+                if (preserve_load == false) store.remove_all ();
+
                 Json.Node node = parser.get_root ();
                 Json.Array array = new Json.Array ();
                 if (node.get_node_type () == Json.NodeType.ARRAY) {
                     array = node.get_array ();
                     array.foreach_element ((array, index_, element_node) => {
-                        Tag tag = Json.gobject_deserialize (typeof (Tag), element_node) as Tag;
+                        var tag = Json.gobject_deserialize (typeof (Tag), element_node) as Tag;
                         store.append (tag);
                     });
-                    //loaded_from_file (tags);
                 } else {
                     warning ("Oops!.. Something went wrong while decoding json data ...");
                 }

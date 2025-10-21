@@ -29,7 +29,6 @@ namespace Tags {
         public GetLineColorSchemeFunc? delegate_get_line_color_scheme_func = null;
 
         public LinesColumnView (GLib.ListModel model) {
-        //public LinesColumnView (LineStore lines) {
             this.lines = model;
 
             selection_model = new Gtk.MultiSelection (model);
@@ -42,6 +41,14 @@ namespace Tags {
             // NOTE: Hide header hack - It works
             var header = column_view.get_first_child ();
             header.set_visible (false);
+        }
+
+        public void show_line_numbers (bool show) {
+            if (show) {
+                column_line_number.visible = true;
+            } else {
+                column_line_number.visible = false;
+            }
         }
 
         public string get_selected_lines_as_string () {
