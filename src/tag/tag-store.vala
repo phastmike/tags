@@ -9,9 +9,9 @@
  */
 
 namespace Tags {
-
     public class TagStore : Object {
         private ListStore store;
+        private TagStyleStore styles;
 
         public GLib.ListModel model {
             get {
@@ -25,8 +25,12 @@ namespace Tags {
             }
         }
 
-        public TagStore () {
+        public TagStore (TagStyleStore? styles = null) {
             store = new ListStore (typeof(Tag));
+            if (styles != null)
+                this.styles = styles;
+            else
+                this.styles = new TagStyleStore ();
         }
 
         public void hitcounter_reset_all () {
@@ -42,26 +46,13 @@ namespace Tags {
             tag.enabled = !tag.enabled;
         }
 
-        public void create_tag_css_class (Tag tag) {
-            var css_provider = new Gtk.CssProvider ();
-            string css = ".tag-%s { background-color: %s; foregound-color: %s; }".printf (
-                                        tag.pattern.replace (" ", "-").down (),
-                                        tag.colors.bg.to_string (),
-                                        tag.colors.fg.to_string ());
-            css_provider.load_from_string (css);
-            Gtk.StyleContext.add_provider_for_display (Gdk.Display.get_default (),
-                                                      css_provider,
-                                                      Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-            message ("Created CSS class for tag: %s\n%s\n", tag.pattern, css);
-        }
-
         public void add_tag (Tag tag, bool prepend = false) {
             if (prepend == true) { 
                 store.insert (0, tag);
             } else {
                 store.append(tag);
             }
-            create_tag_css_class (tag);
+            styles.add_style_for_tag (tag);
         }
 
         public void remove_tag (Tag to_remove) {
@@ -69,6 +60,7 @@ namespace Tags {
                 var tag = store.get_object (i) as Tag;
                 if (tag == to_remove) {
                     store.remove (i);
+                    styles.remove_style_for_tag (to_remove);
                     return;
                 }
             }
@@ -124,7 +116,11 @@ namespace Tags {
                     array = node.get_array ();
                     array.foreach_element ((array, index_, element_node) => {
                         var tag = Json.gobject_deserialize (typeof (Tag), element_node) as Tag;
-                        store.append (tag);
+                        //store.append (tag);
+                        
+                        // FIXME: We need to generate a new UUID for the tag. Lacks persistence support
+                        tag.colors.name = Tags.Helpers.generate_uuid ();
+                        add_tag (tag);
                     });
                 } else {
                     warning ("Oops!.. Something went wrong while decoding json data ...");

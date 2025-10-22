@@ -9,6 +9,7 @@
 
 namespace Tags {
     public class Line : Object {
+        public string? actual_style = null;
         public uint number {get;  private set; default = 0;}
         public string? text {get; private set; default = null;}
         public Tag? tag {get; set; default = null;} // Should be decoupled
@@ -17,6 +18,7 @@ namespace Tags {
             this.number = number;
             this.text = text;
             this.tag = tag;
+            actual_style = null;
         }
     }
 }

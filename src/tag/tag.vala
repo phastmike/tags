@@ -40,6 +40,8 @@ namespace Tags {
             this.pattern = pattern;
             this.description = description;
             this.colors = colors;
+
+            colors.name = Tags.Helpers.generate_uuid ();
         }
 
         public bool applies_to (string? text = null) {

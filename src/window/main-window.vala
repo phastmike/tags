@@ -37,6 +37,7 @@ namespace Tags {
         private Gtk.ScrolledWindow scrolled_minimap;
 
         private Gtk.Revealer revealer;
+        private TagStyleStore style_store;
         private TagStore tags;
         private Lines lines;
         private Tags.Filter filter;
@@ -91,7 +92,8 @@ namespace Tags {
             setup_actions ();
             save_tagged_disable ();
 
-            tags = new TagStore ();
+            style_store = new TagStyleStore ();
+            tags = new TagStore (style_store);
             var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
             var tags_view = new TagsView (tags.model);
             box.append (tags_view);
@@ -396,6 +398,17 @@ namespace Tags {
                 }
                 count_tag_hits ();
                 minimap.set_array (Lines.model_to_array(lines_colview.lines));
+                for (uint j = 0; j < lines.model.get_n_items (); j++) {
+                    var line = lines.model.get_item (j) as Line;
+                    for (uint k = 0; k < tags.ntags; k++) {
+                        var tag = tags.model.get_item (k) as Tag;
+                        if (tag.applies_to (line.text)) {
+                            line.tag = tag;
+                            break;
+                        }
+                    }
+                }
+                filter.update ();
             });
 
             lines.from_file (file, cancel_open);
@@ -585,6 +598,18 @@ namespace Tags {
         private void toggle_tags_view () {
             oversplit.show_sidebar = !oversplit.show_sidebar;
             var action = this.lookup_action ("toggle_tags_view");
+
+                for (uint j = 0; j < lines.model.get_n_items (); j++) {
+                    var line = lines.model.get_item (j) as Line;
+                    for (uint k = 0; k < tags.ntags; k++) {
+                        var tag = tags.model.get_item (k) as Tag;
+                        if (tag.applies_to (line.text)) {
+                            line.tag = tag;
+                            break;
+                        }
+                    }
+                }
+                filter.update ();
         }
         
         private void copy () {

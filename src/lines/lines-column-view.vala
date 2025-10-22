@@ -34,9 +34,6 @@ namespace Tags {
             selection_model = new Gtk.MultiSelection (model);
 
             column_view.set_model (selection_model);
-            //column_view.remove_column (column_line_number);
-            // to hide/show must remove all and re-add
-            //column_view.append_column (column_line_number);
 
             // NOTE: Hide header hack - It works
             var header = column_view.get_first_child ();
@@ -62,24 +59,6 @@ namespace Tags {
             return str.str;
         }
 
-
-        private void ui_css_add_styles_to_provider (string klassname, ColorScheme color_scheme) {
-            var provider_css = new Gtk.CssProvider ();
-
-            provider_css.load_from_string (""" 
-                .%s {
-                    color: %s;
-                    background-color: %s;
-                }
-            """.printf (klassname, color_scheme.fg.to_string (), color_scheme.bg.to_string ()));
-
-            Gtk.StyleContext.add_provider_for_display (
-                Gdk.Display.get_default (),
-                provider_css,
-                //Gtk.STYLE_PROVIDER_PRIORITY_USER);
-                Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-        }
-
         [GtkCallback]
         private void line_number_setup_handler (Gtk.SignalListItemFactory factory, GLib.Object listitemm) {
             Gtk.ListItem listitem = (Gtk.ListItem) listitemm;
@@ -87,8 +66,6 @@ namespace Tags {
             var label = new Gtk.Label (null);
             label.xalign = 1;
             listitem.child = label;
-            //ui_css_add_styles_to_provider ();
-            //label.add_css_class ("line-number");
             label.add_css_class ("dimmed");
         }
 
@@ -98,8 +75,6 @@ namespace Tags {
             var label = listitem.child as Gtk.Label;
             var line = listitem.item as Line;
             label.set_text ("%u".printf (line.number));
-            //ui_css_add_styles_to_provider ();
-            //listitem.child.add_css_class ("line-number");
         }
 
         [GtkCallback]
@@ -109,8 +84,6 @@ namespace Tags {
             var label = new Gtk.Label (null);
             label.xalign = 0;
             listitem.child = label;
-            //ui_css_add_styles_to_provider ();
-            //label.add_css_class ("line-number");
         }
 
         [GtkCallback]
@@ -120,9 +93,45 @@ namespace Tags {
             var line = listitem.item as Line;
             string text = line.text;
             label.set_text (text);
+            /*
+            if (line.tag != null && line.tag.enabled) {
+                line.actual_style = "tag-%s".printf (line.tag.colors.name);
+                message ("Adding style: %s".printf (line.actual_style));
+                label.parent.add_css_class (line.actual_style);
+            } else {
+               message ("Removing style: %s".printf (line.actual_style));
+               if (line.actual_style != null) {
+                    label.parent.remove_css_class (line.actual_style);
+                    line.actual_style = null; 
+                }
+            }
+            */
+            /*
+            line.tag.enable_changed.connect ((enable) => {
+                if (enable) {
+                    line.actual_style = "tag-%s".printf (line.tag.colors.name);
+                    message ("Adding style: %s".printf (line.actual_style));
+                    label.parent.add_css_class (line.actual_style);
+                } else {
+                   //message ("Oops for line: %s".printf (line.text));
+                   if (line.actual_style != null) {
+                        label.parent.remove_css_class (line.actual_style);
+                        line.actual_style = null; 
+                    }
+                }
+            });
+            */
+            line.notify["tag"].connect ((s, p) => {
+                if (line.tag != null) {
+                    line.tag.enable_changed.connect ((enable) => {
+                            update_line_tag_style (label, line);
+                    });
+                } 
+                update_line_tag_style (label, line);
+            });
+
             //label.set_tooltip_text ("%u".printf (listitem.position + 1));
-            //ui_css_add_styles_to_provider ();
-            //listitem.add_css_class ("line-number");
+            /*
             if (delegate_get_line_color_scheme_func != null) {
                 ColorScheme? cs = null;
                 cs = delegate_get_line_color_scheme_func (text);
@@ -135,6 +144,19 @@ namespace Tags {
                     string klassname = "line-number-%u".printf (line.number);
                     listitem.child.remove_css_class (klassname);
                     //listitem.child.remove_css_class ("card");
+                }
+            }
+            */
+        }
+
+        private void update_line_tag_style (Gtk.Label label, Line line) {
+            if (line.tag != null && line.tag.enabled) {
+                line.actual_style = "tag-%s".printf (line.tag.colors.name);
+                label.parent.add_css_class (line.actual_style);
+            } else {
+               if (line.actual_style != null) {
+                    label.parent.remove_css_class (line.actual_style);
+                    line.actual_style = null; 
                 }
             }
         }

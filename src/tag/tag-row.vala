@@ -21,7 +21,6 @@ namespace Tags {
         public Gtk.Label hitcounter;
 
         public Tag tag;
-        private Gtk.CssProvider style_provider;
         public string style_class {get; private set;}
 
         public double drag_x;
@@ -32,26 +31,21 @@ namespace Tags {
             drag_y = 0.0;
 
             this.tag = tag;
-            style_class = generate_unique_name ();
-
-            style_provider = new Gtk.CssProvider ();
-
-            var style_ctx = get_style_context ();
-            style_ctx.add_provider_for_display (
-                Gdk.Display.get_default (),
-                this.style_provider,
-                Gtk.STYLE_PROVIDER_PRIORITY_USER
-            );
-
-            style_update_css ();
+            // FIXME: Need to address these ui styles properly
+            style_class = "row-%s".printf (tag.colors.name);
 
             set_tooltip_text (tag.description);
+
             enabled.active = tag.enabled;
             enabled.add_css_class (style_class);
+
             title.label = tag.description;
             title.add_css_class(style_class);
+
             subtitle.label = tag.pattern;
+
             hitcounter.label = "%u".printf (tag.hits);
+
             if (tag.description.length == 0) {
                 title.visible = false;
             }
@@ -64,10 +58,6 @@ namespace Tags {
                 return true;
             }, null);
 
-            this.tag.colors.changed.connect ( (cs) => {
-                style_update_css ();
-            });
-
             tag.enable_changed.connect ( (enabled) => {
                 if (enabled == true) {
                     remove_css_class ("dimmed");
@@ -79,30 +69,6 @@ namespace Tags {
 
         ~TagRow () {
             remove_css_class (style_class);
-        }
-
-        private void style_update_css () {
-            string? lstyle = """
-                .%s {
-                    font-size: 0.8333em;
-                }
-
-                .%s check {
-                    color: %s;
-                    background-color: %s;
-                    /*font-size: 0.8333em;*/
-                }
-            """.printf (style_class, style_class, tag.colors.fg.to_string (), tag.colors.bg.to_string ());
-
-            style_provider.load_from_data (lstyle.data);
-        }
-
-        private string generate_unique_name () {
-            string random_input = "%u-%u-%u".
-                printf(GLib.Random.next_int (), GLib.Random.next_int (), GLib.Random.next_int());
-            var checksum = new Checksum(ChecksumType.SHA256);
-            checksum.update(random_input.data, random_input.length);
-            return "row-" + checksum.get_string();
         }
     }
 }
