@@ -25,7 +25,7 @@ namespace Tags {
         public ListModel lines;
         public Gtk.MultiSelection selection_model;
 
-        public delegate ColorScheme? GetLineColorSchemeFunc (string text);
+        public delegate void GetLineColorSchemeFunc (Gtk.Widget widget, Line line);
         public GetLineColorSchemeFunc? delegate_get_line_color_scheme_func = null;
 
         public LinesColumnView (GLib.ListModel model) {
@@ -121,6 +121,7 @@ namespace Tags {
                 }
             });
             */
+            /*
             line.notify["tag"].connect ((s, p) => {
                 if (line.tag != null) {
                     line.tag.enable_changed.connect ((enable) => {
@@ -129,33 +130,32 @@ namespace Tags {
                 } 
                 update_line_tag_style (label, line);
             });
-
+            */
             //label.set_tooltip_text ("%u".printf (listitem.position + 1));
-            /*
             if (delegate_get_line_color_scheme_func != null) {
-                ColorScheme? cs = null;
-                cs = delegate_get_line_color_scheme_func (text);
+                delegate_get_line_color_scheme_func (label, line);
+                /*
                 if (cs != null) {
-                    ui_css_add_styles_to_provider ("line-number-%u".printf (line.number), cs);
-                    string klassname = "line-number-%u".printf (line.number);
-                    listitem.child.add_css_class (klassname);
+                    //ui_css_add_styles_to_provider ("line-number-%u".printf (line.number), cs);
+                    //string klassname = "line-number-%u".printf (line.number);
+                    //listitem.child.add_css_class (klassname);
                     //listitem.child.add_css_class ("card");
                 } else {
-                    string klassname = "line-number-%u".printf (line.number);
-                    listitem.child.remove_css_class (klassname);
+                    //string klassname = "line-number-%u".printf (line.number);
+                    //listitem.child.remove_css_class (klassname);
                     //listitem.child.remove_css_class ("card");
                 }
+                */
             }
-            */
         }
 
         private void update_line_tag_style (Gtk.Label label, Line line) {
             if (line.tag != null && line.tag.enabled) {
                 line.actual_style = "tag-%s".printf (line.tag.colors.name);
-                label.parent.add_css_class (line.actual_style);
+                label.add_css_class (line.actual_style);
             } else {
                if (line.actual_style != null) {
-                    label.parent.remove_css_class (line.actual_style);
+                    label.remove_css_class (line.actual_style);
                     line.actual_style = null; 
                 }
             }

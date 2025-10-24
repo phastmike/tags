@@ -8,6 +8,7 @@ subdir('lines')
 subdir('colors')
 subdir('window')
 subdir('minimap')
+subdir('dialogs')
 subdir('preferences')
 
 libm = declare_dependency(link_args: ['-lm'])

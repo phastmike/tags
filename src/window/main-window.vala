@@ -124,6 +124,18 @@ namespace Tags {
                     filter.active = false;
                 }
                 minimap.set_array (Lines.model_to_array(lines_colview.lines));
+                /*
+                for (uint j = 0; j < lines.model.get_n_items (); j++) {
+                    var line = lines.model.get_item (j) as Line;
+                    for (uint k = 0; k < tags.ntags; k++) {
+                        var tag = tags.model.get_item (k) as Tag;
+                        if (tag.applies_to (line.text) && tag.enabled) {
+                            line.tag = tag;
+                            break;
+                        }
+                    }
+                }
+                */
             });
 
             setup_lines_view ();
@@ -143,7 +155,6 @@ namespace Tags {
             oversplit.sidebar = box;
             oversplit.show_sidebar = false;
 
-            // FIXME: Should show the subtitle!
             oversplit.bind_property ("show-sidebar", window_title, "visible", BindingFlags.SYNC_CREATE | BindingFlags.INVERT_BOOLEAN);
             oversplit.bind_property ("show-sidebar", title_focus, "visible", BindingFlags.SYNC_CREATE);
 
@@ -151,8 +162,6 @@ namespace Tags {
 
             var bpc1 = new Adw.BreakpointCondition.length (Adw.BreakpointConditionLengthType.MIN_WIDTH, 575, Adw.LengthUnit.PX);
             var bp = new Adw.Breakpoint (bpc1);
-            //bp.add_setter (oversplit, "show-sidebar", false);
-            //bp.add_setter (oversplit, "collapsed", true);
             add_breakpoint (bp);
 
             bp.apply.connect ( () => {
@@ -248,7 +257,7 @@ namespace Tags {
                 BindingFlags.SYNC_CREATE | BindingFlags.BIDIRECTIONAL);
         }
 
-        public ColorScheme? get_cs_for_line (string text) {
+        public void get_cs_for_line (Gtk.Widget widget, Line line) {
             /*
             if (tags_treeview != null) {
                 return tags_treeview.get_color_scheme_for_text (text);
@@ -256,11 +265,17 @@ namespace Tags {
             */
             for (uint i = 0; i < tags.model.get_n_items (); i++) {
                 var tag = tags.model.get_item (i) as Tag;
-                if (tag.enabled && tag.applies_to (text)) {
-                    return tag.colors;
+                widget.get_style_context ().remove_class ("tag-" + tag.colors.name);
+            }
+            filter.update ();
+            for (uint i = 0; i < tags.model.get_n_items (); i++) {
+                var tag = tags.model.get_item (i) as Tag;
+                if (tag.enabled && tag.applies_to (line.text)) {
+                    line.tag = tag;
+                    filter.update ();
+                    return;
                 }
             }
-            return null;
         }
 
         private void setup_lines_view () {
@@ -268,7 +283,7 @@ namespace Tags {
             filter = new Tags.Filter (tags.model);
             filterer = new Filterer (lines, filter);
             lines_colview = new LinesColumnView (filterer.model);
-            //lines_colview.delegate_get_line_color_scheme_func = get_cs_for_line;
+            lines_colview.delegate_get_line_color_scheme_func = get_cs_for_line;
             lines_colview.column_view.activate.connect ( (p) => {
                 var line = lines_colview.lines.get_item (p) as Line;
                 var tag_dialog = new TagDialogWindow (this.application, line.text);
@@ -276,7 +291,6 @@ namespace Tags {
                     tag.enable_changed.connect ((enabled) => {
                         minimap.set_array (Lines.model_to_array(lines_colview.lines));
                     });
-                    //tags_treeview.add_tag (tag, add_to_top);
                     tags.add_tag (tag, add_to_top);
                     count_tag_hits ();
                     minimap.set_array (Lines.model_to_array(lines_colview.lines));
@@ -291,7 +305,6 @@ namespace Tags {
             scrolled_tags.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
             scrolled_tags.set_placement (Gtk.CornerType.TOP_LEFT);
             scrolled_tags.set_overlay_scrolling (true);
-            //scrolled_tags.set_child (tags_treeview);
             scrolled_tags.set_hexpand (true);
             scrolled_tags.set_vexpand (true);
         }
@@ -321,9 +334,6 @@ namespace Tags {
         }
 
         private Gdk.RGBA? delegate_minimap_bgcolor_getter (string? text) {
-            //message ("minimap-delegate-color -> Text:\n%s\nColor: %s",
-            //    text,
-            //    tags_treeview.get_bg_color_for_text (text).to_string ());
             for (uint i = 0; i < tags.model.get_n_items (); i++) {
                 var tag = tags.model.get_item (i) as Tag;
                 if (tag.enabled && tag.applies_to (text)) {
@@ -331,7 +341,6 @@ namespace Tags {
                 }
             }
             return null;
-            //return tags_treeview.get_bg_color_for_text (text);
         }
 
         private void setup_minimap (Gtk.Adjustment adj) {
@@ -402,7 +411,7 @@ namespace Tags {
                     var line = lines.model.get_item (j) as Line;
                     for (uint k = 0; k < tags.ntags; k++) {
                         var tag = tags.model.get_item (k) as Tag;
-                        if (tag.applies_to (line.text)) {
+                        if (tag.applies_to (line.text) && tag.enabled) {
                             line.tag = tag;
                             break;
                         }
@@ -461,15 +470,15 @@ namespace Tags {
         }
 
         private void action_load_tags () {
-            TagsPersistence.open_tags_file_dialog.begin (this, null, (obj, res) => {
-                var f = TagsPersistence.open_tags_file_dialog.end (res);
+            UIDialogs.file_open_tags.begin (this, null, (obj, res) => {
+                var f = UIDialogs.file_open_tags.end (res);
                 if (f != null) load_tags_from_file (f);
             });
         }
 
         private void action_import_tags () {
-            TagsPersistence.open_tags_file_dialog.begin (this, null, (obj, res) => {
-                var f = TagsPersistence.open_tags_file_dialog.end (res);
+            UIDialogs.file_open_tags.begin (this, null, (obj, res) => {
+                var f = UIDialogs.file_open_tags.end (res);
                 if (f != null) load_tags_from_file (f, true);
             });
         }
@@ -500,8 +509,10 @@ namespace Tags {
                 suggested_filename = "%s.tags".printf (file_opened.get_basename ());
             }
 
-            TagsPersistence.save_tags_file_dialog.begin (this, suggested_filename, null, (obj, res) => {
-                var file = TagsPersistence.save_tags_file_dialog.end (res);
+            //TagsPersistence.save_tags_file_dialog.begin (this, suggested_filename, null, (obj, res) => {
+            UIDialogs.file_save_tags.begin (this, null, suggested_filename, (obj, res) => {
+                //var file = TagsPersistence.save_tags_file_dialog.end (res);
+                var file = UIDialogs.file_save_tags.end (res);
                 if (file != null) {
                     tags.to_file (file);
                     tags_changed = false;
@@ -527,9 +538,9 @@ namespace Tags {
                 suggested_filename = "%s.tagged".printf (file_opened.get_basename ());
             }
 
-            LinesPersistence.save_lines_file_dialog.begin (this, suggested_filename, null, (obj, res) => {
+            UIDialogs.file_save_lines.begin (this, null, suggested_filename, (obj, res) => {
                 try {
-                    var file = LinesPersistence.save_lines_file_dialog.end (res);
+                    var file = UIDialogs.file_save_lines.end (res);
                     if (file != null) {
                         if (filter.active == false) {
                             hide_untagged_lines ();
@@ -598,18 +609,6 @@ namespace Tags {
         private void toggle_tags_view () {
             oversplit.show_sidebar = !oversplit.show_sidebar;
             var action = this.lookup_action ("toggle_tags_view");
-
-                for (uint j = 0; j < lines.model.get_n_items (); j++) {
-                    var line = lines.model.get_item (j) as Line;
-                    for (uint k = 0; k < tags.ntags; k++) {
-                        var tag = tags.model.get_item (k) as Tag;
-                        if (tag.applies_to (line.text)) {
-                            line.tag = tag;
-                            break;
-                        }
-                    }
-                }
-                filter.update ();
         }
         
         private void copy () {
@@ -783,9 +782,9 @@ namespace Tags {
         }
 
         private void action_open_file () {
-            LinesPersistence.open_lines_file_dialog.begin (this, null, (obj, res) => {
+            UIDialogs.file_open_lines (this, null, (obj, res) => {
                 try {
-                    File? file = LinesPersistence.open_lines_file_dialog.end (res);
+                    File? file = UIDialogs.file_open_lines.end (res);
                     if (file != null) open_file (file);
                 } catch (Error e) {
                     if (e.code != 2) {

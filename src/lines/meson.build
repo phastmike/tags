@@ -4,5 +4,4 @@ tags_sources += files(
 	'filter.vala',
 	'filterer.vala',
 	'lines-column-view.vala',
-	'lines-persistence.vala',
 	)
