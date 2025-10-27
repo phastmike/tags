@@ -12,6 +12,10 @@ namespace Tags {
 
     public class Tag : Object {
         private bool _enabled = true;
+        private string? _pattern = null;
+        private string? _description = null;
+        private bool _is_regex = false;
+        private bool _is_case_sensitive = false;
 
         public bool enabled { 
             get {
@@ -19,19 +23,58 @@ namespace Tags {
             }
             set {
                 _enabled = value;
+                changed ();
                 enable_changed (enabled);
             }
         }
 
-        public uint hits { get; set; default = 0; } // Should decouple the counter
-        public string? pattern { get; set; } 
-        public string? description { get; set; }
-        public bool is_regex { get; set; default = false; }
-        public bool is_case_sensitive { get; set; default = false; }
+        public string? pattern {
+            get {
+                return _pattern;
+            }
+            set {
+                _pattern = value;
+                changed ();
+            }
+        }
+
+        public string? description{
+            get {
+                return _description;
+            }
+            set {
+                _description = value;
+                changed ();
+            }
+        } 
+
+        public bool is_regex {
+            get {
+                return _is_regex;
+            }
+            set {
+                _is_regex = value;
+                changed ();
+            }
+        }
+
+        public bool is_case_sensitive {
+            get {
+                return _is_case_sensitive;
+            }
+            set {
+                _is_case_sensitive = value;
+                changed ();
+            }
+        }
+
         public ColorScheme colors { get; set; }
+
+        public uint hits { get; set; default = 0; } // Should decouple the counter
 
         /* SIGNALS */
 
+        public signal void changed ();
         public signal void enable_changed (bool enabled);
 
         /* METHODS */
@@ -40,8 +83,14 @@ namespace Tags {
             this.pattern = pattern;
             this.description = description;
             this.colors = colors;
+            is_regex = false;
+            is_case_sensitive = false;
 
             colors.name = Tags.Helpers.generate_uuid ();
+
+            colors.changed.connect (() => {
+                changed ();
+            });
         }
 
         public bool applies_to (string? text = null) {

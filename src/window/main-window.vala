@@ -42,7 +42,7 @@ namespace Tags {
         private Lines lines;
         private Tags.Filter filter;
         private Filterer filterer;
-        private TagsColumnView tags_colview;
+        //private TagsColumnView tags_colview;
         private LinesColumnView lines_colview;
         private File? file_opened = null;
         private File? file_tags = null;
@@ -94,9 +94,11 @@ namespace Tags {
 
             style_store = new TagStyleStore ();
             tags = new TagStore (style_store);
-            var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
             var tags_view = new TagsView (tags.model);
+
+            var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
             box.append (tags_view);
+
             tags_view.listbox.row_activated.connect ( (r) => {
                 var tag = (r as TagRow).tag;
                 var tag_dialog =  new TagDialogWindow.for_editing (application, tag);
@@ -104,7 +106,8 @@ namespace Tags {
                     tags_changed = true;
                     filter.update ();
                     count_tag_hits ();
-                    minimap.set_array (Lines.model_to_array(lines_colview.lines));
+                    minimap.set_array (Lines.model_to_array (lines_colview.lines));
+                    filter.update ();
                 });
 
                 tag_dialog.deleted.connect ((tag) => {
@@ -112,19 +115,17 @@ namespace Tags {
                     filter.update ();
                     tags.remove_tag (tag);
                     minimap.set_array (Lines.model_to_array(lines_colview.lines));
+                    filter.update ();
                 });
 
                 tag_dialog.present ();
             });
-
-            tags.model.items_changed.connect  ( (pos, added, removed) => {
+/*
+            tags.model.items_changed.connect  ((pos, removed, added) => {
                 tags_changed = true;
-                filter.update ();
                 if (filter.active == true && filterer.model.n_items == 0) {
                     filter.active = false;
                 }
-                minimap.set_array (Lines.model_to_array(lines_colview.lines));
-                /*
                 for (uint j = 0; j < lines.model.get_n_items (); j++) {
                     var line = lines.model.get_item (j) as Line;
                     for (uint k = 0; k < tags.ntags; k++) {
@@ -135,13 +136,17 @@ namespace Tags {
                         }
                     }
                 }
-                */
+                message ("Items changed: pos=%zu added=%zu removed=%zu", pos, added, removed);
+                minimap.set_array (Lines.model_to_array(lines_colview.lines));
+                filter.update ();
             });
-
+*/
             setup_lines_view ();
             setup_minimap (lines_colview.scrolled.get_vadjustment ());
             setup_main_box ();
             setup_buttons ();
+
+            var mmixer = new Tags.ModelMixer (lines, tags);
 
             var action = this.lookup_action ("toggle_tags_view");
             action.change_state (new Variant.boolean (true));
@@ -187,6 +192,19 @@ namespace Tags {
                 }
             });
 
+            /*
+                    for (uint j = 0; j < lines.model.get_n_items (); j++) {
+                        var line = lines.model.get_item (j) as Line;
+                        for (uint k = 0; k < tags.ntags; k++) {
+                            var tag = tags.model.get_item (k) as Tag;
+                            if (tag.applies_to (line.text) && tag.enabled) {
+                                line.tag = tag;
+                                break;
+                            }
+                        }
+                    }
+                    filter.update ();
+            */
             setup_preferences ();
         }
 
@@ -257,7 +275,7 @@ namespace Tags {
                 BindingFlags.SYNC_CREATE | BindingFlags.BIDIRECTIONAL);
         }
 
-        public void get_cs_for_line (Gtk.Widget widget, Line line) {
+        public void get_cs_for_line (Gtk.Widget widget) {
             /*
             if (tags_treeview != null) {
                 return tags_treeview.get_color_scheme_for_text (text);
@@ -267,6 +285,7 @@ namespace Tags {
                 var tag = tags.model.get_item (i) as Tag;
                 widget.get_style_context ().remove_class ("tag-" + tag.colors.name);
             }
+            /*
             filter.update ();
             for (uint i = 0; i < tags.model.get_n_items (); i++) {
                 var tag = tags.model.get_item (i) as Tag;
@@ -276,6 +295,7 @@ namespace Tags {
                     return;
                 }
             }
+            */
         }
 
         private void setup_lines_view () {
@@ -383,44 +403,43 @@ namespace Tags {
 
             var cancel_open = new Cancellable ();
 
-            lines.load_failed.connect ( (err_msg) => {
-                lines_colview.set_visible (true);
-                show_dialog ("Open File", err_msg, "_Close");
-            });
-
-            lines.loaded_from_file.connect ( () => {
-                stack.set_visible_child_name ("main");
-                oversplit.show_sidebar = true;
-                file_opened = file;
-                save_tagged_enable ();
-                set_title (file.get_basename ());
-                window_title.set_subtitle (file.get_basename ());
-                window_title.set_tooltip_text (file.get_path ());
-                title_focus.set_label (file.get_basename ());
-                title_focus.set_tooltip_text (file.get_path ());
-                if (Preferences.instance ().tags_autoload == true) {
-                    file_tags = File.new_for_path (file.get_path () + ".tags");
-                    if (file_tags.query_exists ()) {
-                        load_tags_from_file (file_tags);
-                        count_tag_hits ();
-                    }
-                }
-                count_tag_hits ();
-                minimap.set_array (Lines.model_to_array(lines_colview.lines));
-                for (uint j = 0; j < lines.model.get_n_items (); j++) {
-                    var line = lines.model.get_item (j) as Line;
-                    for (uint k = 0; k < tags.ntags; k++) {
-                        var tag = tags.model.get_item (k) as Tag;
-                        if (tag.applies_to (line.text) && tag.enabled) {
-                            line.tag = tag;
-                            break;
+            lines.from_file.begin (file, cancel_open, (obj, res) => {
+                string? err_msg = lines.from_file.end (res);
+                if (err_msg == null) {
+                    stack.set_visible_child_name ("main");
+                    oversplit.show_sidebar = true;
+                    file_opened = file;
+                    save_tagged_enable ();
+                    set_title (file.get_basename ());
+                    window_title.set_subtitle (file.get_basename ());
+                    window_title.set_tooltip_text (file.get_path ());
+                    title_focus.set_label (file.get_basename ());
+                    title_focus.set_tooltip_text (file.get_path ());
+                    if (Preferences.instance ().tags_autoload == true) {
+                        file_tags = File.new_for_path (file.get_path () + ".tags");
+                        if (file_tags.query_exists ()) {
+                            load_tags_from_file (file_tags);
+                            count_tag_hits ();
                         }
                     }
+                    count_tag_hits ();
+                    minimap.set_array (Lines.model_to_array(lines_colview.lines));
+                    for (uint j = 0; j < lines.model.get_n_items (); j++) {
+                        var line = lines.model.get_item (j) as Line;
+                        for (uint k = 0; k < tags.ntags; k++) {
+                            var tag = tags.model.get_item (k) as Tag;
+                            if (tag.applies_to (line.text) && tag.enabled) {
+                                line.tag = tag;
+                                break;
+                            }
+                        }
+                    }
+                    filter.update ();
+                } else {
+                    lines_colview.set_visible (true);
+                    show_dialog ("Open File", err_msg, "_Close");
                 }
-                filter.update ();
             });
-
-            lines.from_file (file, cancel_open);
         }
 
         private void action_add_tag () {
@@ -430,8 +449,19 @@ namespace Tags {
                 tags_changed = true;
 
                 tags.add_tag (tag, add_to_top);
-                tag.enable_changed.connect ((enabled) => {
+                tag.changed.connect (() => {
+                    for (uint j = 0; j < lines.model.get_n_items (); j++) {
+                        var line = lines.model.get_item (j) as Line;
+                        for (uint k = 0; k < tags.ntags; k++) {
+                            var xtag = tags.model.get_item (k) as Tag;
+                            if (xtag.applies_to (line.text) && xtag.enabled) {
+                                line.tag = xtag;
+                                break;
+                            }
+                        }
+                    }
                     minimap.set_array (Lines.model_to_array(lines_colview.lines));
+                    filter.update ();
                 });
 
                 count_hits_for_tag (tag);
@@ -492,8 +522,9 @@ namespace Tags {
                         minimap.set_array (Lines.model_to_array(lines_colview.lines));
                     });
                 }
-                minimap.set_array (Lines.model_to_array(lines_colview.lines));
+                minimap.set_array (Lines.model_to_array (lines_colview.lines));
                 count_tag_hits ();
+                filter.update ();
             });    
         }
 
@@ -504,7 +535,7 @@ namespace Tags {
         
         private void action_save_tags () {
             string? suggested_filename = null;
-
+            filter.update ();
             if (file_opened != null) {
                 suggested_filename = "%s.tags".printf (file_opened.get_basename ());
             }
@@ -596,6 +627,7 @@ namespace Tags {
             }
             */
 
+            filter.update ();
             minimap.set_array (Lines.model_to_array(lines_colview.lines));
         }
 

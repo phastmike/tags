@@ -4,7 +4,6 @@
     <file>ui/main-window.ui</file>
     <file>ui/welcome-page.ui</file>
     <file>ui/lines-column-view.ui</file>
-    <file>ui/tags-column-view.ui</file>
     <file>ui/tag-row.ui</file>
     <file>ui/tags-view.ui</file>
     <file>ui/tag-dialog-window.ui</file>

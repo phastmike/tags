@@ -72,6 +72,16 @@
                   </object>
                 </child>
                 <child type="end">
+                  <object class="GtkToggleButton">
+                    <style>
+                      <class name="success" />
+                    </style>
+                    <property name="icon_name">view-conceal-symbolic</property>
+                    <property name="tooltip-text">Hide untagged</property>
+                    <property name="action-name">win.hide_untagged_lines</property>
+                  </object>
+                </child>
+                <child type="end">
                   <object class="AdwSplitButton" id="button_tags">
                     <property name="visible">false</property>
                     <property name="icon-name">list-add-symbolic</property>

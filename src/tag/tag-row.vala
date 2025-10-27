@@ -65,6 +65,10 @@ namespace Tags {
                     add_css_class ("dimmed");
                 }
             });
+            
+            tag.notify["description"].connect ( () => {
+                set_tooltip_text (tag.description);
+            });
         }
 
         ~TagRow () {

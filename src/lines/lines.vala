@@ -11,9 +11,6 @@ namespace Tags {
     public class Lines : Object {
         public GLib.ListModel model;
 
-        public signal void loaded_from_file ();
-        public signal void load_failed (string err_msg); 
-
         public static  string[] model_to_array (GLib.ListModel model) {
             var result = new string[model.get_n_items()];
             for (int i = 0; i < model.get_n_items(); i++) {
@@ -23,11 +20,15 @@ namespace Tags {
             return result;
         }
 
+        public signal void loaded_from_file ();
+
         public Lines () {
             model = new GLib.ListStore (typeof(Line));
         }
 
-        public async void from_file (File file, Cancellable cancellable) {
+        public async string? from_file (File file, Cancellable cancellable) {
+            string? err_msg = null;
+
             try {
                 string? line;
                 uint count = 0;
@@ -35,6 +36,7 @@ namespace Tags {
                 DataInputStream dis = new DataInputStream (@is);
 
                 var store = model as GLib.ListStore;
+
                 store.remove_all ();
 
                 try {
@@ -48,57 +50,23 @@ namespace Tags {
                         // line = line.replace ("\r", " ");
                         store.append (new Line (++count, line));
                     }
+
                     loaded_from_file ();
+
                 } catch (IOError e) {
                     warning (e.message);
-                    load_failed (e.message);
+                    err_msg = e.message; 
+                    return err_msg;// load_failed (e.message);
                 }
             } catch (Error e) {
                 warning (e.message);
-                load_failed (e.message);
+                //load_failed (e.message);
+                err_msg = e.message; 
+                return err_msg;// load_failed (e.message);
             }
+            return err_msg;
         }
 
-        public async void to_file (File file) {
-            Line line;
-            StringBuilder str;
-            FileOutputStream fsout;
-
-            str = new StringBuilder ();
-            str.erase ();
-            str.append("");     // Fixes minor bug? Buffer isn't empty !?!?
-
-            // Buffers data to be written
-            for (uint i = 0; i < model.get_n_items (); i++) {
-                line = model.get_item (i) as Line;
-                str.append_printf ("%s\n", line.text);
-            }
-
-            try {
-                if (file.query_exists () == true) file.@delete ();
-                fsout = file.replace (null, false, FileCreateFlags.REPLACE_DESTINATION, null); 
-                fsout.write_all_async.begin (str.data, Priority.DEFAULT, null, (obj, res) => {
-                    size_t bytes_wr;
-                    try {
-                        fsout.write_all_async.end (res, out bytes_wr);
-                        try {
-                            fsout.close_async.begin (Priority.DEFAULT, null, (obj, res) => {
-                                try {
-                                    fsout.close_async.end (res);
-                                } catch (IOError e) {
-                                    warning (e.message);
-                                }
-                            });
-                        } catch (IOError e) {
-                            warning (e.message);
-                        }
-                    } catch (Error e) {
-                        warning (e.message);
-                    }
-                });
-            } catch (Error e) {
-                warning (e.message);
-            }
-        }
     }
+
 }

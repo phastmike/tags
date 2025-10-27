@@ -25,7 +25,7 @@ namespace Tags {
         public ListModel lines;
         public Gtk.MultiSelection selection_model;
 
-        public delegate void GetLineColorSchemeFunc (Gtk.Widget widget, Line line);
+        public delegate void GetLineColorSchemeFunc (Gtk.Widget widget);
         public GetLineColorSchemeFunc? delegate_get_line_color_scheme_func = null;
 
         public LinesColumnView (GLib.ListModel model) {
@@ -84,6 +84,7 @@ namespace Tags {
             var label = new Gtk.Label (null);
             label.xalign = 0;
             listitem.child = label;
+            label.set_use_markup (true);
         }
 
         [GtkCallback]
@@ -91,74 +92,45 @@ namespace Tags {
             Gtk.ListItem listitem = (Gtk.ListItem) listitemm;
             var label = listitem.child as Gtk.Label;
             var line = listitem.item as Line;
-            string text = line.text;
-            label.set_text (text);
-            /*
-            if (line.tag != null && line.tag.enabled) {
-                line.actual_style = "tag-%s".printf (line.tag.colors.name);
-                message ("Adding style: %s".printf (line.actual_style));
-                label.parent.add_css_class (line.actual_style);
-            } else {
-               message ("Removing style: %s".printf (line.actual_style));
-               if (line.actual_style != null) {
-                    label.parent.remove_css_class (line.actual_style);
-                    line.actual_style = null; 
+
+            label.set_text (line.text);
+            update_line_tag_style (label, line);
+            if (line.tag != null) {
+                if (line.sighandler == 0) {
+                    line.sighandler = line.tag.changed.connect (() => {
+                        update_line_tag_style (label, line);
+                    });
                 }
             }
-            */
-            /*
-            line.tag.enable_changed.connect ((enable) => {
-                if (enable) {
-                    line.actual_style = "tag-%s".printf (line.tag.colors.name);
-                    message ("Adding style: %s".printf (line.actual_style));
-                    label.parent.add_css_class (line.actual_style);
-                } else {
-                   //message ("Oops for line: %s".printf (line.text));
-                   if (line.actual_style != null) {
-                        label.parent.remove_css_class (line.actual_style);
-                        line.actual_style = null; 
-                    }
-                }
-            });
-            */
-            /*
-            line.notify["tag"].connect ((s, p) => {
+        }
+
+        [GtkCallback]
+        private void line_text_unbind_handler (Gtk.SignalListItemFactory factory, GLib.Object listitemm) {
+            Gtk.ListItem listitem = (Gtk.ListItem) listitemm;
+            var label = listitem.child as Gtk.Label;
+            var line = listitem.item as Line;
+
+            if (line != null) {
                 if (line.tag != null) {
-                    line.tag.enable_changed.connect ((enable) => {
-                            update_line_tag_style (label, line);
-                    });
-                } 
-                update_line_tag_style (label, line);
-            });
-            */
-            //label.set_tooltip_text ("%u".printf (listitem.position + 1));
-            if (delegate_get_line_color_scheme_func != null) {
-                delegate_get_line_color_scheme_func (label, line);
-                /*
-                if (cs != null) {
-                    //ui_css_add_styles_to_provider ("line-number-%u".printf (line.number), cs);
-                    //string klassname = "line-number-%u".printf (line.number);
-                    //listitem.child.add_css_class (klassname);
-                    //listitem.child.add_css_class ("card");
-                } else {
-                    //string klassname = "line-number-%u".printf (line.number);
-                    //listitem.child.remove_css_class (klassname);
-                    //listitem.child.remove_css_class ("card");
+                    if (line.sighandler != 0) {
+                        line.tag.disconnect (line.sighandler);
+                        line.sighandler = 0;
+                    }
+                    if (line.actual_style != null)
+                        label.parent.remove_css_class (line.actual_style);
                 }
-                */
             }
         }
 
         private void update_line_tag_style (Gtk.Label label, Line line) {
-            if (line.tag != null && line.tag.enabled) {
+            if (line.tag != null) {
                 line.actual_style = "tag-%s".printf (line.tag.colors.name);
-                label.add_css_class (line.actual_style);
-            } else {
-               if (line.actual_style != null) {
-                    label.remove_css_class (line.actual_style);
-                    line.actual_style = null; 
+                if (line.tag.enabled) {
+                    label.parent.add_css_class (line.actual_style);
+                } else {
+                    label.parent.remove_css_class (line.actual_style);
                 }
-            }
+            } 
         }
     }
 }

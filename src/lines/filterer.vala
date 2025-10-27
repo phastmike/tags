@@ -22,7 +22,7 @@ namespace Tags {
             model = new Gtk.FilterListModel (lines.model, filter); 
             // NOTE:model.set_incremental (true);
             // Huge impact. Need to dwell on how to handle this
-            // might be nice + using pending, is it?
+            // might be nice + using pending, if ... 
         }
 
         public async void to_file (File file) {

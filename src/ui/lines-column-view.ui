@@ -48,6 +48,8 @@
                   <object class="GtkSignalListItemFactory">
                     <signal name="setup" handler="line_text_setup_handler"/>
                     <signal name="bind" handler="line_text_bind_handler"/>
+                    <signal name="unbind" handler="line_text_unbind_handler"/>
+                    <!--<signal name="teardown" handler="line_text_unbind_handler"/>-->
                   </object>
                 </property>
               </object>

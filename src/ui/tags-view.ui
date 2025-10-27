@@ -191,7 +191,7 @@
                       <class name="success" />
                     </style>
                     <property name="icon_name">view-conceal-symbolic</property>
-                    <property name="tooltip-text">Hide </property>
+                    <property name="tooltip-text">Hide untagged</property>
                     <property name="action-name">win.hide_untagged_lines</property>
                   </object>
                 </child>
