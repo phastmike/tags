@@ -121,28 +121,6 @@ namespace Tags {
                 tag_dialog.present ();
             });
 
-/*
-            tags.model.items_changed.connect  ((pos, removed, added) => {
-                tags_changed = true;
-                if (filter.active == true && filterer.model.n_items == 0) {
-                    filter.active = false;
-                }
-                for (uint j = 0; j < lines.model.get_n_items (); j++) {
-                    var line = lines.model.get_item (j) as Line;
-                    for (uint k = 0; k < tags.ntags; k++) {
-                        var tag = tags.model.get_item (k) as Tag;
-                        if (tag.applies_to (line.text) && tag.enabled) {
-                            line.tag = tag;
-                            break;
-                        }
-                    }
-                }
-                message ("Items changed: pos=%zu added=%zu removed=%zu", pos, added, removed);
-                minimap.set_array (Lines.model_to_array(lines_colview.lines));
-                filter.update ();
-            });
-*/
-
             setup_lines_view ();
             setup_minimap (lines_colview.scrolled.get_vadjustment ());
             setup_main_box ();
@@ -195,19 +173,6 @@ namespace Tags {
                 }
             });
 
-            /*
-                    for (uint j = 0; j < lines.model.get_n_items (); j++) {
-                        var line = lines.model.get_item (j) as Line;
-                        for (uint k = 0; k < tags.ntags; k++) {
-                            var tag = tags.model.get_item (k) as Tag;
-                            if (tag.applies_to (line.text) && tag.enabled) {
-                                line.tag = tag;
-                                break;
-                            }
-                        }
-                    }
-                    filter.update ();
-            */
             setup_preferences ();
         }
 
@@ -278,35 +243,11 @@ namespace Tags {
                 BindingFlags.SYNC_CREATE | BindingFlags.BIDIRECTIONAL);
         }
 
-        public void get_cs_for_line (Gtk.Widget widget) {
-            /*
-            if (tags_treeview != null) {
-                return tags_treeview.get_color_scheme_for_text (text);
-            }
-            */
-            for (uint i = 0; i < tags.model.get_n_items (); i++) {
-                var tag = tags.model.get_item (i) as Tag;
-                widget.get_style_context ().remove_class ("tag-" + tag.colors.name);
-            }
-            /*
-            filter.update ();
-            for (uint i = 0; i < tags.model.get_n_items (); i++) {
-                var tag = tags.model.get_item (i) as Tag;
-                if (tag.enabled && tag.applies_to (line.text)) {
-                    line.tag = tag;
-                    filter.update ();
-                    return;
-                }
-            }
-            */
-        }
-
         private void setup_lines_view () {
             lines = new Lines ();
             filter = new Tags.Filter (tags.model);
             filterer = new Filterer (lines, filter);
             lines_colview = new LinesColumnView (filterer.model);
-            lines_colview.delegate_get_line_color_scheme_func = get_cs_for_line;
             lines_colview.column_view.activate.connect ( (p) => {
                 var line = lines_colview.lines.get_item (p) as Line;
                 var tag_dialog = new TagDialogWindow (this.application, line.text);
@@ -383,15 +324,13 @@ namespace Tags {
         private void setup_main_box () {
             main_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
             main_box.append (lines_colview);
-            main_box.append (scrolled_minimap);
-            /*
+            //main_box.append (scrolled_minimap);
             revealer = new Gtk.Revealer ();
             revealer.set_child (scrolled_minimap);
             revealer.set_reveal_child (true);
             revealer.set_transition_duration (1000);
             revealer.set_transition_type (Gtk.RevealerTransitionType.SLIDE_RIGHT);
             main_box.append (revealer);
-            */
         }
 
         public void open_file (File file) {

@@ -20,9 +20,6 @@ namespace Tags {
             setup_listeners ();
         }
 
-        ~ModelMixer () {
-        }
-
         private void setup_listeners () {
             tags.model.items_changed.connect ((position, removed, added) => {
                 update_mixing ();
@@ -35,12 +32,6 @@ namespace Tags {
                     }
                 }
             });
-
-            /*
-            lines_model.items_changed.connect ((position, removed, added) => {
-                update_mixing ();
-            });
-            */
         }
 
 

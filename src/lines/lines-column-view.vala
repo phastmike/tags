@@ -25,9 +25,6 @@ namespace Tags {
         public ListModel lines;
         public Gtk.MultiSelection selection_model;
 
-        public delegate void GetLineColorSchemeFunc (Gtk.Widget widget);
-        public GetLineColorSchemeFunc? delegate_get_line_color_scheme_func = null;
-
         public LinesColumnView (GLib.ListModel model) {
             this.lines = model;
 
