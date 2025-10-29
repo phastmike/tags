@@ -37,12 +37,12 @@ namespace Tags {
         private Gtk.ScrolledWindow scrolled_minimap;
 
         private Gtk.Revealer revealer;
+        private Tags.ModelMixer mmixer;
         private TagStyleStore style_store;
         private TagStore tags;
         private Lines lines;
         private Tags.Filter filter;
         private Filterer filterer;
-        //private TagsColumnView tags_colview;
         private LinesColumnView lines_colview;
         private File? file_opened = null;
         private File? file_tags = null;
@@ -146,7 +146,8 @@ namespace Tags {
             setup_main_box ();
             setup_buttons ();
 
-            var mmixer = new Tags.ModelMixer (lines, tags);
+            //mmixer = new Tags.ModelMixer (filterer.model, tags);
+            mmixer = new Tags.ModelMixer (lines.model, tags);
 
             var action = this.lookup_action ("toggle_tags_view");
             action.change_state (new Variant.boolean (true));
@@ -518,7 +519,7 @@ namespace Tags {
                 tags_changed = false;
                 for (int i = 0; i < tags.ntags; i++) {
                     var tag = tags.model.get_object (i) as Tag;
-                    tag.enable_changed.connect ((enabled) => {
+                    tag.changed.connect (() => {
                         minimap.set_array (Lines.model_to_array(lines_colview.lines));
                     });
                 }

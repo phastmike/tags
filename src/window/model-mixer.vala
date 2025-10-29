@@ -10,31 +10,53 @@
 
 namespace Tags {
     public class ModelMixer : GLib.Object {
-        private TagStore tags;
-        private Lines lines;
+        public TagStore tags;
+        public GLib.ListModel lines_model;
 
-        public ModelMixer (Lines lines, TagStore tags) {
-            this.lines = lines;
+        public ModelMixer (GLib.ListModel lines_model, TagStore tags) {
+            this.lines_model = lines_model;
             this.tags = tags;
 
             setup_listeners ();
         }
 
+        ~ModelMixer () {
+        }
+
         private void setup_listeners () {
-            message ("Setting up listeners");
-            tags.model.items_changed.connect_after ((position, removed, added) => {
-                message ("Cenas");
-                for (uint i = 0; i < lines.model.get_n_items (); i++) {
-                    var line = lines.model.get_item (i) as Line;
-                    for (uint j = 0; j < tags.model.get_n_items (); j++) {
-                        var tag = tags.model.get_item (j) as Tag;
-                        if (tag.applies_to (line.text) && tag.enabled) {
-                            line.tag = tag;
-                            break;
-                        }
+            tags.model.items_changed.connect ((position, removed, added) => {
+                update_mixing ();
+                if (added > 0) {
+                    for (uint i = position; i < position + added; i++) {
+                        var tag = tags.model.get_item (i) as Tag;
+                        tag.changed.connect (() => {
+                            update_mixing ();
+                        });
                     }
                 }
             });
+
+            /*
+            lines_model.items_changed.connect ((position, removed, added) => {
+                update_mixing ();
+            });
+            */
+        }
+
+
+        private void update_mixing () {
+            // FIXME: optimize this
+            for (uint i = 0; i < lines_model.get_n_items (); i++) {
+                var line = lines_model.get_item (i) as Line;
+                line.tag = null;
+                for (uint j = 0; j < tags.ntags; j++) {
+                    var tag = tags.model.get_item (j) as Tag;
+                    if (tag.applies_to (line.text) && tag.enabled) {
+                        line.tag = tag;
+                        break;
+                    }
+                }
+            }
         }
     }
 }

@@ -28,17 +28,13 @@ namespace Tags {
         private void update_css () {
             string css_tag_row = 
 """
-
 .row-%s label {
 font-size: 0.8333em;
 }
-
 .row-%s check {
 color: %s;
 background-color: %s;
-/*font-size: 0.8333em;*/
 }
-
 """.printf (tag.colors.name,
                 tag.colors.name,
                 tag.colors.fg.to_string (),
@@ -51,14 +47,9 @@ background-color: %s;
    background-color: %s;
    color: %s;
 }
-
 .tag-%s:hover {
     opacity: 0.65;
-  /*background-color: @theme_selected_bg_color;*/
-  /*color: @theme_selected_fg_color;*/
-  /*background-color: alpha(currentColor, 0.07);*/
 }
-
 .tag-%s:selected {
   background-color: @theme_selected_bg_color;
   color: @theme_selected_fg_color;

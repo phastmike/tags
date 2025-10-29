@@ -35,7 +35,7 @@ namespace Tags {
 
             column_view.set_model (selection_model);
 
-            // NOTE: Hide header hack - It works
+            // Hide header hack
             var header = column_view.get_first_child ();
             header.set_visible (false);
         }
@@ -80,7 +80,6 @@ namespace Tags {
         [GtkCallback]
         private void line_text_setup_handler (Gtk.SignalListItemFactory factory, GLib.Object listitemm) {
             Gtk.ListItem listitem = (Gtk.ListItem) listitemm;
-            //listitem.set_activatable (false);
             var label = new Gtk.Label (null);
             label.xalign = 0;
             listitem.child = label;
@@ -92,15 +91,25 @@ namespace Tags {
             Gtk.ListItem listitem = (Gtk.ListItem) listitemm;
             var label = listitem.child as Gtk.Label;
             var line = listitem.item as Line;
-
             label.set_text (line.text);
-            update_line_tag_style (label, line);
-            if (line.tag != null) {
-                if (line.sighandler == 0) {
-                    line.sighandler = line.tag.changed.connect (() => {
-                        update_line_tag_style (label, line);
-                    });
-                }
+
+            if (line.tag == null) {
+                clear_all_tag_styles (label);
+            } else {
+                update_line_tag_style (label, line);
+            }
+
+            if (line.sighandler == 0) {
+                line.sighandler = line.tag_changed.connect (() => {
+                    if (label != null && line != null) {
+                        //print ("Do things in line %u\n", line.number);
+                        if (line.tag == null) {
+                            clear_all_tag_styles (label);
+                        } else {
+                            update_line_tag_style (label, line);
+                        }
+                    }
+                });
             }
         }
 
@@ -110,21 +119,32 @@ namespace Tags {
             var label = listitem.child as Gtk.Label;
             var line = listitem.item as Line;
 
-            if (line != null) {
-                if (line.tag != null) {
-                    if (line.sighandler != 0) {
-                        line.tag.disconnect (line.sighandler);
-                        line.sighandler = 0;
+            clear_all_tag_styles (label);
+
+            if (line.sighandler != 0) {
+                line.disconnect (line.sighandler);
+                line.sighandler = 0;
+            }
+        }
+
+        private void clear_all_tag_styles (Gtk.Widget widget) {
+            if (widget == null || widget.parent == null) {
+                //message ("Widget or parent is null, cannot clear css classes");
+                return;
+            }
+            var c = widget.parent;
+            if (c.css_classes.length != 0) {
+                foreach (var css_class in c.css_classes) {
+                    if (css_class.has_prefix ("tag-")) {
+                        //message ("Removing css class: %s", css_class);
+                        c.remove_css_class (css_class);
                     }
-                    if (line.actual_style != null)
-                        label.parent.remove_css_class (line.actual_style);
                 }
             }
         }
 
-        private void update_line_tag_style (Gtk.Label label, Line line) {
+        private void update_line_tag_style (Gtk.Label label, Line line) { 
             if (line.tag != null) {
-                line.actual_style = "tag-%s".printf (line.tag.colors.name);
                 if (line.tag.enabled) {
                     label.parent.add_css_class (line.actual_style);
                 } else {

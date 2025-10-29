@@ -80,15 +80,16 @@ namespace Tags {
         /* METHODS */
 
         public Tag (string pattern, string description, ColorScheme colors) {
-            this.pattern = pattern;
-            this.description = description;
+            _pattern = pattern;
+            _description = description;
+            _is_regex = false;
+            _is_case_sensitive = false;
+
             this.colors = colors;
-            is_regex = false;
-            is_case_sensitive = false;
 
-            colors.name = Tags.Helpers.generate_uuid ();
+            this.colors.name = Tags.Helpers.generate_uuid ();
 
-            colors.changed.connect (() => {
+            this.colors.changed.connect (() => {
                 changed ();
             });
         }
