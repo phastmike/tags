@@ -120,6 +120,7 @@ namespace Tags {
 
                 tag_dialog.present ();
             });
+
 /*
             tags.model.items_changed.connect  ((pos, removed, added) => {
                 tags_changed = true;
@@ -141,6 +142,7 @@ namespace Tags {
                 filter.update ();
             });
 */
+
             setup_lines_view ();
             setup_minimap (lines_colview.scrolled.get_vadjustment ());
             setup_main_box ();
