@@ -146,9 +146,11 @@ public class Minimap : Gtk.DrawingArea {
     /**
      * FIXME: NOT BEING USED - REMOVE but check usage for the callback
      */
+    /*
     public void set_viewport_change_callback(ViewportChangeFunc callback) {
         viewport_change_callback = callback;
     }
+    */
 
     private void cairo_surface_record_lines () {
         minimap_cached = null;
@@ -379,7 +381,7 @@ public class Minimap : Gtk.DrawingArea {
     }
     
     public void set_line_color_bg_callback (GetLineColorBgFunc? callback) {
-        get_default_text_color_bg_callback = callback;
+        get_default_text_color_bg_callback = (GetLineColorBgFunc?) callback;
     }
     
     private void draw(Gtk.DrawingArea da, Cairo.Context cr, int width, int height) {

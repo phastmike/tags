@@ -12,13 +12,13 @@ namespace Tags {
     [GtkTemplate (ui = "/io/github/phastmike/tags/ui/tag-row.ui")]
     public class TagRow : Gtk.ListBoxRow {
         [GtkChild]
-        public Gtk.Label title;
+        public unowned Gtk.Label title;
         [GtkChild]
-        public Gtk.Label subtitle;
+        public unowned Gtk.Label subtitle;
         [GtkChild]
-        public Gtk.CheckButton enabled;
+        public unowned Gtk.CheckButton enabled;
         [GtkChild]
-        public Gtk.Label hitcounter;
+        public unowned Gtk.Label hitcounter;
 
         public Tag tag;
         public string style_class {get; private set;}

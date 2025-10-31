@@ -16,6 +16,8 @@ namespace Tags {
         [GtkChild]
         unowned Adw.WindowTitle window_title;
         [GtkChild]
+        unowned Gtk.ToggleButton button_hide_untagged;
+        [GtkChild]
         unowned Gtk.Button button_tags_list;
         [GtkChild]
         unowned Gtk.Button button_minimap;
@@ -32,10 +34,9 @@ namespace Tags {
         private Adw.BottomSheet bottom_sheet;
         private Gtk.Box main_box;
         private Minimap minimap;
-        private Gtk.ScrolledWindow scrolled_tags;
         private Gtk.ScrolledWindow scrolled_lines;
         private Gtk.ScrolledWindow scrolled_minimap;
-
+        MinimapScrollManager minimap_scrollman;
         private Gtk.Revealer revealer;
         private Tags.ModelMixer mmixer;
         private TagStyleStore style_store;
@@ -100,22 +101,21 @@ namespace Tags {
             box.append (tags_view);
 
             tags_view.listbox.row_activated.connect ( (r) => {
-                var tag = (r as TagRow).tag;
+                var row = r as TagRow;
+                var tag = row.tag;
                 var tag_dialog =  new TagDialogWindow.for_editing (application, tag);
                 tag_dialog.edited.connect ((t) => {
                     tags_changed = true;
-                    filter.update ();
                     count_tag_hits ();
-                    minimap.set_array (Lines.model_to_array (lines_colview.lines));
                     filter.update ();
+                    minimap.set_array (Lines.model_to_array (lines_colview.lines));
                 });
 
                 tag_dialog.deleted.connect ((tag) => {
                     tags_changed = true;
-                    filter.update ();
                     tags.remove_tag (tag);
-                    minimap.set_array (Lines.model_to_array(lines_colview.lines));
                     filter.update ();
+                    minimap.set_array (Lines.model_to_array(lines_colview.lines));
                 });
 
                 tag_dialog.present ();
@@ -127,7 +127,7 @@ namespace Tags {
             setup_buttons ();
 
             //mmixer = new Tags.ModelMixer (filterer.model, tags);
-            mmixer = new Tags.ModelMixer (lines.model, tags);
+            mmixer = new Tags.ModelMixer (lines.model, tags, filterer);
 
             var action = this.lookup_action ("toggle_tags_view");
             action.change_state (new Variant.boolean (true));
@@ -221,7 +221,6 @@ namespace Tags {
         }
 
         public bool delegate_line_filter_callback (string? text) {
-            var found = false;
             if (text == null) return false;
 
             for (uint i = 0; i < tags.ntags; i++) {
@@ -253,16 +252,19 @@ namespace Tags {
                 var tag_dialog = new TagDialogWindow (this.application, line.text);
                 tag_dialog.added.connect ((tag, add_to_top) => {
                     tag.enable_changed.connect ((enabled) => {
+                        filter.update ();
                         minimap.set_array (Lines.model_to_array(lines_colview.lines));
                     });
                     tags.add_tag (tag, add_to_top);
                     count_tag_hits ();
+                    filter.update ();
                     minimap.set_array (Lines.model_to_array(lines_colview.lines));
                 });
                 tag_dialog.present ();
             });
         }
 
+        /*
         private void setup_scrolled_tags () {
             scrolled_tags = new Gtk.ScrolledWindow ();
             scrolled_tags.set_kinetic_scrolling (true);
@@ -272,6 +274,7 @@ namespace Tags {
             scrolled_tags.set_hexpand (true);
             scrolled_tags.set_vexpand (true);
         }
+        */
 
         private void setup_buttons () {
             close_request.connect ( () => {
@@ -317,7 +320,7 @@ namespace Tags {
             scrolled_minimap.set_vexpand (true);
             //scrolled_minimap.add_css_class ("frame");
 
-            var minimap_manager = new MinimapScrollManager (lines_colview.scrolled, scrolled_minimap);
+            minimap_scrollman = new MinimapScrollManager (lines_colview.scrolled, scrolled_minimap);
             minimap.set_line_color_bg_callback (delegate_minimap_bgcolor_getter);
         }
 
@@ -328,7 +331,7 @@ namespace Tags {
             revealer = new Gtk.Revealer ();
             revealer.set_child (scrolled_minimap);
             revealer.set_reveal_child (true);
-            revealer.set_transition_duration (1000);
+            revealer.set_transition_duration (2000);
             revealer.set_transition_type (Gtk.RevealerTransitionType.SLIDE_RIGHT);
             main_box.append (revealer);
         }
@@ -349,7 +352,12 @@ namespace Tags {
                 string? err_msg = lines.from_file.end (res);
                 if (err_msg == null) {
                     stack.set_visible_child_name ("main");
+                    button_hide_untagged.set_visible (true);
+
+                    // Show the tags sidebar after opening a file
+                    // Should be a preference? Do nothing or always show?
                     oversplit.show_sidebar = true;
+
                     file_opened = file;
                     save_tagged_enable ();
                     set_title (file.get_basename ());
@@ -365,6 +373,7 @@ namespace Tags {
                         }
                     }
                     count_tag_hits ();
+                    /*
                     minimap.set_array (Lines.model_to_array(lines_colview.lines));
                     for (uint j = 0; j < lines.model.get_n_items (); j++) {
                         var line = lines.model.get_item (j) as Line;
@@ -377,6 +386,7 @@ namespace Tags {
                         }
                     }
                     filter.update ();
+                    */
                 } else {
                     lines_colview.set_visible (true);
                     show_dialog ("Open File", err_msg, "_Close");
@@ -388,9 +398,6 @@ namespace Tags {
             var tag_dialog = new TagDialogWindow (this.application);
 
             tag_dialog.added.connect ((tag, add_to_top) => {
-                tags_changed = true;
-
-                tags.add_tag (tag, add_to_top);
                 tag.changed.connect (() => {
                     for (uint j = 0; j < lines.model.get_n_items (); j++) {
                         var line = lines.model.get_item (j) as Line;
@@ -402,15 +409,18 @@ namespace Tags {
                             }
                         }
                     }
-                    minimap.set_array (Lines.model_to_array(lines_colview.lines));
                     filter.update ();
+                    minimap.set_array (Lines.model_to_array(lines_colview.lines));
                 });
 
+                tags_changed = true;
+                tags.add_tag (tag, add_to_top);
                 count_hits_for_tag (tag);
+                filter.update ();
                 minimap.set_array (Lines.model_to_array(lines_colview.lines));
             });
 
-            tag_dialog.show ();
+            tag_dialog.present ();
         }
 
         private void action_remove_all_tags () {
@@ -457,16 +467,17 @@ namespace Tags {
 
         private void load_tags_from_file (File file, bool import = false) {
             tags.from_file.begin  (file, null, import, (obj, res) => {
-                tags_changed = false;
                 for (int i = 0; i < tags.ntags; i++) {
                     var tag = tags.model.get_object (i) as Tag;
                     tag.changed.connect (() => {
+                        filter.update ();
                         minimap.set_array (Lines.model_to_array(lines_colview.lines));
                     });
                 }
+                tags_changed = false;
+                filter.update ();
                 minimap.set_array (Lines.model_to_array (lines_colview.lines));
                 count_tag_hits ();
-                filter.update ();
             });    
         }
 
@@ -482,9 +493,7 @@ namespace Tags {
                 suggested_filename = "%s.tags".printf (file_opened.get_basename ());
             }
 
-            //TagsPersistence.save_tags_file_dialog.begin (this, suggested_filename, null, (obj, res) => {
             UIDialogs.file_save_tags.begin (this, null, suggested_filename, (obj, res) => {
-                //var file = TagsPersistence.save_tags_file_dialog.end (res);
                 var file = UIDialogs.file_save_tags.end (res);
                 if (file != null) {
                     tags.to_file (file);
@@ -560,29 +569,21 @@ namespace Tags {
             // Should bind this property !
             var action = this.lookup_action ("hide_untagged_lines");
             action.change_state (new Variant.boolean ((bool) filter.active));
-
-            /*
-            if (filterer.model.get_n_items () == 0) {
-                inform_user_no_tagged_lines ();
-                filter.active = !filter.active;
-                action.change_state (new Variant.boolean ((bool) filter.active));
-            }
-            */
-
-            filter.update ();
             minimap.set_array (Lines.model_to_array(lines_colview.lines));
         }
 
         private void action_toggle_minimap () {
-            //revealer.set_reveal_child (!revealer.get_reveal_child ());
-            minimap.set_visible (!minimap.get_visible ());
+            revealer.set_reveal_child (!revealer.get_reveal_child ());
+            //minimap.set_visible (!minimap.get_visible ());
             var action = this.lookup_action ("action_toggle_minimap");
-            action.change_state (new Variant.boolean (minimap.get_visible ()));
+            //action.change_state (new Variant.boolean (minimap.get_visible ()));
+            action.change_state (new Variant.boolean (revealer.get_reveal_child ()));
         }
 
         private void toggle_tags_view () {
             oversplit.show_sidebar = !oversplit.show_sidebar;
-            var action = this.lookup_action ("toggle_tags_view");
+            //var action = this.lookup_action ("toggle_tags_view");
+            //action.change_state (new Variant.boolean (oversplit.show_sidebar));
         }
         
         private void copy () {
@@ -738,14 +739,6 @@ namespace Tags {
             
         }
 
-        private void inform_user_no_tagged_lines () {
-            //overlay.dismiss_all ();
-            //var toast = new Adw.Toast ("No tags enabled! Showing all lines ...");
-            //toast.set_timeout (3);
-            //overlay.add_toast (toast);
-            hide_untagged_lines ();
-        }
-
         private void show_dialog (string title, string message, string cancel_label = "_Cancel") {
             var dialog = new Adw.AlertDialog (title, message);
             dialog.add_response ("cancel", cancel_label);
@@ -756,7 +749,7 @@ namespace Tags {
         }
 
         private void action_open_file () {
-            UIDialogs.file_open_lines (this, null, (obj, res) => {
+            UIDialogs.file_open_lines.begin (this, null, (obj, res) => {
                 try {
                     File? file = UIDialogs.file_open_lines.end (res);
                     if (file != null) open_file (file);

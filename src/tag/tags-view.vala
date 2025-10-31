@@ -12,14 +12,11 @@ namespace Tags {
     [GtkTemplate (ui = "/io/github/phastmike/tags/ui/tags-view.ui")]
     public class TagsView : Gtk.Box {
         [GtkChild]
-        public Gtk.ScrolledWindow scrolled;
+        public unowned Gtk.ScrolledWindow scrolled;
         [GtkChild]
-        public Gtk.ListBox listbox;
+        public unowned Gtk.ListBox listbox;
 
         public GLib.ListModel model;
-
-        private Gtk.Application application;
-
 
         public TagsView (GLib.ListModel model) {
             this.model = model; 
@@ -38,11 +35,16 @@ namespace Tags {
 
                 int target_index = target_row.get_index();
 
-                (model as GLib.ListStore).remove (value_row.get_index ());
-                (model as GLib.ListStore).insert (target_index, value_row.tag);
-                target_row.set_state_flags (Gtk.StateFlags.NORMAL, true);
+                var store = model as GLib.ListStore;
+                if (store != null) {
+                    store.remove (value_row.get_index ());
+                    store.insert (target_index, value_row.tag);
+                    target_row.set_state_flags (Gtk.StateFlags.NORMAL, true);
+                    return true;
+                } else {
+                    return false;
+                }
 
-                return true;
             });
 
             listbox.bind_model (this.model, (obj) => {

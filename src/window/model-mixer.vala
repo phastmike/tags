@@ -12,10 +12,12 @@ namespace Tags {
     public class ModelMixer : GLib.Object {
         public TagStore tags;
         public GLib.ListModel lines_model;
+        public Filterer? filterer;
 
-        public ModelMixer (GLib.ListModel lines_model, TagStore tags) {
+        public ModelMixer (GLib.ListModel lines_model, TagStore tags, Filterer? filterer = null) {
             this.lines_model = lines_model;
             this.tags = tags;
+            this.filterer = filterer;
 
             setup_listeners ();
         }
@@ -28,6 +30,10 @@ namespace Tags {
                         var tag = tags.model.get_item (i) as Tag;
                         tag.changed.connect (() => {
                             update_mixing ();
+                            if (filterer != null) {
+                                if (filterer.filter.active)
+                                    filterer.filter.update ();
+                            }
                         });
                     }
                 }
@@ -35,7 +41,7 @@ namespace Tags {
         }
 
 
-        private void update_mixing () {
+        public void update_mixing () {
             // FIXME: optimize this
             for (uint i = 0; i < lines_model.get_n_items (); i++) {
                 var line = lines_model.get_item (i) as Line;

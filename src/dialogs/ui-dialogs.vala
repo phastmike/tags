@@ -37,7 +37,6 @@ namespace Tags.UIDialogs {
         } catch (Error e) {
             warning (e.message);
             throw e;
-            return null;
         }
     }
 
@@ -57,7 +56,6 @@ namespace Tags.UIDialogs {
         } catch (Error e) {
             message (e.message);
             throw e;
-            return null;
         }
     }
 

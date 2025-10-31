@@ -98,7 +98,7 @@ namespace Tags {
             """.printf (PreferencesDialog.css_class, bg_web, fg_web);
 
             var provider = new Gtk.CssProvider ();
-            provider.load_from_data (lstyle.data);
+            provider.load_from_string (lstyle);
             label_sample_example.add_css_class (PreferencesDialog.css_class);
             Gtk.StyleContext.add_provider_for_display (Gdk.Display.get_default (), provider, Gtk.STYLE_PROVIDER_PRIORITY_USER);
         }

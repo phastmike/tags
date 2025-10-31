@@ -14,13 +14,13 @@ namespace Tags {
     [GtkTemplate (ui = "/io/github/phastmike/tags/ui/lines-column-view.ui")]
     public class LinesColumnView : Gtk.Box {
         [GtkChild]
-        public Gtk.ColumnView column_view;
+        public unowned Gtk.ColumnView column_view;
         [GtkChild]
-        public Gtk.ScrolledWindow scrolled;
+        public unowned Gtk.ScrolledWindow scrolled;
         [GtkChild]
-        public Gtk.ColumnViewColumn column_line_number;
+        public unowned Gtk.ColumnViewColumn column_line_number;
         [GtkChild]
-        public Gtk.ColumnViewColumn column_line_text;
+        public unowned Gtk.ColumnViewColumn column_line_text;
 
         public ListModel lines;
         public Gtk.MultiSelection selection_model;
