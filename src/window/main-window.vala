@@ -118,6 +118,7 @@ namespace Tags {
                     minimap.set_array (Lines.model_to_array(lines_colview.lines));
                 });
 
+                //tags_view.listbox.unselect_row (row);
                 tag_dialog.present ();
             });
 
@@ -146,8 +147,10 @@ namespace Tags {
 
             overlay.set_child (stack);
 
-            var bpc1 = new Adw.BreakpointCondition.length (Adw.BreakpointConditionLengthType.MIN_WIDTH, 575, Adw.LengthUnit.PX);
-            var bp = new Adw.Breakpoint (bpc1);
+            var bp = new Adw.Breakpoint (
+                        new Adw.BreakpointCondition.length (
+                            Adw.BreakpointConditionLengthType.MIN_WIDTH, 575, Adw.LengthUnit.PX)
+                    );
             add_breakpoint (bp);
 
             bp.apply.connect ( () => {
@@ -264,18 +267,6 @@ namespace Tags {
             });
         }
 
-        /*
-        private void setup_scrolled_tags () {
-            scrolled_tags = new Gtk.ScrolledWindow ();
-            scrolled_tags.set_kinetic_scrolling (true);
-            scrolled_tags.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
-            scrolled_tags.set_placement (Gtk.CornerType.TOP_LEFT);
-            scrolled_tags.set_overlay_scrolling (true);
-            scrolled_tags.set_hexpand (true);
-            scrolled_tags.set_vexpand (true);
-        }
-        */
-
         private void setup_buttons () {
             close_request.connect ( () => {
                 if (tags.ntags > 0 && tags_changed) {
@@ -331,7 +322,7 @@ namespace Tags {
             revealer = new Gtk.Revealer ();
             revealer.set_child (scrolled_minimap);
             revealer.set_reveal_child (true);
-            revealer.set_transition_duration (2000);
+            revealer.set_transition_duration (200);
             revealer.set_transition_type (Gtk.RevealerTransitionType.SLIDE_RIGHT);
             main_box.append (revealer);
         }
@@ -369,24 +360,13 @@ namespace Tags {
                         file_tags = File.new_for_path (file.get_path () + ".tags");
                         if (file_tags.query_exists ()) {
                             load_tags_from_file (file_tags);
-                            count_tag_hits ();
                         }
                     }
-                    count_tag_hits ();
-                    /*
-                    minimap.set_array (Lines.model_to_array(lines_colview.lines));
-                    for (uint j = 0; j < lines.model.get_n_items (); j++) {
-                        var line = lines.model.get_item (j) as Line;
-                        for (uint k = 0; k < tags.ntags; k++) {
-                            var tag = tags.model.get_item (k) as Tag;
-                            if (tag.applies_to (line.text) && tag.enabled) {
-                                line.tag = tag;
-                                break;
-                            }
-                        }
-                    }
+
+                    mmixer.update_mixing ();
                     filter.update ();
-                    */
+                    count_tag_hits ();
+                    minimap.set_array (Lines.model_to_array(lines_colview.lines));
                 } else {
                     lines_colview.set_visible (true);
                     show_dialog ("Open File", err_msg, "_Close");

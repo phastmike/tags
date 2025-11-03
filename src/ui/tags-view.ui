@@ -137,6 +137,7 @@
         </child>
         <child type="bottom">
           <object class="AdwHeaderBar">
+            <property name="visible">false</property>
             <child type="start">
                   <object class="AdwSplitButton" id="button_tagsz">
                     <!--<property name="icon-name">system-file-manager-symbolic</property>-->
