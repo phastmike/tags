@@ -57,10 +57,15 @@
         </child>
         <child>
           <object class="AdwPreferencesGroup">
-            <property name="title">Line Numbers</property>
+            <property name="title">View</property>
             <child>
               <object class="AdwSwitchRow" id="row_ln_visible">
-                <property name="title">Visible</property>
+                <property name="title">Line Numbers</property>
+              </object>
+            </child>
+            <child>
+              <object class="AdwSwitchRow" id="row_minimap_visible">
+                <property name="title">Minimap</property>
               </object>
             </child>
             <child>
@@ -113,10 +118,11 @@
         </child>
         <child>
           <object class="AdwPreferencesGroup">
+          <property name="visible">false</property>
           <property name="margin-bottom">30</property>
           <property name="title">Minimap</property>
             <child>
-              <object class="AdwSwitchRow" id="row_minimap_visible">
+              <object class="AdwSwitchRow" id="_row_minimap_visible">
                 <property name="title">Visible</property>
               </object>
             </child>

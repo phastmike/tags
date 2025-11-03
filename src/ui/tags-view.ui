@@ -137,7 +137,7 @@
         </child>
         <child type="bottom">
           <object class="AdwHeaderBar">
-            <property name="visible">false</property>
+            <property name="visible">true</property>
             <child type="start">
                   <object class="AdwSplitButton" id="button_tagsz">
                     <!--<property name="icon-name">system-file-manager-symbolic</property>-->
@@ -182,12 +182,14 @@
                       <class name="accent" />
                     </style>
                     <property name="icon_name">zoom-in-symbolic</property>
-                    <property name="visible">false</property>
+                    <property name="visible">true</property>
                     <property name="tooltip-text">Create tag from selected line</property>
+                    <property name="action-name">win.action_add_tag_from_line</property>
                   </object>
                 </child>
                 <child>
                   <object class="GtkToggleButton">
+                    <property name="visible">false</property>
                     <style>
                       <class name="success" />
                     </style>
@@ -273,6 +275,10 @@
       <item>
         <attribute name="label" translatable="yes">Save tags</attribute>
         <attribute name="action">win.action_save_tags</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Save tagged lines</attribute>
+        <attribute name="action">win.save_tagged</attribute>
       </item>
     </section>
     <section>

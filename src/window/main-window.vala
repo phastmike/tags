@@ -53,6 +53,7 @@ namespace Tags {
             { "action_open_file", action_open_file },
             { "action_toggle_line_number", action_toggle_line_number },
             { "action_add_tag", action_add_tag },
+            { "action_add_tag_from_line", action_add_tag_from_line },
             { "action_remove_all_tags", action_remove_all_tags },
             { "action_load_tags", action_load_tags },
             { "action_import_tags", action_import_tags },
@@ -239,7 +240,7 @@ namespace Tags {
         private void setup_preferences () {
             var preferences = Preferences.instance ();
 
-            preferences.bind_property("minimap_visible", minimap, "visible", 
+            preferences.bind_property("minimap_visible", revealer, "reveal-child", 
                 BindingFlags.SYNC_CREATE | BindingFlags.BIDIRECTIONAL);
             preferences.bind_property("ln_visible", lines_colview.column_line_number, "visible", 
                 BindingFlags.SYNC_CREATE | BindingFlags.BIDIRECTIONAL);
@@ -390,6 +391,38 @@ namespace Tags {
                         }
                     }
                     filter.update ();
+                    minimap.set_array (Lines.model_to_array(lines_colview.lines));
+                });
+
+                tags_changed = true;
+                tags.add_tag (tag, add_to_top);
+                count_hits_for_tag (tag);
+                filter.update ();
+                minimap.set_array (Lines.model_to_array(lines_colview.lines));
+            });
+
+            tag_dialog.present ();
+        }
+
+        public void action_add_tag_from_line () {
+            var bs = lines_colview.selection_model.get_selection ();
+            if (bs.is_empty ()) {
+                var toast = new Adw.Toast ("No line selected to create tag from.");
+                toast.set_timeout (3);
+                overlay.add_toast (toast);
+                return;
+            }
+
+            var line = filterer.model.get_item (bs.get_nth ((uint) bs.get_size () - 1)) as Line;
+
+            var tag_dialog = new TagDialogWindow (this.application, line.text);
+
+            tag_dialog.added.connect ((tag, add_to_top) => {
+                tag.changed.connect (() => {
+                    tags_changed = true;
+                    mmixer.update_mixing ();
+                    filter.update ();
+                    count_hits_for_tag (tag);
                     minimap.set_array (Lines.model_to_array(lines_colview.lines));
                 });
 
