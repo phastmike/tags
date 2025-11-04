@@ -36,7 +36,7 @@ namespace Tags {
         private Minimap minimap;
         private Gtk.ScrolledWindow scrolled_lines;
         private Gtk.ScrolledWindow scrolled_minimap;
-        MinimapScrollManager minimap_scrollman;
+        private MinimapScrollManager minimap_scrollman;
         private Gtk.Revealer revealer;
         private Tags.ModelMixer mmixer;
         private TagStyleStore style_store;
@@ -182,7 +182,7 @@ namespace Tags {
 
         // Override the size_allocate method
         // To force the minimap to redraw the widget
-        // Not sure why the adjustment changed doesnt trigger a draw
+        // Not sure why the adjustment changed signal doesnt trigger a draw
         // FIXME: Dig on why!
         public override void size_allocate (int a, int b, int c) {
             base.size_allocate (a, b, c);
@@ -310,7 +310,6 @@ namespace Tags {
             scrolled_minimap.set_policy (Gtk.PolicyType.NEVER, Gtk.PolicyType.EXTERNAL);
             scrolled_minimap.set_child (minimap);
             scrolled_minimap.set_vexpand (true);
-            //scrolled_minimap.add_css_class ("frame");
 
             minimap_scrollman = new MinimapScrollManager (lines_colview.scrolled, scrolled_minimap);
             minimap.set_line_color_bg_callback (delegate_minimap_bgcolor_getter);
@@ -319,7 +318,6 @@ namespace Tags {
         private void setup_main_box () {
             main_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
             main_box.append (lines_colview);
-            //main_box.append (scrolled_minimap);
             revealer = new Gtk.Revealer ();
             revealer.set_child (scrolled_minimap);
             revealer.set_reveal_child (true);
@@ -407,7 +405,7 @@ namespace Tags {
         public void action_add_tag_from_line () {
             var bs = lines_colview.selection_model.get_selection ();
             if (bs.is_empty ()) {
-                var toast = new Adw.Toast ("No line selected to create tag from.");
+                var toast = new Adw.Toast ("No line selected to create tag");
                 toast.set_timeout (3);
                 overlay.add_toast (toast);
                 return;

@@ -4,7 +4,7 @@
   <template class="TagsMainWindow" parent="AdwApplicationWindow">
     <property name="title" translatable="yes">Tags</property>
     <property name="default-width">720</property>
-      <property name="default-height">720</property>
+    <property name="default-height">720</property>
 	  <style>
       <!--<class name="devel"/>-->
 	  </style>
@@ -74,7 +74,9 @@
                 <child type="end">
                   <object class="GtkToggleButton" id="button_hide_untagged">
                     <style>
+                      <!--
                       <class name="success" />
+                      -->
                     </style>
                     <property name="visible">false</property>
                     <property name="icon_name">view-conceal-symbolic</property>
@@ -94,9 +96,9 @@
                 <child type="end">
                   <object class="GtkButton" id="button_minimap">
                     <property name="visible">false</property>
-                    <property name="icon-name">paned-bottom-symbolic</property>
+                    <property name="icon-name">sidebar-show-right-symbolic</property>
                     <property name="tooltip-text">Minimap</property>
-                    <property name="action-name">win.toggle_minimap</property>
+                    <property name="action-name">win.action_toggle_minimap</property>
                   </object>
                 </child>
                 <child type="end">
@@ -182,6 +184,10 @@
       <item>
         <attribute name="label" translatable="yes">New Window</attribute>
         <attribute name="action">app.new_window</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Save tagged lines</attribute>
+        <attribute name="action">win.save_tagged</attribute>
       </item>
     </section>  
     <section>

@@ -43,7 +43,7 @@ public class Minimap : Gtk.DrawingArea {
     public delegate Gdk.RGBA? GetLineColorBgFunc (string? text);
     public GetLineColorBgFunc? get_default_text_color_bg_callback = null;
 
-    public delegate void ViewportChangeFunc(double position_ratio);
+    public delegate void ViewportChangeFunc (double position_ratio);
     public ViewportChangeFunc? viewport_change_callback = null;
 
     /**
@@ -65,9 +65,9 @@ public class Minimap : Gtk.DrawingArea {
         init_colors ();
         reset_colors ();
 
-        set_size_request(0, -1);
+        set_size_request (0, -1);
         set_content_width (width);
-        set_draw_func(draw);
+        set_draw_func (draw);
 
         init_gestures ();
     }
@@ -412,9 +412,9 @@ public class Minimap : Gtk.DrawingArea {
             highlight_color.alpha = 0.15f;
         }
 
-        Gdk.cairo_set_source_rgba(cr, highlight_color);
-        cr.rectangle(0, metrics.viewport_y, width, metrics.viewport_height);
-        cr.fill();
+        Gdk.cairo_set_source_rgba (cr, highlight_color);
+        cr.rectangle (0, metrics.viewport_y, width, metrics.viewport_height);
+        cr.fill ();
 
         /*
         highlight_color.alpha = 0.75f;
