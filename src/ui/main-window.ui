@@ -186,7 +186,7 @@
         <attribute name="action">app.new_window</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">Save tagged lines</attribute>
+        <attribute name="label" translatable="yes">Save Tagged Lines</attribute>
         <attribute name="action">win.save_tagged</attribute>
       </item>
     </section>  

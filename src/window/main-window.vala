@@ -41,6 +41,7 @@ namespace Tags {
         private Tags.ModelMixer mmixer;
         private TagStyleStore style_store;
         private TagStore tags;
+        private TagsView tags_view;
         private Lines lines;
         private Tags.Filter filter;
         private Filterer filterer;
@@ -96,7 +97,7 @@ namespace Tags {
 
             style_store = new TagStyleStore ();
             tags = new TagStore (style_store);
-            var tags_view = new TagsView (tags.model);
+            tags_view = new TagsView (tags.model);
 
             var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
             box.append (tags_view);
@@ -192,10 +193,10 @@ namespace Tags {
         private void setup_actions () {
             this.add_action_entries(this.WINDOW_ACTIONS, this);
             application.set_accels_for_action("win.action_toggle_line_number", {"<primary>l"});
-            application.set_accels_for_action("win.action_add_tag", {"<primary>n"});
+            application.set_accels_for_action("win.action_add_tag", {"<primary>a"});
             application.set_accels_for_action("win.save_tagged", {"<primary>s"});
             application.set_accels_for_action("win.hide_untagged_lines", {"<primary>h"});
-            application.set_accels_for_action("win.toggle_tags_view", {"<primary>f"});
+            application.set_accels_for_action("win.toggle_tags_view", {"F9"});
             application.set_accels_for_action("win.action_toggle_minimap", {"<primary>m"});
             application.set_accels_for_action("win.copy", {"<primary>c"});
             application.set_accels_for_action("win.toggle_tag_1", {"<alt>1"});
@@ -575,6 +576,8 @@ namespace Tags {
         }
 
         private void hide_untagged_lines () {
+            if (file_opened == null) { return; }   
+
             filter.active = !filter.active;
 
             // Should bind this property !
@@ -703,51 +706,72 @@ namespace Tags {
         }
 
         private void prev_hit () {
-            Tag tag = null; //tags_treeview.get_selected_tag ();
-
-            if (tag == null) {
+            var row = (TagRow) tags_view.listbox.get_selected_row ();
+            if (row == null) {
                 return;
             }
+
+            var tag = row.tag; //tags_treeview.get_selected_tag ();
 
             if (tag.hits == 0) {
                 return;
             }
 
+            uint index;
+
             var line_selection = lines_colview.selection_model;
             var bitset = line_selection.get_selection ();
-            if (bitset.get_size () != 1) {
-                message ("Multiple linoes selected ... Can't figure out what to do ...");
-                // Maybe choose the first or the **last** from the bitset
-                return;
+            if (bitset.get_size () == 0) {
+                index = filterer.model.get_n_items () - 1;
+            } else {
+                index = bitset.get_nth ((uint) bitset.get_size () - 1);
             }
             
             var model = filterer.model; 
-            var line  = model.get_item (bitset.get_nth (0)) as Line;
-            message ("Got line %zu: %s", line.number, line.text); 
+            for (uint i = index - 1; i > 0; i--) {
+                var line = model.get_item (i) as Line;
+                if (tag.applies_to (line.text)) {
+                    line_selection.unselect_all ();
+                    line_selection.select_item (i, true);
+                    lines_colview.column_view.scroll_to (i, null, Gtk.ListScrollFlags.SELECT, null);
+                    return;
+                }
+            }    
         }
 
         private void next_hit () {
-            Tag tag = null; //tags_treeview.get_selected_tag ();
-            if (tag == null) {
+            var row = (TagRow) tags_view.listbox.get_selected_row ();
+            if (row == null) {
                 return;
             }
+
+            var tag = row.tag;
 
             if (tag.hits == 0) {
                 return;
             }
 
+            uint index;
+
             var line_selection = lines_colview.selection_model;
             var bitset = line_selection.get_selection ();
-            if (bitset.get_size () != 1) {
-                message ("Multiple linoes selected ... Can't figure out what to do ...");
-                // Maybe choose the first or the **last** from the bitset
-                return;
+            if (bitset.get_size () == 0) {
+                index = 0;
+            } else {
+                index = bitset.get_nth (0);
             }
             
             var model = filterer.model; 
-            var line  = model.get_item (bitset.get_nth (0)) as Line;
-            message ("Got line %zu: %s", line.number, line.text); 
-            
+            for (uint i = index + 1; i < filterer.model.get_n_items (); i++) {
+                var line = model.get_item (i) as Line;
+                if (tag.applies_to (line.text)) {
+                    line_selection.unselect_all ();
+                    line_selection.select_item (i, true);
+                    var scroll_info = new Gtk.ScrollInfo ();
+                    lines_colview.column_view.scroll_to (i, null, Gtk.ListScrollFlags.SELECT, null);
+                    return;
+                }
+            }    
         }
 
         private void show_dialog (string title, string message, string cancel_label = "_Cancel") {

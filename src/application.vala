@@ -22,6 +22,7 @@ namespace Tags {
 
             this.add_action_entries (this.APP_ACTIONS, this);
             this.set_accels_for_action ("app.quit", {"<primary>q"});
+            this.set_accels_for_action ("app.preferences", {"<primary>comma"});
         }
 
         public override void activate () {

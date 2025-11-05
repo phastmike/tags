@@ -18,31 +18,31 @@
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
-                <property name="title" translatable="yes" context="shortcut window">Save Tagged lines</property>
+                <property name="title" translatable="yes" context="shortcut window">Save tagged Lines</property>
                 <property name="action-name">win.save_tagged</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
-                <property name="title" translatable="yes" context="shortcut window">Toggle tag list visibility</property>
-                <property name="action-name">win.action_toggle_tags_view</property>
+                <property name="title" translatable="yes" context="shortcut window">Toggle tags sidebar Visibility</property>
+                <property name="action-name">win.toggle_tags_view</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
-                <property name="title" translatable="yes" context="shortcut window">Toggle untagged lines visibility</property>
+                <property name="title" translatable="yes" context="shortcut window">Toggle untagged lines Visibility</property>
                 <property name="action-name">win.hide_untagged_lines</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
-                <property name="title" translatable="yes" context="shortcut window">Enable all tags</property>
+                <property name="title" translatable="yes" context="shortcut window">Enable all Tags</property>
                 <property name="action-name">win.enable_all_tags</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
-                <property name="title" translatable="yes" context="shortcut window">Disable all tags</property>
+                <property name="title" translatable="yes" context="shortcut window">Disable all Tags</property>
                 <property name="action-name">win.disable_all_tags</property>
               </object>
             </child>
@@ -55,6 +55,12 @@
               <object class="GtkShortcutsShortcut">
                 <property name="title" translatable="yes" context="shortcut window">Quit</property>
                 <property name="action-name">app.quit</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes" context="shortcut window">Preferences</property>
+                <property name="action-name">app.preferences</property>
               </object>
             </child>
             <child>
@@ -72,7 +78,7 @@
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="title" translatable="yes" context="shortcut window">Toggle minimap visibility </property>
-                <property name="action-name">win.toggle_minimap</property>
+                <property name="action-name">win.action_toggle_minimap</property>
               </object>
             </child>
             <child>

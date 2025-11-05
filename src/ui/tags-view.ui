@@ -147,12 +147,13 @@
           <object class="AdwHeaderBar">
             <property name="visible">true</property>
             <child type="start">
-                  <object class="AdwSplitButton" id="button_tagsz">
+                  <object class="GtkToggleButton" id="button_tagsz">
                     <!--<property name="icon-name">system-file-manager-symbolic</property>-->
-                    <property name="icon-name">document-new-symbolic</property>
-                    <property name="popover">popover_import_tags</property>
-                    <property name="tooltip-text">Load</property>
-                    <property name="action-name">win.action_load_tags</property>
+                    <!--<property name="icon-name">document-new-symbolic</property>-->
+                    <property name="icon-name">document-edit-symbolic</property>
+                    <!--<property name="popover">popover_import_tags</property>-->
+                    <property name="tooltip-text">Edit mode</property>
+                    <property name="action-name">win.hide_untagged_lines</property>
                   </object>
                   <!--
               <object class="GtkMenuButton">
@@ -190,9 +191,25 @@
                       <class name="accent" />
                     </style>
                     <property name="icon_name">zoom-in-symbolic</property>
-                    <property name="visible">true</property>
+                    <property name="visible">false</property>
                     <property name="tooltip-text">Create tag from selected line</property>
                     <property name="action-name">win.action_add_tag_from_line</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkButton">
+                    <property name="icon_name">pan-up-symbolic</property>
+                    <property name="visible">true</property>
+                    <property name="tooltip-text">Previous hit</property>
+                    <property name="action-name">win.prev_hit</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkButton">
+                    <property name="icon_name">pan-down-symbolic</property>
+                    <property name="visible">true</property>
+                    <property name="tooltip-text">Next hit</property>
+                    <property name="action-name">win.next_hit</property>
                   </object>
                 </child>
                 <child>
@@ -216,6 +233,7 @@
                       <class name="flat"/>
                     </style>
                     <property name="tooltip-text">Save</property>
+                    <property name="visible">false</property>
                     <property name="action-name">win.action_save_tags</property>
                     <property name="child">
                       <object class="AdwButtonContent">
@@ -269,19 +287,19 @@
     -->
     <section>
       <item>
-        <attribute name="label" translatable="yes">Load tags</attribute>
+        <attribute name="label" translatable="yes">Load Tags</attribute>
         <attribute name="icon">document-open-symbolic</attribute>
         <attribute name="action">win.action_load_tags</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">Import tags</attribute>
+        <attribute name="label" translatable="yes">Import Tags</attribute>
         <attribute name="icon">document-open-symbolic</attribute>
         <attribute name="action">win.action_import_tags</attribute>
       </item>
     </section>
     <section>
       <item>
-        <attribute name="label" translatable="yes">Save tags</attribute>
+        <attribute name="label" translatable="yes">Save Tags</attribute>
         <attribute name="action">win.action_save_tags</attribute>
       </item>
       <!--
@@ -293,7 +311,7 @@
     </section>
     <section>
       <item>
-        <attribute name="label" translatable="yes">Remove all tags</attribute>
+        <attribute name="label" translatable="yes">Remove All</attribute>
         <attribute name="action">win.action_remove_all_tags</attribute>
       </item>
     </section>
@@ -317,11 +335,11 @@
   <menu id="tags_load_menu">
     <section>
       <item>
-        <attribute name="label" translatable="yes">Load from file</attribute>
+        <attribute name="label" translatable="yes">Load File</attribute>
         <attribute name="action">win.action_load_tags</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">Import from file</attribute>
+        <attribute name="label" translatable="yes">Import File</attribute>
         <attribute name="action">app.preferences</attribute>
       </item>
       </section>
@@ -334,7 +352,7 @@
   <menu id="menu_add_tag">
     <section>
       <item>
-        <attribute name="label" translatable="yes">Add from line</attribute>
+        <attribute name="label" translatable="yes">Add Line</attribute>
         <attribute name="action">win.action_add_tag_from_line</attribute>
       </item>
     </section>
