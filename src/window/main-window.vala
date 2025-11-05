@@ -767,7 +767,6 @@ namespace Tags {
                 if (tag.applies_to (line.text)) {
                     line_selection.unselect_all ();
                     line_selection.select_item (i, true);
-                    var scroll_info = new Gtk.ScrollInfo ();
                     lines_colview.column_view.scroll_to (i, null, Gtk.ListScrollFlags.SELECT, null);
                     return;
                 }
