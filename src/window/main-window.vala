@@ -357,7 +357,7 @@ namespace Tags {
 
                     // Show the tags sidebar after opening a file
                     // Should be a preference? Do nothing or always show?
-                    oversplit.show_sidebar = true;
+                    //oversplit.show_sidebar = true;
 
                     file_opened = file;
                     save_tagged_enable ();
@@ -720,18 +720,12 @@ namespace Tags {
         }
 
         private void prev_hit () {
-            var row = (TagRow) tags_view.listbox.get_selected_row ();
-            if (row == null) {
-                return;
-            }
-
-            var tag = row.tag; //tags_treeview.get_selected_tag ();
-
-            if (tag.hits == 0) {
-                return;
-            }
-
             uint index;
+
+            var row = (TagRow) tags_view.listbox.get_selected_row ();
+            if (row == null) { return; } 
+            var tag = row.tag;
+            if (tag.hits == 0) { return; }
 
             var line_selection = lines_colview.selection_model;
             var bitset = line_selection.get_selection ();
@@ -754,18 +748,13 @@ namespace Tags {
         }
 
         private void next_hit () {
-            var row = (TagRow) tags_view.listbox.get_selected_row ();
-            if (row == null) {
-                return;
-            }
-
-            var tag = row.tag;
-
-            if (tag.hits == 0) {
-                return;
-            }
-
             uint index;
+
+            var row = (TagRow) tags_view.listbox.get_selected_row ();
+            if (row == null) { return; }
+            var tag = row.tag;
+            if (tag.hits == 0) { return; }
+
 
             var line_selection = lines_colview.selection_model;
             var bitset = line_selection.get_selection ();
