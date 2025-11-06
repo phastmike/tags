@@ -30,6 +30,12 @@ namespace Tags {
         [GtkChild]
         unowned Gtk.Label title_focus;
 
+        private bool _tags_edit_mode = false;
+        public bool tags_edit_mode {
+            get { return _tags_edit_mode; }
+            set { _tags_edit_mode = value; }
+        }
+
         private Gtk.Stack stack;
         private Adw.BottomSheet bottom_sheet;
         private Gtk.Box main_box;
@@ -87,7 +93,8 @@ namespace Tags {
             { "enable_all_tags", enable_all_tags },
             { "disable_all_tags", disable_all_tags },
             { "prev_hit", prev_hit },
-            { "next_hit", next_hit }
+            { "next_hit", next_hit },
+            { "action_toggle_edit_mode", action_toggle_edit_mode, null, "false", null},
         };
 
         public MainWindow (Gtk.Application app) {
@@ -103,6 +110,9 @@ namespace Tags {
             box.append (tags_view);
 
             tags_view.listbox.row_activated.connect ( (r) => {
+                if (!tags_edit_mode) {
+                    return;
+                }
                 var row = r as TagRow;
                 var tag = row.tag;
                 var tag_dialog =  new TagDialogWindow.for_editing (application, tag);
@@ -120,7 +130,6 @@ namespace Tags {
                     minimap.set_array (Lines.model_to_array(lines_colview.lines));
                 });
 
-                //tags_view.listbox.unselect_row (row);
                 tag_dialog.present ();
             });
 
@@ -223,6 +232,7 @@ namespace Tags {
             application.set_accels_for_action("win.disable_all_tags", {"<alt>d"});
             application.set_accels_for_action("win.prev_hit", {"F2"});
             application.set_accels_for_action("win.next_hit", {"F3"});
+            application.set_accels_for_action("win.action_toggle_edit_mode", {"<primary>e"});
         }
 
         public bool delegate_line_filter_callback (string? text) {
@@ -577,12 +587,16 @@ namespace Tags {
 
         private void hide_untagged_lines () {
             if (file_opened == null) { return; }   
-
             filter.active = !filter.active;
-
+            if (filter.active) {
+                button_hide_untagged.add_css_class ("success");
+            } else {
+                button_hide_untagged.remove_css_class ("success");
+            }
             // Should bind this property !
             var action = this.lookup_action ("hide_untagged_lines");
             action.change_state (new Variant.boolean ((bool) filter.active));
+
             minimap.set_array (Lines.model_to_array(lines_colview.lines));
         }
 
@@ -793,6 +807,12 @@ namespace Tags {
                     }
                 }
             });
+        }
+
+        private void action_toggle_edit_mode () {
+            tags_edit_mode = !tags_edit_mode;
+            var action = this.lookup_action ("action_toggle_edit_mode");
+            action.change_state (new Variant.boolean (tags_edit_mode));
         }
     }
 }

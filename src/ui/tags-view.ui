@@ -15,26 +15,12 @@
         <child type="top">
           <object class="AdwHeaderBar">
             <child type="start">
-                  <object class="AdwSplitButton">
-                    <property name="icon-name">list-add-symbolic</property>
-                    <property name="popover">popover_menu_add_tag</property>
-                    <property name="tooltip-text">Load</property>
-                    <property name="action-name">win.action_add_tag</property>
-                  </object>
-                  <!--
-              <object class="GtkButton">
-                <style>
-                  <class name="flat"/>
-                </style>
-                <property name="tooltip-text">Add</property>
+              <object class="AdwSplitButton">
+                <property name="icon-name">list-add-symbolic</property>
+                <property name="popover">popover_menu_add_tag</property>
+                <property name="tooltip-text">Load</property>
                 <property name="action-name">win.action_add_tag</property>
-                <property name="child">
-                  <object class="AdwButtonContent">
-                    <property name="icon-name">list-add-symbolic</property>
-                  </object>
-                </property>
               </object>
-                  -->
             </child>
             <child type="title">
               <object class="GtkLabel">
@@ -96,8 +82,6 @@
                         <style>
                           <class name="compact"/>
                         </style>
-                        <!--<property name="title">No Tags</property>-->
-                        <!--<property name="icon-name">user-bookmarks-symbolic</property>-->
                         <property name="description">There are no tags to list</property>
                         <child>
                           <object class="GtkBox">
@@ -106,7 +90,6 @@
                             <child>
                               <object class="GtkButton">
                                 <style>
-                                  <!--<class name="flat"/>-->
                                   <class name="accent"/>
                                 </style>
                                 <property name="action-name">win.action_add_tag</property>
@@ -121,7 +104,6 @@
                             <child>
                               <object class="GtkButton">
                                 <style>
-                                  <!--<class name="flat"/>-->
                                   <class name="success"/>
                                 </style>
                                 <property name="action-name">win.action_load_tags</property>
@@ -147,41 +129,11 @@
           <object class="AdwHeaderBar">
             <property name="visible">true</property>
             <child type="start">
-                  <object class="GtkToggleButton" id="button_tagsz">
-                    <!--<property name="icon-name">system-file-manager-symbolic</property>-->
-                    <!--<property name="icon-name">document-new-symbolic</property>-->
-                    <property name="icon-name">document-edit-symbolic</property>
-                    <!--<property name="popover">popover_import_tags</property>-->
-                    <property name="tooltip-text">Edit mode</property>
-                    <property name="action-name">win.hide_untagged_lines</property>
-                  </object>
-                  <!--
-              <object class="GtkMenuButton">
-              <style>
-                <class name="flat"/>
-              </style>
-                <property name="primary">false</property>
-                <!--<property name="icon-name">folder-new-symbolic</property>-->
-                <!--
-                <property name="icon-name">document-send-symbolic</property>
-                <property name="menu-model">tags_load_menu</property>
-                <property name="tooltip-text">Load</property>
-                  </object>
-                -->
-                  <!--
-              <object class="GtkButton">
-                <style>
-                  <class name="flat"/>
-                </style>
-                <property name="tooltip-text">Load</property>
-                <property name="action-name">win.action_load_tags</property>
-                <property name="child">
-                  <object class="AdwButtonContent">
-                    <property name="icon-name">folder-new-symbolic</property>
-                  </object>
-                </property>
+              <object class="GtkToggleButton" id="button_tagsz">
+                <property name="icon-name">document-edit-symbolic</property>
+                <property name="tooltip-text">Edit mode</property>
+                <property name="action-name">win.action_toggle_edit_mode</property>
               </object>
-                  -->
             </child>
             <child type="title">
               <object class="GtkBox">
@@ -265,11 +217,6 @@
         </child>
       </object>
     </child>
-    <!--
-    <style>
-      <class name="monospace"/>
-    </style>
-    -->
   </template>
 
   <object class="GtkPopoverMenu" id="file_popover">
@@ -277,14 +224,6 @@
   </object>
 
   <menu id="secondary_menu">
-    <!--
-    <section>
-      <item>
-        <attribute name="label" translatable="yes">New tag</attribute>
-        <attribute name="action">win.action_add_tag</attribute>
-      </item>
-      </section> 
-    -->
     <section>
       <item>
         <attribute name="label" translatable="yes">Load Tags</attribute>
@@ -302,12 +241,16 @@
         <attribute name="label" translatable="yes">Save Tags</attribute>
         <attribute name="action">win.action_save_tags</attribute>
       </item>
-      <!--
+    </section>
+    <section>
       <item>
-        <attribute name="label" translatable="yes">Save tagged lines</attribute>
-        <attribute name="action">win.save_tagged</attribute>
+        <attribute name="label" translatable="yes">Enable all Tags</attribute>
+        <attribute name="action">win.enable_all_tags</attribute>
       </item>
-      --> 
+      <item>
+        <attribute name="label" translatable="yes">Disable all Tags</attribute>
+        <attribute name="action">win.disable_all_tags</attribute>
+      </item>
     </section>
     <section>
       <item>
@@ -352,7 +295,7 @@
   <menu id="menu_add_tag">
     <section>
       <item>
-        <attribute name="label" translatable="yes">Add Line</attribute>
+        <attribute name="label" translatable="yes">Add from selected Line</attribute>
         <attribute name="action">win.action_add_tag_from_line</attribute>
       </item>
     </section>
