@@ -35,24 +35,29 @@ namespace Tags {
                 FileInputStream @is = yield file.read_async (Priority.DEFAULT, cancellable);
                 DataInputStream dis = new DataInputStream (@is);
 
-                var store = model as GLib.ListStore;
-
-                store.remove_all ();
-
+                // Temporary store to hold lines while loading
+                var temp_store = new GLib.ListStore (typeof(Line));
                 try {
                     while ((line = yield dis.read_line_async ()) != null) {
                         for (int i = 0; i < line.length; i++) {
                             if (line.data[i] == '\r') line.data[i] = 0x20;
                         }
-
                         // NOTE: Bug in string.replace method when replacing \r (0x0d)
                         // WORKAROUND - Iterate and replace... (as above)
                         // line = line.replace ("\r", " ");
-                        store.append (new Line (++count, line));
+                        temp_store.append (new Line (++count, line));
                     }
 
-                    loaded_from_file ();
-
+                    //loaded_from_file ();
+                    uint size = temp_store.get_n_items();
+                    Line[] array = new Line[size];
+                    for (int i = 0; i < size; i++) {
+                        var line_obj = temp_store.get_item(i) as Line;
+                        array[i] = line_obj;
+                    }
+                    var store = model as GLib.ListStore;
+                    //store.remove_all ();
+                    store.splice (0, model.get_n_items (), array);
                 } catch (IOError e) {
                     warning (e.message);
                     err_msg = e.message; 
@@ -66,7 +71,5 @@ namespace Tags {
             }
             return err_msg;
         }
-
     }
-
 }

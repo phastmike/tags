@@ -36,6 +36,7 @@ namespace Tags {
             set { _tags_edit_mode = value; }
         }
 
+        private Gtk.ProgressBar pbar;
         private Gtk.Stack stack;
         private Adw.BottomSheet bottom_sheet;
         private Gtk.Box main_box;
@@ -140,6 +141,20 @@ namespace Tags {
 
             //mmixer = new Tags.ModelMixer (filterer.model, tags);
             mmixer = new Tags.ModelMixer (lines.model, tags, filterer);
+            mmixer.mixing_progress_update.connect ( (fraction) => {
+                pbar.set_fraction (fraction);
+                if (fraction < 0.0 || fraction >= 1.0) {
+                    pbar.set_fraction (0.0);
+                }
+                /*
+                if (fraction < 0.0 || fraction >= 1.0) {
+                    pbar.set_visible (false);
+                } else {
+                    pbar.set_visible (true);
+                    pbar.set_fraction (fraction);
+                }
+                */
+            });
 
             var action = this.lookup_action ("toggle_tags_view");
             action.change_state (new Variant.boolean (true));
@@ -328,7 +343,13 @@ namespace Tags {
 
         private void setup_main_box () {
             main_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
-            main_box.append (lines_colview);
+            var vbox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+            pbar = new Gtk.ProgressBar ();
+            pbar.add_css_class ("osd");
+            vbox.append (pbar);
+            vbox.append (lines_colview);
+            main_box.append (vbox);
+            //main_box.append (lines_colview);
             revealer = new Gtk.Revealer ();
             revealer.set_child (scrolled_minimap);
             revealer.set_reveal_child (true);
@@ -736,6 +757,7 @@ namespace Tags {
             }
             
             var model = filterer.model; 
+            lines_colview.column_view.scroll_to (index, null, Gtk.ListScrollFlags.SELECT, null);
             for (uint i = index - 1; i > 0; i--) {
                 var line = model.get_item (i) as Line;
                 if (tag.applies_to (line.text)) {
@@ -765,6 +787,7 @@ namespace Tags {
             }
             
             var model = filterer.model; 
+            lines_colview.column_view.scroll_to (index, null, Gtk.ListScrollFlags.SELECT, null);
             for (uint i = index + 1; i < filterer.model.get_n_items (); i++) {
                 var line = model.get_item (i) as Line;
                 if (tag.applies_to (line.text)) {

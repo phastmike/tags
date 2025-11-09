@@ -219,10 +219,6 @@
     </child>
   </template>
 
-  <object class="GtkPopoverMenu" id="file_popover">
-    <property name="menu-model">secondary_menu</property>
-  </object>
-
   <menu id="secondary_menu">
     <section>
       <item>
@@ -260,32 +256,6 @@
     </section>
     <section>
     </section>
-  </menu>
-
-  <object class="GtkPopoverMenu" id="popover_import_tags">
-    <property name="menu-model">menu_import_tags</property>
-  </object>
-
-  <menu id="menu_import_tags">
-    <section>
-      <item>
-        <attribute name="label" translatable="yes">Import</attribute>
-        <attribute name="action">win.action_import_tags</attribute>
-      </item>
-    </section>
-  </menu>
-
-  <menu id="tags_load_menu">
-    <section>
-      <item>
-        <attribute name="label" translatable="yes">Load File</attribute>
-        <attribute name="action">win.action_load_tags</attribute>
-      </item>
-      <item>
-        <attribute name="label" translatable="yes">Import File</attribute>
-        <attribute name="action">app.preferences</attribute>
-      </item>
-      </section>
   </menu>
 
   <object class="GtkPopoverMenu" id="popover_menu_add_tag">
