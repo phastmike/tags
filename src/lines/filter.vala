@@ -47,18 +47,19 @@ namespace Tags {
             if (active == false) return true;
             Line line = (Line) item;
             if (line == null) return false;
-            if (line.tag == null) return false;
-            if (line.tag.enabled == true) {
-                return true;
+
+            if (line.tag != null) {
+                if (line.tag.enabled == true) {
+                    return true;
+                }
             }
-            /*
+
             for (uint i = 0; i < tags.get_n_items (); i++) {
                 var tag = tags.get_item (i) as Tag;
                 if (tag.enabled == true && tag.applies_to (line.text)) {
                     return true;
                 }
             }
-            */
             
             return false;
             // Apply filter conditions to line, if matches
