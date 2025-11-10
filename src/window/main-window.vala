@@ -142,18 +142,11 @@ namespace Tags {
             //mmixer = new Tags.ModelMixer (filterer.model, tags);
             mmixer = new Tags.ModelMixer (lines.model, tags, filterer);
             mmixer.mixing_progress_update.connect ( (fraction) => {
-                pbar.set_fraction (fraction);
                 if (fraction < 0.0 || fraction >= 1.0) {
-                    pbar.set_fraction (0.0);
-                }
-                /*
-                if (fraction < 0.0 || fraction >= 1.0) {
-                    pbar.set_visible (false);
+                    tags_view.progress.set_fraction (0.0);
                 } else {
-                    pbar.set_visible (true);
-                    pbar.set_fraction (fraction);
+                    tags_view.progress.set_fraction (fraction);
                 }
-                */
             });
 
             var action = this.lookup_action ("toggle_tags_view");
@@ -202,6 +195,10 @@ namespace Tags {
                 }
             });
 
+
+            tags_view.button_incremental.toggled.connect ( () => {
+                filterer.model.set_incremental (tags_view.button_incremental.get_active ());
+            });
             setup_preferences ();
         }
 
@@ -342,19 +339,14 @@ namespace Tags {
         }
 
         private void setup_main_box () {
-            main_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
-            var vbox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-            pbar = new Gtk.ProgressBar ();
-            pbar.add_css_class ("osd");
-            vbox.append (pbar);
-            vbox.append (lines_colview);
-            main_box.append (vbox);
-            //main_box.append (lines_colview);
             revealer = new Gtk.Revealer ();
             revealer.set_child (scrolled_minimap);
             revealer.set_reveal_child (true);
             revealer.set_transition_duration (200);
             revealer.set_transition_type (Gtk.RevealerTransitionType.SLIDE_RIGHT);
+
+            main_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
+            main_box.append (lines_colview);
             main_box.append (revealer);
         }
 
@@ -608,11 +600,12 @@ namespace Tags {
 
         private void hide_untagged_lines () {
             if (file_opened == null) { return; }   
+            var style = "";
             filter.active = !filter.active;
             if (filter.active) {
-                button_hide_untagged.add_css_class ("success");
+                button_hide_untagged.add_css_class (style);
             } else {
-                button_hide_untagged.remove_css_class ("success");
+                button_hide_untagged.remove_css_class (style);
             }
             // Should bind this property !
             var action = this.lookup_action ("hide_untagged_lines");
@@ -746,7 +739,7 @@ namespace Tags {
             var row = (TagRow) tags_view.listbox.get_selected_row ();
             if (row == null) { return; } 
             var tag = row.tag;
-            if (tag.hits == 0) { return; }
+            if (tag.hits == 0 || tag.enabled == false) { return; }
 
             var line_selection = lines_colview.selection_model;
             var bitset = line_selection.get_selection ();
@@ -775,7 +768,7 @@ namespace Tags {
             var row = (TagRow) tags_view.listbox.get_selected_row ();
             if (row == null) { return; }
             var tag = row.tag;
-            if (tag.hits == 0) { return; }
+            if (tag.hits == 0 || tag.enabled == false) { return; }
 
 
             var line_selection = lines_colview.selection_model;

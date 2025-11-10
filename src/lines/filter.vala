@@ -28,7 +28,7 @@ namespace Tags {
 
         public Filter (GLib.ListModel tags) {
             this.tags = tags;
-            //FIXME NOTE TODO It's a Hackm it could be better
+            //FIXME NOTE TODO It's a Hack it could be better
             this.tags.items_changed.connect ( (pos, add, removed) => {
                 var tag = tags.get_item (pos) as Tag; 
                 if (tag != null) {
@@ -46,12 +46,19 @@ namespace Tags {
         public override bool match (Object? item) {
             if (active == false) return true;
             Line line = (Line) item;
+            if (line == null) return false;
+            if (line.tag == null) return false;
+            if (line.tag.enabled == true) {
+                return true;
+            }
+            /*
             for (uint i = 0; i < tags.get_n_items (); i++) {
                 var tag = tags.get_item (i) as Tag;
                 if (tag.enabled == true && tag.applies_to (line.text)) {
                     return true;
                 }
             }
+            */
             
             return false;
             // Apply filter conditions to line, if matches

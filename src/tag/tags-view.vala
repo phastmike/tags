@@ -15,6 +15,10 @@ namespace Tags {
         public unowned Gtk.ScrolledWindow scrolled;
         [GtkChild]
         public unowned Gtk.ListBox listbox;
+        [GtkChild]
+        public unowned Gtk.ProgressBar progress;
+        [GtkChild]
+        public unowned Gtk.ToggleButton button_incremental;
 
         public GLib.ListModel model;
 

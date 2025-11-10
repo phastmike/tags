@@ -14,6 +14,9 @@ namespace Tags {
         public Filterer? filterer;
         public GLib.ListModel lines_model;
 
+        private bool updating = false;
+        private bool queued_update = false;
+
         public signal void mixing_progress_update (double progress);
 
         public ModelMixer (GLib.ListModel lines_model, TagStore tags, Filterer? filterer = null) {
@@ -44,14 +47,22 @@ namespace Tags {
 
         public void update_mixing () {
             Idle.add (() => {
+                if (updating) {
+                    queued_update = true;
+                    return false;
+                }
+                update_mixing_async.begin ();
+                /*
                 update_mixing_async.begin ( (s, p) => {
                     update_mixing_async.end (p);
                 });
+                */
                 return false;
             });
         }
 
         async void update_mixing_async ()  {
+            updating = true;
             SourceFunc callback = update_mixing_async.callback;
             for (uint i = 0; i < lines_model.get_n_items (); i++) {
                 var line = lines_model.get_item (i) as Line;
@@ -64,6 +75,11 @@ namespace Tags {
                 yield;
                 double progress = (double)(i + 1) / (double)lines_model.get_n_items ();
                 mixing_progress_update (progress);
+            }
+            updating = false;
+            if (queued_update) {
+                queued_update = false;
+                update_mixing_async.begin ();
             }
         }
 

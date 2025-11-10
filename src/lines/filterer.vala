@@ -20,9 +20,9 @@ namespace Tags {
             this.lines = lines;
             this.filter = filter;
             model = new Gtk.FilterListModel (lines.model, filter); 
-            // NOTE:model.set_incremental (true);
-            // Huge impact. Need to dwell on how to handle this
-            // might be nice + using pending, if ... 
+            // FIXME: Retriggers Selection to the top which isnt nice
+            // Minimap needs to be delayed, otherwise it's empty at start
+            model.set_incremental (false);
         }
 
         public async void to_file (File file) {

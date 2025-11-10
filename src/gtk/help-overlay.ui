@@ -46,6 +46,12 @@
                 <property name="action-name">win.disable_all_tags</property>
               </object>
             </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes" context="shortcut window">Toggle edit Mode</property>
+                <property name="action-name">win.action_toggle_edit_mode</property>
+              </object>
+            </child>
           </object>
         </child>
         <child>
@@ -71,19 +77,19 @@
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
-                <property name="title" translatable="yes" context="shortcut window">Copy selected text lines</property>
+                <property name="title" translatable="yes" context="shortcut window">Copy selected text Lines</property>
                 <property name="action-name">win.copy</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
-                <property name="title" translatable="yes" context="shortcut window">Toggle minimap visibility </property>
+                <property name="title" translatable="yes" context="shortcut window">Toggle minimap Visibility </property>
                 <property name="action-name">win.action_toggle_minimap</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
-                <property name="title" translatable="yes" context="shortcut window">Toggle line numbers</property>
+                <property name="title" translatable="yes" context="shortcut window">Toggle line Numbers</property>
                 <property name="action-name">win.action_toggle_line_number</property>
               </object>
             </child>
@@ -170,7 +176,7 @@
         </child>
         <child>
           <object class="GtkShortcutsGroup">
-            <property name="title" translatable="yes" context="shortcut window">Show only</property>
+            <property name="title" translatable="yes" context="shortcut window">Show</property>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="title" translatable="yes" context="shortcut window">Show only first tag</property>
