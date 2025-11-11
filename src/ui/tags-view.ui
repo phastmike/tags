@@ -165,17 +165,17 @@
                   </object>
                 </child>
                 <child>
-                  <object class="GtkButton">
+                  <object class="GtkButton" id="button_prev_hit">
                     <property name="icon_name">pan-up-symbolic</property>
-                    <property name="visible">true</property>
+                    <property name="visible">false</property>
                     <property name="tooltip-text">Previous hit</property>
                     <property name="action-name">win.prev_hit</property>
                   </object>
                 </child>
                 <child>
-                  <object class="GtkButton">
+                  <object class="GtkButton" id="button_next_hit">
                     <property name="icon_name">pan-down-symbolic</property>
-                    <property name="visible">true</property>
+                    <property name="visible">false</property>
                     <property name="tooltip-text">Next hit</property>
                     <property name="action-name">win.next_hit</property>
                   </object>

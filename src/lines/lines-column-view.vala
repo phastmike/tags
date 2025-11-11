@@ -99,7 +99,6 @@ namespace Tags {
             if (line.sighandler == 0) {
                 line.sighandler = line.tag_changed.connect (() => {
                     if (label != null && line != null) {
-                        //print ("Do things in line %u\n", line.number);
                         if (line.tag == null) {
                             clear_all_tag_styles (label);
                         } else {
@@ -126,14 +125,12 @@ namespace Tags {
 
         private void clear_all_tag_styles (Gtk.Widget widget) {
             if (widget == null || widget.parent == null) {
-                //message ("Widget or parent is null, cannot clear css classes");
                 return;
             }
             var c = widget.parent;
             if (c.css_classes.length != 0) {
                 foreach (var css_class in c.css_classes) {
                     if (css_class.has_prefix ("tag-")) {
-                        //message ("Removing css class: %s", css_class);
                         c.remove_css_class (css_class);
                     }
                 }

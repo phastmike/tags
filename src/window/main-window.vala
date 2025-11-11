@@ -107,6 +107,7 @@ namespace Tags {
             tags = new TagStore (style_store);
             tags_view = new TagsView (tags.model);
 
+
             var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
             box.append (tags_view);
 
@@ -600,13 +601,17 @@ namespace Tags {
 
         private void hide_untagged_lines () {
             if (file_opened == null) { return; }   
-            var style = "";
             filter.active = !filter.active;
+
+            /*
+            var style = "accent";
             if (filter.active) {
                 button_hide_untagged.add_css_class (style);
             } else {
                 button_hide_untagged.remove_css_class (style);
             }
+            */
+
             // Should bind this property !
             var action = this.lookup_action ("hide_untagged_lines");
             action.change_state (new Variant.boolean ((bool) filter.active));

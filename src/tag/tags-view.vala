@@ -19,11 +19,26 @@ namespace Tags {
         public unowned Gtk.ProgressBar progress;
         [GtkChild]
         public unowned Gtk.ToggleButton button_incremental;
+        [GtkChild]
+        public unowned Gtk.Button button_prev_hit;
+        [GtkChild]
+        public unowned Gtk.Button button_next_hit;
 
         public GLib.ListModel model;
 
         public TagsView (GLib.ListModel model) {
             this.model = model; 
+
+            listbox.selected_rows_changed.connect ( () => {
+                var row = (TagRow) listbox.get_selected_row ();
+                if (row == null) {
+                    button_prev_hit.visible = false;
+                    button_next_hit.visible = false;
+                } else {
+                    button_prev_hit.visible = true;
+                    button_next_hit.visible = true;
+                }
+            });
 
             // FIXME: check need to toggle drag feature
             Gtk.DropTarget drop_target;
