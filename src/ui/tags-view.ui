@@ -197,7 +197,7 @@
               <object class="GtkBox">
                 <child>
                   <object class="GtkToggleButton" id="button_incremental">
-                    <property name="visible">false</property>
+                    <property name="visible">true</property>
                     <property name="icon_name">thunderbolt-symbolic</property>
                     <property name="tooltip-text">Incremental mode (Experimental - resets selection)</property>
                   </object>
@@ -241,6 +241,10 @@
       </item>
     </section>
     <section>
+      <item>
+        <attribute name="label" translatable="yes">Edit mode</attribute>
+        <attribute name="action">win.action_toggle_edit_mode</attribute>
+      </item>
       <item>
         <attribute name="label" translatable="yes">Save Tags</attribute>
         <attribute name="action">win.action_save_tags</attribute>

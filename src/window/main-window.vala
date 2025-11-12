@@ -142,6 +142,11 @@ namespace Tags {
 
             //mmixer = new Tags.ModelMixer (filterer.model, tags);
             mmixer = new Tags.ModelMixer (lines.model, tags, filterer);
+
+            mmixer.mix_updated.connect ( () => {
+                minimap.set_array (Lines.model_to_array(lines_colview.lines));
+            });
+
             mmixer.mixing_progress_update.connect ( (fraction) => {
                 if (fraction < 0.0 || fraction >= 1.0) {
                     tags_view.progress.set_fraction (0.0);
@@ -616,7 +621,10 @@ namespace Tags {
             var action = this.lookup_action ("hide_untagged_lines");
             action.change_state (new Variant.boolean ((bool) filter.active));
 
-            minimap.set_array (Lines.model_to_array(lines_colview.lines));
+            Timeout.add (500, () => {
+                minimap.set_array (Lines.model_to_array(lines_colview.lines));
+                return false;
+            });
         }
 
         private void action_toggle_minimap () {
@@ -751,12 +759,12 @@ namespace Tags {
             if (bitset.get_size () == 0) {
                 index = filterer.model.get_n_items () - 1;
             } else {
-                index = bitset.get_nth ((uint) bitset.get_size () - 1);
+                index = bitset.get_nth (0) - 1;
             }
             
             var model = filterer.model; 
-            lines_colview.column_view.scroll_to (index, null, Gtk.ListScrollFlags.SELECT, null);
-            for (uint i = index - 1; i > 0; i--) {
+            //lines_colview.column_view.scroll_to (index+1, null, Gtk.ListScrollFlags.SELECT, null);
+            for (int i = (int) index; i >= 0; i--) {
                 var line = model.get_item (i) as Line;
                 if (tag.applies_to (line.text)) {
                     line_selection.unselect_all ();
@@ -781,12 +789,12 @@ namespace Tags {
             if (bitset.get_size () == 0) {
                 index = 0;
             } else {
-                index = bitset.get_nth (0);
+                index = bitset.get_nth (0) + 1;
             }
             
             var model = filterer.model; 
-            lines_colview.column_view.scroll_to (index, null, Gtk.ListScrollFlags.SELECT, null);
-            for (uint i = index + 1; i < filterer.model.get_n_items (); i++) {
+            //lines_colview.column_view.scroll_to (index - 1, null, Gtk.ListScrollFlags.SELECT, null);
+            for (uint i = index; i < filterer.model.get_n_items (); i++) {
                 var line = model.get_item (i) as Line;
                 if (tag.applies_to (line.text)) {
                     line_selection.unselect_all ();
