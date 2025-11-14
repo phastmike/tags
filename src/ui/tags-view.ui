@@ -227,6 +227,7 @@
     </child>
   </template>
 
+  <!-- SECONDARY MENU -->
   <menu id="secondary_menu">
     <section>
       <item>
@@ -242,7 +243,7 @@
     </section>
     <section>
       <item>
-        <attribute name="label" translatable="yes">Edit mode</attribute>
+        <attribute name="label" translatable="yes">Edit Tags</attribute>
         <attribute name="action">win.action_toggle_edit_mode</attribute>
       </item>
       <item>
@@ -270,6 +271,7 @@
     </section>
   </menu>
 
+  <!-- POPOVER MENU -->
   <object class="GtkPopoverMenu" id="popover_menu_add_tag">
     <property name="menu-model">menu_add_tag</property>
   </object>

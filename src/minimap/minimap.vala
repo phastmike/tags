@@ -17,12 +17,10 @@ public class Minimap : Gtk.DrawingArea {
     private Gdk.RGBA highlight_color;
     private Gdk.RGBA text_color;
 
-    //public const string rgba_dark_theme_hover   = "rgba (52, 52, 54, 0.25)";
     public const string rgba_dark_theme_hover   = "rgba (229, 229, 209, 0.25)";
     public const string rgba_light_theme_hover  = "rgba (26, 26, 26, 0.25)";
 
     public const string rgba_dark_theme_text    = "rgba (221, 221, 222, 0.15)";
-    //public const string rgba_dark_theme_text    = "rgba (255, 255, 255, 0.15)";
     public const string rgba_light_theme_text   = "rgba (0, 0, 0, 0.15)";
     
     // Text view adjustment (for drawing the highlight)
@@ -339,7 +337,8 @@ public class Minimap : Gtk.DrawingArea {
     private void animate_to_value(double new_value) {
         // Ensure bounds
         new_value = Math.fmax(viewport_adjustment.get_lower(),
-                             Math.fmin(new_value, viewport_adjustment.get_upper() - viewport_adjustment.get_page_size()));
+                             Math.fmin(new_value,
+                             viewport_adjustment.get_upper() - viewport_adjustment.get_page_size()));
 
         // Set target value for animation
         target_value = new_value;

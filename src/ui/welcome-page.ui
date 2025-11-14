@@ -109,7 +109,7 @@
                     </child>
                     <child>
                       <object class="GtkLabel">
-                        <property name="label" translatable="yes">Toggle tag list visibility</property>
+                        <property name="label" translatable="yes">Show Sidebar Tag list</property>
                       </object>
                     </child>
                   </object>

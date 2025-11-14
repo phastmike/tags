@@ -11,6 +11,7 @@
  */
 
 namespace Tags.Helpers {
+
     private static string generate_uuid () {
         string random_input = "%u-%u-%u".
             printf(GLib.Random.next_int (), GLib.Random.next_int (), GLib.Random.next_int());
@@ -18,4 +19,5 @@ namespace Tags.Helpers {
         checksum.update(random_input.data, random_input.length);
         return checksum.get_string();
     }
+
 }

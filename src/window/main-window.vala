@@ -126,10 +126,22 @@ namespace Tags {
                 });
 
                 tag_dialog.deleted.connect ((tag) => {
-                    tags_changed = true;
-                    tags.remove_tag (tag);
-                    filter.update ();
-                    minimap.set_array (Lines.model_to_array(lines_colview.lines));
+                    var dialog = new Adw.AlertDialog ("Remove Tag", "Remove tag from the list?");
+                    dialog.set_prefer_wide_layout (true);
+                    dialog.add_response ("cancel", "_Cancel");
+                    dialog.add_response ("remove", "_Remove");
+                    dialog.set_response_appearance ("remove", Adw.ResponseAppearance.DESTRUCTIVE);
+                    dialog.set_default_response ("cancel");
+                    dialog.set_close_response ("cancel");
+                    dialog.present (this);
+                    dialog.response.connect ((response) => {
+                        if (response == "remove") {
+                            tags_changed = true;
+                            tags.remove_tag (tag);
+                            filter.update ();
+                            minimap.set_array (Lines.model_to_array(lines_colview.lines));
+                        }
+                    });
                 });
 
                 tag_dialog.present ();
@@ -480,7 +492,19 @@ namespace Tags {
                     }
                 });
             } else {
-                tags_remove_all ();
+                var dialog = new Adw.AlertDialog ("Remove Tags", "Remove all tags from the list?");
+                dialog.set_prefer_wide_layout (true);
+                dialog.add_response ("cancel", "_Cancel");
+                dialog.add_response ("remove", "_Remove");
+                dialog.set_response_appearance ("remove", Adw.ResponseAppearance.DESTRUCTIVE);
+                dialog.set_default_response ("cancel");
+                dialog.set_close_response ("cancel");
+                dialog.present (this);
+                dialog.response.connect ((response) => {
+                    if (response == "remove") {
+                        tags_remove_all ();
+                    }
+                });
             }
         }
 
