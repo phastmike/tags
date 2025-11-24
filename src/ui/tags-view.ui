@@ -147,7 +147,7 @@
             <child type="start">
               <object class="GtkToggleButton" id="button_tagsz">
                 <property name="icon-name">document-edit-symbolic</property>
-                <property name="tooltip-text">Edit mode</property>
+                <property name="tooltip-text">Edit Tags</property>
                 <property name="action-name">win.action_toggle_edit_mode</property>
               </object>
             </child>
