@@ -11,22 +11,28 @@
 namespace Tags {
     [GtkTemplate (ui = "/io/github/phastmike/tags/ui/main-window.ui")]
     public class MainWindow : Adw.ApplicationWindow {
+        /*
         [GtkChild]
         unowned Gtk.Button button_open_file;
+        */
         [GtkChild]
         unowned Adw.WindowTitle window_title;
         [GtkChild]
         unowned Gtk.ToggleButton button_hide_untagged;
+        /*
         [GtkChild]
         unowned Gtk.Button button_tags_list;
         [GtkChild]
         unowned Gtk.Button button_minimap;
+        */
         [GtkChild]
         unowned Adw.ToastOverlay overlay;
         [GtkChild]
         unowned Adw.OverlaySplitView oversplit;
+        /*
         [GtkChild]
         unowned Gtk.Label title_title;
+        */
         [GtkChild]
         unowned Gtk.Label title_focus;
 
@@ -36,12 +42,12 @@ namespace Tags {
             set { _tags_edit_mode = value; }
         }
 
-        private Gtk.ProgressBar pbar;
+        //private Gtk.ProgressBar pbar;
         private Gtk.Stack stack;
-        private Adw.BottomSheet bottom_sheet;
+        //private Adw.BottomSheet bottom_sheet;
         private Gtk.Box main_box;
         private Minimap minimap;
-        private Gtk.ScrolledWindow scrolled_lines;
+        //private Gtk.ScrolledWindow scrolled_lines;
         private Gtk.ScrolledWindow scrolled_minimap;
         private MinimapScrollManager minimap_scrollman;
         private Gtk.Revealer revealer;
@@ -133,9 +139,11 @@ namespace Tags {
                     dialog.set_response_appearance ("remove", Adw.ResponseAppearance.DESTRUCTIVE);
                     dialog.set_default_response ("cancel");
                     dialog.set_close_response ("cancel");
-                    dialog.present (this);
+                    dialog.present (tag_dialog);
                     dialog.response.connect ((response) => {
                         if (response == "remove") {
+                            tag_dialog.close ();
+                            tag_dialog.destroy ();
                             tags_changed = true;
                             tags.remove_tag (tag);
                             filter.update ();

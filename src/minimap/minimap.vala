@@ -307,7 +307,7 @@ public class Minimap : Gtk.DrawingArea {
         double ratio = viewport_adjustment.get_page_size () / document_height;
         double indicator_height = metrics.total_minimap_height * ratio;
         double scroll_ratio = viewport_adjustment.get_value () / (document_height - viewport_adjustment.get_page_size ());
-        double indicator_y = (metrics.total_minimap_height - indicator_height) * scroll_ratio;
+        //double indicator_y = (metrics.total_minimap_height - indicator_height) * scroll_ratio;
 
         metrics.viewport_height = viewport_adjustment.get_page_size() * metrics.document_to_minimap_ratio;
   

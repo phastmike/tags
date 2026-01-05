@@ -19,6 +19,8 @@ namespace Tags {
         [GtkChild]
         private unowned Gtk.Button button_delete;
         [GtkChild]
+        private unowned Gtk.Button btn_delete_tag;
+        [GtkChild]
         private unowned Gtk.ColorDialogButton button_fg_color;
         [GtkChild]
         private unowned Gtk.ColorDialogButton button_bg_color;
@@ -107,7 +109,8 @@ namespace Tags {
             button_ok.set_label ("_Edit");
             button_ok.set_sensitive (true);
 
-            button_delete.set_visible (true);
+            //button_delete.set_visible (true);
+            btn_delete_tag.set_visible (true);
 
             row_atop.set_visible (false);
 
@@ -131,8 +134,14 @@ namespace Tags {
             
             button_delete.clicked.connect (() => {
                 deleted(tag);
-                this.destroy ();
+                //this.destroy ();
             });
+
+            btn_delete_tag.clicked.connect (() => {
+                deleted(tag);
+                //this.destroy ();
+            });
+            
             
             entry_tag_pattern.changed.connect (validate_entries);
             entry_tag_name.changed.connect (validate_entries);

@@ -4,7 +4,7 @@
   <template class="TagsTagDialogWindow" parent="AdwWindow">
     <property name="modal">True</property>
     <property name="default-width">500</property>
-    <property name="default-height">670</property>
+    <property name="default-height">660</property>
     <property name="destroy-with-parent">true</property>
     <property name="hide-on-close">true</property>
     <child>
@@ -186,6 +186,21 @@
                           <property name="justify">right</property>
                         </object>
                       </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="AdwPreferencesGroup">
+                <!--<property name="title">Actions</property>-->
+                <child>
+                  <object class="GtkButton" id="btn_delete_tag">
+                    <property name="visible">false</property>
+                    <property name="label" translatable="yes">Delete Tag</property>
+                    <style>
+                      <class name="pill"/>
+                      <class name="destructive-action"/>
+                    </style>
                   </object>
                 </child>
               </object>
