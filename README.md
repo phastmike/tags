@@ -18,7 +18,7 @@ Tags have a match pattern, description name, visibility toggle, color scheme and
 
 ## Actions and Shortchuts
 
-<kbd>Ctrl</kbd> + <kbd>N</kbd> : Add a Tag
+<kbd>Ctrl</kbd> + <kbd>A</kbd> : Add a Tag
 
 <kbd>Ctrl</kbd> + <kbd>S</kbd> : Save tagged lines
 
@@ -26,7 +26,7 @@ Tags have a match pattern, description name, visibility toggle, color scheme and
 
 <kbd>Ctrl</kbd> + <kbd>H</kbd> : Toggle untagged lines visibility
 
-<kbd>Ctrl</kbd> + <kbd>F</kbd> : Hide/Show Tag list (bottom)
+<kbd>F9</kbd> : Hide/Show Tag list (sidebar)
 
 <kbd>Ctrl</kbd> + <kbd>L</kbd> : Hide/Show Line numbers
 
@@ -65,6 +65,9 @@ Toggle the first ten tags with keyboard shortcuts.
 
 **Using <kbd>Ctrl</kbd> instead of <kbd>Alt</kbd> will enable the respective tag
 and hide all the others**.
+
+- Check the available shortcuts in the application menu (<kbd>Ctrl</kbd> + <kbd>?</kbd>).
+
 
 ---
 
