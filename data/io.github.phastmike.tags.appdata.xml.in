@@ -63,6 +63,20 @@
   <content_rating type="oars-1.1" />
   <releases>
 
+    <release version="2.0" date="2026-01-07">
+      <description translatable="no">
+        <p>Tags 2.0 is out</p>
+        <p>What's new:</p>
+        <ul>
+          <li>Moved Tags list to a sidebar</li>
+          <li>Revamped UI to better suit GNOME HIG</li>
+          <li>Edit 'mode' to tweak/delete existing tags</li>
+          <li>All actions have touch events for touch based devices</li>
+        </ul>
+        <p>Performance improvements</p>
+      </description>
+    </release>
+
     <release version="1.8" date="2025-09-19">
       <description translatable="no">
         <p>Tags 1.8 is out</p>
