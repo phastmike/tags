@@ -67,14 +67,14 @@ Check the available shortcuts in the application menu with `Ctrl` + `?`.
 - Save tags
 - Remove all tags
 - Open new window
-- User defined line numbering color scheme
-- Simple tags based on a string containing a pattern
+- User defined color schemes
+- Tags based on string comparison
 - Support for regular expressions
 - Case sensitive support
-- Automatic load tags file when opening a file and a similarly named file with added `.tags` extension exists
-- Navigate through hits with F2 and F3
+- Automatic load tags file (same filename + .tags`extension)
+- Navigate thru hits with F2 and F3
 - Random color scheme on tag creation
-- Document minimap with tag colors (bg-color)
+- Document minimap with tag colors
 
 ---
 
