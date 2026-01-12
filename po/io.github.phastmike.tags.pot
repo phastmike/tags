@@ -1,0 +1,186 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR José Miguel Fonte
+# This file is distributed under the same license as the io.github.phastmike.tags package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: io.github.phastmike.tags 2.0\n"
+"Report-Msgid-Bugs-To: https://github.com/phastmike/tags/issues\n"
+"POT-Creation-Date: 2026-01-12 23:06+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/ui/main-window.ui:5
+msgid "Tags"
+msgstr ""
+
+#: src/ui/main-window.ui:25
+msgid "_Open"
+msgstr ""
+
+#: src/ui/main-window.ui:26
+msgid "Select a File"
+msgstr ""
+
+#: src/ui/main-window.ui:132
+msgid "New tag"
+msgstr ""
+
+#: src/ui/main-window.ui:136
+msgid "Save tagged"
+msgstr ""
+
+#: src/ui/main-window.ui:143
+msgid "Load tags"
+msgstr ""
+
+#: src/ui/main-window.ui:147
+msgid "Save tags"
+msgstr ""
+
+#: src/ui/main-window.ui:151
+msgid "Remove tags"
+msgstr ""
+
+#: src/ui/main-window.ui:170
+msgid "Hide untagged"
+msgstr ""
+
+#: src/ui/main-window.ui:185
+msgid "New Window"
+msgstr ""
+
+#: src/ui/main-window.ui:189
+msgid "Save Tagged Lines"
+msgstr ""
+
+#: src/ui/main-window.ui:195 src/ui/preferences-dialog.ui:18
+msgid "Preferences"
+msgstr ""
+
+#: src/ui/main-window.ui:199
+msgid "Keyboard Shortcuts"
+msgstr ""
+
+#: src/ui/main-window.ui:203
+msgid "About Tags"
+msgstr ""
+
+#: src/ui/preferences-dialog.ui:13
+msgid ""
+"Automatically loads the tags file if there is a file with the same name as the file you are about to open and the "
+"extension .tags on the same path"
+msgstr ""
+
+#: src/ui/preferences-dialog.ui:28
+msgid "Autoload tags file"
+msgstr ""
+
+#: src/ui/preferences-dialog.ui:64
+msgid "Line Numbers"
+msgstr ""
+
+#: src/ui/preferences-dialog.ui:75
+msgid "Foreground Color"
+msgstr ""
+
+#: src/ui/preferences-dialog.ui:88
+msgid "Background Color"
+msgstr ""
+
+#: src/ui/preferences-dialog.ui:101
+msgid "Example"
+msgstr ""
+
+#: src/ui/preferences-dialog.ui:127
+msgid "Visible"
+msgstr ""
+
+#: src/ui/tag-dialog-window.ui:30
+msgid "_Cancel"
+msgstr ""
+
+#: src/ui/tag-dialog-window.ui:46
+msgid "_Add"
+msgstr ""
+
+#: src/ui/tag-dialog-window.ui:180
+msgid "Lorem ipsum dolor sit amet..."
+msgstr ""
+
+#: src/ui/tag-dialog-window.ui:199
+msgid "Delete Tag"
+msgstr ""
+
+#: src/ui/tag-dialog-window.ui:231
+msgid ""
+"Adds the tag to the top which gives precedence over the other tag filters. Once a line is tagged it disregards other "
+"possible tags. The user can reorder tags with drag and drop at any time"
+msgstr ""
+
+#: src/ui/tags-view.ui:234
+msgid "Load Tags"
+msgstr ""
+
+#: src/ui/tags-view.ui:239
+msgid "Import Tags"
+msgstr ""
+
+#: src/ui/tags-view.ui:246
+msgid "Edit Tags"
+msgstr ""
+
+#: src/ui/tags-view.ui:250
+msgid "Save Tags"
+msgstr ""
+
+#: src/ui/tags-view.ui:256
+msgid "Enable all Tags"
+msgstr ""
+
+#: src/ui/tags-view.ui:260
+msgid "Disable all Tags"
+msgstr ""
+
+#: src/ui/tags-view.ui:266
+msgid "Remove All"
+msgstr ""
+
+#: src/ui/tags-view.ui:282
+msgid "Add from selected Line"
+msgstr ""
+
+#: src/ui/welcome-page.ui:38
+msgid "Welcome to Tags"
+msgstr ""
+
+#: src/ui/welcome-page.ui:78
+msgid "Open a log file to start using tags"
+msgstr ""
+
+#: src/ui/welcome-page.ui:95
+msgid "Add a tag filter"
+msgstr ""
+
+#: src/ui/welcome-page.ui:112
+msgid "Show Sidebar Tag list"
+msgstr ""
+
+#: src/ui/welcome-page.ui:128
+msgid "Hit"
+msgstr ""
+
+#: src/ui/welcome-page.ui:139
+msgid "to hide untagged lines"
+msgstr ""
+
+#: src/ui/welcome-page.ui:152
+msgid "Open a file to start coloring ..."
+msgstr ""

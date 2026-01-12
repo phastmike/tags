@@ -1,0 +1,104 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR José Miguel Fonte
+# This file is distributed under the same license as the io.github.phastmike.tags package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: io.github.phastmike.tags 2.0\n"
+"Report-Msgid-Bugs-To: https://github.com/phastmike/tags/issues\n"
+"POT-Creation-Date: 2026-01-12 22:04+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/ui/main-window.ui:203
+msgid "About Tags"
+msgstr ""
+
+#: src/ui/preferences-dialog.ui:28
+msgid "Autoload tags file"
+msgstr ""
+
+#: src/ui/preferences-dialog.ui:13
+msgid ""
+"Automatically loads the tags file if there is a file with the same name as the file you are about to open and the "
+"extension .tags on the same path"
+msgstr ""
+
+#: src/ui/preferences-dialog.ui:88
+msgid "Background Color"
+msgstr ""
+
+#: src/ui/preferences-dialog.ui:101
+msgid "Example"
+msgstr ""
+
+#: src/ui/preferences-dialog.ui:75
+msgid "Foreground Color"
+msgstr ""
+
+#: src/ui/main-window.ui:170
+msgid "Hide untagged"
+msgstr ""
+
+#: src/ui/main-window.ui:199
+msgid "Keyboard Shortcuts"
+msgstr ""
+
+#: src/ui/preferences-dialog.ui:64
+msgid "Line Numbers"
+msgstr ""
+
+#: src/ui/main-window.ui:143
+msgid "Load tags"
+msgstr ""
+
+#: src/ui/main-window.ui:185
+msgid "New Window"
+msgstr ""
+
+#: src/ui/main-window.ui:132
+msgid "New tag"
+msgstr ""
+
+#: src/ui/main-window.ui:195 src/ui/preferences-dialog.ui:18
+msgid "Preferences"
+msgstr ""
+
+#: src/ui/main-window.ui:151
+msgid "Remove tags"
+msgstr ""
+
+#: src/ui/main-window.ui:189
+msgid "Save Tagged Lines"
+msgstr ""
+
+#: src/ui/main-window.ui:136
+msgid "Save tagged"
+msgstr ""
+
+#: src/ui/main-window.ui:147
+msgid "Save tags"
+msgstr ""
+
+#: src/ui/main-window.ui:26
+msgid "Select a File"
+msgstr ""
+
+#: src/ui/main-window.ui:5
+msgid "Tags"
+msgstr ""
+
+#: src/ui/preferences-dialog.ui:127
+msgid "Visible"
+msgstr ""
+
+#: src/ui/main-window.ui:25
+msgid "_Open"
+msgstr ""

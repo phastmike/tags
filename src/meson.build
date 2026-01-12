@@ -18,6 +18,7 @@ tags_deps = [
   dependency('json-glib-1.0', version: '>= 1.6'),
   dependency('libadwaita-1', version: '>= 1.2'),
   dependency('gee-0.8'),
+  #dependency('gettext'),
   libm
 ]
 

@@ -25,7 +25,7 @@
               <property name="title">Tags</property>
               <child>
                 <object class="AdwActionRow" id="row_autoload_tags">
-                  <property name="title">Autoload tags file</property>
+                  <property name="title" translatable="yes">Autoload tags file</property>
                   <property name="activatable">true</property>
                   <child>
                     <object class="GtkBox">
@@ -61,7 +61,7 @@
             <property name="title">View</property>
             <child>
               <object class="AdwSwitchRow" id="row_ln_visible">
-                <property name="title">Line Numbers</property>
+                <property name="title" translatable="yes">Line Numbers</property>
               </object>
             </child>
             <child>
@@ -104,7 +104,7 @@
                     <property name="halign">end</property>
                     <property name="valign">center</property>
                     <property name="use_markup">true</property>
-                    <property name="label" translatable="yes">123456</property>
+                    <property name="label">123456</property>
                     <property name="xalign">0</property>
                     <property name="halign">start</property>
                     <property name="valign">center</property>
@@ -124,7 +124,7 @@
           <property name="title">Minimap</property>
             <child>
               <object class="AdwSwitchRow" id="_row_minimap_visible">
-                <property name="title">Visible</property>
+                <property name="title" translatable="yes">Visible</property>
               </object>
             </child>
           </object>

@@ -1,7 +1,11 @@
-data/io.github.phastmike.tags.desktop.in
-data/io.github.phastmike.tags.appdata.xml.in
-data/io.github.phastmike.tags.gschema.xml
-src/window.ui
-src/main.vala
-src/window.vala
+#data/io.github.phastmike.tags.desktop.in
+#data/io.github.phastmike.tags.appdata.xml.in
+#data/io.github.phastmike.tags.gschema.xml
+src/ui/lines-column-view.ui
+src/ui/main-window.ui
+src/ui/preferences-dialog.ui
+src/ui/tag-dialog-window.ui
+src/ui/tag-row.ui
+src/ui/tags-view.ui
+src/ui/welcome-page.ui
 

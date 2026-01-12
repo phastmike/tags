@@ -5,8 +5,9 @@ project('io.github.phastmike.tags', ['c', 'vala'],
                    ],
 )
 
-i18n = import('i18n')
 application_id = 'io.github.phastmike.tags'
+
+i18n = import('i18n')
 
 conf_data = configuration_data()
 conf_data.set_quoted('APPLICATION_ID', application_id)
