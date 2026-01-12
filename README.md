@@ -6,94 +6,83 @@
 
 ![tagger](./data/screenshots/tags-default.png)
 
-A GNOME text tagger inspired by the [TextAnalysisTool.NET](https://textanalysistool.github.io/)
-tool.
+A GNOME text tagger inspired by the [TextAnalysisTool.NET](https://textanalysistool.github.io/) tool.
 
-The main goal is to aid log analysis by tagging lines with user defined colors.
-Tags have a match pattern, description name, visibility toggle, color scheme and hit counter.
+The main goal is to aid log analysis by tagging lines with user defined colors. Tags have a match pattern, description name, visibility toggle, color scheme and hit counter.
+
+---
 
 ## Download
 
-[![Download on flathub](https://dl.flathub.org/assets/badges/flathub-badge-en.png)](https://flathub.org/apps/io.github.phastmike.tags)
+<a href="https://flathub.org/apps/io.github.phastmike.tags">
+  <img width="200" alt="Download on Flathub" src="https://dl.flathub.org/assets/badges/flathub-badge-en.png"/>
+</a>
 
-## Actions and Shortchuts
+---
 
-<kbd>Ctrl</kbd> + <kbd>A</kbd> : Add a Tag
+## Actions and Shortcuts
 
-<kbd>Ctrl</kbd> + <kbd>S</kbd> : Save tagged lines
+### General Actions
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl` + `A` | Add a Tag |
+| `Ctrl` + `S` | Save tagged lines |
+| `Ctrl` + `C` | Copy selected text lines to clipboard |
+| `Ctrl` + `H` | Toggle untagged lines visibility |
+| `F9` | Hide/Show Tag list (sidebar) |
+| `Ctrl` + `L` | Hide/Show Line numbers |
+| `Ctrl` + `M` | Hide/Show Minimap |
+| `Alt` + `E` | Enable all tags |
+| `Alt` + `D` | Disable all tags |
 
-<kbd>Ctrl</kbd> + <kbd>C</kbd> : Copy selected text lines to clipboard
+### Tags Toggle
+Toggle the first ten tags with keyboard shortcuts:
 
-<kbd>Ctrl</kbd> + <kbd>H</kbd> : Toggle untagged lines visibility
+| Shortcut | Action |
+|----------|--------|
+| `Alt` + `1` | Toggle enabled status for first tag |
+| `Alt` + `2` | Toggle enabled status for second tag |
+| ... | ... |
+| `Alt` + `9` | Toggle enabled status for ninth tag |
+| `Alt` + `0` | Toggle enabled status for tenth tag |
 
-<kbd>F9</kbd> : Hide/Show Tag list (sidebar)
-
-<kbd>Ctrl</kbd> + <kbd>L</kbd> : Hide/Show Line numbers
-
-<kbd>Ctrl</kbd> + <kbd>M</kbd> : Hide/Show Minimap
-
-<kbd>Alt</kbd> + <kbd>E</kbd> : Enable all tags
-
-<kbd>Alt</kbd> + <kbd>D</kbd> : Disable all tags
-
-### Tags
-
-Toggle the first ten tags with keyboard shortcuts.
-
-<kbd>Alt</kbd> + <kbd>1</kbd> : Toggle enabled status for first tag
-
-<kbd>Alt</kbd> + <kbd>2</kbd> : Toggle enabled status for second tag
-
-...
-
-<kbd>Alt</kbd> + <kbd>9</kbd> : Toggle enabled status for ninth tag
-
-<kbd>Alt</kbd> + <kbd>0</kbd> : Toggle enabled status for tenth tag
+> **Note:** Using `Ctrl` instead of `Alt` will enable the respective tag and hide all the others.
 
 ### Navigation
+*Requires a tag to be selected on the tag list*
 
--- *requires a tag to be selected on the tag list*
+| Shortcut | Action |
+|----------|--------|
+| `F2` | Previous tag hit |
+| `F3` | Next tag hit |
+| `Ctrl` + `M` | Toggle minimap visibility |
 
-<kbd>F2</kbd> : Previous tag hit
-
-<kbd>F3</kbd> : Next tag hit
-
-<kbd>Ctrl</kbd> + <kbd>M</kbd> : Toggle minimap visibility
-
----
-#### Notice
-
-**Using <kbd>Ctrl</kbd> instead of <kbd>Alt</kbd> will enable the respective tag
-and hide all the others**.
-
-- Check the available shortcuts in the application menu (<kbd>Ctrl</kbd> + <kbd>?</kbd>).
-
+Check the available shortcuts in the application menu with `Ctrl` + `?`.
 
 ---
 
-### Additional features:
+## Additional Features
 
 - Load tags
 - Save tags
 - Remove all tags
 - Open new window
 - User defined line numbering color scheme
-- Simple tags based on a string containg a pattern
+- Simple tags based on a string containing a pattern
 - Support for regular expressions
 - Case sensitive support
-- Automatic load tags file when opening a file and a similarly named file with
-  added `.tags` extension exists
-- Navigate thru hits with F2 and F3
+- Automatic load tags file when opening a file and a similarly named file with added `.tags` extension exists
+- Navigate through hits with F2 and F3
 - Random color scheme on tag creation
 - Document minimap with tag colors (bg-color)
+
+---
 
 ## Development
 
 Developed in Vala + Gtk 4
 
 ### Dependencies
-
-It depends on:
 
 - meson
 - ninja
@@ -106,20 +95,22 @@ It depends on:
 ### Build
 
 Clone the repository and inside it, compile with:
-
-`$ meson build && cd build && ninja`
+```bash
+$ meson build && cd build && ninja
+```
 
 Install with:
-
-`$ ninja install`
+```bash
+$ ninja install
+```
 
 Then, test it with:
-
-`$ tags`
-
+```bash
+$ tags
+```
 
 ---
 
-Filters have a top down priority.
-Only works with text files and uses string matching rules or regular expressions.
+## Additional Notes
 
+Filters have a top down priority. Only works with text files and uses string matching rules or regular expressions.
