@@ -485,7 +485,14 @@ namespace Tags {
         }
 
         private void action_remove_all_tags () {
-            if (tags.ntags > 0 && tags_changed) {
+            if (tags.ntags == 0) {
+                var toast = new Adw.Toast ("No tags to remove");
+                toast.set_timeout (3);
+                overlay.add_toast (toast);
+                return;
+            }
+
+            if (tags_changed) {
                 var dialog = new Adw.AlertDialog ("Tags changed", "There are unsaved changes, discards changes?");
                 dialog.set_prefer_wide_layout (true);
                 dialog.add_response ("cancel", "_Cancel");
@@ -860,9 +867,15 @@ namespace Tags {
         }
 
         private void action_toggle_edit_mode () {
-            tags_edit_mode = !tags_edit_mode;
-            var action = this.lookup_action ("action_toggle_edit_mode");
-            action.change_state (new Variant.boolean (tags_edit_mode));
+            if (tags.ntags == 0) {
+                var toast = new Adw.Toast ("No tags to edit");
+                toast.set_timeout (3);
+                overlay.add_toast (toast);
+            } else {
+                tags_edit_mode = !tags_edit_mode;
+                var action = this.lookup_action ("action_toggle_edit_mode");
+                action.change_state (new Variant.boolean (tags_edit_mode));
+            }
         }
     }
 }
