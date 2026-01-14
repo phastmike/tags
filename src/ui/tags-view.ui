@@ -24,7 +24,7 @@
             </child>
             <child type="title">
               <object class="GtkLabel">
-                <property name="label">Tags</property>
+                <property name="label" translatable="no">Tags</property>
                 <property name="css-classes">heading</property>
               </object>
             </child>
@@ -66,7 +66,7 @@
                     <!--<property name="maximum-size">600</property>-->
                     <child>
                       <object class="GtkLabel">
-                        <property name="label">Tags</property>
+                        <property name="label" translatable="no" context="Sidebar tags header">Tags</property>
                         <property name="halign">start</property>
                         <property name="margin-start">12</property>
                         <property name="visible">false</property>
@@ -87,7 +87,7 @@
                             <style>
                               <class name="compact"/>
                             </style>
-                            <property name="description">There are no tags to list</property>
+                            <property name="description" translatable="yes">There are no tags to list</property>
                             <child>
                               <object class="GtkBox">
                                 <property name="spacing">6</property>
@@ -100,7 +100,7 @@
                                     <property name="action-name">win.action_add_tag</property>
                                     <property name="child">
                                       <object class="AdwButtonContent">
-                                        <property name="label">Add a tag</property>
+                                        <property name="label" translatable="yes">Add a tag</property>
                                         <property name="icon-name">list-add-symbolic</property>
                                       </object>
                                     </property>
@@ -114,7 +114,7 @@
                                     <property name="action-name">win.action_load_tags</property>
                                     <property name="child">
                                       <object class="AdwButtonContent">
-                                        <property name="label">Load tags</property>
+                                        <property name="label" translatable="yes">Load tags</property>
                                         <property name="icon-name">document-new-symbolic</property>
                                       </object>
                                     </property>
@@ -147,7 +147,7 @@
             <child type="start">
               <object class="GtkToggleButton" id="button_tagsz">
                 <property name="icon-name">document-edit-symbolic</property>
-                <property name="tooltip-text">Edit Tags</property>
+                <property name="tooltip-text" translatable="yes" context="tooltip">Edit Tags</property>
                 <property name="action-name">win.action_toggle_edit_mode</property>
               </object>
             </child>
@@ -160,7 +160,7 @@
                     </style>
                     <property name="icon_name">zoom-in-symbolic</property>
                     <property name="visible">false</property>
-                    <property name="tooltip-text">Create tag from selected line</property>
+                    <property name="tooltip-text" translatable="yes" context="tooltip">Create tag from selected line</property>
                     <property name="action-name">win.action_add_tag_from_line</property>
                   </object>
                 </child>
@@ -168,7 +168,7 @@
                   <object class="GtkButton" id="button_prev_hit">
                     <property name="icon_name">pan-up-symbolic</property>
                     <property name="visible">false</property>
-                    <property name="tooltip-text">Previous hit</property>
+                    <property name="tooltip-text" translatable="yes" context="tooltip">Previous hit</property>
                     <property name="action-name">win.prev_hit</property>
                   </object>
                 </child>
@@ -176,7 +176,7 @@
                   <object class="GtkButton" id="button_next_hit">
                     <property name="icon_name">pan-down-symbolic</property>
                     <property name="visible">false</property>
-                    <property name="tooltip-text">Next hit</property>
+                    <property name="tooltip-text" translatable="yes" context="tooltip">Next hit</property>
                     <property name="action-name">win.next_hit</property>
                   </object>
                 </child>
@@ -187,7 +187,7 @@
                       <class name="success" />
                     </style>
                     <property name="icon_name">view-conceal-symbolic</property>
-                    <property name="tooltip-text">Hide untagged</property>
+                    <property name="tooltip-text" translatable="yes" context="tooltip">Hide untagged</property>
                     <property name="action-name">win.hide_untagged_lines</property>
                   </object>
                 </child>
@@ -199,7 +199,7 @@
                   <object class="GtkToggleButton" id="button_incremental">
                     <property name="visible">false</property>
                     <property name="icon_name">thunderbolt-symbolic</property>
-                    <property name="tooltip-text">Incremental mode (Experimental - resets selection)</property>
+                    <property name="tooltip-text" translatable="no">Incremental mode (Experimental - resets selection)</property>
                   </object>
                 </child>
                 <child>
@@ -208,7 +208,7 @@
                       <class name="flat"/>
                       <!--<class name="error"/>-->
                     </style>
-                    <property name="tooltip-text">Remove all</property>
+                    <property name="tooltip-text" translatable="yes" context="tooltip">Remove all</property>
                     <property name="visible">true</property>
                     <property name="action-name">win.action_remove_all_tags</property>
                     <property name="child">

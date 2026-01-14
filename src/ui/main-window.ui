@@ -2,7 +2,7 @@
 <interface>
   <requires lib="gtk" version="4.0"/>
   <template class="TagsMainWindow" parent="AdwApplicationWindow">
-    <property name="title" translatable="yes">Tags</property>
+    <property name="title" translatable="no">Tags</property>
     <property name="default-width">720</property>
     <property name="default-height">720</property>
 	  <style>
@@ -22,8 +22,8 @@
                     <property name="child">
                       <object class="AdwButtonContent">
                         <property name="icon-name">document-open-symbolic</property>
-                        <property name="label" translatable="yes">_Open</property>
-                        <property name="tooltip_text" translatable="yes">Select a File</property>
+                        <property name="label" translatable="yes" context="Open a file">_Open</property>
+                        <property name="tooltip_text" translatable="yes" context="Open a file - tooltip">Select a File</property>
                         <property name="use-underline">true</property>
                       </object>
                     </property>
@@ -39,7 +39,7 @@
                         <style>
                           <class name="heading" />
                         </style>
-                        <property name="label">Tags</property>
+                        <property name="label" translatable="no">Tags</property>
                         <property name="visible">false</property>
                       </object>
                     </child>
@@ -56,7 +56,7 @@
                     <child>
                       <object class="AdwWindowTitle" id="window_title">
                         <property name="visible">false</property>
-                        <property name="title">Tags</property>
+                        <property name="titlea" translatable="no">Tags</property>
                         <!--<property name="subtitle">Open a file to get started ...</property>-->
                         </object>
                     </child>
@@ -80,7 +80,7 @@
                     </style>
                     <property name="visible">false</property>
                     <property name="icon_name">view-conceal-symbolic</property>
-                    <property name="tooltip-text">Hide untagged</property>
+                    <property name="tooltip-text" translatable="yes" context="tooltip">Hide untagged</property>
                     <property name="action-name">win.hide_untagged_lines</property>
                   </object>
                 </child>
@@ -89,7 +89,7 @@
                     <property name="visible">false</property>
                     <property name="icon-name">list-add-symbolic</property>
                     <property name="popover">file_popover</property>
-                    <property name="tooltip-text">New Tag</property>
+                    <property name="tooltip-text" translatable="yes" context="tooltip">New Tag</property>
                     <property name="action-name">win.action_add_tag</property>
                   </object>
                 </child>
@@ -105,7 +105,7 @@
                   <object class="GtkButton" id="button_tags_list">
                     <property name="visible">true</property>
                     <property name="icon-name">sidebar-show</property>
-                    <property name="tooltip-text">Tag List</property>
+                    <property name="tooltip-text" translatable="yes" context="tooltip">Tag List</property>
                     <property name="action-name">win.toggle_tags_view</property>
                   </object>
                 </child>

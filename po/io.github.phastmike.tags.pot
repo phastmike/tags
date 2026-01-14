@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.phastmike.tags 2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/phastmike/tags/issues\n"
-"POT-Creation-Date: 2026-01-14 09:55+0000\n"
+"POT-Creation-Date: 2026-01-14 12:22+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,13 +17,18 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/gtk/help-overlay.ui:7 src/gtk/help-overlay.ui:8 src/gtk/help-overlay.ui:59
+#: src/gtk/help-overlay.ui:7
+msgctxt "shortcut section title"
+msgid "General"
+msgstr ""
+
+#: src/gtk/help-overlay.ui:8
 msgctxt "shortcut window"
 msgid "General"
 msgstr ""
 
 #: src/gtk/help-overlay.ui:12
-msgctxt "shortcut window"
+msgctxt "shorcut group title"
 msgid "Tags"
 msgstr ""
 
@@ -60,6 +65,11 @@ msgstr ""
 #: src/gtk/help-overlay.ui:51
 msgctxt "shortcut window"
 msgid "Toggle edit Mode"
+msgstr ""
+
+#: src/gtk/help-overlay.ui:59
+msgctxt "shortcut group title"
+msgid "General"
 msgstr ""
 
 #: src/gtk/help-overlay.ui:62
@@ -182,16 +192,29 @@ msgctxt "shortcut window"
 msgid "Next tag hit"
 msgstr ""
 
-#: src/ui/main-window.ui:5
-msgid "Tags"
-msgstr ""
-
 #: src/ui/main-window.ui:25
+msgctxt "Open a file"
 msgid "_Open"
 msgstr ""
 
 #: src/ui/main-window.ui:26
+msgctxt "Open a file - tooltip"
 msgid "Select a File"
+msgstr ""
+
+#: src/ui/main-window.ui:83 src/ui/tags-view.ui:190
+msgctxt "tooltip"
+msgid "Hide untagged"
+msgstr ""
+
+#: src/ui/main-window.ui:92
+msgctxt "tooltip"
+msgid "New Tag"
+msgstr ""
+
+#: src/ui/main-window.ui:108
+msgctxt "tooltip"
+msgid "Tag List"
 msgstr ""
 
 #: src/ui/main-window.ui:132
@@ -202,7 +225,7 @@ msgstr ""
 msgid "Save tagged"
 msgstr ""
 
-#: src/ui/main-window.ui:143
+#: src/ui/main-window.ui:143 src/ui/tags-view.ui:117
 msgid "Load tags"
 msgstr ""
 
@@ -252,15 +275,15 @@ msgstr ""
 msgid "Line Numbers"
 msgstr ""
 
-#: src/ui/preferences-dialog.ui:75
+#: src/ui/preferences-dialog.ui:75 src/ui/tag-dialog-window.ui:150
 msgid "Foreground Color"
 msgstr ""
 
-#: src/ui/preferences-dialog.ui:88
+#: src/ui/preferences-dialog.ui:88 src/ui/tag-dialog-window.ui:162
 msgid "Background Color"
 msgstr ""
 
-#: src/ui/preferences-dialog.ui:101
+#: src/ui/preferences-dialog.ui:101 src/ui/tag-dialog-window.ui:174
 msgid "Example"
 msgstr ""
 
@@ -273,12 +296,48 @@ msgstr ""
 msgid "_Cancel"
 msgstr ""
 
+#: src/ui/tag-dialog-window.ui:36
+msgid "Tag"
+msgstr ""
+
 #: src/ui/tag-dialog-window.ui:46
 msgid "_Add"
 msgstr ""
 
-#: src/ui/tag-dialog-window.ui:180
-msgid "Lorem ipsum dolor sit amet..."
+#: src/ui/tag-dialog-window.ui:58
+msgid "_Delete"
+msgstr ""
+
+#: src/ui/tag-dialog-window.ui:69
+msgid "Filter"
+msgstr ""
+
+#: src/ui/tag-dialog-window.ui:72
+msgid "Pattern"
+msgstr ""
+
+#: src/ui/tag-dialog-window.ui:80
+msgid "Description"
+msgstr ""
+
+#: src/ui/tag-dialog-window.ui:91
+msgid "Regular Expression"
+msgstr ""
+
+#: src/ui/tag-dialog-window.ui:96
+msgid "Case Sensitive"
+msgstr ""
+
+#: src/ui/tag-dialog-window.ui:101
+msgid "Add to Top"
+msgstr ""
+
+#: src/ui/tag-dialog-window.ui:137
+msgid "Color Scheme"
+msgstr ""
+
+#: src/ui/tag-dialog-window.ui:140
+msgid "Regenerate"
 msgstr ""
 
 #: src/ui/tag-dialog-window.ui:199
@@ -289,6 +348,39 @@ msgstr ""
 msgid ""
 "Adds the tag to the top which gives precedence over the other tag filters. Once a line is tagged it disregards other "
 "possible tags. The user can reorder tags with drag and drop at any time"
+msgstr ""
+
+#: src/ui/tags-view.ui:90
+msgid "There are no tags to list"
+msgstr ""
+
+#: src/ui/tags-view.ui:103
+msgid "Add a tag"
+msgstr ""
+
+#: src/ui/tags-view.ui:150
+msgctxt "tooltip"
+msgid "Edit Tags"
+msgstr ""
+
+#: src/ui/tags-view.ui:163
+msgctxt "tooltip"
+msgid "Create tag from selected line"
+msgstr ""
+
+#: src/ui/tags-view.ui:171
+msgctxt "tooltip"
+msgid "Previous hit"
+msgstr ""
+
+#: src/ui/tags-view.ui:179
+msgctxt "tooltip"
+msgid "Next hit"
+msgstr ""
+
+#: src/ui/tags-view.ui:211
+msgctxt "tooltip"
+msgid "Remove all"
 msgstr ""
 
 #: src/ui/tags-view.ui:234
@@ -340,6 +432,7 @@ msgid "Show Sidebar Tag list"
 msgstr ""
 
 #: src/ui/welcome-page.ui:128
+msgctxt "Hit a key in keyboard"
 msgid "Hit"
 msgstr ""
 

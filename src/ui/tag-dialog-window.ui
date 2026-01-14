@@ -33,7 +33,7 @@
             </child>
             <child type="title">
               <object class="AdwWindowTitle">
-                <property name="title">Tag</property>
+                <property name="title" translatable="yes">Tag</property>
               </object>
             </child>
             <child type="end">
@@ -55,7 +55,7 @@
                   <!--<class name="flat"/>-->
                   <class name="error"/>
                 </style>
-                <property name="label">_Delete</property>
+                <property name="label" translatable="yes">_Delete</property>
                 <property name="visible">false</property>
                 <property name="use_underline">true</property>
               </object>
@@ -66,10 +66,10 @@
           <object class="AdwPreferencesPage">
             <child>
               <object class="AdwPreferencesGroup">
-                <property name="title">Filter</property>
+                <property name="title" translatable="yes">Filter</property>
                 <child>
                   <object class="AdwEntryRow" id="entry_tag_pattern">
-                    <property name="title">Pattern</property>
+                    <property name="title" translatable="yes">Pattern</property>
                       <style>
                         <class name="monospace"/>
                       </style>
@@ -77,7 +77,7 @@
                 </child>
                 <child>
                   <object class="AdwEntryRow" id="entry_tag_name">
-                    <property name="title">Description</property>
+                    <property name="title" translatable="yes">Description</property>
                   </object>
                 </child>
                 <!-- check the closing tags /object/child below
@@ -88,17 +88,17 @@
                 -->
                 <child>
                   <object class="AdwSwitchRow" id="row_regex">
-                    <property name="title">Regular Expression</property>
+                    <property name="title" translatable="yes">Regular Expression</property>
                   </object>
                 </child>
                 <child>
                   <object class="AdwSwitchRow" id="row_case">
-                    <property name="title">Case Sensitive</property>
+                    <property name="title" translatable="yes">Case Sensitive</property>
                   </object>
                 </child>
                 <child>
                   <object class="AdwActionRow" id="row_atop">
-                    <property name="title">Add to Top</property>
+                    <property name="title" translatable="yes">Add to Top</property>
                     <property name="activatable">true</property>
                     <child>
                       <object class="GtkBox">
@@ -134,10 +134,10 @@
             </child>
             <child>
               <object class="AdwPreferencesGroup">
-                <property name="title">Color Scheme</property>
+                <property name="title" translatable="yes">Color Scheme</property>
                 <child type="header-suffix">
                   <object class="GtkButton" id="button_regenerate_cs">
-                    <property name="label">Regenerate</property>
+                    <property name="label" translatable="yes">Regenerate</property>
                     <!--
                     <style>
                       <class name="flat"/>
@@ -147,7 +147,7 @@
                 </child>
                 <child>
                   <object class="AdwActionRow">
-                    <property name="title">Foreground Color</property>
+                    <property name="title" translatable="yes">Foreground Color</property>
                     <child>
                       <object class="GtkColorDialogButton" id="button_fg_color">
                         <property name="halign">end</property>
@@ -159,7 +159,7 @@
                 </child>
                 <child>
                   <object class="AdwActionRow">
-                    <property name="title">Background Color</property>
+                    <property name="title" translatable="yes">Background Color</property>
                     <child>
                       <object class="GtkColorDialogButton" id="button_bg_color">
                         <property name="halign">end</property>
@@ -171,13 +171,13 @@
                 </child>
                 <child>
                   <object class="AdwActionRow">
-                    <property name="title">Example</property>
+                    <property name="title" translatable="yes">Example</property>
                       <child>
                         <object class="GtkLabel" id="label_sample_example">
                           <property name="halign">end</property>
                           <property name="valign">center</property>
                           <property name="use_markup">true</property>
-                          <property name="label" translatable="yes">Lorem ipsum dolor sit amet...</property>
+                          <property name="label" translatable="no">Lorem ipsum dolor sit amet...</property>
                           <property name="xalign">0</property>
                           <property name="halign">start</property>
                           <property name="valign">center</property>

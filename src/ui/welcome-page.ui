@@ -125,7 +125,7 @@
                     </child>
                     <child>
                       <object class="GtkLabel">
-                        <property name="label" translatable="yes">Hit</property>
+                        <property name="label" translatable="yes" context="Hit a key in keyboard">Hit</property>
                       </object>
                     </child>
                     <child>
