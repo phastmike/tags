@@ -5,14 +5,16 @@ project('io.github.phastmike.tags', ['c', 'vala'],
                    ],
 )
 
-application_id = 'io.github.phastmike.tags'
+application_id = meson.project_name()
+#application_id = 'io.github.phastmike.tags'
 
 i18n = import('i18n')
 
 conf_data = configuration_data()
 conf_data.set_quoted('APPLICATION_ID', application_id)
-conf_data.set_quoted('GETTEXT_PACKAGE', application_id)
 conf_data.set_quoted('VERSION', meson.project_version())
+conf_data.set_quoted('GETTEXT_PACKAGE', application_id)
+conf_data.set_quoted('LOCALEDIR', join_paths(get_option('prefix'), get_option('localedir')))
 
 config_file = configure_file(
     input : 'src/config.vala.in',

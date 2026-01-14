@@ -4,8 +4,8 @@
     <property name="modal">True</property>
     <child>
       <object class="GtkShortcutsSection">
-        <property name="section-name">General</property>
-        <property name="title">General</property>
+        <property name="section-name" translatable="yes" context="shortcut window">General</property>
+        <property name="title" translatable="yes" context="shortcut window">General</property>
         <property name="max-height">10</property>
         <child>
           <object class="GtkShortcutsGroup">
@@ -99,8 +99,8 @@
     </child>
     <child>
       <object class="GtkShortcutsSection">
-        <property name="section-name">Tag visibility</property>
-        <property name="title">Visibility</property>
+        <property name="section-name" translatable="yes" context="shortcut window">Tag visibility</property>
+        <property name="title" translatable="yes" context="shortcut window">Visibility</property>
         <property name="max-height">10</property>
         <child>
           <object class="GtkShortcutsGroup">
@@ -212,8 +212,8 @@
     </child>
     <child>
       <object class="GtkShortcutsSection">
-        <property name="section-name">Tag Navigation</property>
-        <property name="title">Navigation</property>
+        <property name="section-name" translatable="yes" context="shortcut window">Tag Navigation</property>
+        <property name="title" translatable="yes" context="shortcut window">Navigation</property>
         <property name="max-height">10</property>
         <child>
           <object class="GtkShortcutsGroup">

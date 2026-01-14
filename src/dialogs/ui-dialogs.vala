@@ -15,7 +15,7 @@ namespace Tags.UIDialogs {
     public static async File? file_open_lines (Gtk.Window? parent_window = null, Cancellable? cancellable = null) throws Error {
         var file_filter1 = new Gtk.FileFilter ();
         file_filter1.add_mime_type ("text/plain");
-        file_filter1.set_filter_name ("Text files");
+        file_filter1.set_filter_name (_("Text files"));
 
         var file_filter2 = new Gtk.FileFilter ();
         file_filter2.add_pattern ("*");

@@ -132,10 +132,10 @@ namespace Tags {
                 });
 
                 tag_dialog.deleted.connect ((tag) => {
-                    var dialog = new Adw.AlertDialog ("Remove Tag", "Remove tag from the list?");
+                    var dialog = new Adw.AlertDialog (_("Remove Tag"), _("Remove tag from the list?"));
                     dialog.set_prefer_wide_layout (true);
-                    dialog.add_response ("cancel", "_Cancel");
-                    dialog.add_response ("remove", "_Remove");
+                    dialog.add_response ("cancel", _("_Cancel"));
+                    dialog.add_response ("remove", _("_Remove"));
                     dialog.set_response_appearance ("remove", Adw.ResponseAppearance.DESTRUCTIVE);
                     dialog.set_default_response ("cancel");
                     dialog.set_close_response ("cancel");
@@ -320,9 +320,9 @@ namespace Tags {
         private void setup_buttons () {
             close_request.connect ( () => {
                 if (tags.ntags > 0 && tags_changed) {
-                    var dialog = new Adw.AlertDialog ("Tags changed", "There are unsaved changes, discards changes?");
-                    dialog.add_response ("cancel", "_Cancel");
-                    dialog.add_response ("discard", "_Discard");
+                    var dialog = new Adw.AlertDialog (_("Tags changed"), _("There are unsaved changes, discards changes?"));
+                    dialog.add_response ("cancel", _("_Cancel"));
+                    dialog.add_response ("discard", _("_Discard"));
                     dialog.set_response_appearance ("discard",Adw.ResponseAppearance.DESTRUCTIVE);
                     dialog.set_default_response ("cancel");
                     dialog.set_close_response ("cancel");
@@ -380,7 +380,7 @@ namespace Tags {
 
             FileType type = file.query_file_type (FileQueryInfoFlags.NONE);
             if (type != FileType.REGULAR) {
-                var toast = new Adw.Toast ("'%s' is not a regular file ...".printf(file.get_basename ()));
+                var toast = new Adw.Toast (_("'%s' is not a regular file ...").printf(file.get_basename ()));
                 toast.set_timeout (3);
                 overlay.add_toast (toast);
                 return;
@@ -418,7 +418,7 @@ namespace Tags {
                     minimap.set_array (Lines.model_to_array(lines_colview.lines));
                 } else {
                     lines_colview.set_visible (true);
-                    show_dialog ("Open File", err_msg, "_Close");
+                    show_dialog (_("Open File"), err_msg, _("_Close"));
                 }
             });
         }
@@ -455,7 +455,7 @@ namespace Tags {
         public void action_add_tag_from_line () {
             var bs = lines_colview.selection_model.get_selection ();
             if (bs.is_empty ()) {
-                var toast = new Adw.Toast ("No line selected to create tag");
+                var toast = new Adw.Toast (_("No line selected to create tag"));
                 toast.set_timeout (3);
                 overlay.add_toast (toast);
                 return;
@@ -486,17 +486,17 @@ namespace Tags {
 
         private void action_remove_all_tags () {
             if (tags.ntags == 0) {
-                var toast = new Adw.Toast ("No tags to remove");
+                var toast = new Adw.Toast (_("No tags to remove"));
                 toast.set_timeout (3);
                 overlay.add_toast (toast);
                 return;
             }
 
             if (tags_changed) {
-                var dialog = new Adw.AlertDialog ("Tags changed", "There are unsaved changes, discards changes?");
+                var dialog = new Adw.AlertDialog (_("Tags changed"), _("There are unsaved changes, discards changes?"));
                 dialog.set_prefer_wide_layout (true);
-                dialog.add_response ("cancel", "_Cancel");
-                dialog.add_response ("discard", "_Discard");
+                dialog.add_response ("cancel", _("_Cancel"));
+                dialog.add_response ("discard", _("_Discard"));
                 dialog.set_response_appearance ("discard", Adw.ResponseAppearance.DESTRUCTIVE);
                 dialog.set_default_response ("cancel");
                 dialog.set_close_response ("cancel");
@@ -507,10 +507,10 @@ namespace Tags {
                     }
                 });
             } else {
-                var dialog = new Adw.AlertDialog ("Remove Tags", "Remove all tags from the list?");
+                var dialog = new Adw.AlertDialog (_("Remove Tags"), _("Remove all tags from the list?"));
                 dialog.set_prefer_wide_layout (true);
-                dialog.add_response ("cancel", "_Cancel");
-                dialog.add_response ("remove", "_Remove");
+                dialog.add_response ("cancel", _("_Cancel"));
+                dialog.add_response ("remove", _("_Remove"));
                 dialog.set_response_appearance ("remove", Adw.ResponseAppearance.DESTRUCTIVE);
                 dialog.set_default_response ("cancel");
                 dialog.set_close_response ("cancel");
@@ -615,7 +615,7 @@ namespace Tags {
                     }
                 } catch (Error e) {
                     warning (e.message);
-                    if (e.code != 2) show_dialog ("Save File", e.message);
+                    if (e.code != 2) show_dialog (_("Save File"), e.message);
                 }
             });
         }
@@ -844,7 +844,7 @@ namespace Tags {
             }    
         }
 
-        private void show_dialog (string title, string message, string cancel_label = "_Cancel") {
+        private void show_dialog (string title, string message, string cancel_label = _("_Cancel")) {
             var dialog = new Adw.AlertDialog (title, message);
             dialog.add_response ("cancel", cancel_label);
             dialog.set_response_appearance ("cancel", Adw.ResponseAppearance.SUGGESTED);
@@ -860,7 +860,7 @@ namespace Tags {
                     if (file != null) open_file (file);
                 } catch (Error e) {
                     if (e.code != 2) {
-                        show_dialog ("Open File", "Could not open file...");
+                        show_dialog (_("Open File"), _("Could not open file..."));
                     }
                 }
             });
@@ -868,7 +868,7 @@ namespace Tags {
 
         private void action_toggle_edit_mode () {
             if (tags.ntags == 0) {
-                var toast = new Adw.Toast ("No tags to edit");
+                var toast = new Adw.Toast (_("No tags to edit"));
                 toast.set_timeout (3);
                 overlay.add_toast (toast);
             } else {

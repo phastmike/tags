@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.phastmike.tags 2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/phastmike/tags/issues\n"
-"POT-Creation-Date: 2026-01-12 23:06+0000\n"
+"POT-Creation-Date: 2026-01-14 09:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +16,171 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: src/gtk/help-overlay.ui:7 src/gtk/help-overlay.ui:8 src/gtk/help-overlay.ui:59
+msgctxt "shortcut window"
+msgid "General"
+msgstr ""
+
+#: src/gtk/help-overlay.ui:12
+msgctxt "shortcut window"
+msgid "Tags"
+msgstr ""
+
+#: src/gtk/help-overlay.ui:15
+msgctxt "shortcut window"
+msgid "Add a Tag"
+msgstr ""
+
+#: src/gtk/help-overlay.ui:21
+msgctxt "shortcut window"
+msgid "Save tagged Lines"
+msgstr ""
+
+#: src/gtk/help-overlay.ui:27
+msgctxt "shortcut window"
+msgid "Toggle tags sidebar Visibility"
+msgstr ""
+
+#: src/gtk/help-overlay.ui:33
+msgctxt "shortcut window"
+msgid "Toggle untagged lines Visibility"
+msgstr ""
+
+#: src/gtk/help-overlay.ui:39
+msgctxt "shortcut window"
+msgid "Enable all Tags"
+msgstr ""
+
+#: src/gtk/help-overlay.ui:45
+msgctxt "shortcut window"
+msgid "Disable all Tags"
+msgstr ""
+
+#: src/gtk/help-overlay.ui:51
+msgctxt "shortcut window"
+msgid "Toggle edit Mode"
+msgstr ""
+
+#: src/gtk/help-overlay.ui:62
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr ""
+
+#: src/gtk/help-overlay.ui:68
+msgctxt "shortcut window"
+msgid "Preferences"
+msgstr ""
+
+#: src/gtk/help-overlay.ui:74
+msgctxt "shortcut window"
+msgid "Show Shortcuts"
+msgstr ""
+
+#: src/gtk/help-overlay.ui:80
+msgctxt "shortcut window"
+msgid "Copy selected text Lines"
+msgstr ""
+
+#: src/gtk/help-overlay.ui:86
+msgctxt "shortcut window"
+msgid "Toggle minimap Visibility "
+msgstr ""
+
+#: src/gtk/help-overlay.ui:92
+msgctxt "shortcut window"
+msgid "Toggle line Numbers"
+msgstr ""
+
+#: src/gtk/help-overlay.ui:102
+msgctxt "shortcut window"
+msgid "Tag visibility"
+msgstr ""
+
+#: src/gtk/help-overlay.ui:103
+msgctxt "shortcut window"
+msgid "Visibility"
+msgstr ""
+
+#: src/gtk/help-overlay.ui:107
+msgctxt "shortcut window"
+msgid "Toggle tag visibility"
+msgstr ""
+
+#: src/gtk/help-overlay.ui:110
+msgctxt "shortcut window"
+msgid "Toggle first tag visibility"
+msgstr ""
+
+#: src/gtk/help-overlay.ui:116
+msgctxt "shortcut window"
+msgid "Toggle second tag visibility"
+msgstr ""
+
+#: src/gtk/help-overlay.ui:160 src/gtk/help-overlay.ui:194
+msgctxt "shortcut window"
+msgid "..."
+msgstr ""
+
+#: src/gtk/help-overlay.ui:165
+msgctxt "shortcut window"
+msgid "Toggle ninth tag visibility"
+msgstr ""
+
+#: src/gtk/help-overlay.ui:171
+msgctxt "shortcut window"
+msgid "Toggle tenth tag visibility"
+msgstr ""
+
+#: src/gtk/help-overlay.ui:179
+msgctxt "shortcut window"
+msgid "Show"
+msgstr ""
+
+#: src/gtk/help-overlay.ui:182
+msgctxt "shortcut window"
+msgid "Show only first tag"
+msgstr ""
+
+#: src/gtk/help-overlay.ui:188
+msgctxt "shortcut window"
+msgid "Show only second tag"
+msgstr ""
+
+#: src/gtk/help-overlay.ui:199
+msgctxt "shortcut window"
+msgid "Show only ninth tag"
+msgstr ""
+
+#: src/gtk/help-overlay.ui:205
+msgctxt "shortcut window"
+msgid "Show only tenth tag"
+msgstr ""
+
+#: src/gtk/help-overlay.ui:215
+msgctxt "shortcut window"
+msgid "Tag Navigation"
+msgstr ""
+
+#: src/gtk/help-overlay.ui:216
+msgctxt "shortcut window"
+msgid "Navigation"
+msgstr ""
+
+#: src/gtk/help-overlay.ui:220
+msgctxt "shortcut window"
+msgid "Quick jump"
+msgstr ""
+
+#: src/gtk/help-overlay.ui:223
+msgctxt "shortcut window"
+msgid "Previous tag hit"
+msgstr ""
+
+#: src/gtk/help-overlay.ui:229
+msgctxt "shortcut window"
+msgid "Next tag hit"
+msgstr ""
 
 #: src/ui/main-window.ui:5
 msgid "Tags"
@@ -103,7 +268,8 @@ msgstr ""
 msgid "Visible"
 msgstr ""
 
-#: src/ui/tag-dialog-window.ui:30
+#: src/ui/tag-dialog-window.ui:30 src/window/main-window.vala:137 src/window/main-window.vala:324
+#: src/window/main-window.vala:498 src/window/main-window.vala:512 src/window/main-window.vala:847
 msgid "_Cancel"
 msgstr ""
 
@@ -183,4 +349,93 @@ msgstr ""
 
 #: src/ui/welcome-page.ui:152
 msgid "Open a file to start coloring ..."
+msgstr ""
+
+#: src/dialogs/ui-dialogs.vala:18
+msgid "Text files"
+msgstr ""
+
+#: src/preferences/preferences-dialog.vala:46 src/tag/tag-dialog-window.vala:54
+msgid "Select the foreground color"
+msgstr ""
+
+#: src/preferences/preferences-dialog.vala:52 src/tag/tag-dialog-window.vala:60
+msgid "Select the background color"
+msgstr ""
+
+#: src/tag/tag-dialog-window.vala:109
+msgid "_Edit"
+msgstr ""
+
+#: src/window/main-window.vala:135
+msgid "Remove Tag"
+msgstr ""
+
+#: src/window/main-window.vala:135
+msgid "Remove tag from the list?"
+msgstr ""
+
+#: src/window/main-window.vala:138 src/window/main-window.vala:513
+msgid "_Remove"
+msgstr ""
+
+#: src/window/main-window.vala:323 src/window/main-window.vala:496
+msgid "Tags changed"
+msgstr ""
+
+#: src/window/main-window.vala:323 src/window/main-window.vala:496
+msgid "There are unsaved changes, discards changes?"
+msgstr ""
+
+#: src/window/main-window.vala:325 src/window/main-window.vala:499
+msgid "_Discard"
+msgstr ""
+
+#: src/window/main-window.vala:383
+#, c-format
+msgid "'%s' is not a regular file ..."
+msgstr ""
+
+#: src/window/main-window.vala:421 src/window/main-window.vala:863
+msgid "Open File"
+msgstr ""
+
+#: src/window/main-window.vala:421
+msgid "_Close"
+msgstr ""
+
+#: src/window/main-window.vala:458
+msgid "No line selected to create tag"
+msgstr ""
+
+#: src/window/main-window.vala:489
+msgid "No tags to remove"
+msgstr ""
+
+#: src/window/main-window.vala:510
+msgid "Remove Tags"
+msgstr ""
+
+#: src/window/main-window.vala:510
+msgid "Remove all tags from the list?"
+msgstr ""
+
+#: src/window/main-window.vala:618
+msgid "Save File"
+msgstr ""
+
+#: src/window/main-window.vala:863
+msgid "Could not open file..."
+msgstr ""
+
+#: src/window/main-window.vala:871
+msgid "No tags to edit"
+msgstr ""
+
+#: src/application.vala:60
+msgid "App icon by MD Badsha Meah on freeicons.io"
+msgstr ""
+
+#: src/application.vala:61
+msgid "Symbolic icon by www.wishforge.games on freeicons.io"
 msgstr ""

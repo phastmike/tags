@@ -1,5 +1,4 @@
 i18n.gettext(
-  #'tags',
   meson.project_name(),
   preset: 'glib',
   args: [
@@ -11,6 +10,7 @@ i18n.gettext(
 
     '--from-code=UTF-8',
     '--add-location',
+	 #'--no-location',
     '--width=120',
 
     # Custom translatable wrappers, list keywords

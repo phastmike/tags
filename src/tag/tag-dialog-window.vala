@@ -51,13 +51,13 @@ namespace Tags {
             var dialog_fg_color = new Gtk.ColorDialog ();
             dialog_fg_color.set_modal (true);
             dialog_fg_color.set_with_alpha (false);
-            dialog_fg_color.set_title ("Select the foreground color");
+            dialog_fg_color.set_title (_("Select the foreground color"));
             button_fg_color.set_dialog (dialog_fg_color); 
             
             var dialog_bg_color = new Gtk.ColorDialog ();
             dialog_bg_color.set_modal (true);
             dialog_bg_color.set_with_alpha (false);
-            dialog_bg_color.set_title ("Select the background color");
+            dialog_bg_color.set_title (_("Select the background color"));
             button_bg_color.set_dialog (dialog_bg_color); 
 
             button_cancel.clicked.connect (this.destroy);
@@ -106,7 +106,7 @@ namespace Tags {
         public TagDialogWindow.for_editing (Gtk.Application app, Tag tag) {
             Object(application: app, transient_for: app.active_window, modal: true);
 
-            button_ok.set_label ("_Edit");
+            button_ok.set_label (_("_Edit"));
             button_ok.set_sensitive (true);
 
             //button_delete.set_visible (true);

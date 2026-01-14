@@ -57,8 +57,8 @@ namespace Tags {
 
             string[] artists = {
                 "José Miguel Fonte",
-                "App icon by MD Badsha Meah on freeicons.io",
-                "Symbolic icon by www.wishforge.games on freeicons.io"
+                _("App icon by MD Badsha Meah on freeicons.io"),
+                _("Symbolic icon by www.wishforge.games on freeicons.io")
             };
 
             Adw.show_about_dialog (this.active_window,
