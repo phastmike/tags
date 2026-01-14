@@ -1,4 +1,4 @@
-### Reconfigue project
+## Reconfigue project
 
 ```bash
 meson setup build --reconfigure
