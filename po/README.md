@@ -7,11 +7,13 @@ meson setup build --reconfigure
 ## Generate POT file
 
 ```bash
-meson compile io.github.phastmike.tags-pot
+meson compile -C build io.github.phastmike.tags-pot
 ```
 
 ## Generate PO files
 
+Add language to LINGUAS file and run:
+
 ```bash
-meson compile io.github.phastmike.tags-update-po
+meson compile -C build io.github.phastmike.tags-update-po
 ```
