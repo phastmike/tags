@@ -1,0 +1,543 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR José Miguel Fonte
+# This file is distributed under the same license as the io.github.phastmike.tags package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: io.github.phastmike.tags 2.0\n"
+"Report-Msgid-Bugs-To: https://github.com/phastmike/tags/issues\n"
+"POT-Creation-Date: 2026-01-15 12:33-0300\n"
+"PO-Revision-Date: 2026-01-15 12:37-0300\n"
+"Last-Translator: john peter sa <johnppetersa@gmail.com>\n"
+"Language-Team: \n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+#: src/gtk/help-overlay.ui:7
+msgctxt "shortcut section title"
+msgid "General"
+msgstr "Geral"
+
+#: src/gtk/help-overlay.ui:8
+msgctxt "shortcut window"
+msgid "General"
+msgstr "Geral"
+
+#: src/gtk/help-overlay.ui:12
+msgctxt "shorcut group title"
+msgid "Tags"
+msgstr "Tags"
+
+#: src/gtk/help-overlay.ui:15
+msgctxt "shortcut window"
+msgid "Add a Tag"
+msgstr "Adicionar uma tag"
+
+#: src/gtk/help-overlay.ui:21
+msgctxt "shortcut window"
+msgid "Save tagged Lines"
+msgstr "Salvar linhas marcadas"
+
+#: src/gtk/help-overlay.ui:27
+msgctxt "shortcut window"
+msgid "Toggle tags sidebar Visibility"
+msgstr "Alternar visibilidade da barra lateral de tags"
+
+#: src/gtk/help-overlay.ui:33
+msgctxt "shortcut window"
+msgid "Toggle untagged lines Visibility"
+msgstr "Alternar visibilidade das linhas sem tags"
+
+#: src/gtk/help-overlay.ui:39
+msgctxt "shortcut window"
+msgid "Enable all Tags"
+msgstr "Habilitar todas as tags"
+
+#: src/gtk/help-overlay.ui:45
+msgctxt "shortcut window"
+msgid "Disable all Tags"
+msgstr "Desabilitar todas as tags"
+
+#: src/gtk/help-overlay.ui:51
+msgctxt "shortcut window"
+msgid "Toggle edit Mode"
+msgstr "Alternar modo de edição"
+
+#: src/gtk/help-overlay.ui:59
+msgctxt "shortcut group title"
+msgid "General"
+msgstr "Geral"
+
+#: src/gtk/help-overlay.ui:62
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "Sair"
+
+#: src/gtk/help-overlay.ui:68
+msgctxt "shortcut window"
+msgid "Preferences"
+msgstr "Preferências"
+
+#: src/gtk/help-overlay.ui:74
+msgctxt "shortcut window"
+msgid "Show Shortcuts"
+msgstr "Mostrar atalhos"
+
+#: src/gtk/help-overlay.ui:80
+msgctxt "shortcut window"
+msgid "Copy selected text Lines"
+msgstr "Copiar linhas de texto selecionadas"
+
+#: src/gtk/help-overlay.ui:86
+msgctxt "shortcut window"
+msgid "Toggle minimap Visibility "
+msgstr "Alternar visibilidade do minimapa "
+
+#: src/gtk/help-overlay.ui:92
+msgctxt "shortcut window"
+msgid "Toggle line Numbers"
+msgstr "Alternar números de linha"
+
+#: src/gtk/help-overlay.ui:102
+msgctxt "shortcut window"
+msgid "Tag visibility"
+msgstr "Visibilidade da tag"
+
+#: src/gtk/help-overlay.ui:103
+msgctxt "shortcut window"
+msgid "Visibility"
+msgstr "Visibilidade"
+
+#: src/gtk/help-overlay.ui:107
+msgctxt "shortcut window"
+msgid "Toggle tag visibility"
+msgstr "Alternar visibilidade da tag"
+
+#: src/gtk/help-overlay.ui:110
+msgctxt "shortcut window"
+msgid "Toggle first tag visibility"
+msgstr "Alternar visibilidade da primeira tag"
+
+#: src/gtk/help-overlay.ui:116
+msgctxt "shortcut window"
+msgid "Toggle second tag visibility"
+msgstr "Alternar visibilidade da segunda tag"
+
+#: src/gtk/help-overlay.ui:160 src/gtk/help-overlay.ui:194
+msgctxt "shortcut window"
+msgid "..."
+msgstr "..."
+
+#: src/gtk/help-overlay.ui:165
+msgctxt "shortcut window"
+msgid "Toggle ninth tag visibility"
+msgstr "Alternar visibilidade da nona tag"
+
+#: src/gtk/help-overlay.ui:171
+msgctxt "shortcut window"
+msgid "Toggle tenth tag visibility"
+msgstr "Alternar visibilidade da décima tag"
+
+#: src/gtk/help-overlay.ui:179
+msgctxt "shortcut window"
+msgid "Show"
+msgstr "Mostrar"
+
+#: src/gtk/help-overlay.ui:182
+msgctxt "shortcut window"
+msgid "Show only first tag"
+msgstr "Mostrar apenas a primeira tag"
+
+#: src/gtk/help-overlay.ui:188
+msgctxt "shortcut window"
+msgid "Show only second tag"
+msgstr "Mostrar apenas a segunda tag"
+
+#: src/gtk/help-overlay.ui:199
+msgctxt "shortcut window"
+msgid "Show only ninth tag"
+msgstr "Mostrar apenas a nona tag"
+
+#: src/gtk/help-overlay.ui:205
+msgctxt "shortcut window"
+msgid "Show only tenth tag"
+msgstr "Mostrar apenas a décima tag"
+
+#: src/gtk/help-overlay.ui:215
+msgctxt "shortcut window"
+msgid "Tag Navigation"
+msgstr "Navegação de tags"
+
+#: src/gtk/help-overlay.ui:216
+msgctxt "shortcut window"
+msgid "Navigation"
+msgstr "Navegação"
+
+#: src/gtk/help-overlay.ui:220
+msgctxt "shortcut window"
+msgid "Quick jump"
+msgstr "Pulo rápido"
+
+#: src/gtk/help-overlay.ui:223
+msgctxt "shortcut window"
+msgid "Previous tag hit"
+msgstr "Ocorrência anterior da tag"
+
+#: src/gtk/help-overlay.ui:229
+msgctxt "shortcut window"
+msgid "Next tag hit"
+msgstr "Próxima ocorrência da tag"
+
+#: src/ui/main-window.ui:25
+msgctxt "Open a file"
+msgid "_Open"
+msgstr "_Abrir"
+
+#: src/ui/main-window.ui:26
+msgctxt "Open a file - tooltip"
+msgid "Select a File"
+msgstr "Selecione um arquivo"
+
+#: src/ui/main-window.ui:83 src/ui/tags-view.ui:190
+msgctxt "tooltip"
+msgid "Hide untagged"
+msgstr "Ocultar sem tags"
+
+#: src/ui/main-window.ui:92
+msgctxt "tooltip"
+msgid "New Tag"
+msgstr "Nova tag"
+
+#: src/ui/main-window.ui:108
+msgctxt "tooltip"
+msgid "Tag List"
+msgstr "Lista de tags"
+
+#: src/ui/main-window.ui:132
+msgid "New tag"
+msgstr "Nova tag"
+
+#: src/ui/main-window.ui:136
+msgid "Save tagged"
+msgstr "Salvar marcadas"
+
+#: src/ui/main-window.ui:143 src/ui/tags-view.ui:117
+msgid "Load tags"
+msgstr "Carregar tags"
+
+#: src/ui/main-window.ui:147
+msgid "Save tags"
+msgstr "Salvar tags"
+
+#: src/ui/main-window.ui:151
+msgid "Remove tags"
+msgstr "Remover tags"
+
+#: src/ui/main-window.ui:170
+msgid "Hide untagged"
+msgstr "Ocultar sem tags"
+
+#: src/ui/main-window.ui:185
+msgid "New Window"
+msgstr "Nova janela"
+
+#: src/ui/main-window.ui:189
+msgid "Save Tagged Lines"
+msgstr "Salvar linhas marcadas"
+
+#: src/ui/main-window.ui:195 src/ui/preferences-dialog.ui:18
+msgid "Preferences"
+msgstr "Preferências"
+
+#: src/ui/main-window.ui:199
+msgid "Keyboard Shortcuts"
+msgstr "Atalhos de teclado"
+
+#: src/ui/main-window.ui:203
+msgid "About Tags"
+msgstr "Sobre o Tags"
+
+#: src/ui/preferences-dialog.ui:13
+msgid ""
+"Automatically loads the tags file if there is a file with the same name as "
+"the file you are about to open and the extension .tags on the same path"
+msgstr ""
+"Carrega automaticamente o arquivo de tags se houver um arquivo com o mesmo "
+"nome do arquivo que você está prestes a abrir e a extensão .tags no mesmo "
+"caminho"
+
+#: src/ui/preferences-dialog.ui:28
+msgid "Autoload tags file"
+msgstr "Carregar arquivo de tags automaticamente"
+
+#: src/ui/preferences-dialog.ui:64
+msgid "Line Numbers"
+msgstr "Números de linha"
+
+#: src/ui/preferences-dialog.ui:75 src/ui/tag-dialog-window.ui:150
+msgid "Foreground Color"
+msgstr "Cor do texto"
+
+#: src/ui/preferences-dialog.ui:88 src/ui/tag-dialog-window.ui:162
+msgid "Background Color"
+msgstr "Cor de fundo"
+
+#: src/ui/preferences-dialog.ui:101 src/ui/tag-dialog-window.ui:174
+msgid "Example"
+msgstr "Exemplo"
+
+#: src/ui/preferences-dialog.ui:127
+msgid "Visible"
+msgstr "Visível"
+
+#: src/ui/tag-dialog-window.ui:30 src/window/main-window.vala:137
+#: src/window/main-window.vala:324 src/window/main-window.vala:498
+#: src/window/main-window.vala:512 src/window/main-window.vala:847
+msgid "_Cancel"
+msgstr "_Cancelar"
+
+#: src/ui/tag-dialog-window.ui:36
+msgid "Tag"
+msgstr "Tag"
+
+#: src/ui/tag-dialog-window.ui:46
+msgid "_Add"
+msgstr "_Adicionar"
+
+#: src/ui/tag-dialog-window.ui:58
+msgid "_Delete"
+msgstr "_Excluir"
+
+#: src/ui/tag-dialog-window.ui:69
+msgid "Filter"
+msgstr "Filtro"
+
+#: src/ui/tag-dialog-window.ui:72
+msgid "Pattern"
+msgstr "Padrão"
+
+#: src/ui/tag-dialog-window.ui:80
+msgid "Description"
+msgstr "Descrição"
+
+#: src/ui/tag-dialog-window.ui:91
+msgid "Regular Expression"
+msgstr "Expressão regular"
+
+#: src/ui/tag-dialog-window.ui:96
+msgid "Case Sensitive"
+msgstr "Diferenciar maiúsculas e minúsculas"
+
+#: src/ui/tag-dialog-window.ui:101
+msgid "Add to Top"
+msgstr "Adicionar ao topo"
+
+#: src/ui/tag-dialog-window.ui:137
+msgid "Color Scheme"
+msgstr "Esquema de cores"
+
+#: src/ui/tag-dialog-window.ui:140
+msgid "Regenerate"
+msgstr "Regenerar"
+
+#: src/ui/tag-dialog-window.ui:199
+msgid "Delete Tag"
+msgstr "Excluir tag"
+
+#: src/ui/tag-dialog-window.ui:231
+msgid ""
+"Adds the tag to the top which gives precedence over the other tag filters. "
+"Once a line is tagged it disregards other possible tags. The user can "
+"reorder tags with drag and drop at any time"
+msgstr ""
+"Adiciona a tag ao topo, o que lhe dá precedência sobre os outros filtros de "
+"tags. Uma vez que uma linha é marcada, ela ignora outras possíveis tags. O "
+"usuário pode reordenar as tags arrastando e soltando a qualquer momento"
+
+#: src/ui/tags-view.ui:90
+msgid "There are no tags to list"
+msgstr "Não há tags para listar"
+
+#: src/ui/tags-view.ui:103
+msgid "Add a tag"
+msgstr "Adicionar uma tag"
+
+#: src/ui/tags-view.ui:150
+msgctxt "tooltip"
+msgid "Edit Tags"
+msgstr "Editar tags"
+
+#: src/ui/tags-view.ui:163
+msgctxt "tooltip"
+msgid "Create tag from selected line"
+msgstr "Criar tag a partir da linha selecionada"
+
+#: src/ui/tags-view.ui:171
+msgctxt "tooltip"
+msgid "Previous hit"
+msgstr "Ocorrência anterior"
+
+#: src/ui/tags-view.ui:179
+msgctxt "tooltip"
+msgid "Next hit"
+msgstr "Próxima ocorrência"
+
+#: src/ui/tags-view.ui:211
+msgctxt "tooltip"
+msgid "Remove all"
+msgstr "Remover tudo"
+
+#: src/ui/tags-view.ui:234
+msgid "Load Tags"
+msgstr "Carregar tags"
+
+#: src/ui/tags-view.ui:239
+msgid "Import Tags"
+msgstr "Importar tags"
+
+#: src/ui/tags-view.ui:246
+msgid "Edit Tags"
+msgstr "Editar tags"
+
+#: src/ui/tags-view.ui:250
+msgid "Save Tags"
+msgstr "Salvar tags"
+
+#: src/ui/tags-view.ui:256
+msgid "Enable all Tags"
+msgstr "Habilitar todas as tags"
+
+#: src/ui/tags-view.ui:260
+msgid "Disable all Tags"
+msgstr "Desabilitar todas as tags"
+
+#: src/ui/tags-view.ui:266
+msgid "Remove All"
+msgstr "Remover tudo"
+
+#: src/ui/tags-view.ui:282
+msgid "Add from selected Line"
+msgstr "Adicionar da linha selecionada"
+
+#: src/ui/welcome-page.ui:38
+msgid "Welcome to Tags"
+msgstr "Bem-vindo ao Tags"
+
+#: src/ui/welcome-page.ui:78
+msgid "Open a log file to start using tags"
+msgstr "Abra um arquivo de log para começar a usar tags"
+
+#: src/ui/welcome-page.ui:95
+msgid "Add a tag filter"
+msgstr "Adicionar um filtro de tag"
+
+#: src/ui/welcome-page.ui:112
+msgid "Show Sidebar Tag list"
+msgstr "Mostrar lista de tags na barra lateral"
+
+#: src/ui/welcome-page.ui:128
+msgctxt "Hit a key in keyboard"
+msgid "Hit"
+msgstr "Pressione"
+
+#: src/ui/welcome-page.ui:139
+msgid "to hide untagged lines"
+msgstr "para ocultar linhas sem tags"
+
+#: src/ui/welcome-page.ui:152
+msgid "Open a file to start coloring ..."
+msgstr "Abra um arquivo para começar a colorir ..."
+
+#: src/dialogs/ui-dialogs.vala:18
+msgid "Text files"
+msgstr "Arquivos de texto"
+
+#: src/preferences/preferences-dialog.vala:46 src/tag/tag-dialog-window.vala:54
+msgid "Select the foreground color"
+msgstr "Selecione a cor do texto"
+
+#: src/preferences/preferences-dialog.vala:52 src/tag/tag-dialog-window.vala:60
+msgid "Select the background color"
+msgstr "Selecione a cor de fundo"
+
+#: src/tag/tag-dialog-window.vala:109
+msgid "_Edit"
+msgstr "_Editar"
+
+#: src/window/main-window.vala:135
+msgid "Remove Tag"
+msgstr "Remover tag"
+
+#: src/window/main-window.vala:135
+msgid "Remove tag from the list?"
+msgstr "Remover tag da lista?"
+
+#: src/window/main-window.vala:138 src/window/main-window.vala:513
+msgid "_Remove"
+msgstr "_Remover"
+
+#: src/window/main-window.vala:323 src/window/main-window.vala:496
+msgid "Tags changed"
+msgstr "Tags alteradas"
+
+#: src/window/main-window.vala:323 src/window/main-window.vala:496
+msgid "There are unsaved changes, discards changes?"
+msgstr "Há alterações não salvas, descartar alterações?"
+
+#: src/window/main-window.vala:325 src/window/main-window.vala:499
+msgid "_Discard"
+msgstr "_Descartar"
+
+#: src/window/main-window.vala:383
+#, c-format
+msgid "'%s' is not a regular file ..."
+msgstr "'%s' não é um arquivo comum ..."
+
+#: src/window/main-window.vala:421 src/window/main-window.vala:863
+msgid "Open File"
+msgstr "Abrir arquivo"
+
+#: src/window/main-window.vala:421
+msgid "_Close"
+msgstr "_Fechar"
+
+#: src/window/main-window.vala:458
+msgid "No line selected to create tag"
+msgstr "Nenhuma linha selecionada para criar tag"
+
+#: src/window/main-window.vala:489
+msgid "No tags to remove"
+msgstr "Nenhuma tag para remover"
+
+#: src/window/main-window.vala:510
+msgid "Remove Tags"
+msgstr "Remover tags"
+
+#: src/window/main-window.vala:510
+msgid "Remove all tags from the list?"
+msgstr "Remover todas as tags da lista?"
+
+#: src/window/main-window.vala:618
+msgid "Save File"
+msgstr "Salvar arquivo"
+
+#: src/window/main-window.vala:863
+msgid "Could not open file..."
+msgstr "Não foi possível abrir o arquivo..."
+
+#: src/window/main-window.vala:871
+msgid "No tags to edit"
+msgstr "Nenhuma tag para editar"
+
+#: src/application.vala:60
+msgid "App icon by MD Badsha Meah on freeicons.io"
+msgstr "Ícone do aplicativo por MD Badsha Meah em freeicons.io"
+
+#: src/application.vala:61
+msgid "Symbolic icon by www.wishforge.games on freeicons.io"
+msgstr "Ícone simbólico por www.wishforge.games em freeicons.io"
