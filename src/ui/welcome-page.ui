@@ -50,7 +50,7 @@
                 <child>
                   <object class="GtkLabel">
                     <property name="justify">center</property>
-                    <property name="label">Give color to your log files</property>
+                    <property name="label" translatable="yes">Give color to your log files</property>
                     <style>
                       <class name="title-4"/>
                     </style>
