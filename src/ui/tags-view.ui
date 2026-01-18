@@ -100,6 +100,7 @@
                                     <property name="action-name">win.action_add_tag</property>
                                     <property name="child">
                                       <object class="AdwButtonContent">
+                                        <property name="can-shrink">true</property>
                                         <property name="label" translatable="yes">Add a tag</property>
                                         <property name="icon-name">list-add-symbolic</property>
                                       </object>
@@ -114,6 +115,7 @@
                                     <property name="action-name">win.action_load_tags</property>
                                     <property name="child">
                                       <object class="AdwButtonContent">
+                                        <property name="can-shrink">true</property>
                                         <property name="label" translatable="yes">Load tags</property>
                                         <property name="icon-name">document-new-symbolic</property>
                                       </object>
