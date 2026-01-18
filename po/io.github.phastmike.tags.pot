@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.phastmike.tags 2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/phastmike/tags/issues\n"
-"POT-Creation-Date: 2026-01-14 12:22+0000\n"
+"POT-Creation-Date: 2026-01-18 15:53+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -202,7 +202,7 @@ msgctxt "Open a file - tooltip"
 msgid "Select a File"
 msgstr ""
 
-#: src/ui/main-window.ui:83 src/ui/tags-view.ui:190
+#: src/ui/main-window.ui:83 src/ui/tags-view.ui:192
 msgctxt "tooltip"
 msgid "Hide untagged"
 msgstr ""
@@ -225,7 +225,7 @@ msgstr ""
 msgid "Save tagged"
 msgstr ""
 
-#: src/ui/main-window.ui:143 src/ui/tags-view.ui:117
+#: src/ui/main-window.ui:143 src/ui/tags-view.ui:119
 msgid "Load tags"
 msgstr ""
 
@@ -354,69 +354,73 @@ msgstr ""
 msgid "There are no tags to list"
 msgstr ""
 
-#: src/ui/tags-view.ui:103
+#: src/ui/tags-view.ui:104
 msgid "Add a tag"
 msgstr ""
 
-#: src/ui/tags-view.ui:150
+#: src/ui/tags-view.ui:152
 msgctxt "tooltip"
 msgid "Edit Tags"
 msgstr ""
 
-#: src/ui/tags-view.ui:163
+#: src/ui/tags-view.ui:165
 msgctxt "tooltip"
 msgid "Create tag from selected line"
 msgstr ""
 
-#: src/ui/tags-view.ui:171
+#: src/ui/tags-view.ui:173
 msgctxt "tooltip"
 msgid "Previous hit"
 msgstr ""
 
-#: src/ui/tags-view.ui:179
+#: src/ui/tags-view.ui:181
 msgctxt "tooltip"
 msgid "Next hit"
 msgstr ""
 
-#: src/ui/tags-view.ui:211
+#: src/ui/tags-view.ui:213
 msgctxt "tooltip"
 msgid "Remove all"
 msgstr ""
 
-#: src/ui/tags-view.ui:234
+#: src/ui/tags-view.ui:236
 msgid "Load Tags"
 msgstr ""
 
-#: src/ui/tags-view.ui:239
+#: src/ui/tags-view.ui:241
 msgid "Import Tags"
 msgstr ""
 
-#: src/ui/tags-view.ui:246
+#: src/ui/tags-view.ui:248
 msgid "Edit Tags"
 msgstr ""
 
-#: src/ui/tags-view.ui:250
+#: src/ui/tags-view.ui:252
 msgid "Save Tags"
 msgstr ""
 
-#: src/ui/tags-view.ui:256
+#: src/ui/tags-view.ui:258
 msgid "Enable all Tags"
 msgstr ""
 
-#: src/ui/tags-view.ui:260
+#: src/ui/tags-view.ui:262
 msgid "Disable all Tags"
 msgstr ""
 
-#: src/ui/tags-view.ui:266
+#: src/ui/tags-view.ui:268
 msgid "Remove All"
 msgstr ""
 
-#: src/ui/tags-view.ui:282
+#: src/ui/tags-view.ui:284
 msgid "Add from selected Line"
 msgstr ""
 
 #: src/ui/welcome-page.ui:38
 msgid "Welcome to Tags"
+msgstr ""
+
+#: src/ui/welcome-page.ui:53
+msgid "Give color to your log files"
 msgstr ""
 
 #: src/ui/welcome-page.ui:78
