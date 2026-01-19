@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: io.github.phastmike.tags 2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/phastmike/tags/issues\n"
 "POT-Creation-Date: 2026-01-18 15:53+0000\n"
-"PO-Revision-Date: 2026-01-15 12:37-0300\n"
+"PO-Revision-Date: 2026-01-18 20:08-0300\n"
 "Last-Translator: john peter sa <johnppetersa@gmail.com>\n"
 "Language-Team: \n"
 "Language: pt_BR\n"
@@ -430,7 +430,7 @@ msgstr "Bem-vindo ao Tags"
 
 #: src/ui/welcome-page.ui:53
 msgid "Give color to your log files"
-msgstr ""
+msgstr "Dê cor aos seus arquivos de log"
 
 #: src/ui/welcome-page.ui:78
 msgid "Open a log file to start using tags"
