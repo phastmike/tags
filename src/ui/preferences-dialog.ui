@@ -58,7 +58,7 @@
         </child>
         <child>
           <object class="AdwPreferencesGroup">
-            <property name="title">View</property>
+            <property name="title" translatable="yes">View</property>
             <child>
               <object class="AdwSwitchRow" id="row_ln_visible">
                 <property name="title" translatable="yes">Line Numbers</property>

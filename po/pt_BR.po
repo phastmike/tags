@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.phastmike.tags 2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/phastmike/tags/issues\n"
-"POT-Creation-Date: 2026-01-18 15:53+0000\n"
+"POT-Creation-Date: 2026-01-26 09:11+0000\n"
 "PO-Revision-Date: 2026-01-18 20:08-0300\n"
 "Last-Translator: john peter sa <johnppetersa@gmail.com>\n"
 "Language-Team: \n"
@@ -274,6 +274,10 @@ msgstr ""
 #: src/ui/preferences-dialog.ui:28
 msgid "Autoload tags file"
 msgstr "Carregar arquivo de tags automaticamente"
+
+#: src/ui/preferences-dialog.ui:61
+msgid "View"
+msgstr "Vista"
 
 #: src/ui/preferences-dialog.ui:64
 msgid "Line Numbers"
