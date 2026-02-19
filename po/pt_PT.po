@@ -1,5 +1,5 @@
 # Portuguese translations for io.github.phastmike.tags package
-# TraduÁ„o portuguesa (Portugal) para o pacote io.github.phastmike.tags.
+# Tradu√ß√£o portuguesa (Portugal) para o pacote io.github.phastmike.tags.
 # Copyright (C) 2026 Jos√© Miguel Fonte
 # This file is distributed under the same license as the io.github.phastmike.tags package.
 # Automatically generated, 2026.
@@ -66,7 +66,7 @@ msgstr "Desativar todas as etiquetas"
 #: src/gtk/help-overlay.ui:51
 msgctxt "shortcut window"
 msgid "Toggle edit Mode"
-msgstr "Alternar modo de edicao"
+msgstr "Alternar modo de edi√ß√£o"
 
 #: src/gtk/help-overlay.ui:59
 msgctxt "shortcut group title"
@@ -81,7 +81,7 @@ msgstr "Sair"
 #: src/gtk/help-overlay.ui:68
 msgctxt "shortcut window"
 msgid "Preferences"
-msgstr "PreferÍncias"
+msgstr "Prefer√™ncias"
 
 #: src/gtk/help-overlay.ui:74
 msgctxt "shortcut window"
@@ -101,7 +101,7 @@ msgstr "Alternar visibilidade do minimapa"
 #: src/gtk/help-overlay.ui:92
 msgctxt "shortcut window"
 msgid "Toggle line Numbers"
-msgstr "Alternar n˙meros de linha"
+msgstr "Alternar n√∫meros de linha"
 
 #: src/gtk/help-overlay.ui:102
 msgctxt "shortcut window"
@@ -141,7 +141,7 @@ msgstr "Alternar visibilidade da nona etiqueta"
 #: src/gtk/help-overlay.ui:171
 msgctxt "shortcut window"
 msgid "Toggle tenth tag visibility"
-msgstr "Alternar visibilidade da dÈcima etiqueta"
+msgstr "Alternar visibilidade da d√©cima etiqueta"
 
 #: src/gtk/help-overlay.ui:179
 msgctxt "shortcut window"
@@ -166,22 +166,22 @@ msgstr "Mostrar apenas a nona etiqueta"
 #: src/gtk/help-overlay.ui:205
 msgctxt "shortcut window"
 msgid "Show only tenth tag"
-msgstr "Mostrar apenas a dÈcima etiqueta"
+msgstr "Mostrar apenas a d√©cima etiqueta"
 
 #: src/gtk/help-overlay.ui:215
 msgctxt "shortcut window"
 msgid "Tag Navigation"
-msgstr "NavegaÁ„o de etiquetas"
+msgstr "Navega√ß√£o de etiquetas"
 
 #: src/gtk/help-overlay.ui:216
 msgctxt "shortcut window"
 msgid "Navigation"
-msgstr "NavegaÁ„o"
+msgstr "Navega√ß√£o"
 
 #: src/gtk/help-overlay.ui:220
 msgctxt "shortcut window"
 msgid "Quick jump"
-msgstr "Salto r·pido"
+msgstr "Salto r√°pido"
 
 #: src/gtk/help-overlay.ui:223
 msgctxt "shortcut window"
@@ -252,7 +252,7 @@ msgstr "Guardar linhas etiquetadas"
 
 #: src/ui/main-window.ui:195 src/ui/preferences-dialog.ui:18
 msgid "Preferences"
-msgstr "PreferÍncias"
+msgstr "Prefer√™ncias"
 
 #: src/ui/main-window.ui:199
 msgid "Keyboard Shortcuts"
@@ -266,7 +266,10 @@ msgstr "Acerca do Tags"
 msgid ""
 "Automatically loads the tags file if there is a file with the same name as "
 "the file you are about to open and the extension .tags on the same path"
-msgstr "Carrega automaticamente o ficheiro de etiquetas se houver um ficheiro com o mesmo nome do ficheiro que vocÍ est· prestes a abrir e a extens„o .tags no mesmo caminho"
+msgstr ""
+"Carrega automaticamente o ficheiro de etiquetas se houver um ficheiro com o "
+"mesmo nome do ficheiro que voc√™ est√° prestes a abrir e a extens√£o .tags no "
+"mesmo caminho"
 
 #: src/ui/preferences-dialog.ui:28
 msgid "Autoload tags file"
@@ -278,7 +281,7 @@ msgstr "Vista"
 
 #: src/ui/preferences-dialog.ui:64
 msgid "Line Numbers"
-msgstr "N˙meros de linha"
+msgstr "N√∫meros de linha"
 
 #: src/ui/preferences-dialog.ui:75 src/ui/tag-dialog-window.ui:150
 msgid "Foreground Color"
@@ -294,7 +297,7 @@ msgstr "Exemplo"
 
 #: src/ui/preferences-dialog.ui:127
 msgid "Visible"
-msgstr "VisÌvel"
+msgstr "Vis√≠vel"
 
 #: src/ui/tag-dialog-window.ui:30 src/window/main-window.vala:137
 #: src/window/main-window.vala:324 src/window/main-window.vala:498
@@ -320,19 +323,19 @@ msgstr "Filtro"
 
 #: src/ui/tag-dialog-window.ui:72
 msgid "Pattern"
-msgstr "Padr„o"
+msgstr "Padr√£o"
 
 #: src/ui/tag-dialog-window.ui:80
 msgid "Description"
-msgstr "DescriÁ„o"
+msgstr "Descri√ß√£o"
 
 #: src/ui/tag-dialog-window.ui:91
 msgid "Regular Expression"
-msgstr "Express„o regular"
+msgstr "Express√£o regular"
 
 #: src/ui/tag-dialog-window.ui:96
 msgid "Case Sensitive"
-msgstr "SensÌvel a mai˙sculas e min˙sculas"
+msgstr "Sens√≠vel a mai√∫sculas e min√∫sculas"
 
 #: src/ui/tag-dialog-window.ui:101
 msgid "Add to Top"
@@ -355,11 +358,15 @@ msgid ""
 "Adds the tag to the top which gives precedence over the other tag filters. "
 "Once a line is tagged it disregards other possible tags. The user can "
 "reorder tags with drag and drop at any time"
-msgstr "Adiciona a etiqueta ao topo, o que lhe confere precedÍncia sobre os outros filtros de etiquetas. Uma vez que uma linha È etiquetada, ela desconsidera outras possÌveis etiquetas. O usu·rio pode reordenar as etiquetas com arrastar e soltar a qualquer momento"
+msgstr ""
+"Adiciona a etiqueta ao topo, o que lhe confere preced√™ncia sobre os outros "
+"filtros de etiquetas. Uma vez que uma linha √© etiquetada, ela desconsidera "
+"outras poss√≠veis etiquetas. O usu√°rio pode reordenar as etiquetas com "
+"arrastar e soltar a qualquer momento"
 
 #: src/ui/tags-view.ui:90
 msgid "There are no tags to list"
-msgstr "N„o h· etiquetas para listar"
+msgstr "N√£o h√° etiquetas para listar"
 
 #: src/ui/tags-view.ui:104
 msgid "Add a tag"
@@ -428,11 +435,11 @@ msgstr "Bem vindo ao Tags"
 
 #: src/ui/welcome-page.ui:53
 msgid "Give color to your log files"
-msgstr "DÍ cor aos seus ficheiros de log"
+msgstr "D√™ cor aos seus ficheiros de log"
 
 #: src/ui/welcome-page.ui:78
 msgid "Open a log file to start using tags"
-msgstr "Abra um ficheiro de log para comeÁar a usar as etiquetas"
+msgstr "Abra um ficheiro de log para come√ßar a usar as etiquetas"
 
 #: src/ui/welcome-page.ui:95
 msgid "Add a tag filter"
@@ -453,7 +460,7 @@ msgstr "para esconder as linhas sem etiqueta"
 
 #: src/ui/welcome-page.ui:152
 msgid "Open a file to start coloring ..."
-msgstr "Abra um ficheiro para comeÁar a colorir ..."
+msgstr "Abra um ficheiro para come√ßar a colorir ..."
 
 #: src/dialogs/ui-dialogs.vala:18
 msgid "Text files"
@@ -481,7 +488,7 @@ msgstr "Remover etiqueta da lista?"
 
 #: src/window/main-window.vala:138 src/window/main-window.vala:513
 msgid "_Remove"
-msgstr "A re´mover"
+msgstr "A re¬´mover"
 
 #: src/window/main-window.vala:323 src/window/main-window.vala:496
 msgid "Tags changed"
@@ -489,7 +496,7 @@ msgstr "Etiquetas alteradas"
 
 #: src/window/main-window.vala:323 src/window/main-window.vala:496
 msgid "There are unsaved changes, discards changes?"
-msgstr "Estas soao alteraÁıes n„o guardadas, descartar alteraÁıes?"
+msgstr "Estas soao altera√ß√µes n√£o guardadas, descartar altera√ß√µes?"
 
 #: src/window/main-window.vala:325 src/window/main-window.vala:499
 msgid "_Discard"
@@ -498,7 +505,7 @@ msgstr "_Descartar"
 #: src/window/main-window.vala:383
 #, c-format
 msgid "'%s' is not a regular file ..."
-msgstr "'%s' n„o È um ficheiro regular ..."
+msgstr "'%s' n√£o √© um ficheiro regular ..."
 
 #: src/window/main-window.vala:421 src/window/main-window.vala:863
 msgid "Open File"
@@ -514,7 +521,7 @@ msgstr "Nenhuma linha selecionada para criar etiqueta"
 
 #: src/window/main-window.vala:489
 msgid "No tags to remove"
-msgstr "N„o h· etiquetas para remover"
+msgstr "N√£o h√° etiquetas para remover"
 
 #: src/window/main-window.vala:510
 msgid "Remove Tags"
@@ -530,16 +537,16 @@ msgstr "Guardar ficheiro"
 
 #: src/window/main-window.vala:863
 msgid "Could not open file..."
-msgstr "N„o foi possÌvel abrir o ficheiro..."
+msgstr "N√£o foi poss√≠vel abrir o ficheiro..."
 
 #: src/window/main-window.vala:871
 msgid "No tags to edit"
-msgstr "N„o h· etiquetas para editar"
+msgstr "N√£o h√° etiquetas para editar"
 
 #: src/application.vala:60
 msgid "App icon by MD Badsha Meah on freeicons.io"
-msgstr "Õcone da aplicaÁ„o por MD Badsha Meah em freeicons.io"
+msgstr "√çcone da aplica√ß√£o por MD Badsha Meah em freeicons.io"
 
 #: src/application.vala:61
 msgid "Symbolic icon by www.wishforge.games on freeicons.io"
-msgstr "Õcone simbÛlico por www.wishforge.games em freeicons.io"
+msgstr "√çcone simb√≥lico por www.wishforge.games em freeicons.io"
