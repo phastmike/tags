@@ -385,12 +385,12 @@ msgstr "Crirar etiqueta a partir da linha selecionada"
 #: src/ui/tags-view.ui:173
 msgctxt "tooltip"
 msgid "Previous hit"
-msgstr "Hit anterior"
+msgstr "Ocorrência anterior"
 
 #: src/ui/tags-view.ui:181
 msgctxt "tooltip"
 msgid "Next hit"
-msgstr "Hit posterior"
+msgstr "Ocorrência posterior"
 
 #: src/ui/tags-view.ui:213
 msgctxt "tooltip"
@@ -452,7 +452,7 @@ msgstr "Mostrar a barra lateral de etiquetas"
 #: src/ui/welcome-page.ui:128
 msgctxt "Hit a key in keyboard"
 msgid "Hit"
-msgstr "Hit"
+msgstr "Pressione"
 
 #: src/ui/welcome-page.ui:139
 msgid "to hide untagged lines"
