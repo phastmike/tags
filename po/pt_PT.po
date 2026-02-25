@@ -476,7 +476,7 @@ msgstr "Selecione a cor de fundo"
 
 #: src/tag/tag-dialog-window.vala:109
 msgid "_Edit"
-msgstr "_EDitar"
+msgstr "_Editar"
 
 #: src/window/main-window.vala:135
 msgid "Remove Tag"
