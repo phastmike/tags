@@ -66,7 +66,7 @@
             </child>
             <child>
               <object class="AdwSwitchRow" id="row_minimap_visible">
-                <property name="title">Minimap</property>
+                <property name="title" translatable="yes">Minimap</property>
               </object>
             </child>
             <child>
@@ -121,7 +121,7 @@
           <object class="AdwPreferencesGroup">
           <property name="visible">false</property>
           <property name="margin-bottom">60</property>
-          <property name="title">Minimap</property>
+          <property name="title" translatable="yes">Minimap</property>
             <child>
               <object class="AdwSwitchRow" id="_row_minimap_visible">
                 <property name="title" translatable="yes">Visible</property>
