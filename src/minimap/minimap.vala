@@ -315,9 +315,7 @@ public class Minimap : Gtk.DrawingArea {
         animate_to_value (new_value);
     }
     
-    /**
-     * Animate to a specific adjustment value
-     */
+    // Animate to a specific adjustment value
     private void animate_to_value (double new_value) {
         // Ensure bounds
         new_value = Math.fmax (viewport_adjustment.get_lower (),
@@ -333,9 +331,7 @@ public class Minimap : Gtk.DrawingArea {
         }
     }
     
-    /**
-     * Animate viewport movement for smooth scrolling
-     */
+    // Animate viewport movement for smooth scrolling
     private bool animate_viewport() {
         if (target_value == null) {
             animation_source_id = 0;

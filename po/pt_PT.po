@@ -443,7 +443,7 @@ msgstr "Dê cor aos seus ficheiros de log"
 
 #: src/ui/welcome-page.ui:78
 msgid "Open a log file to start using tags"
-msgstr "Abra um ficheiro de log para começar a usar as etiquetas"
+msgstr "Abra um ficheiro de log para começar a usar etiquetas"
 
 #: src/ui/welcome-page.ui:95
 msgid "Add a tag filter"
