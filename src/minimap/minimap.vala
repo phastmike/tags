@@ -58,6 +58,12 @@ public class Minimap : Gtk.DrawingArea {
 
         set_viewport_adjustment (text_adj);
 
+        var sm = Adw.StyleManager.get_default ();
+        sm.notify["dark"].connect ( () => {
+            reset_colors ();
+            redraw_lines ();
+        });
+
         init_colors ();
         reset_colors ();
 
@@ -81,12 +87,6 @@ public class Minimap : Gtk.DrawingArea {
     private void init_colors () {
         highlight_color = Gdk.RGBA ();
         text_color = Gdk.RGBA ();
-
-        var sm = Adw.StyleManager.get_default ();
-        sm.notify["dark"].connect ( () => {
-            reset_colors ();
-            redraw_lines ();
-        });
     }
 
     private void reset_colors () {

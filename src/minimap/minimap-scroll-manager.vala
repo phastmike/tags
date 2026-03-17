@@ -21,7 +21,7 @@ public class MinimapScrollManager : GLib.Object {
             "value", 
             adj_minimap, 
             "value", 
-            BindingFlags.SYNC_CREATE | BindingFlags.BIDIRECTIONAL,
+            BindingFlags.SYNC_CREATE, // | BindingFlags.BIDIRECTIONAL,
             (
                 (b, from_value, ref to_value) => {
                     if (adj_text.get_upper () <= 0) return false;
