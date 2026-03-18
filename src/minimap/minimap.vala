@@ -8,7 +8,7 @@
  * José Miguel Fonte
  */
 
-public class Minimap : Gtk.DrawingArea {
+public class Minimap : Gtk.Box {
     private string[] lines = {};
     
     private int line_height = 3;
@@ -23,9 +23,10 @@ public class Minimap : Gtk.DrawingArea {
     public const string rgba_dark_theme_text    = "rgba (221, 221, 222, 0.15)";
     public const string rgba_light_theme_text   = "rgba (0, 0, 0, 0.15)";
     
+    public Gtk.DrawingArea drawing_area;
+    public Gtk.ScrolledWindow scrolled_window;
     // Text view adjustment (for drawing the highlight)
     private Gtk.Adjustment? viewport_adjustment = null;
-
     private Cairo.RecordingSurface? minimap_cached = null;
     
     // Mouse interaction state
@@ -54,7 +55,8 @@ public class Minimap : Gtk.DrawingArea {
     }
 
     public Minimap (Gtk.Adjustment? text_adj = null) {
-        Object();
+        //Object ();
+        drawing_area = new Gtk.DrawingArea ();
 
         set_viewport_adjustment (text_adj);
 
@@ -67,11 +69,19 @@ public class Minimap : Gtk.DrawingArea {
         init_colors ();
         reset_colors ();
 
-        set_size_request (0, -1);
-        set_content_width (width);
-        set_draw_func (draw);
+        drawing_area.set_size_request (0, -1);
+        drawing_area.set_content_width (width);
+        drawing_area.set_draw_func (draw);
+        //set_vexpand (true);
 
         init_gestures ();
+
+        scrolled_window = new Gtk.ScrolledWindow ();
+        scrolled_window.set_policy (Gtk.PolicyType.NEVER, Gtk.PolicyType.EXTERNAL);
+        scrolled_window.set_child (drawing_area);
+        scrolled_window.set_vexpand (true);
+
+        append (scrolled_window);
     }
 
     public void clear () {
@@ -105,20 +115,20 @@ public class Minimap : Gtk.DrawingArea {
         click_gesture.set_button (1);
         click_gesture.pressed.connect (on_button_press);
         click_gesture.released.connect (on_button_release);
-        add_controller (click_gesture);
+        drawing_area.add_controller (click_gesture);
 
         // Drag
         var drag_gesture = new Gtk.GestureDrag ();
         drag_gesture.drag_begin.connect (on_drag_begin);
         drag_gesture.drag_update.connect (on_drag_update);
         drag_gesture.drag_end.connect (on_drag_end);
-        add_controller (drag_gesture);
+        drawing_area.add_controller (drag_gesture);
 
         // Motion for hover effects
         var motion_controller = new Gtk.EventControllerMotion ();
         motion_controller.motion.connect (on_motion);
         motion_controller.leave.connect (on_leave);
-        add_controller (motion_controller);
+        drawing_area.add_controller (motion_controller);
     }
 
     public Gtk.Adjustment? get_viewport_adjustment () {
@@ -127,16 +137,16 @@ public class Minimap : Gtk.DrawingArea {
     
     public void set_viewport_adjustment (Gtk.Adjustment? adj) {
         if (viewport_adjustment != null) {
-            viewport_adjustment.value_changed.disconnect (queue_draw);
+            viewport_adjustment.value_changed.disconnect (drawing_area.queue_draw);
         }
         
         viewport_adjustment = adj;
 
         if (adj != null) {
-            viewport_adjustment.value_changed.connect (queue_draw);
+            viewport_adjustment.value_changed.connect (drawing_area.queue_draw);
         }
 
-        queue_draw();
+        drawing_area.queue_draw();
     }
     
     private void redraw_lines () {
@@ -148,7 +158,7 @@ public class Minimap : Gtk.DrawingArea {
 
         if (height == 0) return;
 
-        set_size_request(width, height);
+        drawing_area.set_size_request(width, height);
 
         var bounds = Cairo.Rectangle ();
         bounds.x = 0; bounds.y = 0; bounds.width = width; bounds.height = height;
@@ -189,17 +199,17 @@ public class Minimap : Gtk.DrawingArea {
     public void set_array (string[] lines) {
         this.lines = lines;
         redraw_lines ();
-        queue_draw ();
+        drawing_area.queue_draw ();
     }
 
     private void on_motion(double x, double y) {
         hover_y = y;
-        queue_draw ();
+        drawing_area.queue_draw ();
     }
     
     private void on_leave () {
         hover_y = null;
-        queue_draw ();
+        drawing_area.queue_draw ();
     }
     
     private void on_button_press (int n_press, double x, double y) {

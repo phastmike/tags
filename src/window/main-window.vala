@@ -234,7 +234,7 @@ namespace Tags {
         // FIXME: Dig on why!
         public override void size_allocate (int a, int b, int c) {
             base.size_allocate (a, b, c);
-            minimap.queue_draw ();
+            minimap.drawing_area.queue_draw ();
         }
 
         private void setup_actions () {
@@ -355,18 +355,21 @@ namespace Tags {
             minimap = new Minimap (adj);
             minimap.set_vexpand (true);
 
+            /*
             scrolled_minimap = new Gtk.ScrolledWindow();
             scrolled_minimap.set_policy (Gtk.PolicyType.NEVER, Gtk.PolicyType.EXTERNAL);
             scrolled_minimap.set_child (minimap);
             scrolled_minimap.set_vexpand (true);
+            */
 
-            minimap_scrollman = new MinimapScrollManager (lines_colview.scrolled, scrolled_minimap);
+            minimap_scrollman = new MinimapScrollManager (lines_colview.scrolled, minimap.scrolled_window);
             minimap.set_line_color_bg_callback (delegate_minimap_bgcolor_getter);
         }
 
         private void setup_main_box () {
             revealer = new Gtk.Revealer ();
-            revealer.set_child (scrolled_minimap);
+            //revealer.set_child (scrolled_minimap);
+            revealer.set_child (minimap);
             revealer.set_reveal_child (true);
             revealer.set_transition_duration (200);
             revealer.set_transition_type (Gtk.RevealerTransitionType.SLIDE_RIGHT);
