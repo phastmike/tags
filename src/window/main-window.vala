@@ -42,14 +42,9 @@ namespace Tags {
             set { _tags_edit_mode = value; }
         }
 
-        //private Gtk.ProgressBar pbar;
         private Gtk.Stack stack;
-        //private Adw.BottomSheet bottom_sheet;
         private Gtk.Box main_box;
         private Minimap minimap;
-        //private Gtk.ScrolledWindow scrolled_lines;
-        private Gtk.ScrolledWindow scrolled_minimap;
-        private MinimapScrollManager minimap_scrollman;
         private Gtk.Revealer revealer;
         private Tags.ModelMixer mmixer;
         private TagStyleStore style_store;
@@ -160,7 +155,6 @@ namespace Tags {
             setup_main_box ();
             setup_buttons ();
 
-            //mmixer = new Tags.ModelMixer (filterer.model, tags);
             mmixer = new Tags.ModelMixer (lines.model, tags, filterer);
 
             mmixer.mix_updated.connect ( () => {
@@ -353,16 +347,6 @@ namespace Tags {
 
         private void setup_minimap (Gtk.Adjustment adj) {
             minimap = new Minimap (adj);
-            minimap.set_vexpand (true);
-
-            /*
-            scrolled_minimap = new Gtk.ScrolledWindow();
-            scrolled_minimap.set_policy (Gtk.PolicyType.NEVER, Gtk.PolicyType.EXTERNAL);
-            scrolled_minimap.set_child (minimap);
-            scrolled_minimap.set_vexpand (true);
-            */
-
-            minimap_scrollman = new MinimapScrollManager (lines_colview.scrolled, minimap.scrolled_window);
             minimap.set_line_color_bg_callback (delegate_minimap_bgcolor_getter);
         }
 
