@@ -28,7 +28,7 @@ public class Minimap : Gtk.Box {
     private Gtk.Adjustment? external_adj = null;                // External viewport vertical adjustment
     private Cairo.RecordingSurface? minimap_cached = null;      // Cache for minimap rendering
     
-    // Mouse interaction state
+    // Interaction state
     private bool dragging = false;
     private bool dragging_viewport = false;
     private double drag_start_y = 0;
@@ -349,7 +349,7 @@ public class Minimap : Gtk.Box {
         }
     }
     
-    // Animate viewport movement for smooth scrolling
+    // Animate viewport for smooth scrolling
     private bool animate_viewport() {
         if (target_value == null) {
             animation_source_id = 0;
@@ -393,7 +393,7 @@ public class Minimap : Gtk.Box {
             cr.paint ();
         }
 
-        // Draw hover indicator if mouse is over the widget
+        // Draw hover indicator
         if (hover_y != null && !dragging && hover_y < (line_height * lines.length)) {
             cr.set_source_rgba (0.8, 0.8, 0.9, 0.3);
             cr.rectangle (0, hover_y, width, line_height);

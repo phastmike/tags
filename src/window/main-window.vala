@@ -11,28 +11,14 @@
 namespace Tags {
     [GtkTemplate (ui = "/io/github/phastmike/tags/ui/main-window.ui")]
     public class MainWindow : Adw.ApplicationWindow {
-        /*
-        [GtkChild]
-        unowned Gtk.Button button_open_file;
-        */
         [GtkChild]
         unowned Adw.WindowTitle window_title;
         [GtkChild]
         unowned Gtk.ToggleButton button_hide_untagged;
-        /*
-        [GtkChild]
-        unowned Gtk.Button button_tags_list;
-        [GtkChild]
-        unowned Gtk.Button button_minimap;
-        */
         [GtkChild]
         unowned Adw.ToastOverlay overlay;
         [GtkChild]
         unowned Adw.OverlaySplitView oversplit;
-        /*
-        [GtkChild]
-        unowned Gtk.Label title_title;
-        */
         [GtkChild]
         unowned Gtk.Label title_focus;
 
