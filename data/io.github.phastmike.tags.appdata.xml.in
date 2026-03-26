@@ -60,6 +60,7 @@
   </developer>
   <url type="homepage">https://github.com/phastmike/tags</url>
   <url type="bugtracker">https://github.com/phastmike/tags/issues</url>
+  <url type="vcs-browser">https://github.com/phastmike/tags</url>
   <content_rating type="oars-1.1" />
   <releases>
 
