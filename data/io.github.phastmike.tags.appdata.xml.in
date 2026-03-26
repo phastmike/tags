@@ -63,6 +63,19 @@
   <content_rating type="oars-1.1" />
   <releases>
 
+    <release version="2.1" date="2026-03-26">
+      <description translatable="no">
+        <p>Tags 2.1 is out</p>
+        <p>What's new:</p>
+        <ul>
+          <li>Added support for I18N</li>
+          <li>Added pt_BR and pt_PT translations</li>
+          <li>Fixed SVG Icon to render normally with Gtk 4.22</li>
+        </ul>
+        <p>Minor improvements</p>
+      </description>
+    </release>
+
     <release version="2.0" date="2026-01-07">
       <description translatable="no">
         <p>Tags 2.0 is out</p>
