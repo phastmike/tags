@@ -208,13 +208,9 @@ namespace Tags {
             setup_preferences ();
         }
 
-        // Override the size_allocate method
-        // To force the minimap to redraw the widget
-        // Not sure why the adjustment changed signal doesnt trigger a draw
-        // FIXME: Dig on why!
         public override void size_allocate (int a, int b, int c) {
             base.size_allocate (a, b, c);
-            minimap.drawing_area.queue_draw ();
+            minimap.queue_redraw ();
         }
 
         private void setup_actions () {
@@ -333,6 +329,7 @@ namespace Tags {
 
         private void setup_minimap (Gtk.Adjustment adj) {
             minimap = new Minimap (adj);
+            //minimap = new Minimap (null);
             minimap.set_line_color_bg_callback (delegate_minimap_bgcolor_getter);
         }
 

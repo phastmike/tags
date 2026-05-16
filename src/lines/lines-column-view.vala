@@ -79,8 +79,11 @@ namespace Tags {
             Gtk.ListItem listitem = (Gtk.ListItem) listitemm;
             var label = new Gtk.Label (null);
             label.xalign = 0;
+            //label.set_wrap (true);
+            //label.hexpand = true;
+            //label.height_request = 37; 
+            //listitem.child.parent.hexpand = true;
             listitem.child = label;
-            label.set_use_markup (true);
         }
 
         [GtkCallback]
@@ -89,6 +92,8 @@ namespace Tags {
             var label = listitem.child as Gtk.Label;
             var line = listitem.item as Line;
             label.set_text (line.text);
+            // ISSUE #90 Workaround
+            label.set_tooltip_text (line.text);
 
             if (line.tag == null) {
                 clear_all_tag_styles (label);

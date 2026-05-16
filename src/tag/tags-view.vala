@@ -100,7 +100,7 @@ namespace Tags {
                     drag_widget.append (drag_row);
                     drag_widget.drag_highlight_row (drag_row);
 
-                    var icon = Gtk.DragIcon.get_for_drag (drag) as Gtk.DragIcon;
+                    var icon = new Gtk.DragIcon.get_for_drag (drag) as Gtk.DragIcon;
                     icon.child = drag_widget;
 
                     drag.set_hotspot ((int) row.drag_x, (int) row.drag_y);

@@ -9,17 +9,15 @@
 
 namespace Tags {
     public class Line : Object {
+        private Tag? _tag = null;
+
         public uint number {get;  private set; default = 0;}
         public string? text {get; private set; default = null;}
-
-        // Should be decoupled
-        private Tag? _tag = null;
         public Tag? tag {
             get  {
                 return _tag;
             }
             set {
-                //if (true) {
                 if (_tag != value) {
                     _tag = value;
                     if (value != null) {
@@ -31,10 +29,8 @@ namespace Tags {
                 }
             }
         } 
-
-        public string? actual_style = null;
         public ulong sighandler = 0;
-
+        public string? actual_style = null;
 
         public signal void tag_changed ();
 
