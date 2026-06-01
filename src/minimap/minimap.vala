@@ -166,7 +166,11 @@ public class Minimap : Gtk.Box {
                     if (external_adj.get_upper () <= 0) return false;
                     double t1 = from_value.get_double () / (external_adj.get_upper () - external_adj.get_page_size ());
                     double t2 = adj_minimap.get_upper () - adj_minimap.get_page_size ();
-                    to_value.set_double (t1 * t2);
+                    if (t1.is_nan () || t2.is_nan ()) {
+                        to_value.set_double (0);
+                    } else {
+                        to_value.set_double (t1 * t2);
+                    }
                     return true;
                 }
             ),
@@ -175,7 +179,11 @@ public class Minimap : Gtk.Box {
                     if (adj_minimap.get_upper () <= 0) return false;
                     double t1 = from_value.get_double () / (adj_minimap.get_upper () - adj_minimap.get_page_size ());
                     double t2 = external_adj.get_upper () - external_adj.get_page_size ();
-                    to_value.set_double (t1 * t2); 
+                    if (t1.is_nan () || t2.is_nan ()) {
+                        to_value.set_double (0);
+                    } else {
+                        to_value.set_double (t1 * t2);
+                    }
                     return true;
                 }
             )
