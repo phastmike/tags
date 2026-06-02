@@ -19,7 +19,7 @@
  * NOTE:
  *                        Ysource
  *    Ydest = ----------------------------- * (dest_height - page_size)
- *            (source_height - page_size)
+ *             (source_height - page_size)
  *
  *    Where page_size is or should be the same for both adjustments.
  *
