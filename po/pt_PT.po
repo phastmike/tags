@@ -443,11 +443,11 @@ msgstr "Dê cor aos seus ficheiros de log"
 
 #: src/ui/welcome-page.ui:76
 msgid "Open a log file to start using tags"
-msgstr "Abra um ficheiro de log para começar a usar etiquetas"
+msgstr "Abra um ficheiro de texto para começar"
 
 #: src/ui/welcome-page.ui:93
 msgid "Add a tag filter"
-msgstr "Adicionar um filtro de etiqueta"
+msgstr "Adicione uma etiqueta"
 
 #: src/ui/welcome-page.ui:110
 msgid "Show Sidebar Tag list"
@@ -460,7 +460,7 @@ msgstr "Pressione"
 
 #: src/ui/welcome-page.ui:137
 msgid "to hide untagged lines"
-msgstr "para esconder as linhas sem etiqueta"
+msgstr "para ocultar linhas"
 
 #: src/ui/welcome-page.ui:150
 msgid "Open a file to start coloring ..."
