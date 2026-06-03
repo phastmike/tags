@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: io.github.phastmike.tags 2.0\n"
+"Project-Id-Version: io.github.phastmike.tags 2.1\n"
 "Report-Msgid-Bugs-To: https://github.com/phastmike/tags/issues\n"
-"POT-Creation-Date: 2026-03-01 16:30+0000\n"
+"POT-Creation-Date: 2026-06-03 11:44+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -299,8 +299,8 @@ msgstr ""
 msgid "Visible"
 msgstr ""
 
-#: src/ui/tag-dialog-window.ui:30 src/window/main-window.vala:137 src/window/main-window.vala:324
-#: src/window/main-window.vala:498 src/window/main-window.vala:512 src/window/main-window.vala:847
+#: src/ui/tag-dialog-window.ui:30 src/window/main-window.vala:118 src/window/main-window.vala:300
+#: src/window/main-window.vala:468 src/window/main-window.vala:482 src/window/main-window.vala:817
 msgid "_Cancel"
 msgstr ""
 
@@ -423,36 +423,36 @@ msgstr ""
 msgid "Add from selected Line"
 msgstr ""
 
-#: src/ui/welcome-page.ui:38
+#: src/ui/welcome-page.ui:36
 msgid "Welcome to Tags"
 msgstr ""
 
-#: src/ui/welcome-page.ui:53
+#: src/ui/welcome-page.ui:51
 msgid "Give color to your log files"
 msgstr ""
 
-#: src/ui/welcome-page.ui:78
+#: src/ui/welcome-page.ui:76
 msgid "Open a log file to start using tags"
 msgstr ""
 
-#: src/ui/welcome-page.ui:95
+#: src/ui/welcome-page.ui:93
 msgid "Add a tag filter"
 msgstr ""
 
-#: src/ui/welcome-page.ui:112
+#: src/ui/welcome-page.ui:110
 msgid "Show Sidebar Tag list"
 msgstr ""
 
-#: src/ui/welcome-page.ui:128
+#: src/ui/welcome-page.ui:126
 msgctxt "Hit a key in keyboard"
 msgid "Hit"
 msgstr ""
 
-#: src/ui/welcome-page.ui:139
+#: src/ui/welcome-page.ui:137
 msgid "to hide untagged lines"
 msgstr ""
 
-#: src/ui/welcome-page.ui:152
+#: src/ui/welcome-page.ui:150
 msgid "Open a file to start coloring ..."
 msgstr ""
 
@@ -472,68 +472,68 @@ msgstr ""
 msgid "_Edit"
 msgstr ""
 
-#: src/window/main-window.vala:135
+#: src/window/main-window.vala:116
 msgid "Remove Tag"
 msgstr ""
 
-#: src/window/main-window.vala:135
+#: src/window/main-window.vala:116
 msgid "Remove tag from the list?"
 msgstr ""
 
-#: src/window/main-window.vala:138 src/window/main-window.vala:513
+#: src/window/main-window.vala:119 src/window/main-window.vala:483
 msgid "_Remove"
 msgstr ""
 
-#: src/window/main-window.vala:323 src/window/main-window.vala:496
+#: src/window/main-window.vala:299 src/window/main-window.vala:466
 msgid "Tags changed"
 msgstr ""
 
-#: src/window/main-window.vala:323 src/window/main-window.vala:496
+#: src/window/main-window.vala:299 src/window/main-window.vala:466
 msgid "There are unsaved changes, discards changes?"
 msgstr ""
 
-#: src/window/main-window.vala:325 src/window/main-window.vala:499
+#: src/window/main-window.vala:301 src/window/main-window.vala:469
 msgid "_Discard"
 msgstr ""
 
-#: src/window/main-window.vala:383
+#: src/window/main-window.vala:353
 #, c-format
 msgid "'%s' is not a regular file ..."
 msgstr ""
 
-#: src/window/main-window.vala:421 src/window/main-window.vala:863
+#: src/window/main-window.vala:391 src/window/main-window.vala:833
 msgid "Open File"
 msgstr ""
 
-#: src/window/main-window.vala:421
+#: src/window/main-window.vala:391
 msgid "_Close"
 msgstr ""
 
-#: src/window/main-window.vala:458
+#: src/window/main-window.vala:428
 msgid "No line selected to create tag"
 msgstr ""
 
-#: src/window/main-window.vala:489
+#: src/window/main-window.vala:459
 msgid "No tags to remove"
 msgstr ""
 
-#: src/window/main-window.vala:510
+#: src/window/main-window.vala:480
 msgid "Remove Tags"
 msgstr ""
 
-#: src/window/main-window.vala:510
+#: src/window/main-window.vala:480
 msgid "Remove all tags from the list?"
 msgstr ""
 
-#: src/window/main-window.vala:618
+#: src/window/main-window.vala:588
 msgid "Save File"
 msgstr ""
 
-#: src/window/main-window.vala:863
+#: src/window/main-window.vala:833
 msgid "Could not open file..."
 msgstr ""
 
-#: src/window/main-window.vala:871
+#: src/window/main-window.vala:841
 msgid "No tags to edit"
 msgstr ""
 
@@ -543,4 +543,8 @@ msgstr ""
 
 #: src/application.vala:61
 msgid "Symbolic icon by www.wishforge.games on freeicons.io"
+msgstr ""
+
+#: src/application.vala:69
+msgid "translator-credits"
 msgstr ""

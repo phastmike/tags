@@ -66,6 +66,7 @@ namespace Tags {
                                   "developer-name", "José Miguel Fonte",
                                   "developers", authors,
                                   "artists", artists,
+                                  "translator-credits", _("translator-credits"),
                                   "license-type", Gtk.License.MIT_X11,
                                   "application-icon", "io.github.phastmike.tags",
                                   "website", "https://github.com/phastmike/tags",
