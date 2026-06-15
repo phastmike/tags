@@ -13,7 +13,6 @@
       <li>Save tags</li>
       <li>Remove all tags</li>
       <li>Document minimap with colors</li>
-      <li>User defined line numbering color scheme</li>
       <li>Simple tags based on string containing a pattern</li>
       <li>Support for regular expressions</li>
       <li>Case sensitive support</li>
@@ -63,6 +62,19 @@
   <url type="vcs-browser">https://github.com/phastmike/tags</url>
   <content_rating type="oars-1.1" />
   <releases>
+
+    <release version="2.2" date="2026-06-05">
+      <description translatable="no">
+        <p>Tags 2.2 is out</p>
+        <p>What's new:</p>
+        <ul>
+          <li>Added provided translation: zh_CN</li>
+          <li>Added Translation credits to about page</li>
+          <li>Line tooltip as wrap mode workaround</li>
+        </ul>
+        <p>Minor improvements</p>
+      </description>
+    </release>
 
     <release version="2.1" date="2026-03-26">
       <description translatable="no">
