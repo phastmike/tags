@@ -71,7 +71,7 @@
             </child>
             <child>
               <object class="AdwSpinRow" id="row_wrap_nlines">
-                <property name="title">Wrap Lines</property>
+                <property name="title" translatable="yes">Wrap Lines</property>
                 <property name="visible">true</property>
                 <property name="activatable">false</property>
                 <property name="numeric">true</property>

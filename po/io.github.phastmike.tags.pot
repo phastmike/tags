@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.phastmike.tags 2.2\n"
 "Report-Msgid-Bugs-To: https://github.com/phastmike/tags/issues\n"
-"POT-Creation-Date: 2026-06-30 08:27+0100\n"
+"POT-Creation-Date: 2026-07-01 17:01+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -301,6 +301,10 @@ msgstr ""
 
 #: src/ui/preferences-dialog.ui:69 src/ui/preferences-dialog.ui:141
 msgid "Minimap"
+msgstr ""
+
+#: src/ui/preferences-dialog.ui:74
+msgid "Wrap Lines"
 msgstr ""
 
 #: src/ui/preferences-dialog.ui:92 src/ui/tag-dialog-window.ui:150

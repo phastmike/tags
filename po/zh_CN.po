@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.phastmike.tags 2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/phastmike/tags/issues\n"
-"POT-Creation-Date: 2026-06-30 08:27+0100\n"
+"POT-Creation-Date: 2026-07-01 17:01+0100\n"
 "PO-Revision-Date: 2026-04-01 23:09+0800\n"
 "Last-Translator: yu Qin <imqin_yu@outlook.com>\n"
 "Language-Team: Chinese (China)\n"
@@ -197,23 +197,22 @@ msgstr "下一个匹配标签"
 #: src/gtk/help-overlay.ui:237
 msgctxt "shortcut window"
 msgid "Visual"
-msgstr ""
+msgstr "视觉的"
 
 #: src/gtk/help-overlay.ui:240
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Toggle line wrap"
-msgstr "切换行号可见性"
+msgstr "切换换行符"
 
 #: src/gtk/help-overlay.ui:246
 msgctxt "shortcut window"
 msgid "Increase number of lines per line row"
-msgstr ""
+msgstr "增加每行中的行数"
 
 #: src/gtk/help-overlay.ui:252
 msgctxt "shortcut window"
 msgid "Decrease number of lines per line row"
-msgstr ""
+msgstr "减少每行的行数"
 
 #: src/ui/main-window.ui:25
 msgctxt "Open a file"
@@ -308,6 +307,10 @@ msgstr "行号"
 #: src/ui/preferences-dialog.ui:69 src/ui/preferences-dialog.ui:141
 msgid "Minimap"
 msgstr "概览图"
+
+#: src/ui/preferences-dialog.ui:74
+msgid "Wrap Lines"
+msgstr "自动换行"
 
 #: src/ui/preferences-dialog.ui:92 src/ui/tag-dialog-window.ui:150
 msgid "Foreground Color"
@@ -420,7 +423,7 @@ msgstr "下一个匹配项"
 #: src/ui/tags-view.ui:205
 msgctxt "tooltip"
 msgid "Wrap Lines"
-msgstr ""
+msgstr "自动换行"
 
 #: src/ui/tags-view.ui:224
 msgctxt "tooltip"

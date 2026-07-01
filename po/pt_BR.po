@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.phastmike.tags 2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/phastmike/tags/issues\n"
-"POT-Creation-Date: 2026-06-30 08:27+0100\n"
+"POT-Creation-Date: 2026-07-01 17:01+0100\n"
 "PO-Revision-Date: 2026-01-18 20:08-0300\n"
 "Last-Translator: john peter sa <johnppetersa@gmail.com>\n"
 "Language-Team: \n"
@@ -196,7 +196,7 @@ msgstr "Próxima ocorrência da tag"
 #: src/gtk/help-overlay.ui:237
 msgctxt "shortcut window"
 msgid "Visual"
-msgstr ""
+msgstr "Visual"
 
 #: src/gtk/help-overlay.ui:240
 #, fuzzy
@@ -207,12 +207,12 @@ msgstr "Alternar números de linha"
 #: src/gtk/help-overlay.ui:246
 msgctxt "shortcut window"
 msgid "Increase number of lines per line row"
-msgstr ""
+msgstr "Aumentar o número de linhas por linha"
 
 #: src/gtk/help-overlay.ui:252
 msgctxt "shortcut window"
 msgid "Decrease number of lines per line row"
-msgstr ""
+msgstr "Diminuir o número de linhas por linha"
 
 #: src/ui/main-window.ui:25
 msgctxt "Open a file"
@@ -308,6 +308,10 @@ msgstr "Números de linha"
 #: src/ui/preferences-dialog.ui:69 src/ui/preferences-dialog.ui:141
 msgid "Minimap"
 msgstr "Minimapa"
+
+#: src/ui/preferences-dialog.ui:74
+msgid "Wrap Lines"
+msgstr "Quebra de linha"
 
 #: src/ui/preferences-dialog.ui:92 src/ui/tag-dialog-window.ui:150
 msgid "Foreground Color"
@@ -420,7 +424,7 @@ msgstr "Próxima ocorrência"
 #: src/ui/tags-view.ui:205
 msgctxt "tooltip"
 msgid "Wrap Lines"
-msgstr ""
+msgstr "Quebra de linha"
 
 #: src/ui/tags-view.ui:224
 msgctxt "tooltip"
