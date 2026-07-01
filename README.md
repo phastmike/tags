@@ -56,6 +56,9 @@ Toggle the first ten tags with keyboard shortcuts:
 | `F2` | Previous tag hit |
 | `F3` | Next tag hit |
 | `Ctrl` + `M` | Toggle minimap visibility |
+| `Ctrl` + `W` | Toggle line wrap |
+| `Ctrl` + `+` | Increase number of lines per row (line wrap) |
+| `Ctrl` + `-` | Decrease number of lines per row (line wrap) |
 
 Check the available shortcuts in the application menu with `Ctrl` + `?`.
 
