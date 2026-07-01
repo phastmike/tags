@@ -10,7 +10,7 @@
         <property name="margin-bottom">8</property>
         <property name="wrap">true</property>
         <property name="max-width-chars">36</property>
-        <property name="label" translatable="yes">Automatically loads the tags file if there is a file with the same name as the file you are about to open and the extension .tags on the same path</property>
+        <property name="label" translatable="yes">Automatically loads the tags file if there is a file with the same name as the file you are about to open and the extension .tags on the same path.</property>
       </object>
     </child>
   </object>
@@ -67,6 +67,23 @@
             <child>
               <object class="AdwSwitchRow" id="row_minimap_visible">
                 <property name="title" translatable="yes">Minimap</property>
+              </object>
+            </child>
+            <child>
+              <object class="AdwSpinRow" id="row_wrap_nlines">
+                <property name="title">Wrap Lines</property>
+                <property name="visible">true</property>
+                <property name="activatable">false</property>
+                <property name="numeric">true</property>
+                <property name="adjustment">
+                  <object class="GtkAdjustment">
+                    <property name="lower">2</property>
+                    <property name="upper">10</property>
+                    <property name="value">2</property>
+                    <property name="step-increment">1</property>
+                    <property name="page-increment">1</property>
+                  </object>
+                </property>
               </object>
             </child>
             <child>

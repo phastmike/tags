@@ -83,6 +83,9 @@ namespace Tags {
             { "prev_hit", prev_hit },
             { "next_hit", next_hit },
             { "action_toggle_edit_mode", action_toggle_edit_mode, null, "false", null},
+            { "action_toggle_line_wrap", action_toggle_line_wrap, null, "false", null},
+            { "action_wrap_nlines_inc", action_wrap_nlines_inc },
+            { "action_wrap_nlines_dec", action_wrap_nlines_dec },
         };
 
         public MainWindow (Gtk.Application app) {
@@ -247,6 +250,9 @@ namespace Tags {
             application.set_accels_for_action("win.prev_hit", {"F2"});
             application.set_accels_for_action("win.next_hit", {"F3"});
             application.set_accels_for_action("win.action_toggle_edit_mode", {"<primary>e"});
+            application.set_accels_for_action("win.action_toggle_line_wrap", {"<primary>w"});
+            application.set_accels_for_action("win.action_wrap_nlines_inc", {"<primary>plus"});
+            application.set_accels_for_action("win.action_wrap_nlines_dec", {"<primary>minus"});
         }
 
         public bool delegate_line_filter_callback (string? text) {
@@ -265,9 +271,11 @@ namespace Tags {
         private void setup_preferences () {
             var preferences = Preferences.instance ();
 
-            preferences.bind_property("minimap_visible", revealer, "reveal-child", 
+            preferences.bind_property ("ln_visible", lines_colview.column_line_number, "visible", 
                 BindingFlags.SYNC_CREATE | BindingFlags.BIDIRECTIONAL);
-            preferences.bind_property("ln_visible", lines_colview.column_line_number, "visible", 
+            preferences.bind_property ("minimap_visible", revealer, "reveal_child", 
+                BindingFlags.SYNC_CREATE | BindingFlags.BIDIRECTIONAL);
+            preferences.bind_property ("wrap_nlines", lines_colview, "wrap_nlines", 
                 BindingFlags.SYNC_CREATE | BindingFlags.BIDIRECTIONAL);
         }
 
@@ -276,6 +284,7 @@ namespace Tags {
             filter = new Tags.Filter (tags.model);
             filterer = new Filterer (lines, filter);
             lines_colview = new LinesColumnView (filterer.model);
+
             lines_colview.column_view.activate.connect ( (p) => {
                 var line = lines_colview.lines.get_item (p) as Line;
                 var tag_dialog = new TagDialogWindow (this.application, line.text);
@@ -844,7 +853,27 @@ namespace Tags {
             } else {
                 tags_edit_mode = !tags_edit_mode;
                 var action = this.lookup_action ("action_toggle_edit_mode");
+                //bind property !
                 action.change_state (new Variant.boolean (tags_edit_mode));
+            }
+        }
+
+        private void action_toggle_line_wrap () {
+            lines_colview.wrap_lines = !lines_colview.wrap_lines;
+            var action = this.lookup_action ("action_toggle_line_wrap");
+            //bind property !
+            action.change_state (new Variant.boolean (lines_colview.wrap_lines));
+        }
+
+        private void action_wrap_nlines_inc () {
+            if (lines_colview.wrap_nlines < 10) {
+                lines_colview.wrap_nlines += 1;
+            }
+        }
+
+        private void action_wrap_nlines_dec () {
+            if (lines_colview.wrap_nlines > 2) {
+                lines_colview.wrap_nlines -= 1;
             }
         }
     }

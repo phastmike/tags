@@ -25,12 +25,44 @@ namespace Tags {
         public ListModel lines;
         public Gtk.MultiSelection selection_model;
 
+        private bool _wrap_lines = false;
+        private const int _wrap_height = 18;
+        private uint _wrap_nlines = 2;
+
+        public  bool wrap_lines {
+            get { return _wrap_lines; }
+            set {
+                _wrap_lines = value;
+                column_view.set_model (null);
+                column_view.set_model (selection_model); 
+            }
+        }
+
+        public uint wrap_nlines {
+            get { return (uint) _wrap_nlines; }
+            set {
+                    if (value > 0 && value < 11) {
+                    _wrap_nlines = value;
+                    column_view.set_model (null);
+                    column_view.set_model (selection_model); 
+                }
+            }
+        }
+
         public LinesColumnView (GLib.ListModel model) {
             this.lines = model;
-
             selection_model = new Gtk.MultiSelection (model);
-
             column_view.set_model (selection_model);
+
+            wrap_lines = false;
+            
+            // Text height Hack
+            /*
+            int width, height;
+            var label = new Gtk.Label ("X");
+            label.get_layout().get_pixel_size (out width, out height);
+            _wrap_height = (height * ((int) _wrap_nlines)) + 1; 
+            */
 
             // Hide header hack
             var header = column_view.get_first_child ();
@@ -79,10 +111,8 @@ namespace Tags {
             Gtk.ListItem listitem = (Gtk.ListItem) listitemm;
             var label = new Gtk.Label (null);
             label.xalign = 0;
-            //label.set_wrap (true);
-            //label.hexpand = true;
-            //label.height_request = 37; 
-            //listitem.child.parent.hexpand = true;
+            label.set_ellipsize (Pango.EllipsizeMode.NONE);
+            label.set_wrap_mode (Pango.WrapMode.CHAR);
             listitem.child = label;
         }
 
@@ -90,10 +120,19 @@ namespace Tags {
         private void line_text_bind_handler (Gtk.SignalListItemFactory factory, GLib.Object listitemm) {
             Gtk.ListItem listitem = (Gtk.ListItem) listitemm;
             var label = listitem.child as Gtk.Label;
+
             var line = listitem.item as Line;
             label.set_text (line.text);
-            // ISSUE #90 Workaround
-            label.set_tooltip_text (line.text);
+
+            if (_wrap_lines == true) {
+                label.set_wrap (true);
+                label.set_tooltip_text (line.text);
+                label.height_request = (_wrap_height * ((int) _wrap_nlines)) + ((int) _wrap_nlines / 2); 
+            } else {
+                label.set_wrap (false);
+                label.height_request = -1; 
+                label.set_tooltip_text (null);
+            }
 
             if (line.tag == null) {
                 clear_all_tag_styles (label);

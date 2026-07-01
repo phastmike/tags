@@ -4,7 +4,7 @@
  * helpers.vala
  *
  * Helpers for Tags application
- * Mostly static methods taht need no instantiation
+ * Mostly static methods that need no instantiation
  * scope yet to be defined
  *
  * José Miguel Fonte

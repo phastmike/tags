@@ -232,6 +232,29 @@
             </child>
           </object>
         </child>
+        <child>
+          <object class="GtkShortcutsGroup">
+            <property name="title" translatable="yes" context="shortcut window">Visual</property>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes" context="shortcut window">Toggle line wrap</property>
+                <property name="action-name">win.action_toggle_line_wrap</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes" context="shortcut window">Increase number of lines per line row</property>
+                <property name="action-name">win.action_wrap_nlines_inc</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes" context="shortcut window">Decrease number of lines per line row</property>
+                <property name="action-name">win.action_wrap_nlines_dec</property>
+              </object>
+            </child>
+          </object>
+        </child>
       </object>
     </child>
   </object>

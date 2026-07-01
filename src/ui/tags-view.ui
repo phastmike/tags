@@ -2,13 +2,6 @@
 <interface>
   <template class="TagsTagsView" parent="GtkBox">
     <property name="orientation">horizontal</property>
-    <!--
-    <property name="hexpand">true</property>
-    <property name="margin-top">12</property>
-    <property name="margin-start">12</property>
-    <property name="margin-end">12</property>
-    <property name="margin-bottom">12</property>
-    -->
     <child>
       <object class="AdwToolbarView">
         <property name="bottom_bar_style">flat</property>
@@ -205,13 +198,31 @@
                   </object>
                 </child>
                 <child>
+                  <object class="GtkToggleButton" id="button_wrap">
+                    <property name="visible">true</property>
+                    <property name="icon-name">format-justify-left-symbolic</property>
+                    <property name="action-name">win.action_toggle_line_wrap</property>
+                    <property name="tooltip-text" translatable="yes" context="tooltip">Wrap Lines</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="AdwSplitButton">
+                    <property name="visible">false</property>
+                    <property name="icon-name">format-justify-left-symbolic</property>
+                    <property name="direction">GTK_ARROW_UP</property>
+                    <property name="popover">popover_menu_add_tag</property>
+                    <property name="tooltip-text">Wrap lines</property>
+                    <property name="action-name">win.action_toggle_line_wrap</property>
+                  </object>
+                </child>
+                <child>
                   <object class="GtkButton">
                     <style>
                       <class name="flat"/>
                       <!--<class name="error"/>-->
                     </style>
                     <property name="tooltip-text" translatable="yes" context="tooltip">Remove all</property>
-                    <property name="visible">true</property>
+                    <property name="visible">false</property>
                     <property name="action-name">win.action_remove_all_tags</property>
                     <property name="child">
                       <object class="AdwButtonContent">
