@@ -63,14 +63,14 @@
   <content_rating type="oars-1.1" />
   <releases>
 
-    <release version="2.2" date="2026-06-05">
+    <release version="2.2" date="2026-07-01">
       <description translatable="no">
         <p>Tags 2.2 is out</p>
         <p>What's new:</p>
         <ul>
           <li>Added provided translation: zh_CN</li>
           <li>Added Translation credits to about page</li>
-          <li>Line tooltip as wrap mode workaround</li>
+          <li>Experimental Line Wrap</li>
         </ul>
         <p>Minor improvements</p>
       </description>
