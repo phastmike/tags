@@ -35,11 +35,11 @@ public class Minimap : Gtk.Box {
     private Gdk.RGBA highlight_color;
     private Gdk.RGBA text_color;
 
-    public const string rgba_dark_theme_hover   = "rgba (229, 229, 209, 0.25)";
     public const string rgba_light_theme_hover  = "rgba (26, 26, 26, 0.25)";
-
-    public const string rgba_dark_theme_text    = "rgba (221, 221, 222, 0.15)";
     public const string rgba_light_theme_text   = "rgba (0, 0, 0, 0.15)";
+
+    public const string rgba_dark_theme_hover   = "rgba (229, 229, 209, 0.25)";
+    public const string rgba_dark_theme_text    = "rgba (221, 221, 222, 0.15)";
     
     private Gtk.DrawingArea drawing_area;
     private Cairo.RecordingSurface? minimap_cached = null;      // Cache for minimap rendering
