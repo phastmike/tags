@@ -338,13 +338,11 @@ namespace Tags {
 
         private void setup_minimap (Gtk.Adjustment adj) {
             minimap = new Minimap (adj);
-            //minimap = new Minimap (null);
             minimap.set_line_color_bg_callback (delegate_minimap_bgcolor_getter);
         }
 
         private void setup_main_box () {
             revealer = new Gtk.Revealer ();
-            //revealer.set_child (scrolled_minimap);
             revealer.set_child (minimap);
             revealer.set_reveal_child (true);
             revealer.set_transition_duration (200);
