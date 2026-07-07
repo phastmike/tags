@@ -41,7 +41,7 @@ namespace Tags {
                     win.present ();
                     win.open_file (file);
                 } else {
-                    warning ("file '%s' does not exist ...", file.get_basename ());
+                    warning ("file '%s' not found ...", file.get_basename ());
                 }
             }
         }
