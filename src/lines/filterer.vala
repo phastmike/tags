@@ -12,8 +12,8 @@
 
 namespace Tags {
     public class Filterer : Object {
-        public Lines lines;
-        public Tags.Filter filter;
+        public unowned Lines lines;
+        public unowned Tags.Filter filter;
         public Gtk.FilterListModel model;
 
         public Filterer (Lines lines, Tags.Filter filter) {
@@ -22,6 +22,7 @@ namespace Tags {
             model = new Gtk.FilterListModel (lines.model, filter); 
             // FIXME: Retriggers Selection to the top which isnt nice
             // Minimap needs to be delayed, otherwise it's empty at start
+            // False (Late) True (Early - Restarts selection)
             model.set_incremental (false);
         }
 

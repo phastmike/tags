@@ -12,7 +12,7 @@ namespace Tags {
     [GtkTemplate (ui = "/io/github/phastmike/tags/ui/main-window.ui")]
     public class MainWindow : Adw.ApplicationWindow {
         [GtkChild]
-        unowned Adw.WindowTitle window_title;
+        unowned Adw.WindowTitle title_nosidebar;
         [GtkChild]
         unowned Gtk.ToggleButton button_hide_untagged;
         [GtkChild]
@@ -20,7 +20,13 @@ namespace Tags {
         [GtkChild]
         unowned Adw.OverlaySplitView oversplit;
         [GtkChild]
-        unowned Gtk.Label title_focus;
+        unowned Gtk.Label title_sidebar;
+        [GtkChild]
+        unowned Gtk.Button button_search;
+        [GtkChild]
+        unowned Gtk.Stack title_stack;
+        [GtkChild]
+        unowned Gtk.SearchEntry search_entry;
 
         private bool _tags_edit_mode = false;
         public bool tags_edit_mode {
@@ -28,6 +34,13 @@ namespace Tags {
             set { _tags_edit_mode = value; }
         }
 
+        private bool _search_mode = false;
+        public bool search_mode {
+            get { return _search_mode; }
+            set { _search_mode = value; }
+        }
+
+        private Adw.Toast toast_search;
         private Gtk.Stack stack;
         private Gtk.Box main_box;
         private Minimap minimap;
@@ -56,7 +69,7 @@ namespace Tags {
             { "save_tagged", save_tagged },
             { "hide_untagged_lines", hide_untagged_lines, null, "false", null},
             { "toggle_tags_view", toggle_tags_view, null, "false", null},
-            { "action_toggle_minimap", action_toggle_minimap, null, "false", null},
+            { "action_toggle_minimap", action_toggle_minimap },
             { "copy", copy },
             { "toggle_tag_1", toggle_tag_1 },
             { "toggle_tag_2", toggle_tag_2 },
@@ -86,6 +99,7 @@ namespace Tags {
             { "action_toggle_line_wrap", action_toggle_line_wrap, null, "false", null},
             { "action_wrap_nlines_inc", action_wrap_nlines_inc },
             { "action_wrap_nlines_dec", action_wrap_nlines_dec },
+            { "action_toggle_search", action_toggle_search, null, "false", null},
         };
 
         public MainWindow (Gtk.Application app) {
@@ -158,8 +172,8 @@ namespace Tags {
                 }
             });
 
-            var action = this.lookup_action ("toggle_tags_view");
-            action.change_state (new Variant.boolean (true));
+            //var action = this.lookup_action ("toggle_tags_view");
+            //action.change_state (new Variant.boolean (true));
 
             stack = new Gtk.Stack ();
             stack.add_named (new WelcomePage (), "welcome");
@@ -170,8 +184,8 @@ namespace Tags {
             oversplit.sidebar = box;
             oversplit.show_sidebar = false;
 
-            oversplit.bind_property ("show-sidebar", window_title, "visible", BindingFlags.SYNC_CREATE | BindingFlags.INVERT_BOOLEAN);
-            oversplit.bind_property ("show-sidebar", title_focus, "visible", BindingFlags.SYNC_CREATE);
+            oversplit.bind_property ("show-sidebar", title_nosidebar, "visible", BindingFlags.SYNC_CREATE | BindingFlags.INVERT_BOOLEAN);
+            oversplit.bind_property ("show-sidebar", title_sidebar, "visible", BindingFlags.SYNC_CREATE);
 
             overlay.set_child (stack);
 
@@ -253,6 +267,7 @@ namespace Tags {
             application.set_accels_for_action("win.action_toggle_line_wrap", {"<primary>w"});
             application.set_accels_for_action("win.action_wrap_nlines_inc", {"<primary>plus"});
             application.set_accels_for_action("win.action_wrap_nlines_dec", {"<primary>minus"});
+            application.set_accels_for_action("win.action_toggle_search", {"<primary>f"});
         }
 
         public bool delegate_line_filter_callback (string? text) {
@@ -342,11 +357,55 @@ namespace Tags {
         }
 
         private void setup_main_box () {
-            revealer = new Gtk.Revealer ();
-            revealer.set_child (minimap);
-            revealer.set_reveal_child (true);
-            revealer.set_transition_duration (200);
-            revealer.set_transition_type (Gtk.RevealerTransitionType.SLIDE_RIGHT);
+            revealer = (new Tags.MinimapContainer (minimap)).revealer;
+            
+            //search_entry.set_key_capture_widget (this);
+            var key_controller = new Gtk.EventControllerKey ();
+
+            key_controller.key_pressed.connect ((keyval, keycode, state) => {
+                if (keyval != Gdk.Key.Escape)
+                    return false;
+
+                if (search_entry.text.length > 0) {
+                    search_entry.text = "";
+                } else {
+                    action_toggle_search ();
+                }
+
+                return true;
+            });
+
+            search_entry.add_controller (key_controller);
+            toast_search = new Adw.Toast ("");
+            toast_search.set_use_markup (false);
+
+            search_entry.activate.connect ( () => {
+                if (search_entry.text.length <= 0) { return; }
+
+                uint index;
+                var line_selection = lines_colview.selection_model;
+                var bitset = line_selection.get_selection ();
+                if (bitset.get_size () == 0) {
+                    index = 0;
+                } else {
+                    index = bitset.get_nth (0) + 1;
+                }
+                
+                var model = filterer.model; 
+                for (uint i = index; i < filterer.model.get_n_items (); i++) {
+                    var line = model.get_item (i) as Line;
+                    if (line.text.up ().contains (search_entry.text.up ())) {
+                        line_selection.unselect_all ();
+                        line_selection.select_item (i, true);
+                        lines_colview.column_view.scroll_to (i, null, Gtk.ListScrollFlags.SELECT, null);
+                        return;
+                    }
+                }
+
+                toast_search.set_title (_("No more matches for '%s'").printf (search_entry.text));
+                toast_search.set_timeout (3);
+                overlay.add_toast (toast_search);
+            });
 
             main_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
             main_box.append (lines_colview);
@@ -369,19 +428,26 @@ namespace Tags {
                 string? err_msg = lines.from_file.end (res);
                 if (err_msg == null) {
                     stack.set_visible_child_name ("main");
-                    button_hide_untagged.set_visible (true);
 
                     // Show the tags sidebar after opening a file
                     // Should be a preference? Do nothing or always show?
                     //oversplit.show_sidebar = true;
 
+                    // If no file is open (startup)
+                    // Show toolbar icons after opening a file
+                    // Hide untagged + Search
+                    if (file_opened == null) {
+                        button_search.set_visible (true);
+                        button_hide_untagged.set_visible (true);
+                    }
+
                     file_opened = file;
                     save_tagged_enable ();
                     set_title (file.get_basename ());
-                    window_title.set_subtitle (file.get_basename ());
-                    window_title.set_tooltip_text (file.get_path ());
-                    title_focus.set_label (file.get_basename ());
-                    title_focus.set_tooltip_text (file.get_path ());
+                    title_nosidebar.set_subtitle (file.get_basename ());
+                    title_nosidebar.set_tooltip_text (file.get_path ());
+                    title_sidebar.set_label (file.get_basename ());
+                    title_sidebar.set_tooltip_text (file.get_path ());
                     if (Preferences.instance ().tags_autoload == true) {
                         file_tags = File.new_for_path (file.get_path () + ".tags");
                         if (file_tags.query_exists ()) {
@@ -535,7 +601,7 @@ namespace Tags {
                 filter.update ();
                 minimap.set_array (Lines.model_to_array (lines_colview.lines));
                 count_tag_hits ();
-            });    
+            });
         }
 
         private void action_toggle_line_number () {
@@ -645,16 +711,14 @@ namespace Tags {
 
         private void action_toggle_minimap () {
             revealer.set_reveal_child (!revealer.get_reveal_child ());
-            //minimap.set_visible (!minimap.get_visible ());
-            var action = this.lookup_action ("action_toggle_minimap");
-            //action.change_state (new Variant.boolean (minimap.get_visible ()));
-            action.change_state (new Variant.boolean (revealer.get_reveal_child ()));
+            //var action = this.lookup_action ("action_toggle_minimap");
+            //action.change_state (new Variant.boolean (revealer.get_reveal_child ()));
         }
 
         private void toggle_tags_view () {
             oversplit.show_sidebar = !oversplit.show_sidebar;
-            //var action = this.lookup_action ("toggle_tags_view");
-            //action.change_state (new Variant.boolean (oversplit.show_sidebar));
+            var action = this.lookup_action ("toggle_tags_view");
+            action.change_state (new Variant.boolean (oversplit.show_sidebar));
         }
         
         private void copy () {
@@ -874,5 +938,18 @@ namespace Tags {
                 lines_colview.wrap_nlines -= 1;
             }
         }
+
+        private void action_toggle_search () {
+            if (file_opened == null) { return; }
+            var action = this.lookup_action ("action_toggle_search");
+            if (action.get_state ().get_boolean () == true) {
+                title_stack.set_visible_child_name ("apptitle");
+                action.change_state (new Variant.boolean (false));
+            } else {
+                title_stack.set_visible_child_name ("search");
+                search_entry.grab_focus ();
+                action.change_state (new Variant.boolean (true));
+            }
+        }   
     }
 }

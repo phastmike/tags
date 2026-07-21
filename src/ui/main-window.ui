@@ -30,40 +30,65 @@
                     </property>
                   </object>
                 </child>
+
                 <child type="title">
-                  <object class="GtkBox">
-                    <property name="valign">center</property>
+                  <object class="GtkStack" id="title_stack">
+                    <property name="transition-type">slide-left-right</property>
                     <property name="halign">center</property>
-                    <property name="orientation">vertical</property>
+                    <property name="valign">center</property>
+                    <style>
+                      <class name="title" />
+                    </style>
+
                     <child>
-                      <object class="GtkLabel" id="title_title">
-                        <style>
-                          <class name="heading" />
-                        </style>
-                        <property name="label" translatable="no">Tags</property>
-                        <property name="visible">false</property>
+                      <object class="GtkStackPage" id="stackpage_app_title">
+                        <property name="name">apptitle</property>
+                        <property name="child">
+                          <object class="GtkBox">
+                          <property name="valign">center</property>
+                          <property name="halign">center</property>
+                          <property name="orientation">vertical</property>
+                          <child>
+                            <object class="GtkLabel" id="title_sidebar">
+                              <style>
+                                <class name="dimmed" />
+                                <!--<class name="heading" />-->
+                              </style>
+                              <property name="visible">false</property>
+                              <property name="ellipsize">middle</property>
+                            </object>
+                          </child>
+                          <child>
+                            <object class="AdwWindowTitle" id="title_nosidebar">
+                              <property name="visible">false</property>
+                              <property name="title" translatable="no">Tags</property>
+                              </object>
+                          </child>
+                          </object>
+                        </property>
                       </object>
                     </child>
+
                     <child>
-                      <object class="GtkLabel" id="title_focus">
-                        <style>
-                          <class name="dimmed" />
-                        </style>
-                        <property name="label"></property>
-                        <property name="visible">false</property>
-                        <property name="ellipsize">middle</property>
+                      <object class="GtkStackPage" id="stackpage_search">
+                        <property name="name">search</property>
+                        <property name="child">
+                          <object class="GtkSearchEntry" id="search_entry">
+                            <property name="placeholder-text" translatable="yes">Search...</property>
+                            <property name="input_purpose">GTK_INPUT_PURPOSE_FREE_FORM</property>
+                            <property name="activates_default">true</property>
+                            <property name="input_hints">GTK_INPUT_HINT_NONE</property>
+                            <property name="hexpand">true</property>
+                            <property name="valign">center</property>
+                            <property name="halign">center</property>
+                          </object>
+                        </property>
                       </object>
                     </child>
-                    <child>
-                      <object class="AdwWindowTitle" id="window_title">
-                        <property name="visible">false</property>
-                        <property name="title" translatable="no">Tags</property>
-                        <!--<property name="subtitle">Open a file to get started ...</property>-->
-                        </object>
-                    </child>
+
                   </object>
-                  
                 </child>
+
                 <child type="end">
                   <object class="GtkMenuButton">
                     <property name="primary">true</property>
@@ -72,6 +97,18 @@
                     <property name="tooltip-text">Main Menu</property>
                   </object>
                 </child>
+
+                <!--
+                <child type="end">
+                  <object class="GtkBox">
+                    <style>
+                      <class name="linked" />
+                    </style>
+                    <property name="visible">true</property>
+                    <property name="halign">center</property>
+                    <property name="valign">right</property>
+                 -->
+
                 <child type="end">
                   <object class="GtkToggleButton" id="button_hide_untagged">
                     <style>
@@ -79,18 +116,18 @@
                       <class name="success" />
                       -->
                     </style>
-                    <property name="visible">true</property>
+                    <property name="visible">false</property>
                     <property name="icon_name">view-conceal-symbolic</property>
                     <property name="tooltip-text" translatable="yes" context="tooltip">Hide untagged</property>
                     <property name="action-name">win.hide_untagged_lines</property>
                   </object>
                 </child>
                 <child type="end">
-                  <object class="GtkButton" id="button_search">
-                    <property name="visible">true</property>
+                  <object class="GtkToggleButton" id="button_search">
+                    <property name="visible">false</property>
                     <property name="icon-name">edit-find-symbolic</property>
                     <property name="tooltip-text" translatable="yes">Search</property>
-                    <property name="action-name"></property>
+                    <property name="action-name">win.action_toggle_search</property>
                   </object>
                 </child>
                 <child type="end">
@@ -103,7 +140,7 @@
                   </object>
                 </child>
                 <child type="end">
-                  <object class="GtkButton" id="button_minimap">
+                  <object class="GtkToggleButton" id="button_minimap">
                     <property name="visible">false</property>
                     <property name="icon-name">sidebar-show-right-symbolic</property>
                     <property name="tooltip-text">Minimap</property>
@@ -111,13 +148,19 @@
                   </object>
                 </child>
                 <child type="end">
-                  <object class="GtkButton" id="button_tags_list">
+                  <object class="GtkToggleButton" id="button_tags_list">
                     <property name="visible">true</property>
                     <property name="icon-name">sidebar-show</property>
                     <property name="tooltip-text" translatable="yes" context="tooltip">Tag List</property>
                     <property name="action-name">win.toggle_tags_view</property>
                   </object>
                 </child>
+
+                <!--
+                </object>
+                </child>
+                -->
+
               </object>
             </child>
             <property name="content">
