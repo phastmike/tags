@@ -379,6 +379,20 @@ namespace Tags {
             toast_search = new Adw.Toast ("");
             toast_search.set_use_markup (false);
 
+            search_entry.search_changed.connect ( () => {
+                // Eases the Toast messaging and search behaviour
+                // by clearing the line selection everytime there's
+                // a change in the search
+                var action = this.lookup_action ("action_toggle_search");
+                var state = action.get_state ();
+                if (state.get_boolean () == false) {
+                    title_stack.set_visible_child_name ("search");
+                    search_entry.grab_focus ();
+                    action.change_state (new Variant.boolean (true));
+                }
+                lines_colview.selection_model.unselect_all ();
+            });
+
             search_entry.activate.connect ( () => {
                 if (search_entry.text.length <= 0) { return; }
 
@@ -398,11 +412,44 @@ namespace Tags {
                         line_selection.unselect_all ();
                         line_selection.select_item (i, true);
                         lines_colview.column_view.scroll_to (i, null, Gtk.ListScrollFlags.SELECT, null);
+                        toast_search.set_timeout (3);
+                        toast_search.set_title (_("Found in line %u").printf (i+1));
+                        toast_search.set_button_label (_("Add as Tag"));
+                        toast_search.set_action_name ("win.action_add_tag_from_line");
+/*
+                        toast_search.button_clicked.connect ( () => {
+                            var tag_dialog = new TagDialogWindow (this.application, search_entry.text);
+
+                            tag_dialog.added.connect ((tag, add_to_top) => {
+                                tag.changed.connect (() => {
+                                    tags_changed = true;
+                                    mmixer.update_mixing ();
+                                    filter.update ();
+                                    count_hits_for_tag (tag);
+                                    minimap.set_array (Lines.model_to_array(lines_colview.lines));
+                                });
+
+                                tags_changed = true;
+                                tags.add_tag (tag, add_to_top);
+                                count_hits_for_tag (tag);
+                                filter.update ();
+                                minimap.set_array (Lines.model_to_array(lines_colview.lines));
+                            });
+
+                            tag_dialog.present ();
+                        });
+*/
+                        overlay.add_toast (toast_search);
                         return;
                     }
                 }
 
-                toast_search.set_title (_("No more matches for '%s'").printf (search_entry.text));
+                if (index == 0) {
+                    toast_search.set_title (_("No match for '%s'").printf (search_entry.text));
+                } else {
+                    toast_search.set_title (_("No more matches for '%s'").printf (search_entry.text));
+                }
+
                 toast_search.set_timeout (3);
                 overlay.add_toast (toast_search);
             });
@@ -437,6 +484,7 @@ namespace Tags {
                     // Show toolbar icons after opening a file
                     // Hide untagged + Search
                     if (file_opened == null) {
+                        search_entry.set_key_capture_widget (this);
                         button_search.set_visible (true);
                         button_hide_untagged.set_visible (true);
                     }
@@ -945,6 +993,8 @@ namespace Tags {
             if (action.get_state ().get_boolean () == true) {
                 title_stack.set_visible_child_name ("apptitle");
                 action.change_state (new Variant.boolean (false));
+                // Clear entry text
+                search_entry.set_text ("");
             } else {
                 title_stack.set_visible_child_name ("search");
                 search_entry.grab_focus ();

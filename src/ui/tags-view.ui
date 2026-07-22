@@ -139,6 +139,7 @@
         <child type="bottom">
           <object class="AdwHeaderBar">
             <property name="visible">true</property>
+            <property name="show-end-title-buttons">false</property>
             <child type="start">
               <object class="GtkToggleButton" id="button_tagsz">
                 <property name="icon-name">document-edit-symbolic</property>
