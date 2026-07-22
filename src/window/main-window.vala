@@ -100,6 +100,7 @@ namespace Tags {
             { "action_wrap_nlines_inc", action_wrap_nlines_inc },
             { "action_wrap_nlines_dec", action_wrap_nlines_dec },
             { "action_toggle_search", action_toggle_search, null, "false", null},
+            { "action_add_tag_from_search", action_add_tag_from_search },
         };
 
         public MainWindow (Gtk.Application app) {
@@ -365,11 +366,12 @@ namespace Tags {
             key_controller.key_pressed.connect ((keyval, keycode, state) => {
                 if (keyval != Gdk.Key.Escape)
                     return false;
-
                 if (search_entry.text.length > 0) {
                     search_entry.text = "";
                 } else {
-                    action_toggle_search ();
+                    title_stack.set_visible_child_name ("apptitle");
+                    var action = this.lookup_action ("action_toggle_search");
+                    action.change_state (new Variant.boolean (false));
                 }
 
                 return true;
@@ -391,6 +393,9 @@ namespace Tags {
                     action.change_state (new Variant.boolean (true));
                 }
                 lines_colview.selection_model.unselect_all ();
+                search_entry.remove_css_class ("error");
+                search_entry.remove_css_class ("warning");
+                search_entry.remove_css_class ("success");
             });
 
             search_entry.activate.connect ( () => {
@@ -413,9 +418,10 @@ namespace Tags {
                         line_selection.select_item (i, true);
                         lines_colview.column_view.scroll_to (i, null, Gtk.ListScrollFlags.SELECT, null);
                         toast_search.set_timeout (3);
-                        toast_search.set_title (_("Found in line %u").printf (i+1));
-                        toast_search.set_button_label (_("Add as Tag"));
-                        toast_search.set_action_name ("win.action_add_tag_from_line");
+                        toast_search.set_title (_("Found '%s' in line %u").printf (search_entry.text, i+1));
+                        toast_search.set_button_label (_("Add keyword as Tag"));
+                        toast_search.set_action_name ("win.action_add_tag_from_search");
+                        //search_entry.add_css_class ("success");
 /*
                         toast_search.button_clicked.connect ( () => {
                             var tag_dialog = new TagDialogWindow (this.application, search_entry.text);
@@ -444,10 +450,18 @@ namespace Tags {
                     }
                 }
 
+                toast_search.set_button_label (null);
+
                 if (index == 0) {
                     toast_search.set_title (_("No match for '%s'").printf (search_entry.text));
+                    search_entry.remove_css_class ("warning");
+                    search_entry.remove_css_class ("success");
+                    search_entry.add_css_class ("error");
                 } else {
                     toast_search.set_title (_("No more matches for '%s'").printf (search_entry.text));
+                    search_entry.remove_css_class ("error");
+                    search_entry.remove_css_class ("success");
+                    search_entry.add_css_class ("warning");
                 }
 
                 toast_search.set_timeout (3);
@@ -514,8 +528,8 @@ namespace Tags {
             });
         }
 
-        private void action_add_tag () {
-            var tag_dialog = new TagDialogWindow (this.application);
+        private void add_tag (string? pattern) {
+            var tag_dialog = new TagDialogWindow (this.application, pattern);
 
             tag_dialog.added.connect ((tag, add_to_top) => {
                 tag.changed.connect (() => {
@@ -530,6 +544,33 @@ namespace Tags {
                         }
                     }
                     filter.update ();
+                    minimap.set_array (Lines.model_to_array(lines_colview.lines));
+                });
+
+                tags_changed = true;
+                tags.add_tag (tag, add_to_top);
+                count_hits_for_tag (tag);
+                filter.update ();
+                minimap.set_array (Lines.model_to_array(lines_colview.lines));
+            });
+
+            tag_dialog.present ();
+        }
+
+        private void action_add_tag_from_search () {
+            if (search_entry.text.length <= 0) { return; }
+            add_tag (search_entry.text);
+        }
+
+        private void action_add_tag () {
+            var tag_dialog = new TagDialogWindow (this.application);
+
+            tag_dialog.added.connect ((tag, add_to_top) => {
+                tag.changed.connect (() => {
+                    tags_changed = true;
+                    mmixer.update_mixing ();
+                    filter.update ();
+                    count_hits_for_tag (tag);
                     minimap.set_array (Lines.model_to_array(lines_colview.lines));
                 });
 
@@ -898,9 +939,20 @@ namespace Tags {
                     line_selection.unselect_all ();
                     line_selection.select_item (i, true);
                     lines_colview.column_view.scroll_to (i, null, Gtk.ListScrollFlags.SELECT, null);
+                    toast_search.set_title (_("Found in line %u").printf (i));
+                    toast_search.set_timeout (3);
+                    toast_search.set_button_label (null);
+                    overlay.add_toast (toast_search);
                     return;
                 }
             }    
+
+            toast_search.set_button_label (null);
+            if (index != 0) {
+                toast_search.set_title (_("No more matches for '%s'").printf (tag.pattern));
+            }
+            toast_search.set_timeout (3);
+            overlay.add_toast (toast_search);
         }
 
         private void next_hit () {
@@ -928,9 +980,20 @@ namespace Tags {
                     line_selection.unselect_all ();
                     line_selection.select_item (i, true);
                     lines_colview.column_view.scroll_to (i, null, Gtk.ListScrollFlags.SELECT, null);
+                    toast_search.set_title (_("Found in line %u").printf (i));
+                    toast_search.set_timeout (3);
+                    toast_search.set_button_label (null);
+                    overlay.add_toast (toast_search);
                     return;
                 }
             }    
+
+            toast_search.set_button_label (null);
+            if (index != 0) {
+                toast_search.set_title (_("No more matches for '%s'").printf (tag.pattern));
+            }
+            toast_search.set_timeout (3);
+            overlay.add_toast (toast_search);
         }
 
         private void show_dialog (string title, string message, string cancel_label = _("_Cancel")) {
@@ -989,12 +1052,15 @@ namespace Tags {
 
         private void action_toggle_search () {
             if (file_opened == null) { return; }
+
+            // Do it before otherwise it auto-toggles visibility
+            // due to key capture
+            search_entry.set_text ("");
+
             var action = this.lookup_action ("action_toggle_search");
             if (action.get_state ().get_boolean () == true) {
                 title_stack.set_visible_child_name ("apptitle");
                 action.change_state (new Variant.boolean (false));
-                // Clear entry text
-                search_entry.set_text ("");
             } else {
                 title_stack.set_visible_child_name ("search");
                 search_entry.grab_focus ();
