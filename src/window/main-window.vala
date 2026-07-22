@@ -419,8 +419,12 @@ namespace Tags {
                         lines_colview.column_view.scroll_to (i, null, Gtk.ListScrollFlags.SELECT, null);
                         toast_search.set_timeout (3);
                         toast_search.set_title (_("Found '%s' in line %u").printf (search_entry.text, i+1));
-                        toast_search.set_button_label (_("Add keyword as Tag"));
-                        toast_search.set_action_name ("win.action_add_tag_from_search");
+                        if (tags.check_if_pattern_exists (search_entry.text) == false) {
+                            toast_search.set_button_label (_("Add keyword as Tag"));
+                            toast_search.set_action_name ("win.action_add_tag_from_search");
+                        } else {
+                            toast_search.set_button_label ("");
+                        }
                         //search_entry.add_css_class ("success");
 /*
                         toast_search.button_clicked.connect ( () => {
@@ -796,6 +800,11 @@ namespace Tags {
                 minimap.set_array (Lines.model_to_array(lines_colview.lines));
                 return false;
             });
+
+            action = this.lookup_action ("action_toggle_search");
+            if (action.get_state ().get_boolean () == true) {
+                action_toggle_search ();
+            }
         }
 
         private void action_toggle_minimap () {
@@ -1053,9 +1062,8 @@ namespace Tags {
         private void action_toggle_search () {
             if (file_opened == null) { return; }
 
-            // Do it before otherwise it auto-toggles visibility
-            // due to key capture
-            search_entry.set_text ("");
+            // Ugly but works... must be here, before stack view changes
+            search_entry.set_text("");
 
             var action = this.lookup_action ("action_toggle_search");
             if (action.get_state ().get_boolean () == true) {
@@ -1065,6 +1073,7 @@ namespace Tags {
                 title_stack.set_visible_child_name ("search");
                 search_entry.grab_focus ();
                 action.change_state (new Variant.boolean (true));
+                search_entry.set_text ("");
             }
         }   
     }

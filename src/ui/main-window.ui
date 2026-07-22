@@ -35,7 +35,7 @@
                   <object class="GtkStack" id="title_stack">
                     <!--<property name="transition-type">slide-left-right</property>-->
                     <property name="transition-type">crossfade</property>
-                    <property name="halign">center</property>
+                    <property name="halign">fill</property>
                     <property name="valign">center</property>
                     <style>
                       <class name="title" />

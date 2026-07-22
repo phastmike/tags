@@ -79,6 +79,15 @@ namespace Tags {
             }
         }
 
+        public bool check_if_pattern_exists (string pattern) {
+            Tag tag;
+            for (var i = 0; i < model.get_n_items (); i++) {
+                tag = model.get_object (i) as Tag;
+                if (pattern == tag.pattern) return true;
+            }
+            return false;
+        }
+
         public void to_file (File file) {
             Json.Node root = new Json.Node (Json.NodeType.ARRAY);
             Json.Array array = new Json.Array ();
