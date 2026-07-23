@@ -45,6 +45,39 @@
                       <object class="GtkStackPage" id="stackpage_app_title">
                         <property name="name">apptitle</property>
                         <property name="child">
+                          <object class="GtkStack">
+                            <property name="halign">fill</property>
+                            <property name="valign">center</property>
+                            <property name="transition-type">crossfade</property>
+                            <child>
+                              <object class="GtkStackPage" id="stackpage_app_title_sidebar">
+                                <property name="name">apptitle_sidebar</property>
+                                <property name="child">
+                                  <object class="GtkLabel" id="title_sidebar">
+                                    <style>
+                                      <class name="dimmed" />
+                                    </style>
+                                    <property name="visible">true</property>
+                                    <property name="ellipsize">middle</property>
+                                  </object>
+                                </property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkStackPage" id="stackpage_app_title_nosidebar">
+                                <property name="name">apptitle_nosidebar</property>
+                                <property name="child">
+                                  <object class="AdwWindowTitle" id="title_nosidebar">
+                                    <property name="visible">true</property>
+                                    <property name="title" translatable="no">Tags</property>
+                                  </object>
+                                </property>
+                              </object>
+                            </child>
+                          </object>
+
+
+                          <!--
                           <object class="GtkBox">
                           <property name="valign">center</property>
                           <property name="halign">center</property>
@@ -53,7 +86,6 @@
                             <object class="GtkLabel" id="title_sidebar">
                               <style>
                                 <class name="dimmed" />
-                                <!--<class name="heading" />-->
                               </style>
                               <property name="visible">false</property>
                               <property name="ellipsize">middle</property>
@@ -66,6 +98,7 @@
                               </object>
                           </child>
                           </object>
+                          -->
                         </property>
                       </object>
                     </child>
