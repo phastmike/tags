@@ -218,7 +218,6 @@ namespace Tags {
                 }
             });
 
-
             tags_view.button_incremental.toggled.connect ( () => {
                 filterer.model.set_incremental (tags_view.button_incremental.get_active ());
             });

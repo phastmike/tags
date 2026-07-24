@@ -36,7 +36,7 @@
                     <!--<property name="transition-type">slide-left-right</property>-->
                     <property name="transition-type">crossfade</property>
                     <property name="halign">fill</property>
-                    <property name="valign">center</property>
+                    <property name="valign">fill</property>
                     <style>
                       <class name="title" />
                     </style>

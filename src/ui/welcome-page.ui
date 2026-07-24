@@ -73,7 +73,7 @@
                     </child>
                     <child>
                       <object class="GtkLabel">
-                        <property name="label" translatable="yes">Open a log file to start using tags</property>
+                        <property name="label" translatable="yes">Open a text file and start using tags</property>
                       </object>
                     </child>
                   </object>
