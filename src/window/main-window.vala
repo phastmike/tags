@@ -112,7 +112,6 @@ namespace Tags {
             tags = new TagStore (style_store);
             tags_view = new TagsView (tags.model);
 
-
             var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
             box.append (tags_view);
 
@@ -346,7 +345,7 @@ namespace Tags {
 
         private void setup_main_box () {
             revealer = (new Tags.MinimapContainer (minimap)).revealer;
-            
+
             //search_entry.set_key_capture_widget (this);
             var key_controller = new Gtk.EventControllerKey ();
 
@@ -619,7 +618,7 @@ namespace Tags {
             var preferences = Preferences.instance ();
             preferences.ln_visible = !preferences.ln_visible; 
         }
-        
+
         private void action_save_tags () {
             string? suggested_filename = null;
             filter.update ();
@@ -698,7 +697,7 @@ namespace Tags {
         }
 
         private void hide_untagged_lines () {
-            if (file_opened == null) { return; }   
+            if (file_opened == null) { return; }
             filter.active = !filter.active;
 
             // Should bind this property !
@@ -837,7 +836,7 @@ namespace Tags {
             uint index;
 
             var row = (TagRow) tags_view.listbox.get_selected_row ();
-            if (row == null) { return; } 
+            if (row == null) { return; }
             var tag = row.tag;
             if (tag.hits == 0 || tag.enabled == false) { return; }
 
@@ -863,7 +862,7 @@ namespace Tags {
                     overlay.add_toast (toast_search);
                     return;
                 }
-            }    
+            }
 
             toast_search.set_button_label (null);
             if (index != 0) {
@@ -889,7 +888,7 @@ namespace Tags {
             } else {
                 index = bitset.get_nth (0) + 1;
             }
-            
+
             var model = filterer.model; 
             //lines_colview.column_view.scroll_to (index - 1, null, Gtk.ListScrollFlags.SELECT, null);
             for (uint i = index; i < filterer.model.get_n_items (); i++) {
@@ -904,7 +903,7 @@ namespace Tags {
                     overlay.add_toast (toast_search);
                     return;
                 }
-            }    
+            }
 
             toast_search.set_button_label (null);
             if (index != 0) {
@@ -984,6 +983,6 @@ namespace Tags {
                 action.change_state (new Variant.boolean (true));
                 search_entry.set_text ("");
             }
-        }   
+        }
     }
 }
