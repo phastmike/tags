@@ -404,7 +404,7 @@ namespace Tags {
                         line_selection.select_item (i, true);
                         lines_colview.column_view.scroll_to (i, null, Gtk.ListScrollFlags.SELECT, null);
                         toast_search.set_timeout (3);
-                        toast_search.set_title (_("Found '%s' in line %u").printf (search_entry.text, i+1));
+                        toast_search.set_title (_("Found '%s' in line %u").printf (search_entry.text, line.number));
                         if (tags.check_if_pattern_exists (search_entry.text) == false) {
                             toast_search.set_button_label (_("Add keyword as Tag"));
                             toast_search.set_action_name ("win.action_add_tag_from_search");
@@ -847,16 +847,15 @@ namespace Tags {
             } else {
                 index = bitset.get_nth (0) - 1;
             }
-            
+
             var model = filterer.model; 
-            //lines_colview.column_view.scroll_to (index+1, null, Gtk.ListScrollFlags.SELECT, null);
             for (int i = (int) index; i >= 0; i--) {
                 var line = model.get_item (i) as Line;
                 if (tag.applies_to (line.text)) {
                     line_selection.unselect_all ();
                     line_selection.select_item (i, true);
                     lines_colview.column_view.scroll_to (i, null, Gtk.ListScrollFlags.SELECT, null);
-                    toast_search.set_title (_("Found in line %u").printf (i));
+                    toast_search.set_title (_("Found in line %u").printf (line.number));
                     toast_search.set_timeout (3);
                     toast_search.set_button_label (null);
                     overlay.add_toast (toast_search);
@@ -890,14 +889,13 @@ namespace Tags {
             }
 
             var model = filterer.model; 
-            //lines_colview.column_view.scroll_to (index - 1, null, Gtk.ListScrollFlags.SELECT, null);
             for (uint i = index; i < filterer.model.get_n_items (); i++) {
                 var line = model.get_item (i) as Line;
                 if (tag.applies_to (line.text)) {
                     line_selection.unselect_all ();
                     line_selection.select_item (i, true);
                     lines_colview.column_view.scroll_to (i, null, Gtk.ListScrollFlags.SELECT, null);
-                    toast_search.set_title (_("Found in line %u").printf (i));
+                    toast_search.set_title (_("Found in line %u").printf (line.number));
                     toast_search.set_timeout (3);
                     toast_search.set_button_label (null);
                     overlay.add_toast (toast_search);
