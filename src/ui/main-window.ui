@@ -47,7 +47,7 @@
                         <property name="child">
                           <object class="GtkStack">
                             <property name="halign">fill</property>
-                            <property name="valign">center</property>
+                            <property name="valign">fill</property>
                             <property name="transition-type">crossfade</property>
                             <child>
                               <object class="GtkStackPage" id="stackpage_app_title_sidebar">
@@ -113,9 +113,9 @@
                             <property name="input_purpose">free-form</property>
                             <property name="activates_default">true</property>
                             <property name="input_hints">none</property>
-                            <property name="hexpand">true</property>
                             <property name="valign">center</property>
                             <property name="halign">center</property>
+                            <property name="hexpand">true</property>
                           </object>
                         </property>
                       </object>
