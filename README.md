@@ -20,6 +20,25 @@ The main goal is to aid log analysis by tagging lines with user defined colors. 
 
 ---
 
+## Additional Features
+
+- Load tags
+- Save tags
+- Remove all tags
+- Open new window
+- Hide untagged lines
+- Search within visible lines (selection)
+- Tags based on string comparison
+- Support for regular expressions
+- Case sensitive support
+- Automatic load tags file (same filename + `.tags`extension)
+- Navigate through hits with F2 and F3
+- Automatic color scheme on tag creation or manual color selection
+- Minimap with tag colors and document navigation
+- Experimental Line wrap support
+
+---
+
 ## Actions and Shortcuts
 
 ### General Actions
@@ -28,12 +47,13 @@ The main goal is to aid log analysis by tagging lines with user defined colors. 
 | `Ctrl` + `A` | Add a Tag |
 | `Ctrl` + `S` | Save tagged lines |
 | `Ctrl` + `C` | Copy selected text lines to clipboard |
+| `Ctrl` + `F` | Search visible lines for given text |
 | `Ctrl` + `H` | Toggle untagged lines visibility |
-| `F9` | Hide/Show Tag list (sidebar) |
 | `Ctrl` + `L` | Hide/Show Line numbers |
 | `Ctrl` + `M` | Hide/Show Minimap |
 | `Alt` + `E` | Enable all tags |
 | `Alt` + `D` | Disable all tags |
+| `F9` | Hide/Show Tag list (sidebar) |
 
 ### Tags Toggle
 Toggle the first ten tags with keyboard shortcuts:
@@ -64,26 +84,9 @@ Check the available shortcuts in the application menu with `Ctrl` + `?`.
 
 ---
 
-## Additional Features
-
-- Load tags
-- Save tags
-- Remove all tags
-- Open new window
-- User defined color schemes
-- Tags based on string comparison
-- Support for regular expressions
-- Case sensitive support
-- Automatic load tags file (same filename + .tags`extension)
-- Navigate thru hits with F2 and F3
-- Random color scheme on tag creation
-- Document minimap with tag colors
-
----
-
 ## Development
 
-Developed in Vala + Gtk 4
+Developed with Vala + Gtk 4
 
 ### Dependencies
 

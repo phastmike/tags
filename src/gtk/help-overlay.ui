@@ -157,7 +157,7 @@
             -->
             <child>
               <object class="GtkShortcutsShortcut">
-                <property name="title" translatable="yes" context="shortcut window">...</property>
+                <property name="title" translatable="no" context="shortcut window">...</property>
               </object>
             </child>
             <child>
@@ -191,7 +191,7 @@
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
-                <property name="title" translatable="yes" context="shortcut window">...</property>
+                <property name="title" translatable="no" context="shortcut window">...</property>
               </object>
             </child>
             <child>

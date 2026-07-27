@@ -406,7 +406,7 @@ namespace Tags {
                         toast_search.set_timeout (3);
                         toast_search.set_title (_("Found '%s' in line %u").printf (search_entry.text, line.number));
                         if (tags.check_if_pattern_exists (search_entry.text) == false) {
-                            toast_search.set_button_label (_("Add keyword as Tag"));
+                            toast_search.set_button_label (_("Add search as Tag"));
                             toast_search.set_action_name ("win.action_add_tag_from_search");
                         } else {
                             toast_search.set_button_label ("");

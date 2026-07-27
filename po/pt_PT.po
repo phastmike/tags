@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.phastmike.tags 2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/phastmike/tags/issues\n"
-"POT-Creation-Date: 2026-07-01 17:01+0100\n"
+"POT-Creation-Date: 2026-07-27 17:48+0100\n"
 "PO-Revision-Date: 2026-01-26 09:14+0000\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -128,11 +128,6 @@ msgctxt "shortcut window"
 msgid "Toggle second tag visibility"
 msgstr "Alternar visibilidade da segunda etiqueta"
 
-#: src/gtk/help-overlay.ui:160 src/gtk/help-overlay.ui:194
-msgctxt "shortcut window"
-msgid "..."
-msgstr "..."
-
 #: src/gtk/help-overlay.ui:165
 msgctxt "shortcut window"
 msgid "Toggle ninth tag visibility"
@@ -196,7 +191,7 @@ msgstr "Ocorrencia seguinte"
 #: src/gtk/help-overlay.ui:237
 msgctxt "shortcut window"
 msgid "Visual"
-msgstr ""
+msgstr "Visual"
 
 #: src/gtk/help-overlay.ui:240
 msgctxt "shortcut window"
@@ -213,72 +208,80 @@ msgctxt "shortcut window"
 msgid "Decrease number of lines per line row"
 msgstr "Diminuir número de linhas por linha"
 
-#: src/ui/main-window.ui:25
+#: src/ui/main-window.ui:26
 msgctxt "Open a file"
 msgid "_Open"
-msgstr "Abrir"
+msgstr "Ab_rir"
 
-#: src/ui/main-window.ui:26
+#: src/ui/main-window.ui:27
 msgctxt "Open a file - tooltip"
 msgid "Select a File"
 msgstr "Selecione um ficheiro"
 
-#: src/ui/main-window.ui:83 src/ui/tags-view.ui:185
+#: src/ui/main-window.ui:111
+msgid "Search..."
+msgstr "Procurar..."
+
+#: src/ui/main-window.ui:156 src/ui/tags-view.ui:186
 msgctxt "tooltip"
 msgid "Hide untagged"
 msgstr "Esconder linhas sem etiqueta"
 
-#: src/ui/main-window.ui:92
+#: src/ui/main-window.ui:164
+msgid "Search"
+msgstr "Procurar"
+
+#: src/ui/main-window.ui:173
 msgctxt "tooltip"
 msgid "New Tag"
 msgstr "Nova etiqueta"
 
-#: src/ui/main-window.ui:108
+#: src/ui/main-window.ui:189
 msgctxt "tooltip"
 msgid "Tag List"
 msgstr "Lista de etiquetas"
 
-#: src/ui/main-window.ui:132
+#: src/ui/main-window.ui:219
 msgid "New tag"
 msgstr "Nova etiqueta"
 
-#: src/ui/main-window.ui:136
+#: src/ui/main-window.ui:223
 msgid "Save tagged"
 msgstr "Guardar linhas etiquetadas"
 
-#: src/ui/main-window.ui:143 src/ui/tags-view.ui:112
+#: src/ui/main-window.ui:230 src/ui/tags-view.ui:112
 msgid "Load tags"
 msgstr "Carregar etiquetas"
 
-#: src/ui/main-window.ui:147
+#: src/ui/main-window.ui:234
 msgid "Save tags"
 msgstr "Guardar etiquetas"
 
-#: src/ui/main-window.ui:151
+#: src/ui/main-window.ui:238
 msgid "Remove tags"
 msgstr "Remover etiquetas"
 
-#: src/ui/main-window.ui:170
+#: src/ui/main-window.ui:257
 msgid "Hide untagged"
 msgstr "Esconder linhas sem etiqueta"
 
-#: src/ui/main-window.ui:185
+#: src/ui/main-window.ui:272
 msgid "New Window"
 msgstr "Nova janela"
 
-#: src/ui/main-window.ui:189
+#: src/ui/main-window.ui:276
 msgid "Save Tagged Lines"
 msgstr "Guardar linhas etiquetadas"
 
-#: src/ui/main-window.ui:195 src/ui/preferences-dialog.ui:18
+#: src/ui/main-window.ui:282 src/ui/preferences-dialog.ui:18
 msgid "Preferences"
 msgstr "Preferências"
 
-#: src/ui/main-window.ui:199
+#: src/ui/main-window.ui:286
 msgid "Keyboard Shortcuts"
 msgstr "Atalhos de teclado"
 
-#: src/ui/main-window.ui:203
+#: src/ui/main-window.ui:290
 msgid "About Tags"
 msgstr "Acerca do Tags"
 
@@ -328,9 +331,9 @@ msgstr "Exemplo"
 msgid "Visible"
 msgstr "Visível"
 
-#: src/ui/tag-dialog-window.ui:30 src/window/main-window.vala:121
-#: src/window/main-window.vala:309 src/window/main-window.vala:477
-#: src/window/main-window.vala:491 src/window/main-window.vala:826
+#: src/ui/tag-dialog-window.ui:30 src/window/main-window.vala:135
+#: src/window/main-window.vala:311 src/window/main-window.vala:551
+#: src/window/main-window.vala:565 src/window/main-window.vala:914
 msgid "_Cancel"
 msgstr "_Cancelar"
 
@@ -401,65 +404,65 @@ msgstr "Não há etiquetas para listar"
 msgid "Add a tag"
 msgstr "Adicionar uma etiqueta"
 
-#: src/ui/tags-view.ui:145
+#: src/ui/tags-view.ui:146
 msgctxt "tooltip"
 msgid "Edit Tags"
 msgstr "Editar etiquetas"
 
-#: src/ui/tags-view.ui:158
+#: src/ui/tags-view.ui:159
 msgctxt "tooltip"
 msgid "Create tag from selected line"
 msgstr "Crirar etiqueta a partir da linha selecionada"
 
-#: src/ui/tags-view.ui:166
+#: src/ui/tags-view.ui:167
 msgctxt "tooltip"
 msgid "Previous hit"
 msgstr "Ocorrência anterior"
 
-#: src/ui/tags-view.ui:174
+#: src/ui/tags-view.ui:175
 msgctxt "tooltip"
 msgid "Next hit"
 msgstr "Ocorrência posterior"
 
-#: src/ui/tags-view.ui:205
+#: src/ui/tags-view.ui:206
 msgctxt "tooltip"
 msgid "Wrap Lines"
 msgstr "Quebra de linha"
 
-#: src/ui/tags-view.ui:224
+#: src/ui/tags-view.ui:225
 msgctxt "tooltip"
 msgid "Remove all"
 msgstr "Remover tudo"
 
-#: src/ui/tags-view.ui:247
+#: src/ui/tags-view.ui:248
 msgid "Load Tags"
 msgstr "Carregar etiquetas"
 
-#: src/ui/tags-view.ui:252
+#: src/ui/tags-view.ui:253
 msgid "Import Tags"
 msgstr "Importar etiquetas"
 
-#: src/ui/tags-view.ui:259
+#: src/ui/tags-view.ui:260
 msgid "Edit Tags"
 msgstr "Editar etiquetas"
 
-#: src/ui/tags-view.ui:263
+#: src/ui/tags-view.ui:264
 msgid "Save Tags"
 msgstr "Guardar etiquetas"
 
-#: src/ui/tags-view.ui:269
+#: src/ui/tags-view.ui:270
 msgid "Enable all Tags"
 msgstr "Ativar todas as etiquetas"
 
-#: src/ui/tags-view.ui:273
+#: src/ui/tags-view.ui:274
 msgid "Disable all Tags"
 msgstr "Desativar todas as etiquetas"
 
-#: src/ui/tags-view.ui:279
+#: src/ui/tags-view.ui:280
 msgid "Remove All"
 msgstr "Apagar tudo"
 
-#: src/ui/tags-view.ui:295
+#: src/ui/tags-view.ui:296
 msgid "Add from selected Line"
 msgstr "Adicionar a partir da linha selecionada"
 
@@ -472,7 +475,8 @@ msgid "Give color to your log files"
 msgstr "Dê cor aos seus ficheiros de log"
 
 #: src/ui/welcome-page.ui:76
-msgid "Open a log file to start using tags"
+#, fuzzy
+msgid "Open a text file and start using tags"
 msgstr "Abra um ficheiro de texto para começar"
 
 #: src/ui/welcome-page.ui:93
@@ -512,68 +516,94 @@ msgstr "Selecione a cor de fundo"
 msgid "_Edit"
 msgstr "_Editar"
 
-#: src/window/main-window.vala:119
+#: src/window/main-window.vala:133
 msgid "Remove Tag"
 msgstr "Remover etiqueta"
 
-#: src/window/main-window.vala:119
+#: src/window/main-window.vala:133
 msgid "Remove tag from the list?"
 msgstr "Remover etiqueta da lista?"
 
-#: src/window/main-window.vala:122 src/window/main-window.vala:492
+#: src/window/main-window.vala:136 src/window/main-window.vala:566
 msgid "_Remove"
 msgstr "A re«mover"
 
-#: src/window/main-window.vala:308 src/window/main-window.vala:475
+#: src/window/main-window.vala:310 src/window/main-window.vala:549
 msgid "Tags changed"
 msgstr "Etiquetas alteradas"
 
-#: src/window/main-window.vala:308 src/window/main-window.vala:475
+#: src/window/main-window.vala:310 src/window/main-window.vala:549
 msgid "There are unsaved changes, discards changes?"
 msgstr "Estas soao alterações não guardadas, descartar alterações?"
 
-#: src/window/main-window.vala:310 src/window/main-window.vala:478
+#: src/window/main-window.vala:312 src/window/main-window.vala:552
 msgid "_Discard"
 msgstr "_Descartar"
 
-#: src/window/main-window.vala:362
+#: src/window/main-window.vala:407
+#, c-format
+msgid "Found '%s' in line %u"
+msgstr "Encontrei '%s' na linha %u"
+
+#: src/window/main-window.vala:409
+#, fuzzy
+msgid "Add search as Tag"
+msgstr "Adicionar uma etiqueta"
+
+#: src/window/main-window.vala:422
+#, c-format
+msgid "No match for '%s'"
+msgstr "'Não encontrei '%s'"
+
+#: src/window/main-window.vala:427 src/window/main-window.vala:868
+#: src/window/main-window.vala:908
+#, c-format
+msgid "No more matches for '%s'"
+msgstr "Não há mais ocorrências para '%s'"
+
+#: src/window/main-window.vala:446
 #, c-format
 msgid "'%s' is not a regular file ..."
 msgstr "'%s' não é um ficheiro regular ..."
 
-#: src/window/main-window.vala:400 src/window/main-window.vala:842
+#: src/window/main-window.vala:492 src/window/main-window.vala:930
 msgid "Open File"
 msgstr "Abrir ficheiro"
 
-#: src/window/main-window.vala:400
+#: src/window/main-window.vala:492
 msgid "_Close"
 msgstr "_Fechar"
 
-#: src/window/main-window.vala:437
+#: src/window/main-window.vala:531
 msgid "No line selected to create tag"
 msgstr "Nenhuma linha selecionada para criar etiqueta"
 
-#: src/window/main-window.vala:468
+#: src/window/main-window.vala:542
 msgid "No tags to remove"
 msgstr "Não há etiquetas para remover"
 
-#: src/window/main-window.vala:489
+#: src/window/main-window.vala:563
 msgid "Remove Tags"
 msgstr "Remover etiquetas"
 
-#: src/window/main-window.vala:489
+#: src/window/main-window.vala:563
 msgid "Remove all tags from the list?"
 msgstr "Remover todas as etiquetas da lista?"
 
-#: src/window/main-window.vala:597
+#: src/window/main-window.vala:671
 msgid "Save File"
 msgstr "Guardar ficheiro"
 
-#: src/window/main-window.vala:842
+#: src/window/main-window.vala:858 src/window/main-window.vala:898
+#, c-format
+msgid "Found in line %u"
+msgstr "Encontrei na linha %u"
+
+#: src/window/main-window.vala:930
 msgid "Could not open file..."
 msgstr "Não foi possível abrir o ficheiro..."
 
-#: src/window/main-window.vala:850
+#: src/window/main-window.vala:938
 msgid "No tags to edit"
 msgstr "Não há etiquetas para editar"
 
