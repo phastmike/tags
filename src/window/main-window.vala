@@ -155,6 +155,7 @@ namespace Tags {
 
             setup_lines_view ();
             setup_minimap (lines_colview.scrolled.get_vadjustment ());
+            setup_search ();
             setup_main_box ();
             setup_buttons ();
 
@@ -341,12 +342,10 @@ namespace Tags {
         private void setup_minimap (Gtk.Adjustment adj) {
             minimap = new Minimap (adj);
             minimap.set_line_color_bg_callback (delegate_minimap_bgcolor_getter);
+            revealer = (new Tags.MinimapContainer (minimap)).revealer;
         }
 
-        private void setup_main_box () {
-            revealer = (new Tags.MinimapContainer (minimap)).revealer;
-
-            //search_entry.set_key_capture_widget (this);
+        private void setup_search () {
             var key_controller = new Gtk.EventControllerKey ();
 
             key_controller.key_pressed.connect ((keyval, keycode, state) => {
@@ -433,7 +432,9 @@ namespace Tags {
                 toast_search.set_timeout (3);
                 overlay.add_toast (toast_search);
             });
+        }
 
+        private void setup_main_box () {
             main_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
             main_box.append (lines_colview);
             main_box.append (revealer);
