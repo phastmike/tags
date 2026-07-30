@@ -25,6 +25,8 @@ namespace Tags {
             }
         }
 
+        public bool have_changed { get; set; default = false; }
+
         public TagStore (TagStyleStore? styles = null) {
             store = new ListStore (typeof(Tag));
             if (styles != null)
@@ -53,6 +55,10 @@ namespace Tags {
                 store.append(tag);
             }
             styles.add_style_for_tag (tag);
+            have_changed = true;
+            tag.changed.connect (() => {
+                have_changed = true;
+            });
         }
 
         public void remove_tag (Tag to_remove) {
@@ -61,6 +67,7 @@ namespace Tags {
                 if (tag == to_remove) {
                     store.remove (i);
                     styles.remove_style_for_tag (to_remove);
+                    have_changed = true;
                     return;
                 }
             }
@@ -68,6 +75,8 @@ namespace Tags {
 
         public void remove_all () {
             store.remove_all ();
+            styles.remove_all_styles ();
+            have_changed = false;
         }
 
         /* Enable/Disable all tags */
@@ -104,6 +113,7 @@ namespace Tags {
             generator.set_root (root);
             try {
                 generator.to_file (file.get_path ());
+                have_changed = false;
             } catch (Error e) {
                 error ("to_file:error: %s", e.message);
             }
@@ -127,10 +137,12 @@ namespace Tags {
                         var tag = Json.gobject_deserialize (typeof (Tag), element_node) as Tag;
                         //store.append (tag);
                         
-                        // FIXME: We need to generate a new UUID for the tag. Lacks persistence support
+                        // FIXME: We need to generate a new UUID for the tag.
+                        // Lacks persistence support
                         tag.colors.name = Tags.Helpers.generate_uuid ();
                         add_tag (tag);
                     });
+                if (preserve_load == false) have_changed = false;
                 } else {
                     warning ("Oops!.. Something went wrong while decoding json data ...");
                 }

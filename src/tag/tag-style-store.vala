@@ -47,6 +47,14 @@ namespace Tags {
             }
         }
 
+        public void remove_all_styles () {
+            for (uint i = 0; i < nstyles; i++) {
+                var style = model.get_item (i) as TagStyle;
+                Gtk.StyleContext.remove_provider_for_display (Gdk.Display.get_default (), style.provider);
+            }
+            store.remove_all ();
+        }
+
     }
 
 }

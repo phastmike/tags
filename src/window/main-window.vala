@@ -55,7 +55,6 @@ namespace Tags {
         private LinesColumnView lines_colview;
         private File? file_opened = null;
         private File? file_tags = null;
-        private bool tags_changed = false;
 
         private ActionEntry[] WINDOW_ACTIONS = {
             { "action_open_file", action_open_file },
@@ -123,7 +122,6 @@ namespace Tags {
                 var tag = row.tag;
                 var tag_dialog =  new TagDialogWindow.for_editing (application, tag);
                 tag_dialog.edited.connect ((t) => {
-                    tags_changed = true;
                     count_tag_hits ();
                     filter.update ();
                     minimap.set_array (Lines.model_to_array (lines_colview.lines));
@@ -142,7 +140,6 @@ namespace Tags {
                         if (response == "remove") {
                             tag_dialog.close ();
                             tag_dialog.destroy ();
-                            tags_changed = true;
                             tags.remove_tag (tag);
                             filter.update ();
                             minimap.set_array (Lines.model_to_array(lines_colview.lines));
@@ -307,7 +304,7 @@ namespace Tags {
 
         private void setup_buttons () {
             close_request.connect ( () => {
-                if (tags.ntags > 0 && tags_changed) {
+                if (tags.ntags > 0 && tags.have_changed) {
                     var dialog = new Adw.AlertDialog (_("Tags changed"), _("There are unsaved changes, discards changes?"));
                     dialog.add_response ("cancel", _("_Cancel"));
                     dialog.add_response ("discard", _("_Discard"));
@@ -500,14 +497,12 @@ namespace Tags {
 
             tag_dialog.added.connect ((tag, add_to_top) => {
                 tag.changed.connect (() => {
-                    tags_changed = true;
                     mmixer.update_mixing ();
                     filter.update ();
                     count_hits_for_tag (tag);
                     minimap.set_array (Lines.model_to_array(lines_colview.lines));
                 });
 
-                tags_changed = true;
                 tags.add_tag (tag, add_to_top);
                 count_hits_for_tag (tag);
                 filter.update ();
@@ -546,7 +541,7 @@ namespace Tags {
                 return;
             }
 
-            if (tags_changed) {
+            if (tags.have_changed) {
                 var dialog = new Adw.AlertDialog (_("Tags changed"), _("There are unsaved changes, discards changes?"));
                 dialog.set_prefer_wide_layout (true);
                 dialog.add_response ("cancel", _("_Cancel"));
@@ -579,7 +574,6 @@ namespace Tags {
 
         private void tags_remove_all () {
             file_tags = null;
-            tags_changed = false;
             tags.remove_all ();
             filter.update ();
             minimap.set_array (Lines.model_to_array(lines_colview.lines));
@@ -608,7 +602,6 @@ namespace Tags {
                         minimap.set_array (Lines.model_to_array(lines_colview.lines));
                     });
                 }
-                tags_changed = false;
                 filter.update ();
                 minimap.set_array (Lines.model_to_array (lines_colview.lines));
                 count_tag_hits ();
@@ -631,7 +624,6 @@ namespace Tags {
                 var file = UIDialogs.file_save_tags.end (res);
                 if (file != null) {
                     tags.to_file (file);
-                    tags_changed = false;
                 }
             });
         }
