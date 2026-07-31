@@ -18,7 +18,7 @@ namespace Tags {
             }
         }
 
-        public uint nstyles {
+        public uint n_items {
             get {
                 return model.get_n_items ();
             }
@@ -31,26 +31,32 @@ namespace Tags {
         public void add_style_for_tag (Tag tag) {
             TagStyle style = new TagStyle (tag);
             store.append(style);
-            Gtk.StyleContext.add_provider_for_display (Gdk.Display.get_default (),
-                                                      style.provider,
-                                                      Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+            Gtk.StyleContext.add_provider_for_display (
+                Gdk.Display.get_default (),
+                style.provider,
+                Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+            );
         }
 
         public void remove_style_for_tag (Tag tag) {
-            for (uint i = 0; i < nstyles; i++) {
+            for (uint i = 0; i < n_items; i++) {
                 var style = model.get_item (i) as TagStyle;
                 if (style.tag == tag) {
                     store.remove (i);
-                    Gtk.StyleContext.remove_provider_for_display (Gdk.Display.get_default (), style.provider);
+                    Gtk.StyleContext.remove_provider_for_display (
+                        Gdk.Display.get_default (), style.provider
+                    );
                     break;
                 }
             }
         }
 
         public void remove_all_styles () {
-            for (uint i = 0; i < nstyles; i++) {
+            for (uint i = 0; i < n_items; i++) {
                 var style = model.get_item (i) as TagStyle;
-                Gtk.StyleContext.remove_provider_for_display (Gdk.Display.get_default (), style.provider);
+                Gtk.StyleContext.remove_provider_for_display (
+                    Gdk.Display.get_default (), style.provider
+                );
             }
             store.remove_all ();
         }

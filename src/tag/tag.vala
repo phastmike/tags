@@ -87,7 +87,7 @@ namespace Tags {
 
             this.colors = colors;
 
-            // Could decouple and pass it as argument ...
+            // Could decouple and pass it as argument or delegate
             this.colors.name = Tags.Helpers.generate_uuid ();
 
             this.colors.changed.connect (() => {

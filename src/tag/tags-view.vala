@@ -27,7 +27,7 @@ namespace Tags {
         public GLib.ListModel model;
 
         public TagsView (GLib.ListModel model) {
-            this.model = model; 
+            this.model = model;
 
             listbox.selected_rows_changed.connect ( () => {
                 var row = (TagRow) listbox.get_selected_row ();
