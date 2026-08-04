@@ -40,7 +40,7 @@ namespace Tags {
             set { _search_mode = value; }
         }
 
-        private Adw.Toast toast_search;
+        private Adw.Toast toast_main;
         private Gtk.Stack stack;
         private Gtk.Box main_box;
         private Minimap minimap;
@@ -360,8 +360,8 @@ namespace Tags {
             });
 
             search_entry.add_controller (key_controller);
-            toast_search = new Adw.Toast ("");
-            toast_search.set_use_markup (false);
+            toast_main = new Adw.Toast ("");
+            toast_main.set_use_markup (false);
 
             search_entry.search_changed.connect ( () => {
                 // Eases the Toast messaging and search behaviour
@@ -399,35 +399,35 @@ namespace Tags {
                         line_selection.unselect_all ();
                         line_selection.select_item (i, true);
                         lines_colview.column_view.scroll_to (i, null, Gtk.ListScrollFlags.SELECT, null);
-                        toast_search.set_timeout (3);
-                        toast_search.set_title (_("Found '%s' in line %u").printf (search_entry.text, line.number));
+                        toast_main.set_timeout (3);
+                        toast_main.set_title (_("Found '%s' in line %u").printf (search_entry.text, line.number));
                         if (tags.check_if_pattern_exists (search_entry.text) == false) {
-                            toast_search.set_button_label (_("Add search as Tag"));
-                            toast_search.set_action_name ("win.action_add_tag_from_search");
+                            toast_main.set_button_label (_("Add search as Tag"));
+                            toast_main.set_action_name ("win.action_add_tag_from_search");
                         } else {
-                            toast_search.set_button_label ("");
+                            toast_main.set_button_label ("");
                         }
-                        overlay.add_toast (toast_search);
+                        overlay.add_toast (toast_main);
                         return;
                     }
                 }
 
-                toast_search.set_button_label (null);
+                toast_main.set_button_label (null);
 
                 if (index == 0) {
-                    toast_search.set_title (_("No match for '%s'").printf (search_entry.text));
+                    toast_main.set_title (_("No match for '%s'").printf (search_entry.text));
                     search_entry.remove_css_class ("warning");
                     search_entry.remove_css_class ("success");
                     search_entry.add_css_class ("error");
                 } else {
-                    toast_search.set_title (_("No more matches for '%s'").printf (search_entry.text));
+                    toast_main.set_title (_("No more matches for '%s'").printf (search_entry.text));
                     search_entry.remove_css_class ("error");
                     search_entry.remove_css_class ("success");
                     search_entry.add_css_class ("warning");
                 }
 
-                toast_search.set_timeout (3);
-                overlay.add_toast (toast_search);
+                toast_main.set_timeout (3);
+                overlay.add_toast (toast_main);
             });
         }
 
@@ -724,6 +724,10 @@ namespace Tags {
             var text = lines_colview.get_selected_lines_as_string (); 
             if (text.length > 0) {
                 get_clipboard ().set_text (text);
+                toast_main.set_button_label ("");
+                toast_main.set_title (_("%d bytes copied".printf (text.length)));
+                toast_main.set_timeout (2);
+                overlay.add_toast (toast_main);
             }
         }
 
@@ -848,20 +852,20 @@ namespace Tags {
                     line_selection.unselect_all ();
                     line_selection.select_item (i, true);
                     lines_colview.column_view.scroll_to (i, null, Gtk.ListScrollFlags.SELECT, null);
-                    toast_search.set_title (_("Found in line %u").printf (line.number));
-                    toast_search.set_timeout (3);
-                    toast_search.set_button_label (null);
-                    overlay.add_toast (toast_search);
+                    toast_main.set_title (_("Found in line %u").printf (line.number));
+                    toast_main.set_timeout (3);
+                    toast_main.set_button_label (null);
+                    overlay.add_toast (toast_main);
                     return;
                 }
             }
 
-            toast_search.set_button_label (null);
+            toast_main.set_button_label (null);
             if (index != 0) {
-                toast_search.set_title (_("No more matches for '%s'").printf (tag.pattern));
+                toast_main.set_title (_("No more matches for '%s'").printf (tag.pattern));
             }
-            toast_search.set_timeout (3);
-            overlay.add_toast (toast_search);
+            toast_main.set_timeout (3);
+            overlay.add_toast (toast_main);
         }
 
         private void next_hit () {
@@ -888,20 +892,20 @@ namespace Tags {
                     line_selection.unselect_all ();
                     line_selection.select_item (i, true);
                     lines_colview.column_view.scroll_to (i, null, Gtk.ListScrollFlags.SELECT, null);
-                    toast_search.set_title (_("Found in line %u").printf (line.number));
-                    toast_search.set_timeout (3);
-                    toast_search.set_button_label (null);
-                    overlay.add_toast (toast_search);
+                    toast_main.set_title (_("Found in line %u").printf (line.number));
+                    toast_main.set_timeout (3);
+                    toast_main.set_button_label (null);
+                    overlay.add_toast (toast_main);
                     return;
                 }
             }
 
-            toast_search.set_button_label (null);
+            toast_main.set_button_label (null);
             if (index != 0) {
-                toast_search.set_title (_("No more matches for '%s'").printf (tag.pattern));
+                toast_main.set_title (_("No more matches for '%s'").printf (tag.pattern));
             }
-            toast_search.set_timeout (3);
-            overlay.add_toast (toast_search);
+            toast_main.set_timeout (3);
+            overlay.add_toast (toast_main);
         }
 
         private void show_dialog (string title, string message, string cancel_label = _("_Cancel")) {
@@ -914,16 +918,42 @@ namespace Tags {
         }
 
         private void action_open_file () {
-            UIDialogs.file_open_lines.begin (this, null, (obj, res) => {
-                try {
-                    File? file = UIDialogs.file_open_lines.end (res);
-                    if (file != null) open_file (file);
-                } catch (Error e) {
-                    if (e.code != 2) {
-                        show_dialog (_("Open File"), _("Could not open file..."));
+            if (tags.ntags > 0 && tags.have_changed) {
+                var dialog = new Adw.AlertDialog (_("Tags changed"), _("There are unsaved changes, discards changes?"));
+                dialog.add_response ("cancel", _("_Cancel"));
+                dialog.add_response ("discard", _("_Discard"));
+                dialog.set_response_appearance ("discard",Adw.ResponseAppearance.DESTRUCTIVE);
+                dialog.set_default_response ("cancel");
+                dialog.set_close_response ("cancel");
+                dialog.set_prefer_wide_layout (false);
+                dialog.present (this);
+                
+                dialog.response.connect ((response) => {
+                    if (response == "discard" || response == "save") {
+                        UIDialogs.file_open_lines.begin (this, null, (obj, res) => {
+                            try {
+                                File? file = UIDialogs.file_open_lines.end (res);
+                                if (file != null) open_file (file);
+                            } catch (Error e) {
+                                if (e.code != 2) {
+                                    show_dialog (_("Open File"), _("Could not open file..."));
+                                }
+                            }
+                        });
                     }
-                }
-            });
+                });
+            } else {
+                UIDialogs.file_open_lines.begin (this, null, (obj, res) => {
+                    try {
+                        File? file = UIDialogs.file_open_lines.end (res);
+                        if (file != null) open_file (file);
+                    } catch (Error e) {
+                        if (e.code != 2) {
+                            show_dialog (_("Open File"), _("Could not open file..."));
+                        }
+                    }
+                });
+            }
         }
 
         private void action_toggle_edit_mode () {
