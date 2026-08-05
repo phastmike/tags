@@ -298,7 +298,7 @@ namespace Tags {
 
             lines_colview.column_view.activate.connect ( (p) => {
                 var line = lines_colview.lines.get_item (p) as Line;
-                add_tag (line.text);
+                dialog_add_tag (line.text);
             });
         }
 
@@ -492,7 +492,7 @@ namespace Tags {
             });
         }
 
-        private void add_tag (string? pattern = null) {
+        private void dialog_add_tag (string? pattern = null) {
             var tag_dialog = new TagDialogWindow (this.application, pattern);
 
             tag_dialog.added.connect ((tag, add_to_top) => {
@@ -514,11 +514,11 @@ namespace Tags {
 
         private void action_add_tag_from_search () {
             if (search_entry.text.length <= 0) { return; }
-            add_tag (search_entry.text);
+            dialog_add_tag (search_entry.text);
         }
 
         private void action_add_tag () {
-            add_tag ();
+            dialog_add_tag ();
         }
 
         public void action_add_tag_from_line () {
@@ -530,7 +530,7 @@ namespace Tags {
                 return;
             }
             var line = filterer.model.get_item (bs.get_nth ((uint) bs.get_size () - 1)) as Line;
-            add_tag (line.text);
+            dialog_add_tag (line.text);
         }
 
         private void action_remove_all_tags () {
@@ -917,7 +917,7 @@ namespace Tags {
             dialog.present (this);
         }
 
-        private void open_file_dialog () {
+        private void dialog_open_file () {
             UIDialogs.file_open_lines.begin (this, null, (obj, res) => {
                 try {
                     File? file = UIDialogs.file_open_lines.end (res);
@@ -946,11 +946,11 @@ namespace Tags {
                 
                 dialog.response.connect ((response) => {
                     if (response == "discard" || response == "save") {
-                        open_file_dialog ();
+                        dialog_open_file ();
                     }
                 });
             } else {
-                open_file_dialog ();
+                dialog_open_file ();
             }
         }
 
