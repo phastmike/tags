@@ -917,42 +917,40 @@ namespace Tags {
             dialog.present (this);
         }
 
+        private void open_file_dialog () {
+            UIDialogs.file_open_lines.begin (this, null, (obj, res) => {
+                try {
+                    File? file = UIDialogs.file_open_lines.end (res);
+                    if (file != null) open_file (file);
+                } catch (Error e) {
+                    if (e.code != 2) {
+                        show_dialog (_("Open File"), _("Could not open file..."));
+                    }
+                }
+            });
+        }
+
         private void action_open_file () {
             if (tags.ntags > 0 && tags.have_changed) {
-                var dialog = new Adw.AlertDialog (_("Tags changed"), _("There are unsaved changes, discards changes?"));
+                var dialog = new Adw.AlertDialog (
+                    _("Tags changed"),
+                    _("There are unsaved changes, discards changes?")
+                );
                 dialog.add_response ("cancel", _("_Cancel"));
                 dialog.add_response ("discard", _("_Discard"));
                 dialog.set_response_appearance ("discard",Adw.ResponseAppearance.DESTRUCTIVE);
                 dialog.set_default_response ("cancel");
                 dialog.set_close_response ("cancel");
-                dialog.set_prefer_wide_layout (false);
+                dialog.set_prefer_wide_layout (true);
                 dialog.present (this);
                 
                 dialog.response.connect ((response) => {
                     if (response == "discard" || response == "save") {
-                        UIDialogs.file_open_lines.begin (this, null, (obj, res) => {
-                            try {
-                                File? file = UIDialogs.file_open_lines.end (res);
-                                if (file != null) open_file (file);
-                            } catch (Error e) {
-                                if (e.code != 2) {
-                                    show_dialog (_("Open File"), _("Could not open file..."));
-                                }
-                            }
-                        });
+                        open_file_dialog ();
                     }
                 });
             } else {
-                UIDialogs.file_open_lines.begin (this, null, (obj, res) => {
-                    try {
-                        File? file = UIDialogs.file_open_lines.end (res);
-                        if (file != null) open_file (file);
-                    } catch (Error e) {
-                        if (e.code != 2) {
-                            show_dialog (_("Open File"), _("Could not open file..."));
-                        }
-                    }
-                });
+                open_file_dialog ();
             }
         }
 
