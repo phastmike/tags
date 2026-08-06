@@ -11,7 +11,7 @@
 namespace Tags {
 
     public class TagStyle : Object {
-        public Tag tag;
+        public unowned Tag tag;
         public Gtk.CssProvider provider;
 
         public TagStyle (Tag tag) {
@@ -63,7 +63,6 @@ background-color: %s;
             );
             
             provider.load_from_string (css_tag_row + css);
-            //message ("update CSS class: tag-%s\n%s", tag.colors.name, css_tag_row + css);
         }
     }
 }
