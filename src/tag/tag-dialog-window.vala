@@ -109,7 +109,6 @@ namespace Tags {
             button_ok.set_label (_("_Edit"));
             button_ok.set_sensitive (true);
 
-            //button_delete.set_visible (true);
             btn_delete_tag.set_visible (true);
 
             row_atop.set_visible (false);
@@ -118,8 +117,6 @@ namespace Tags {
             if (tag.description != null) entry_tag_name.set_text (tag.description);
             if (tag.colors.fg != null) button_fg_color.set_rgba (tag.colors.fg);
             if (tag.colors.bg != null ) button_bg_color.set_rgba (tag.colors.bg);
-
-            //this.set_default_size (600, 620);
 
             button_ok.clicked.connect (() => { 
                 tag.pattern = entry_tag_pattern.get_text ();
@@ -134,12 +131,10 @@ namespace Tags {
             
             button_delete.clicked.connect (() => {
                 deleted(tag);
-                //this.destroy ();
             });
 
             btn_delete_tag.clicked.connect (() => {
                 deleted(tag);
-                //this.destroy ();
             });
             
             
