@@ -40,8 +40,8 @@
               <object class="GtkButton" id="button_ok">
                 <style>
                   <!--<class name="flat"/>-->
-                  <class name="accent"/>
-                  <!--<class name="suggested-action"/>-->
+                  <!--<class name="accent"/>-->
+                  <class name="suggested-action"/>
                 </style>
                 <property name="label" translatable="yes">_Add</property>
                 <property name="sensitive">false</property>
@@ -51,9 +51,9 @@
             <child type="end">
               <object class="GtkButton" id="button_delete">
                 <style>
-                  <!--<class name="destructive-action"/>-->
+                  <class name="destructive-action"/>
                   <!--<class name="flat"/>-->
-                  <class name="error"/>
+                  <!--<class name="error"/>-->
                 </style>
                 <property name="label" translatable="yes">_Delete</property>
                 <property name="visible">false</property>
@@ -120,6 +120,7 @@
                           <object class="GtkSwitch" id="switch_atop">
                             <property name="halign">end</property>
                             <property name="valign">center</property>
+                            <property name="active">true</property>
                           </object>
                         </child>
                       </object>
@@ -228,7 +229,8 @@
         <property name="margin-bottom">8</property>
         <property name="wrap">true</property>
         <property name="max-width-chars">36</property>
-        <property name="label" translatable="yes">Adds the tag to the top which gives precedence over the other tag filters. Once a line is tagged it disregards other possible tags. The user can reorder tags with drag and drop at any time</property>
+        <!--<property name="justify">fill</property>-->
+        <property name="label" translatable="yes">Adds the tag to the top which gives precedence over the other tag filters. Once a line is tagged it disregards other possible tags. The user can reorder tags with drag and drop at any time.</property>
       </object>
     </child>
   </object>
