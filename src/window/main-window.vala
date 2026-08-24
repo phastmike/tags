@@ -66,6 +66,7 @@ namespace Tags {
             { "action_import_tags", action_import_tags },
             { "action_save_tags", action_save_tags },
             { "save_tagged", save_tagged },
+            { "show_fileinfo", action_show_fileinfo },
             { "hide_untagged_lines", hide_untagged_lines, null, "false", null},
             { "toggle_tags_view", toggle_tags_view, null, "false", null},
             { "action_toggle_minimap", action_toggle_minimap },
@@ -106,6 +107,7 @@ namespace Tags {
             Object (application: app);
             setup_actions ();
             save_tagged_disable ();
+            show_fileinfo_disable ();
 
             style_store = new TagStyleStore ();
             tags = new TagStore (style_store);
@@ -469,6 +471,7 @@ namespace Tags {
 
                     file_opened = file;
                     save_tagged_enable ();
+                    show_fileinfo_enable ();
                     set_title (file.get_basename ());
                     title_nosidebar.set_subtitle (file.get_basename ());
                     title_nosidebar.set_tooltip_text (file.get_path ());
@@ -664,6 +667,22 @@ namespace Tags {
                     if (e.code != 2) show_dialog (_("Save File"), e.message);
                 }
             });
+        }
+
+        private void show_fileinfo_enable () {
+            var action = (SimpleAction) lookup_action ("show_fileinfo");
+            action.set_enabled (true);
+        }
+
+        private void show_fileinfo_disable () {
+            var action = (SimpleAction) lookup_action ("show_fileinfo");
+            action.set_enabled (false);
+        }
+
+        private void action_show_fileinfo () {
+            if (file_opened == null) { return; }
+            var dialog = new FileInfoDialog (file_opened, lines);
+            dialog.present (this);
         }
 
         private void count_hits_for_tag (Tag t) {

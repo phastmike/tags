@@ -8,6 +8,7 @@
     <file>ui/tags-view.ui</file>
     <file>ui/tag-dialog-window.ui</file>
     <file>ui/preferences-dialog.ui</file>
+    <file>ui/file-info-dialog.ui</file>
     <file>gtk/help-overlay.ui</file>
   </gresource>
 </gresources>
