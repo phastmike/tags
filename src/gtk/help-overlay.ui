@@ -93,6 +93,12 @@
                 <property name="action-name">win.action_toggle_line_number</property>
               </object>
             </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="title" translatable="yes" context="shortcut window">Show File Information</property>
+                <property name="action-name">win.show_fileinfo</property>
+              </object>
+            </child>
           </object>
         </child>
       </object>

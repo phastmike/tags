@@ -233,6 +233,7 @@ namespace Tags {
             application.set_accels_for_action("win.action_toggle_line_number", {"<primary>l"});
             application.set_accels_for_action("win.action_add_tag", {"<primary>a"});
             application.set_accels_for_action("win.save_tagged", {"<primary>s"});
+            application.set_accels_for_action("win.show_fileinfo", {"<primary>i"});
             application.set_accels_for_action("win.hide_untagged_lines", {"<primary>h"});
             application.set_accels_for_action("win.toggle_tags_view", {"F9"});
             application.set_accels_for_action("win.action_toggle_minimap", {"<primary>m"});
@@ -473,10 +474,31 @@ namespace Tags {
                     save_tagged_enable ();
                     show_fileinfo_enable ();
                     set_title (file.get_basename ());
+
                     title_nosidebar.set_subtitle (file.get_basename ());
                     title_nosidebar.set_tooltip_text (file.get_path ());
                     title_sidebar.set_label (file.get_basename ());
                     title_sidebar.set_tooltip_text (file.get_path ());
+
+
+                    /*
+                    var ga = new Gtk.GestureClick ();
+                    ga.set_button (1);
+                    ga.released.connect ( () => {
+                       //action_show_fileinfo ();
+                        Gtk.Popover pop = new FileInfoDialog (file_opened, lines) as Gtk.Popover;
+                        pop.set_parent (title_sidebar);
+                        pop.set_has_arrow (true);
+                        pop.closed.connect ( () => {
+                            pop.destroy ();
+                        });
+                        pop.popup ();
+                    });
+
+                    //title_nosidebar.add_controller (ga);
+                    //title_sidebar.add_controller (ga);
+                    */
+
                     if (Preferences.instance ().tags_autoload == true) {
                         file_tags = File.new_for_path (file.get_path () + ".tags");
                         if (file_tags.query_exists ()) {
@@ -681,8 +703,7 @@ namespace Tags {
 
         private void action_show_fileinfo () {
             if (file_opened == null) { return; }
-            var dialog = new FileInfoDialog (file_opened, lines);
-            dialog.present (this);
+            new FileInfoDialog (this.application, file_opened, lines).present ();
         }
 
         private void count_hits_for_tag (Tag t) {
