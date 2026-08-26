@@ -25,7 +25,7 @@ The main goal is to aid log analysis by tagging lines with user defined colors. 
 - Load tags
 - Save tags
 - Remove all tags
-- Open new window
+- Tag color scheme
 - Hide untagged lines
 - Search within visible lines (selection)
 - Tags based on string comparison
@@ -33,7 +33,6 @@ The main goal is to aid log analysis by tagging lines with user defined colors. 
 - Case sensitive support
 - Automatic load tags file (same filename + `.tags`extension)
 - Navigate through hits with F2 and F3
-- Automatic color scheme on tag creation or manual color selection
 - Minimap with tag colors and document navigation
 - Experimental Line wrap support
 
@@ -51,6 +50,7 @@ The main goal is to aid log analysis by tagging lines with user defined colors. 
 | `Ctrl` + `H` | Toggle untagged lines visibility |
 | `Ctrl` + `L` | Hide/Show Line numbers |
 | `Ctrl` + `M` | Hide/Show Minimap |
+| `Ctrl + I    | Show File information |
 | `Alt` + `E` | Enable all tags |
 | `Alt` + `D` | Disable all tags |
 | `F9` | Hide/Show Tag list (sidebar) |
