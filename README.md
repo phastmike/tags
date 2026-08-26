@@ -50,7 +50,7 @@ The main goal is to aid log analysis by tagging lines with user defined colors. 
 | `Ctrl` + `H` | Toggle untagged lines visibility |
 | `Ctrl` + `L` | Hide/Show Line numbers |
 | `Ctrl` + `M` | Hide/Show Minimap |
-| `Ctrl` + `I  | Show File information |
+| `Ctrl` + `I` | Show File information |
 | `Alt` + `E` | Enable all tags |
 | `Alt` + `D` | Disable all tags |
 | `F9` | Hide/Show Tag list (sidebar) |
