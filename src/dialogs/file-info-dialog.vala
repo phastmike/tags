@@ -71,7 +71,12 @@ namespace Tags {
             mult = n;
             size = Math.round (size * 10) / 10.0;
             
-            row_size.set_subtitle ("%0.1f %s".printf(size, mult.to_string ()));
+            if (mult == MULTIPLIERS.B) {
+                row_size.set_subtitle ("%0.0f %s".printf(size, mult.to_string ()));
+            } else {
+                row_size.set_subtitle ("%0.1f %s".printf(size, mult.to_string ()));
+            }
+            //row_size.set_subtitle ("%0.1f %s".printf(size, mult.to_string ()));
             //row_size.set_tooltip_text ("%s bytes".printf(info.get_size ().to_string ()));
             row_lines_n.set_subtitle ("%s".printf(lines.model.get_n_items ().to_string ()));
 
