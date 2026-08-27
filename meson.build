@@ -1,12 +1,11 @@
 project('io.github.phastmike.tags', ['c', 'vala'],
-          version: '2.3',
+          version: '2.4',
     meson_version: '>= 0.58.0',
   default_options: [ 'warning_level=2',
                    ],
 )
 
 application_id = meson.project_name()
-#application_id = 'io.github.phastmike.tags'
 
 i18n = import('i18n')
 conf_data = configuration_data()

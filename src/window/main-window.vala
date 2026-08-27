@@ -480,25 +480,6 @@ namespace Tags {
                     title_sidebar.set_label (file.get_basename ());
                     title_sidebar.set_tooltip_text (file.get_path ());
 
-
-                    /*
-                    var ga = new Gtk.GestureClick ();
-                    ga.set_button (1);
-                    ga.released.connect ( () => {
-                       //action_show_fileinfo ();
-                        Gtk.Popover pop = new FileInfoDialog (file_opened, lines) as Gtk.Popover;
-                        pop.set_parent (title_sidebar);
-                        pop.set_has_arrow (true);
-                        pop.closed.connect ( () => {
-                            pop.destroy ();
-                        });
-                        pop.popup ();
-                    });
-
-                    //title_nosidebar.add_controller (ga);
-                    //title_sidebar.add_controller (ga);
-                    */
-
                     if (Preferences.instance ().tags_autoload == true) {
                         file_tags = File.new_for_path (file.get_path () + ".tags");
                         if (file_tags.query_exists ()) {
@@ -750,8 +731,6 @@ namespace Tags {
 
         private void action_toggle_minimap () {
             revealer.set_reveal_child (!revealer.get_reveal_child ());
-            //var action = this.lookup_action ("action_toggle_minimap");
-            //action.change_state (new Variant.boolean (revealer.get_reveal_child ()));
         }
 
         private void toggle_tags_view () {
