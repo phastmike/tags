@@ -9,7 +9,6 @@ application_id = meson.project_name()
 #application_id = 'io.github.phastmike.tags'
 
 i18n = import('i18n')
-
 conf_data = configuration_data()
 conf_data.set_quoted('APPLICATION_ID', application_id)
 conf_data.set_quoted('VERSION', meson.project_version())
@@ -25,5 +24,17 @@ config_file = configure_file(
 subdir('po')
 subdir('data')
 subdir('src')
+
+run_target(
+  'update-i18n',
+  command: [
+    'ninja',
+    '-C',
+    meson.global_build_root(),
+    'io.github.phastmike.tags-pot',
+    'io.github.phastmike.tags-update-po'
+  ]
+)
+
 
 meson.add_install_script('build-aux/meson/postinstall.py')

@@ -21,3 +21,5 @@ meson compile -C build io.github.phastmike.tags-update-po
 ## Notes
 
 - Check file encodings. Files should be UTF-8 encoded.
+- Simplfied via `ninja`:
+   - Within `build`folder, **run `ninja update-i18n` to update PO files.**
