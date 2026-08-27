@@ -11,7 +11,8 @@
               <object class="AdwSplitButton">
                 <property name="icon-name">list-add-symbolic</property>
                 <property name="popover">popover_menu_add_tag</property>
-                <property name="tooltip-text">Load</property>
+                <property name="tooltip-text" translatable="yes">Load</property>
+                <property name="dropdown-tooltip" translatable="yes">More Options</property>
                 <property name="action-name">win.action_add_tag</property>
               </object>
             </child>
@@ -31,7 +32,7 @@
                     <property name="primary">true</property>
                     <property name="icon-name">view-more-symbolic</property>
                     <property name="menu-model">secondary_menu</property>
-                    <property name="tooltip-text">View more</property>
+                    <property name="tooltip-text" translatable="yes">View more</property>
                   </object>
                 </child>
               </object>
@@ -212,7 +213,7 @@
                     <property name="icon-name">format-justify-left-symbolic</property>
                     <property name="direction">GTK_ARROW_UP</property>
                     <property name="popover">popover_menu_add_tag</property>
-                    <property name="tooltip-text">Wrap lines</property>
+                    <property name="tooltip-text" translatable="yes">Wrap lines</property>
                     <property name="action-name">win.action_toggle_line_wrap</property>
                   </object>
                 </child>

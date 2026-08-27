@@ -15,47 +15,44 @@
                       <object class="AdwButtonContent">
                         <property name="can-focus">False</property>
                         <property name="icon-name">system-file-manager-symbolic</property>
-                        <property name="label">Browse</property>
+                        <property name="label" translatable="yes">Browse</property>
                       </object>
                     </property>
-                    <property name="tooltip-text">Brpwse folder</property>
+                    <property name="tooltip-text" translatable="yes">Browse folder</property>
                   </object>
                 </property>
-                <property name="title">File</property>
+                <property name="title" translatable="yes">File</property>
                 <child>
                   <object class="AdwActionRow" id="row_filename">
-                    <property name="css-classes">property
-</property>
-                    <property name="subtitle">--</property>
-                    <property name="title">Name</property>
+                    <property name="css-classes">property</property>
+                    <property name="subtitle">---</property>
+                    <property name="title" translatable="yes">Name</property>
                   </object>
                 </child>
                 <child>
                   <object class="AdwActionRow" id="row_folder">
-                    <property name="css-classes">property
-</property>
-                    <property name="subtitle">--</property>
-                    <property name="title">Folder</property>
+                    <property name="css-classes">property</property>
+                    <property name="subtitle">---</property>
+                    <property name="title" translatable="yes">Folder</property>
                   </object>
                 </child>
                 <child>
                   <object class="AdwActionRow" id="row_size">
-                    <property name="css-classes">property
-</property>
-                    <property name="subtitle">--</property>
-                    <property name="title">Size</property>
+                    <property name="css-classes">property</property>
+                    <property name="subtitle">---</property>
+                    <property name="title" translatable="yes">Size</property>
                   </object>
                 </child>
               </object>
             </child>
             <child>
               <object class="AdwPreferencesGroup">
-                <property name="title">Other</property>
+                <property name="title" translatable="yes">Other</property>
                 <child>
                   <object class="AdwActionRow" id="row_lines_n">
                     <property name="css-classes">property</property>
-                    <property name="subtitle">--</property>
-                    <property name="title">Lines</property>
+                    <property name="subtitle">---</property>
+                    <property name="title" translatable="yes">Lines</property>
                   </object>
                 </child>
               </object>
@@ -75,7 +72,7 @@
     <property name="default-width">600</property>
     <property name="destroy-with-parent">True</property>
     <property name="resizable">False</property>
-    <property name="title">File Information</property>
+    <property name="title" translatable="yes">File Information</property>
     <child>
       <object class="GtkShortcutController">
         <child>

@@ -5,11 +5,13 @@ src/gtk/help-overlay.ui
 src/ui/lines-column-view.ui
 src/ui/main-window.ui
 src/ui/preferences-dialog.ui
+src/ui/file-info-dialog.ui
 src/ui/tag-dialog-window.ui
 src/ui/tag-row.ui
 src/ui/tags-view.ui
 src/ui/welcome-page.ui
 src/dialogs/ui-dialogs.vala
+src/dialogs/file-info-dialog.vala
 src/preferences/preferences-dialog.vala
 src/tag/tag-dialog-window.vala
 src/window/main-window.vala
