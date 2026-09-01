@@ -10,7 +10,7 @@
 
 namespace Tags {
     [GtkTemplate (ui = "/io/github/phastmike/tags/ui/file-info-dialog.ui")]
-    public class FileInfoDialog: Adw.Window {
+    public class FileInfoDialog: Adw.PreferencesDialog {
         [GtkChild]
         private unowned Adw.ActionRow row_filename;
         [GtkChild]
@@ -47,7 +47,7 @@ namespace Tags {
         }
 
         public FileInfoDialog (Gtk.Application app, GLib.File file, Lines lines) {
-            Object(application: app, transient_for: app.active_window, modal: true);
+            //Object(application: app, transient_for: app.active_window, modal: true);
 
             row_filename.set_subtitle (file.get_basename ());
             row_folder.set_subtitle (file.get_parent ().get_path ());

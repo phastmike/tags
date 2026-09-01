@@ -54,6 +54,9 @@ The main goal is to aid log analysis by tagging lines with user defined colors. 
 | `Alt` + `E` | Enable all tags |
 | `Alt` + `D` | Disable all tags |
 | `F9` | Hide/Show Tag list (sidebar) |
+| `Ctrl` + `W` | Toggle line wrap |
+| `Ctrl` + `+` | Increase number of lines per row (line wrap) |
+| `Ctrl` + `-` | Decrease number of lines per row (line wrap) |
 
 ### Tags Toggle
 Toggle the first ten tags with keyboard shortcuts:
@@ -75,10 +78,6 @@ Toggle the first ten tags with keyboard shortcuts:
 |----------|--------|
 | `F2` | Previous tag hit |
 | `F3` | Next tag hit |
-| `Ctrl` + `M` | Toggle minimap visibility |
-| `Ctrl` + `W` | Toggle line wrap |
-| `Ctrl` + `+` | Increase number of lines per row (line wrap) |
-| `Ctrl` + `-` | Decrease number of lines per row (line wrap) |
 
 Check the available shortcuts in the application menu with `Ctrl` + `?`.
 
@@ -86,7 +85,7 @@ Check the available shortcuts in the application menu with `Ctrl` + `?`.
 
 ## Development
 
-Developed with Vala + Gtk 4
+Vala with Gtk4
 
 ### Dependencies
 

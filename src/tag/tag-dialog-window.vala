@@ -168,6 +168,7 @@ namespace Tags {
             var provider = new Gtk.CssProvider ();
             provider.load_from_string (lstyle);
             label_sample_example.add_css_class (TagDialogWindow.css_class);
+            label_sample_example.add_css_class ("frame");
             Gtk.StyleContext.add_provider_for_display (Gdk.Display.get_default (), provider, Gtk.STYLE_PROVIDER_PRIORITY_USER);
         }
 

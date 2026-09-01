@@ -697,7 +697,7 @@ namespace Tags {
 
         private void action_show_fileinfo () {
             if (file_opened == null) { return; }
-            new FileInfoDialog (this.application, file_opened, lines).present ();
+            new FileInfoDialog (this.application, file_opened, lines).present (this);
         }
 
         private void count_hits_for_tag (Tag t) {
