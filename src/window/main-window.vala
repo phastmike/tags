@@ -28,13 +28,17 @@ namespace Tags {
         [GtkChild]
         unowned Gtk.SearchEntry search_entry;
 
+        private const string DEFAULT_TAGS_FILE = "tags.tags";
+
         private bool _tags_edit_mode = false;
+
         public bool tags_edit_mode {
             get { return _tags_edit_mode; }
             set { _tags_edit_mode = value; }
         }
 
         private bool _search_mode = false;
+
         public bool search_mode {
             get { return _search_mode; }
             set { _search_mode = value; }
@@ -593,7 +597,7 @@ namespace Tags {
         }
 
         private void action_import_tags () {
-            UIDialogs.file_open_tags.begin (this, null, (obj, res) => {
+            UIDialogs.file_import_tags.begin (this, null, (obj, res) => {
                 var f = UIDialogs.file_open_tags.end (res);
                 if (f != null) load_tags_from_file (f, true);
             });
@@ -620,10 +624,19 @@ namespace Tags {
         }
 
         private void action_save_tags () {
+            if (tags.ntags == 0) {
+                var toast = new Adw.Toast (_("No tags to save"));
+                toast.set_timeout (3);
+                overlay.add_toast (toast);
+                return;
+            }
+
             string? suggested_filename = null;
             filter.update ();
             if (file_opened != null) {
                 suggested_filename = "%s.tags".printf (file_opened.get_basename ());
+            } else {
+                suggested_filename = DEFAULT_TAGS_FILE;
             }
 
             UIDialogs.file_save_tags.begin (this, null, suggested_filename, (obj, res) => {
@@ -950,21 +963,21 @@ namespace Tags {
         }
 
         private void action_open_file () {
-            if (tags.ntags > 0 && tags.have_changed) {
+            if (tags.ntags > 0 && tags.have_changed && Preferences.instance ().tags_autoload == true) {
                 var dialog = new Adw.AlertDialog (
                     _("Tags changed"),
-                    _("There are unsaved changes, discards changes?")
+                    _("There are unsaved changes. Autoload is enabled and existing tags may be lost! Proceed?")
                 );
                 dialog.add_response ("cancel", _("_Cancel"));
-                dialog.add_response ("discard", _("_Discard"));
-                dialog.set_response_appearance ("discard",Adw.ResponseAppearance.DESTRUCTIVE);
+                dialog.add_response ("proceed", _("_Proceed"));
+                dialog.set_response_appearance ("proceed",Adw.ResponseAppearance.DESTRUCTIVE);
                 dialog.set_default_response ("cancel");
                 dialog.set_close_response ("cancel");
                 dialog.set_prefer_wide_layout (true);
                 dialog.present (this);
                 
                 dialog.response.connect ((response) => {
-                    if (response == "discard" || response == "save") {
+                    if (response == "proceed" || response == "save") {
                         dialog_open_file ();
                     }
                 });

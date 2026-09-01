@@ -3,12 +3,16 @@
   <requires lib="gtk" version="4.0"/>
   <template class="TagsMainWindow" parent="AdwApplicationWindow">
     <property name="title" translatable="no">Tags</property>
+    <property name="default-width">1000</property>
+    <property name="default-height">800</property>
+    <!--
     <property name="default-width">700</property>
     <property name="default-height">720</property>
     <property name="width-request">437</property>
-	  <style>
+    -->
+    <style>
       <!--<class name="devel"/>-->
-	  </style>
+    </style>
     <property name="content">
       <object class="AdwOverlaySplitView" id="oversplit">
         <property name="content">
@@ -290,7 +294,8 @@
       </item>
       <item>
         <attribute name="label" translatable="yes">Keyboard Shortcuts</attribute>
-        <attribute name="action">win.show-help-overlay</attribute>
+        <!--<attribute name="action">win.show-help-overlay</attribute>-->
+        <attribute name="action">app.shortcuts</attribute>
       </item>
       <item>
         <attribute name="label" translatable="yes">About Tags</attribute>

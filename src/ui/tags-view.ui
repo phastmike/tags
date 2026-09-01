@@ -255,15 +255,15 @@
         <attribute name="icon">document-open-symbolic</attribute>
         <attribute name="action">win.action_import_tags</attribute>
       </item>
+      <item>
+        <attribute name="label" translatable="yes">Save Tags</attribute>
+        <attribute name="action">win.action_save_tags</attribute>
+      </item>
     </section>
     <section>
       <item>
         <attribute name="label" translatable="yes">Edit Tags</attribute>
         <attribute name="action">win.action_toggle_edit_mode</attribute>
-      </item>
-      <item>
-        <attribute name="label" translatable="yes">Save Tags</attribute>
-        <attribute name="action">win.action_save_tags</attribute>
       </item>
     </section>
     <section>

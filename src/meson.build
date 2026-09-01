@@ -16,7 +16,7 @@ libm = declare_dependency(link_args: ['-lm'])
 tags_deps = [
   dependency('gtk4', version: '>= 4.9'),
   dependency('json-glib-1.0', version: '>= 1.6'),
-  dependency('libadwaita-1', version: '>= 1.2'),
+  dependency('libadwaita-1', version: '>= 1.8'),
   dependency('gee-0.8'),
   libm
 ]
@@ -24,7 +24,7 @@ tags_deps = [
 gnome = import('gnome')
 
 tags_resources = gnome.compile_resources(
-  'tags-resources',
+  'tags',
   'tags.gresources.xml',
   source_dir: meson.current_source_dir(),
   c_name: 'tags'

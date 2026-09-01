@@ -74,7 +74,7 @@ namespace Tags.UIDialogs {
         var filter2 = new Gtk.FileFilter ();
         filter2.set_filter_name ("Text files");
         filter2.add_mime_type("text/plain");
-        
+
         var filter3 = new Gtk.FileFilter ();
         filter3.set_filter_name ("All files");
         filter3.add_pattern ("*");
@@ -87,6 +87,41 @@ namespace Tags.UIDialogs {
 
         try {
             file = yield file_dialog.open (parent_window, cancellable); 
+            return file;
+        } catch (Error e) {
+            message ("Error message: %s".printf (e.message));
+        }
+        return null;
+    }
+
+    public static async File? file_import_tags (Gtk.Window? parent_window = null, Cancellable? cancellable = null) {
+        File? file = null;
+
+        var file_dialog = new Gtk.FileDialog ();
+        file_dialog.set_title ("Import Tags");
+        file_dialog.set_accept_label ("Import");
+        file_dialog.set_modal (true);
+
+        var filter1 = new Gtk.FileFilter ();
+        filter1.set_filter_name ("Tag files");
+        filter1.add_pattern ("*.tags");
+
+        var filter2 = new Gtk.FileFilter ();
+        filter2.set_filter_name ("Text files");
+        filter2.add_mime_type("text/plain");
+
+        var filter3 = new Gtk.FileFilter ();
+        filter3.set_filter_name ("All files");
+        filter3.add_pattern ("*");
+
+        var file_filters = new ListStore (typeof (Gtk.FileFilter));
+        file_filters.append (filter1);
+        file_filters.append (filter2);
+        file_filters.append (filter3);
+        file_dialog.set_filters (file_filters);
+
+        try {
+            file = yield file_dialog.open (parent_window, cancellable);
             return file;
         } catch (Error e) {
             message ("Error message: %s".printf (e.message));
