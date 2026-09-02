@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.phastmike.tags 2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/phastmike/tags/issues\n"
-"POT-Creation-Date: 2026-08-27 10:52+0100\n"
+"POT-Creation-Date: 2026-09-02 15:22+0100\n"
 "PO-Revision-Date: 2026-01-18 20:08-0300\n"
 "Last-Translator: john peter sa <johnppetersa@gmail.com>\n"
 "Language-Team: \n"
@@ -17,283 +17,218 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.8\n"
 
-#: src/gtk/help-overlay.ui:7
-msgctxt "shortcut section title"
-msgid "General"
-msgstr "Geral"
-
-#: src/gtk/help-overlay.ui:8
-msgctxt "shortcut window"
-msgid "General"
-msgstr "Geral"
-
-#: src/gtk/help-overlay.ui:12
-msgctxt "shorcut group title"
-msgid "Tags"
-msgstr "Tags"
-
-#: src/gtk/help-overlay.ui:15
-msgctxt "shortcut window"
-msgid "Add a Tag"
-msgstr "Adicionar uma tag"
-
-#: src/gtk/help-overlay.ui:21
-msgctxt "shortcut window"
-msgid "Save tagged Lines"
-msgstr "Salvar linhas marcadas"
-
-#: src/gtk/help-overlay.ui:27
-msgctxt "shortcut window"
-msgid "Toggle tags sidebar Visibility"
-msgstr "Alternar visibilidade da barra lateral de tags"
-
-#: src/gtk/help-overlay.ui:33
-msgctxt "shortcut window"
-msgid "Toggle untagged lines Visibility"
-msgstr "Alternar visibilidade das linhas sem tags"
-
-#: src/gtk/help-overlay.ui:39
-msgctxt "shortcut window"
-msgid "Enable all Tags"
-msgstr "Habilitar todas as tags"
-
-#: src/gtk/help-overlay.ui:45
-msgctxt "shortcut window"
-msgid "Disable all Tags"
-msgstr "Desabilitar todas as tags"
-
-#: src/gtk/help-overlay.ui:51
-msgctxt "shortcut window"
-msgid "Toggle edit Mode"
-msgstr "Alternar modo de edição"
-
-#: src/gtk/help-overlay.ui:59
+#: src/shortcuts-dialog.ui:8
 msgctxt "shortcut group title"
 msgid "General"
 msgstr "Geral"
 
-#: src/gtk/help-overlay.ui:62
+#: src/shortcuts-dialog.ui:11
 msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Sair"
 
-#: src/gtk/help-overlay.ui:68
+#: src/shortcuts-dialog.ui:17
 msgctxt "shortcut window"
 msgid "Preferences"
 msgstr "Preferências"
 
-#: src/gtk/help-overlay.ui:74
+#: src/shortcuts-dialog.ui:23
 msgctxt "shortcut window"
 msgid "Show Shortcuts"
 msgstr "Mostrar atalhos"
 
-#: src/gtk/help-overlay.ui:80
+#: src/shortcuts-dialog.ui:29
 msgctxt "shortcut window"
-msgid "Copy selected text Lines"
-msgstr "Copiar linhas de texto selecionadas"
+msgid "Copy Lines"
+msgstr "Copiar linhas"
 
-#: src/gtk/help-overlay.ui:86
+#: src/shortcuts-dialog.ui:35
 msgctxt "shortcut window"
-msgid "Toggle minimap Visibility "
+msgid "Toggle Sidebar visibility"
+msgstr "Alternar visibilidade da barra lateral"
+
+#: src/shortcuts-dialog.ui:41
+msgctxt "shortcut window"
+msgid "Toggle Minimap visibility "
 msgstr "Alternar visibilidade do minimapa "
 
-#: src/gtk/help-overlay.ui:92
+#: src/shortcuts-dialog.ui:47
 msgctxt "shortcut window"
-msgid "Toggle line Numbers"
-msgstr "Alternar números de linha"
+msgid "Toggle Line Numbers"
+msgstr "Alternar visualização dos números de linha"
 
-#: src/gtk/help-overlay.ui:98
+#: src/shortcuts-dialog.ui:53
 msgctxt "shortcut window"
 msgid "Show File Information"
 msgstr "Mostrar informações do arquivo"
 
-#: src/gtk/help-overlay.ui:108
+#: src/shortcuts-dialog.ui:61
 msgctxt "shortcut window"
-msgid "Tag visibility"
-msgstr "Visibilidade da tag"
+msgid "Lines"
+msgstr "Linhas"
 
-#: src/gtk/help-overlay.ui:109
+#: src/shortcuts-dialog.ui:64
 msgctxt "shortcut window"
-msgid "Visibility"
-msgstr "Visibilidade"
+msgid "Save Tagged Lines"
+msgstr "Salvar linhas marcadas"
 
-#: src/gtk/help-overlay.ui:113
+#: src/shortcuts-dialog.ui:70
 msgctxt "shortcut window"
-msgid "Toggle tag visibility"
+msgid "Toggle untagged Lines visibility"
+msgstr "Alternar visibilidade das linhas sem tags"
+
+#: src/shortcuts-dialog.ui:76
+msgctxt "shortcut window"
+msgid "Toggle Line Wrap"
+msgstr "Alternar quebra de linha"
+
+#: src/shortcuts-dialog.ui:82
+msgctxt "shortcut window"
+msgid "Increase lines per wrapped line row"
+msgstr "Aumentar o número de linhas por linha"
+
+#: src/shortcuts-dialog.ui:88
+msgctxt "shortcut window"
+msgid "Decrease lines per line wrapped row"
+msgstr "Diminuir o número de linhas por linha"
+
+#: src/shortcuts-dialog.ui:96
+msgctxt "shortcut window"
+msgid "Tags"
+msgstr "Tags"
+
+#: src/shortcuts-dialog.ui:99
+msgctxt "shortcut window"
+msgid "Add a Tag"
+msgstr "Adicionar uma tag"
+
+#: src/shortcuts-dialog.ui:105
+msgctxt "shortcut window"
+msgid "Enable All Tags"
+msgstr "Habilitar todas as tags"
+
+#: src/shortcuts-dialog.ui:111
+msgctxt "shortcut window"
+msgid "Disable All Tags"
+msgstr "Desabilitar todas as tags"
+
+#: src/shortcuts-dialog.ui:117
+msgctxt "shortcut window"
+msgid "Toggle Edit Mode"
+msgstr "Alternar modo de edição"
+
+#: src/shortcuts-dialog.ui:123
+msgctxt "shortcut window"
+msgid "Toggle Tag enabled"
 msgstr "Alternar visibilidade da tag"
 
-#: src/gtk/help-overlay.ui:116
+#: src/shortcuts-dialog.ui:124 src/shortcuts-dialog.ui:131
 msgctxt "shortcut window"
-msgid "Toggle first tag visibility"
-msgstr "Alternar visibilidade da primeira tag"
+msgid "Zero is the 10th tag"
+msgstr "Zero é a 10ª Tag"
 
-#: src/gtk/help-overlay.ui:122
+#: src/shortcuts-dialog.ui:130
 msgctxt "shortcut window"
-msgid "Toggle second tag visibility"
-msgstr "Alternar visibilidade da segunda tag"
-
-#: src/gtk/help-overlay.ui:171
-msgctxt "shortcut window"
-msgid "Toggle ninth tag visibility"
-msgstr "Alternar visibilidade da nona tag"
-
-#: src/gtk/help-overlay.ui:177
-msgctxt "shortcut window"
-msgid "Toggle tenth tag visibility"
-msgstr "Alternar visibilidade da décima tag"
-
-#: src/gtk/help-overlay.ui:185
-msgctxt "shortcut window"
-msgid "Show"
-msgstr "Mostrar"
-
-#: src/gtk/help-overlay.ui:188
-msgctxt "shortcut window"
-msgid "Show only first tag"
-msgstr "Mostrar apenas a primeira tag"
-
-#: src/gtk/help-overlay.ui:194
-msgctxt "shortcut window"
-msgid "Show only second tag"
-msgstr "Mostrar apenas a segunda tag"
-
-#: src/gtk/help-overlay.ui:205
-msgctxt "shortcut window"
-msgid "Show only ninth tag"
-msgstr "Mostrar apenas a nona tag"
-
-#: src/gtk/help-overlay.ui:211
-msgctxt "shortcut window"
-msgid "Show only tenth tag"
+msgid "Show only this Tag"
 msgstr "Mostrar apenas a décima tag"
 
-#: src/gtk/help-overlay.ui:221
-msgctxt "shortcut window"
-msgid "Tag Navigation"
-msgstr "Navegação de tags"
-
-#: src/gtk/help-overlay.ui:222
+#: src/shortcuts-dialog.ui:139
 msgctxt "shortcut window"
 msgid "Navigation"
 msgstr "Navegação"
 
-#: src/gtk/help-overlay.ui:226
+#: src/shortcuts-dialog.ui:142
 msgctxt "shortcut window"
-msgid "Quick jump"
-msgstr "Pulo rápido"
-
-#: src/gtk/help-overlay.ui:229
-msgctxt "shortcut window"
-msgid "Previous tag hit"
+msgid "Previous Tag Hit"
 msgstr "Ocorrência anterior da tag"
 
-#: src/gtk/help-overlay.ui:235
+#: src/shortcuts-dialog.ui:148
 msgctxt "shortcut window"
-msgid "Next tag hit"
+msgid "Next Tag Hit"
 msgstr "Próxima ocorrência da tag"
 
-#: src/gtk/help-overlay.ui:243
-msgctxt "shortcut window"
-msgid "Visual"
-msgstr "Visual"
-
-#: src/gtk/help-overlay.ui:246
-msgctxt "shortcut window"
-msgid "Toggle line wrap"
-msgstr "Alternar números de linha"
-
-#: src/gtk/help-overlay.ui:252
-msgctxt "shortcut window"
-msgid "Increase number of lines per line row"
-msgstr "Aumentar o número de linhas por linha"
-
-#: src/gtk/help-overlay.ui:258
-msgctxt "shortcut window"
-msgid "Decrease number of lines per line row"
-msgstr "Diminuir o número de linhas por linha"
-
-#: src/ui/main-window.ui:26
+#: src/ui/main-window.ui:30
 msgctxt "Open a file"
 msgid "_Open"
 msgstr "Ab_rir"
 
-#: src/ui/main-window.ui:27
+#: src/ui/main-window.ui:31
 msgctxt "Open a file - tooltip"
 msgid "Select a File"
 msgstr "Selecione um arquivo"
 
-#: src/ui/main-window.ui:111
+#: src/ui/main-window.ui:115
 msgid "Search..."
 msgstr "Procurar"
 
-#: src/ui/main-window.ui:132
+#: src/ui/main-window.ui:136
 msgid "Main Menu"
 msgstr "Menu principal"
 
-#: src/ui/main-window.ui:156 src/ui/tags-view.ui:187
+#: src/ui/main-window.ui:160 src/ui/tags-view.ui:187
 msgctxt "tooltip"
 msgid "Hide untagged"
 msgstr "Ocultar sem tags"
 
-#: src/ui/main-window.ui:164
+#: src/ui/main-window.ui:168
 msgid "Search"
 msgstr "Procurar"
 
-#: src/ui/main-window.ui:173
+#: src/ui/main-window.ui:177
 msgctxt "tooltip"
 msgid "New Tag"
 msgstr "Nova tag"
 
-#: src/ui/main-window.ui:189
+#: src/ui/main-window.ui:193
 msgctxt "tooltip"
 msgid "Tag List"
 msgstr "Lista de tags"
 
-#: src/ui/main-window.ui:219
+#: src/ui/main-window.ui:223
 msgid "New tag"
 msgstr "Nova tag"
 
-#: src/ui/main-window.ui:223
+#: src/ui/main-window.ui:227
 msgid "Save tagged"
 msgstr "Salvar marcadas"
 
-#: src/ui/main-window.ui:230 src/ui/tags-view.ui:113
+#: src/ui/main-window.ui:234 src/ui/tags-view.ui:113
 msgid "Load tags"
 msgstr "Carregar tags"
 
-#: src/ui/main-window.ui:234
+#: src/ui/main-window.ui:238
 msgid "Save tags"
 msgstr "Salvar tags"
 
-#: src/ui/main-window.ui:238
+#: src/ui/main-window.ui:242
 msgid "Remove tags"
 msgstr "Remover tags"
 
-#: src/ui/main-window.ui:257
+#: src/ui/main-window.ui:261
 msgid "Hide untagged"
 msgstr "Ocultar sem tags"
 
-#: src/ui/main-window.ui:272
+#: src/ui/main-window.ui:276
 msgid "New Window"
 msgstr "Nova janela"
 
-#: src/ui/main-window.ui:278
+#: src/ui/main-window.ui:282
 msgid "Save Tagged Lines"
 msgstr "Salvar linhas marcadas"
 
-#: src/ui/main-window.ui:282 src/ui/file-info-dialog.ui:75
+#: src/ui/main-window.ui:286 src/ui/file-info-dialog.ui:6
 msgid "File Information"
 msgstr "Informações do arquivo"
 
-#: src/ui/main-window.ui:288 src/ui/preferences-dialog.ui:18
+#: src/ui/main-window.ui:292 src/ui/preferences-dialog.ui:18
 msgid "Preferences"
 msgstr "Preferências"
 
-#: src/ui/main-window.ui:292
+#: src/ui/main-window.ui:296
 msgid "Keyboard Shortcuts"
 msgstr "Atalhos de teclado"
 
-#: src/ui/main-window.ui:296
+#: src/ui/main-window.ui:301
 msgid "About Tags"
 msgstr "Sobre o Tags"
 
@@ -326,15 +261,15 @@ msgstr "Minimapa"
 msgid "Wrap Lines"
 msgstr "Quebra de linha"
 
-#: src/ui/preferences-dialog.ui:92 src/ui/tag-dialog-window.ui:152
+#: src/ui/preferences-dialog.ui:92 src/ui/tag-dialog-window.ui:78
 msgid "Foreground Color"
 msgstr "Cor do texto"
 
-#: src/ui/preferences-dialog.ui:105 src/ui/tag-dialog-window.ui:164
+#: src/ui/preferences-dialog.ui:105 src/ui/tag-dialog-window.ui:90
 msgid "Background Color"
 msgstr "Cor de fundo"
 
-#: src/ui/preferences-dialog.ui:118 src/ui/tag-dialog-window.ui:176
+#: src/ui/preferences-dialog.ui:118 src/ui/tag-dialog-window.ui:102
 msgid "Example"
 msgstr "Exemplo"
 
@@ -343,94 +278,87 @@ msgid "Visible"
 msgstr "Visível"
 
 #: src/ui/file-info-dialog.ui:18
-msgid "Browse"
-msgstr "Navegar"
-
-#: src/ui/file-info-dialog.ui:21
 msgid "Browse folder"
 msgstr "Navegar pasta"
 
-#: src/ui/file-info-dialog.ui:24
+#: src/ui/file-info-dialog.ui:23
+msgid "Browse"
+msgstr "Navegar"
+
+#: src/ui/file-info-dialog.ui:28
 msgid "File"
 msgstr "Arquivo"
 
-#: src/ui/file-info-dialog.ui:29
+#: src/ui/file-info-dialog.ui:33
 msgid "Name"
 msgstr "Nome"
 
-#: src/ui/file-info-dialog.ui:36
+#: src/ui/file-info-dialog.ui:40
 msgid "Folder"
 msgstr "Pasta"
 
-#: src/ui/file-info-dialog.ui:43
+#: src/ui/file-info-dialog.ui:47
 msgid "Size"
 msgstr "Tamanho"
 
-#: src/ui/file-info-dialog.ui:50
+#: src/ui/file-info-dialog.ui:54
 msgid "Other"
 msgstr "Outros"
 
-#: src/ui/file-info-dialog.ui:55
+#: src/ui/file-info-dialog.ui:59
 msgid "Lines"
 msgstr "Linhas"
 
-#: src/ui/tag-dialog-window.ui:31 src/window/main-window.vala:135
-#: src/window/main-window.vala:312 src/window/main-window.vala:572
-#: src/window/main-window.vala:586 src/window/main-window.vala:951
-#: src/window/main-window.vala:979
-msgid "_Cancel"
-msgstr "_Cancelar"
-
-#: src/ui/tag-dialog-window.ui:37
+#: src/ui/tag-dialog-window.ui:6
 msgid "Tag"
 msgstr "Tag"
 
-#: src/ui/tag-dialog-window.ui:47
-msgid "_Add"
-msgstr "_Adicionar"
-
-#: src/ui/tag-dialog-window.ui:59
-msgid "_Delete"
-msgstr "E_xcluir"
-
-#: src/ui/tag-dialog-window.ui:70
+#: src/ui/tag-dialog-window.ui:11
 msgid "Filter"
 msgstr "Filtro"
 
-#: src/ui/tag-dialog-window.ui:73
+#: src/ui/tag-dialog-window.ui:14
 msgid "Pattern"
 msgstr "Padrão"
 
-#: src/ui/tag-dialog-window.ui:81
+#: src/ui/tag-dialog-window.ui:22
 msgid "Description"
 msgstr "Descrição"
 
-#: src/ui/tag-dialog-window.ui:92
+#: src/ui/tag-dialog-window.ui:27
 msgid "Regular Expression"
 msgstr "Expressão regular"
 
-#: src/ui/tag-dialog-window.ui:97
+#: src/ui/tag-dialog-window.ui:32
 msgid "Case Sensitive"
 msgstr "Diferenciar maiúsculas e minúsculas"
 
-#: src/ui/tag-dialog-window.ui:102
+#: src/ui/tag-dialog-window.ui:38
 msgid "Add to Top"
 msgstr "Adicionar ao topo"
 
-#: src/ui/tag-dialog-window.ui:139
+#: src/ui/tag-dialog-window.ui:70
 msgid "Color Scheme"
 msgstr "Esquema de cores"
 
-#: src/ui/tag-dialog-window.ui:142
+#: src/ui/tag-dialog-window.ui:73
 msgid "Regenerate"
 msgstr "Regenerar"
 
-#: src/ui/tag-dialog-window.ui:201
-msgid "Delete Tag"
-msgstr "Excluir tag"
+#: src/ui/tag-dialog-window.ui:130
+msgid "Delete"
+msgstr "Excluir"
+
+#: src/ui/tag-dialog-window.ui:141
+msgid "Edit"
+msgstr "Editar"
+
+#: src/ui/tag-dialog-window.ui:152
+msgid "Add"
+msgstr "Adicionar"
 
 #. <property name="justify">fill</property>
-#: src/ui/tag-dialog-window.ui:234
+#: src/ui/tag-dialog-window.ui:164
 msgid ""
 "Adds the tag to the top which gives precedence over the other tag filters. "
 "Once a line is tagged it disregards other possible tags. The user can "
@@ -502,13 +430,13 @@ msgstr "Carregar tags"
 msgid "Import Tags"
 msgstr "Importar tags"
 
-#: src/ui/tags-view.ui:261
-msgid "Edit Tags"
-msgstr "Editar tags"
-
-#: src/ui/tags-view.ui:265
+#: src/ui/tags-view.ui:259
 msgid "Save Tags"
 msgstr "Salvar tags"
+
+#: src/ui/tags-view.ui:265
+msgid "Edit Tags"
+msgstr "Editar tags"
 
 #: src/ui/tags-view.ui:271
 msgid "Enable all Tags"
@@ -563,107 +491,129 @@ msgstr "Abra um arquivo para começar a colorir ..."
 msgid "Text files"
 msgstr "Arquivos de texto"
 
-#: src/tag/tag-dialog-window.vala:54
+#: src/tag/tag-dialog-window.vala:52
 msgid "Select the foreground color"
 msgstr "Selecione a cor do texto"
 
-#: src/tag/tag-dialog-window.vala:60
+#: src/tag/tag-dialog-window.vala:58
 msgid "Select the background color"
 msgstr "Selecione a cor de fundo"
 
-#: src/tag/tag-dialog-window.vala:109
-msgid "_Edit"
-msgstr "_Editar"
-
-#: src/window/main-window.vala:133
+#: src/window/main-window.vala:137
 msgid "Remove Tag"
 msgstr "Remover tag"
 
-#: src/window/main-window.vala:133
+#: src/window/main-window.vala:137
 msgid "Remove tag from the list?"
 msgstr "Remover tag da lista?"
 
-#: src/window/main-window.vala:136 src/window/main-window.vala:587
+#: src/window/main-window.vala:139 src/window/main-window.vala:316
+#: src/window/main-window.vala:557 src/window/main-window.vala:571
+#: src/window/main-window.vala:943 src/window/main-window.vala:971
+msgid "_Cancel"
+msgstr "_Cancelar"
+
+#: src/window/main-window.vala:140 src/window/main-window.vala:572
 msgid "_Remove"
 msgstr "_Remover"
 
-#: src/window/main-window.vala:311 src/window/main-window.vala:570
-#: src/window/main-window.vala:976
+#: src/window/main-window.vala:315 src/window/main-window.vala:555
+#: src/window/main-window.vala:968
 msgid "Tags changed"
 msgstr "Tags alteradas"
 
-#: src/window/main-window.vala:311 src/window/main-window.vala:570
-#: src/window/main-window.vala:977
+#: src/window/main-window.vala:315 src/window/main-window.vala:555
 msgid "There are unsaved changes, discards changes?"
 msgstr "Há alterações não salvas, descartar alterações?"
 
-#: src/window/main-window.vala:313 src/window/main-window.vala:573
-#: src/window/main-window.vala:980
+#: src/window/main-window.vala:317 src/window/main-window.vala:558
 msgid "_Discard"
 msgstr "_Descartar"
 
-#: src/window/main-window.vala:406
+#: src/window/main-window.vala:410
+#, c-format
 msgid "Found '%s' in line %u"
 msgstr "Encontrei '%s' na linha %u"
 
-#: src/window/main-window.vala:408
+#: src/window/main-window.vala:412
 msgid "Add search as Tag"
 msgstr "Adicionar uma tag"
 
-#: src/window/main-window.vala:421
+#: src/window/main-window.vala:425
+#, c-format
 msgid "No match for '%s'"
 msgstr "Nenhuma ocorrência para '%s'"
 
-#: src/window/main-window.vala:426 src/window/main-window.vala:905
-#: src/window/main-window.vala:945
+#: src/window/main-window.vala:430 src/window/main-window.vala:897
+#: src/window/main-window.vala:937
+#, c-format
 msgid "No more matches for '%s'"
 msgstr "Não há mais ocorrências para '%s'"
 
-#: src/window/main-window.vala:447
+#: src/window/main-window.vala:451
+#, c-format
 msgid "'%s' is not a regular file ..."
 msgstr "'%s' não é um arquivo comum ..."
 
-#: src/window/main-window.vala:515 src/window/main-window.vala:967
+#: src/window/main-window.vala:500 src/window/main-window.vala:959
 msgid "Open File"
 msgstr "Abrir arquivo"
 
-#: src/window/main-window.vala:515
+#: src/window/main-window.vala:500
 msgid "_Close"
 msgstr "Fe_char"
 
-#: src/window/main-window.vala:552
+#: src/window/main-window.vala:537
 msgid "No line selected to create tag"
 msgstr "Nenhuma linha selecionada para criar tag"
 
-#: src/window/main-window.vala:563
+#: src/window/main-window.vala:548
 msgid "No tags to remove"
 msgstr "Nenhuma tag para remover"
 
-#: src/window/main-window.vala:584
+#: src/window/main-window.vala:569
 msgid "Remove Tags"
 msgstr "Remover tags"
 
-#: src/window/main-window.vala:584
+#: src/window/main-window.vala:569
 msgid "Remove all tags from the list?"
 msgstr "Remover todas as tags da lista?"
 
-#: src/window/main-window.vala:689
+#: src/window/main-window.vala:628
+msgid "No tags to save"
+msgstr "Nenhuma tag para salvar"
+
+#: src/window/main-window.vala:683
 msgid "Save File"
 msgstr "Salvar arquivo"
 
-#: src/window/main-window.vala:768
+#: src/window/main-window.vala:760
+#, c-format
 msgid "%d bytes copied"
 msgstr "%d bytes copiados"
 
-#: src/window/main-window.vala:895 src/window/main-window.vala:935
+#: src/window/main-window.vala:887 src/window/main-window.vala:927
+#, c-format
 msgid "Found in line %u"
 msgstr "Encontrado na linha %u"
 
-#: src/window/main-window.vala:967
+#: src/window/main-window.vala:959
 msgid "Could not open file..."
 msgstr "Não foi possível abrir o arquivo..."
 
-#: src/window/main-window.vala:999
+#: src/window/main-window.vala:969
+msgid ""
+"There are unsaved changes. Autoload is enabled and existing tags may be "
+"lost! Proceed?"
+msgstr ""
+" Alterações não salvaguardadas. Autoload está activo e as alteraçõs podem"
+"ser perdidas! Proceder?"
+
+#: src/window/main-window.vala:972
+msgid "_Proceed"
+msgstr "_Proceder"
+
+#: src/window/main-window.vala:991
 msgid "No tags to edit"
 msgstr "Nenhuma tag para editar"
 
@@ -678,3 +628,74 @@ msgstr "Ícone simbólico por www.wishforge.games em freeicons.io"
 #: src/application.vala:69
 msgid "translator-credits"
 msgstr "john peter sa <johnppetersa@gmail.com>"
+
+#~ msgctxt "shortcut section title"
+#~ msgid "General"
+#~ msgstr "Geral"
+
+#~ msgctxt "shortcut window"
+#~ msgid "General"
+#~ msgstr "Geral"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Save tagged Lines"
+#~ msgstr "Salvar linhas marcadas"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Copy selected text Lines"
+#~ msgstr "Copiar linhas de texto selecionadas"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Tag visibility"
+#~ msgstr "Visibilidade da tag"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Visibility"
+#~ msgstr "Visibilidade"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Toggle first tag visibility"
+#~ msgstr "Alternar visibilidade da primeira tag"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Toggle second tag visibility"
+#~ msgstr "Alternar visibilidade da segunda tag"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Toggle ninth tag visibility"
+#~ msgstr "Alternar visibilidade da nona tag"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Toggle tenth tag visibility"
+#~ msgstr "Alternar visibilidade da décima tag"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Show"
+#~ msgstr "Mostrar"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Show only first tag"
+#~ msgstr "Mostrar apenas a primeira tag"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Show only second tag"
+#~ msgstr "Mostrar apenas a segunda tag"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Show only ninth tag"
+#~ msgstr "Mostrar apenas a nona tag"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Tag Navigation"
+#~ msgstr "Navegação de tags"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Quick jump"
+#~ msgstr "Pulo rápido"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Visual"
+#~ msgstr "Visual"
+
+#~ msgid "Delete Tag"
+#~ msgstr "Excluir tag"

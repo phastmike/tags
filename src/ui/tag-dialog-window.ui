@@ -1,14 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!-- Created with Cambalache 1.0.3 -->
 <interface>
   <requires lib="gtk" version="4.18"/>
-  <requires lib="libadwaita" version="1.6"/>
+  <requires lib="libadwaita" version="1.8"/>
   <template class="TagsTagDialog" parent="AdwPreferencesDialog">
-    <!--
-    <property name="content-height">745</property>
-    <property name="content-width">600</property>
-    -->
-    <property name="title">Tag</property>
+    <property name="title" translatable="yes">Tag</property>
     <child>
       <object class="AdwPreferencesPage">
         <child>
@@ -132,8 +127,8 @@
                   <class name="destructive-action"/>
                 </style>
                 <property name="start-icon-name">user-trash-symbolic</property>
-                <property name="title">Delete</property>
-                <property name="visible">False</property>
+                <property name="title" translatable="yes">Delete</property>
+                <property name="visible">false</property>
               </object>
             </child>
             <child>
@@ -143,8 +138,8 @@
                   <class name="suggested-action"/>
                 </style>
                 <property name="start-icon-name">document-edit-symbolic</property>
-                <property name="title">Edit</property>
-                <property name="visible">False</property>
+                <property name="title" translatable="yes">Edit</property>
+                <property name="visible">false</property>
               </object>
             </child>
             <child>
@@ -154,9 +149,9 @@
                   <class name="suggested-action"/>
                 </style>
                 <property name="start-icon-name">list-add</property>
-                <property name="title">Add</property>
-                <property name="visible">False</property>
-                <property name="sensitive">False</property>
+                <property name="title" translatable="yes">Add</property>
+                <property name="visible">false</property>
+                <property name="sensitive">false</property>
               </object>
             </child>
           </object>

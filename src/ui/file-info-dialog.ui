@@ -18,7 +18,7 @@
                 <property name="tooltip-text" translatable="yes">Browse folder</property>
                 <property name="child">
                   <object class="AdwButtonContent">
-                    <property name="can-focus">False</property>
+                    <property name="can-focus">false</property>
                     <property name="icon-name">system-file-manager-symbolic</property>
                     <property name="label" translatable="yes">Browse</property>
                   </object>

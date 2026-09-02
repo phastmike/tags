@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.phastmike.tags 2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/phastmike/tags/issues\n"
-"POT-Creation-Date: 2026-08-27 10:52+0100\n"
+"POT-Creation-Date: 2026-09-02 15:22+0100\n"
 "PO-Revision-Date: 2026-04-01 23:09+0800\n"
 "Last-Translator: yu Qin <imqin_yu@outlook.com>\n"
 "Language-Team: Chinese (China)\n"
@@ -19,283 +19,218 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Gtranslator 50.0\n"
 
-#: src/gtk/help-overlay.ui:7
-msgctxt "shortcut section title"
-msgid "General"
-msgstr "常规"
-
-#: src/gtk/help-overlay.ui:8
-msgctxt "shortcut window"
-msgid "General"
-msgstr "常规"
-
-#: src/gtk/help-overlay.ui:12
-msgctxt "shorcut group title"
-msgid "Tags"
-msgstr "标签"
-
-#: src/gtk/help-overlay.ui:15
-msgctxt "shortcut window"
-msgid "Add a Tag"
-msgstr "新建标签"
-
-#: src/gtk/help-overlay.ui:21
-msgctxt "shortcut window"
-msgid "Save tagged Lines"
-msgstr "保存已标记的行"
-
-#: src/gtk/help-overlay.ui:27
-msgctxt "shortcut window"
-msgid "Toggle tags sidebar Visibility"
-msgstr "切换标签侧边栏可见性"
-
-#: src/gtk/help-overlay.ui:33
-msgctxt "shortcut window"
-msgid "Toggle untagged lines Visibility"
-msgstr "切换未标记行可见性"
-
-#: src/gtk/help-overlay.ui:39
-msgctxt "shortcut window"
-msgid "Enable all Tags"
-msgstr "启用所有标签"
-
-#: src/gtk/help-overlay.ui:45
-msgctxt "shortcut window"
-msgid "Disable all Tags"
-msgstr "禁用所有标签"
-
-#: src/gtk/help-overlay.ui:51
-msgctxt "shortcut window"
-msgid "Toggle edit Mode"
-msgstr "切换编辑模式"
-
-#: src/gtk/help-overlay.ui:59
+#: src/shortcuts-dialog.ui:8
 msgctxt "shortcut group title"
 msgid "General"
 msgstr "通用"
 
-#: src/gtk/help-overlay.ui:62
+#: src/shortcuts-dialog.ui:11
 msgctxt "shortcut window"
 msgid "Quit"
 msgstr "退出"
 
-#: src/gtk/help-overlay.ui:68
+#: src/shortcuts-dialog.ui:17
 msgctxt "shortcut window"
 msgid "Preferences"
 msgstr "首选项"
 
-#: src/gtk/help-overlay.ui:74
+#: src/shortcuts-dialog.ui:23
 msgctxt "shortcut window"
 msgid "Show Shortcuts"
 msgstr "显示快捷键"
 
-#: src/gtk/help-overlay.ui:80
+#: src/shortcuts-dialog.ui:29
 msgctxt "shortcut window"
-msgid "Copy selected text Lines"
-msgstr "复制已选行"
+msgid "Copy Lines"
+msgstr "复制行"
 
-#: src/gtk/help-overlay.ui:86
+#: src/shortcuts-dialog.ui:35
 msgctxt "shortcut window"
-msgid "Toggle minimap Visibility "
+msgid "Toggle Sidebar visibility"
+msgstr "切换标签侧边栏可见性"
+
+#: src/shortcuts-dialog.ui:41
+msgctxt "shortcut window"
+msgid "Toggle Minimap visibility "
 msgstr "切换概览图可见性"
 
-#: src/gtk/help-overlay.ui:92
+#: src/shortcuts-dialog.ui:47
 msgctxt "shortcut window"
-msgid "Toggle line Numbers"
+msgid "Toggle Line Numbers"
 msgstr "切换行号可见性"
 
-#: src/gtk/help-overlay.ui:98
+#: src/shortcuts-dialog.ui:53
 msgctxt "shortcut window"
 msgid "Show File Information"
 msgstr "显示文件信息"
 
-#: src/gtk/help-overlay.ui:108
+#: src/shortcuts-dialog.ui:61
 msgctxt "shortcut window"
-msgid "Tag visibility"
-msgstr "标签可见性"
+msgid "Lines"
+msgstr "线条"
 
-#: src/gtk/help-overlay.ui:109
+#: src/shortcuts-dialog.ui:64
 msgctxt "shortcut window"
-msgid "Visibility"
-msgstr "可见性"
+msgid "Save Tagged Lines"
+msgstr "保存已标记的行"
 
-#: src/gtk/help-overlay.ui:113
+#: src/shortcuts-dialog.ui:70
 msgctxt "shortcut window"
-msgid "Toggle tag visibility"
+msgid "Toggle untagged Lines visibility"
+msgstr "切换未标记行可见性"
+
+#: src/shortcuts-dialog.ui:76
+msgctxt "shortcut window"
+msgid "Toggle Line Wrap"
+msgstr "切换换行符"
+
+#: src/shortcuts-dialog.ui:82
+msgctxt "shortcut window"
+msgid "Increase lines per wrapped line row"
+msgstr "增加每行中的行数"
+
+#: src/shortcuts-dialog.ui:88
+msgctxt "shortcut window"
+msgid "Decrease lines per line wrapped row"
+msgstr "减少每行的行数"
+
+#: src/shortcuts-dialog.ui:96
+msgctxt "shortcut window"
+msgid "Tags"
+msgstr "标签"
+
+#: src/shortcuts-dialog.ui:99
+msgctxt "shortcut window"
+msgid "Add a Tag"
+msgstr "新建标签"
+
+#: src/shortcuts-dialog.ui:105
+msgctxt "shortcut window"
+msgid "Enable All Tags"
+msgstr "启用所有标签"
+
+#: src/shortcuts-dialog.ui:111
+msgctxt "shortcut window"
+msgid "Disable All Tags"
+msgstr "禁用所有标签"
+
+#: src/shortcuts-dialog.ui:117
+msgctxt "shortcut window"
+msgid "Toggle Edit Mode"
+msgstr "切换编辑模式"
+
+#: src/shortcuts-dialog.ui:123
+msgctxt "shortcut window"
+msgid "Toggle Tag enabled"
 msgstr "切换标签可见性"
 
-#: src/gtk/help-overlay.ui:116
+#: src/shortcuts-dialog.ui:124 src/shortcuts-dialog.ui:131
 msgctxt "shortcut window"
-msgid "Toggle first tag visibility"
-msgstr "切换首条标签可见性"
+msgid "Zero is the 10th tag"
+msgstr "零是第十道封印"
 
-#: src/gtk/help-overlay.ui:122
+#: src/shortcuts-dialog.ui:130
 msgctxt "shortcut window"
-msgid "Toggle second tag visibility"
-msgstr "切换第二条标签可见性"
+msgid "Show only this Tag"
+msgstr "仅显示此标签"
 
-#: src/gtk/help-overlay.ui:171
-msgctxt "shortcut window"
-msgid "Toggle ninth tag visibility"
-msgstr "切换第九条标签可见性"
-
-#: src/gtk/help-overlay.ui:177
-msgctxt "shortcut window"
-msgid "Toggle tenth tag visibility"
-msgstr "切换第十条标签可见性"
-
-#: src/gtk/help-overlay.ui:185
-msgctxt "shortcut window"
-msgid "Show"
-msgstr "显示"
-
-#: src/gtk/help-overlay.ui:188
-msgctxt "shortcut window"
-msgid "Show only first tag"
-msgstr "仅显示首条标签"
-
-#: src/gtk/help-overlay.ui:194
-msgctxt "shortcut window"
-msgid "Show only second tag"
-msgstr "仅显示第二条标签"
-
-#: src/gtk/help-overlay.ui:205
-msgctxt "shortcut window"
-msgid "Show only ninth tag"
-msgstr "仅显示第九条标签"
-
-#: src/gtk/help-overlay.ui:211
-msgctxt "shortcut window"
-msgid "Show only tenth tag"
-msgstr "仅显示第十条标签"
-
-#: src/gtk/help-overlay.ui:221
-msgctxt "shortcut window"
-msgid "Tag Navigation"
-msgstr "标签导航"
-
-#: src/gtk/help-overlay.ui:222
+#: src/shortcuts-dialog.ui:139
 msgctxt "shortcut window"
 msgid "Navigation"
 msgstr "导航"
 
-#: src/gtk/help-overlay.ui:226
+#: src/shortcuts-dialog.ui:142
 msgctxt "shortcut window"
-msgid "Quick jump"
-msgstr "快速跳转"
-
-#: src/gtk/help-overlay.ui:229
-msgctxt "shortcut window"
-msgid "Previous tag hit"
+msgid "Previous Tag Hit"
 msgstr "上一个匹配标签"
 
-#: src/gtk/help-overlay.ui:235
+#: src/shortcuts-dialog.ui:148
 msgctxt "shortcut window"
-msgid "Next tag hit"
+msgid "Next Tag Hit"
 msgstr "下一个匹配标签"
 
-#: src/gtk/help-overlay.ui:243
-msgctxt "shortcut window"
-msgid "Visual"
-msgstr "视觉的"
-
-#: src/gtk/help-overlay.ui:246
-msgctxt "shortcut window"
-msgid "Toggle line wrap"
-msgstr "切换换行符"
-
-#: src/gtk/help-overlay.ui:252
-msgctxt "shortcut window"
-msgid "Increase number of lines per line row"
-msgstr "增加每行中的行数"
-
-#: src/gtk/help-overlay.ui:258
-msgctxt "shortcut window"
-msgid "Decrease number of lines per line row"
-msgstr "减少每行的行数"
-
-#: src/ui/main-window.ui:26
+#: src/ui/main-window.ui:30
 msgctxt "Open a file"
 msgid "_Open"
 msgstr "打开(_O)"
 
-#: src/ui/main-window.ui:27
+#: src/ui/main-window.ui:31
 msgctxt "Open a file - tooltip"
 msgid "Select a File"
 msgstr "选择文件"
 
-#: src/ui/main-window.ui:111
+#: src/ui/main-window.ui:115
 msgid "Search..."
 msgstr "搜索..."
 
-#: src/ui/main-window.ui:132
+#: src/ui/main-window.ui:136
 msgid "Main Menu"
 msgstr "主菜单"
 
-#: src/ui/main-window.ui:156 src/ui/tags-view.ui:187
+#: src/ui/main-window.ui:160 src/ui/tags-view.ui:187
 msgctxt "tooltip"
 msgid "Hide untagged"
 msgstr "隐藏未标记条目"
 
-#: src/ui/main-window.ui:164
+#: src/ui/main-window.ui:168
 msgid "Search"
 msgstr "搜索"
 
-#: src/ui/main-window.ui:173
+#: src/ui/main-window.ui:177
 msgctxt "tooltip"
 msgid "New Tag"
 msgstr "新建标签"
 
-#: src/ui/main-window.ui:189
+#: src/ui/main-window.ui:193
 msgctxt "tooltip"
 msgid "Tag List"
 msgstr "标签列表"
 
-#: src/ui/main-window.ui:219
+#: src/ui/main-window.ui:223
 msgid "New tag"
 msgstr "新建标签"
 
-#: src/ui/main-window.ui:223
+#: src/ui/main-window.ui:227
 msgid "Save tagged"
 msgstr "保存已标记条目"
 
-#: src/ui/main-window.ui:230 src/ui/tags-view.ui:113
+#: src/ui/main-window.ui:234 src/ui/tags-view.ui:113
 msgid "Load tags"
 msgstr "加载标签"
 
-#: src/ui/main-window.ui:234
+#: src/ui/main-window.ui:238
 msgid "Save tags"
 msgstr "保存标签"
 
-#: src/ui/main-window.ui:238
+#: src/ui/main-window.ui:242
 msgid "Remove tags"
 msgstr "删除标签"
 
-#: src/ui/main-window.ui:257
+#: src/ui/main-window.ui:261
 msgid "Hide untagged"
 msgstr "隐藏未标记条目"
 
-#: src/ui/main-window.ui:272
+#: src/ui/main-window.ui:276
 msgid "New Window"
 msgstr "新建窗口"
 
-#: src/ui/main-window.ui:278
+#: src/ui/main-window.ui:282
 msgid "Save Tagged Lines"
 msgstr "保存已标记的行"
 
-#: src/ui/main-window.ui:282 src/ui/file-info-dialog.ui:75
+#: src/ui/main-window.ui:286 src/ui/file-info-dialog.ui:6
 msgid "File Information"
 msgstr "文件信息"
 
-#: src/ui/main-window.ui:288 src/ui/preferences-dialog.ui:18
+#: src/ui/main-window.ui:292 src/ui/preferences-dialog.ui:18
 msgid "Preferences"
 msgstr "首选项"
 
-#: src/ui/main-window.ui:292
+#: src/ui/main-window.ui:296
 msgid "Keyboard Shortcuts"
 msgstr "键盘快捷键"
 
-#: src/ui/main-window.ui:296
+#: src/ui/main-window.ui:301
 msgid "About Tags"
 msgstr "关于 Tags"
 
@@ -327,15 +262,15 @@ msgstr "概览图"
 msgid "Wrap Lines"
 msgstr "自动换行"
 
-#: src/ui/preferences-dialog.ui:92 src/ui/tag-dialog-window.ui:152
+#: src/ui/preferences-dialog.ui:92 src/ui/tag-dialog-window.ui:78
 msgid "Foreground Color"
 msgstr "前景色"
 
-#: src/ui/preferences-dialog.ui:105 src/ui/tag-dialog-window.ui:164
+#: src/ui/preferences-dialog.ui:105 src/ui/tag-dialog-window.ui:90
 msgid "Background Color"
 msgstr "背景色"
 
-#: src/ui/preferences-dialog.ui:118 src/ui/tag-dialog-window.ui:176
+#: src/ui/preferences-dialog.ui:118 src/ui/tag-dialog-window.ui:102
 msgid "Example"
 msgstr "示例"
 
@@ -344,94 +279,87 @@ msgid "Visible"
 msgstr "可见"
 
 #: src/ui/file-info-dialog.ui:18
-msgid "Browse"
-msgstr "浏览"
-
-#: src/ui/file-info-dialog.ui:21
 msgid "Browse folder"
 msgstr "浏览文件夹"
 
-#: src/ui/file-info-dialog.ui:24
+#: src/ui/file-info-dialog.ui:23
+msgid "Browse"
+msgstr "浏览"
+
+#: src/ui/file-info-dialog.ui:28
 msgid "File"
 msgstr "打开文件"
 
-#: src/ui/file-info-dialog.ui:29
+#: src/ui/file-info-dialog.ui:33
 msgid "Name"
 msgstr "名称"
 
-#: src/ui/file-info-dialog.ui:36
+#: src/ui/file-info-dialog.ui:40
 msgid "Folder"
 msgstr "文件夹"
 
-#: src/ui/file-info-dialog.ui:43
+#: src/ui/file-info-dialog.ui:47
 msgid "Size"
 msgstr "大小"
 
-#: src/ui/file-info-dialog.ui:50
+#: src/ui/file-info-dialog.ui:54
 msgid "Other"
 msgstr "其他"
 
-#: src/ui/file-info-dialog.ui:55
+#: src/ui/file-info-dialog.ui:59
 msgid "Lines"
 msgstr "自动换行"
 
-#: src/ui/tag-dialog-window.ui:31 src/window/main-window.vala:135
-#: src/window/main-window.vala:312 src/window/main-window.vala:572
-#: src/window/main-window.vala:586 src/window/main-window.vala:951
-#: src/window/main-window.vala:979
-msgid "_Cancel"
-msgstr "取消(_C)"
-
-#: src/ui/tag-dialog-window.ui:37
+#: src/ui/tag-dialog-window.ui:6
 msgid "Tag"
 msgstr "标签"
 
-#: src/ui/tag-dialog-window.ui:47
-msgid "_Add"
-msgstr "新建(_A)"
-
-#: src/ui/tag-dialog-window.ui:59
-msgid "_Delete"
-msgstr "删除(_D)"
-
-#: src/ui/tag-dialog-window.ui:70
+#: src/ui/tag-dialog-window.ui:11
 msgid "Filter"
 msgstr "过滤器"
 
-#: src/ui/tag-dialog-window.ui:73
+#: src/ui/tag-dialog-window.ui:14
 msgid "Pattern"
 msgstr "模式"
 
-#: src/ui/tag-dialog-window.ui:81
+#: src/ui/tag-dialog-window.ui:22
 msgid "Description"
 msgstr "描述"
 
-#: src/ui/tag-dialog-window.ui:92
+#: src/ui/tag-dialog-window.ui:27
 msgid "Regular Expression"
 msgstr "正则表达式"
 
-#: src/ui/tag-dialog-window.ui:97
+#: src/ui/tag-dialog-window.ui:32
 msgid "Case Sensitive"
 msgstr "大小写敏感"
 
-#: src/ui/tag-dialog-window.ui:102
+#: src/ui/tag-dialog-window.ui:38
 msgid "Add to Top"
 msgstr "添加到顶部"
 
-#: src/ui/tag-dialog-window.ui:139
+#: src/ui/tag-dialog-window.ui:70
 msgid "Color Scheme"
 msgstr "颜色主题"
 
-#: src/ui/tag-dialog-window.ui:142
+#: src/ui/tag-dialog-window.ui:73
 msgid "Regenerate"
 msgstr "重新生成"
 
-#: src/ui/tag-dialog-window.ui:201
-msgid "Delete Tag"
-msgstr "删除标签"
+#: src/ui/tag-dialog-window.ui:130
+msgid "Delete"
+msgstr "删除"
+
+#: src/ui/tag-dialog-window.ui:141
+msgid "Edit"
+msgstr "编辑"
+
+#: src/ui/tag-dialog-window.ui:152
+msgid "Add"
+msgstr "新建"
 
 #. <property name="justify">fill</property>
-#: src/ui/tag-dialog-window.ui:234
+#: src/ui/tag-dialog-window.ui:164
 msgid ""
 "Adds the tag to the top which gives precedence over the other tag filters. "
 "Once a line is tagged it disregards other possible tags. The user can "
@@ -502,13 +430,13 @@ msgstr "加载标签"
 msgid "Import Tags"
 msgstr "导入标签"
 
-#: src/ui/tags-view.ui:261
-msgid "Edit Tags"
-msgstr "编辑标签"
-
-#: src/ui/tags-view.ui:265
+#: src/ui/tags-view.ui:259
 msgid "Save Tags"
 msgstr "保存标签"
+
+#: src/ui/tags-view.ui:265
+msgid "Edit Tags"
+msgstr "编辑标签"
 
 #: src/ui/tags-view.ui:271
 msgid "Enable all Tags"
@@ -563,107 +491,128 @@ msgstr "打开一个文件以开始着色 ..."
 msgid "Text files"
 msgstr "文本文件"
 
-#: src/tag/tag-dialog-window.vala:54
+#: src/tag/tag-dialog-window.vala:52
 msgid "Select the foreground color"
 msgstr "选择前景色"
 
-#: src/tag/tag-dialog-window.vala:60
+#: src/tag/tag-dialog-window.vala:58
 msgid "Select the background color"
 msgstr "选择背景色"
 
-#: src/tag/tag-dialog-window.vala:109
-msgid "_Edit"
-msgstr "编辑(_E)"
-
-#: src/window/main-window.vala:133
+#: src/window/main-window.vala:137
 msgid "Remove Tag"
 msgstr "删除标签"
 
-#: src/window/main-window.vala:133
+#: src/window/main-window.vala:137
 msgid "Remove tag from the list?"
 msgstr "确定要从列表中删除标签吗？"
 
-#: src/window/main-window.vala:136 src/window/main-window.vala:587
+#: src/window/main-window.vala:139 src/window/main-window.vala:316
+#: src/window/main-window.vala:557 src/window/main-window.vala:571
+#: src/window/main-window.vala:943 src/window/main-window.vala:971
+msgid "_Cancel"
+msgstr "取消(_C)"
+
+#: src/window/main-window.vala:140 src/window/main-window.vala:572
 msgid "_Remove"
 msgstr "删除(_R)"
 
-#: src/window/main-window.vala:311 src/window/main-window.vala:570
-#: src/window/main-window.vala:976
+#: src/window/main-window.vala:315 src/window/main-window.vala:555
+#: src/window/main-window.vala:968
 msgid "Tags changed"
 msgstr "标签已改变"
 
-#: src/window/main-window.vala:311 src/window/main-window.vala:570
-#: src/window/main-window.vala:977
+#: src/window/main-window.vala:315 src/window/main-window.vala:555
 msgid "There are unsaved changes, discards changes?"
 msgstr "有未保存的修改，要放弃更改吗？"
 
-#: src/window/main-window.vala:313 src/window/main-window.vala:573
-#: src/window/main-window.vala:980
+#: src/window/main-window.vala:317 src/window/main-window.vala:558
 msgid "_Discard"
 msgstr "放弃(_D)"
 
-#: src/window/main-window.vala:406
+#: src/window/main-window.vala:410
+#, c-format
 msgid "Found '%s' in line %u"
 msgstr "行找到 '%s '在第 %u "
 
-#: src/window/main-window.vala:408
+#: src/window/main-window.vala:412
 msgid "Add search as Tag"
 msgstr "新建标签"
 
-#: src/window/main-window.vala:421
+#: src/window/main-window.vala:425
+#, c-format
 msgid "No match for '%s'"
 msgstr "'%s' 没有匹配项"
 
-#: src/window/main-window.vala:426 src/window/main-window.vala:905
-#: src/window/main-window.vala:945
+#: src/window/main-window.vala:430 src/window/main-window.vala:897
+#: src/window/main-window.vala:937
+#, c-format
 msgid "No more matches for '%s'"
 msgstr "'%s' 没有更多匹配项"
 
-#: src/window/main-window.vala:447
+#: src/window/main-window.vala:451
+#, c-format
 msgid "'%s' is not a regular file ..."
 msgstr "'%s' 不是一个有效文件 ..."
 
-#: src/window/main-window.vala:515 src/window/main-window.vala:967
+#: src/window/main-window.vala:500 src/window/main-window.vala:959
 msgid "Open File"
 msgstr "打开文件"
 
-#: src/window/main-window.vala:515
+#: src/window/main-window.vala:500
 msgid "_Close"
 msgstr "关闭(_C)"
 
-#: src/window/main-window.vala:552
+#: src/window/main-window.vala:537
 msgid "No line selected to create tag"
 msgstr "未选择用于创建标签的行"
 
-#: src/window/main-window.vala:563
+#: src/window/main-window.vala:548
 msgid "No tags to remove"
 msgstr "没有可删除标签"
 
-#: src/window/main-window.vala:584
+#: src/window/main-window.vala:569
 msgid "Remove Tags"
 msgstr "删除标签"
 
-#: src/window/main-window.vala:584
+#: src/window/main-window.vala:569
 msgid "Remove all tags from the list?"
 msgstr "要删除列表中的所有标签吗？"
 
-#: src/window/main-window.vala:689
+#: src/window/main-window.vala:628
+msgid "No tags to save"
+msgstr "没有可保存的标签"
+
+#: src/window/main-window.vala:683
 msgid "Save File"
 msgstr "保存文件"
 
-#: src/window/main-window.vala:768
+#: src/window/main-window.vala:760
+#, c-format
 msgid "%d bytes copied"
 msgstr "%d 字节已复制"
 
-#: src/window/main-window.vala:895 src/window/main-window.vala:935
+#: src/window/main-window.vala:887 src/window/main-window.vala:927
+#, c-format
 msgid "Found in line %u"
 msgstr "在第 %u 行找到"
 
-#: src/window/main-window.vala:967
+#: src/window/main-window.vala:959
 msgid "Could not open file..."
 msgstr "无法打开文件..."
 
-#: src/window/main-window.vala:999
+#: src/window/main-window.vala:969
+msgid ""
+"There are unsaved changes. Autoload is enabled and existing tags may be "
+"lost! Proceed?"
+msgstr ""
+"存在未保存的更改。已启用自动加载，现有标签可能会丢失！是否继续"
+
+#: src/window/main-window.vala:972
+msgid "_Proceed"
+msgstr "继续(_P)"
+
+#: src/window/main-window.vala:991
 msgid "No tags to edit"
 msgstr "无可编辑标签"
 
@@ -678,3 +627,74 @@ msgstr "符号图标由来自 freeicons.io 的 www.wishforge.games 提供"
 #: src/application.vala:69
 msgid "translator-credits"
 msgstr "yu Qin <imqin_yu@outlook.com>"
+
+#~ msgctxt "shortcut section title"
+#~ msgid "General"
+#~ msgstr "常规"
+
+#~ msgctxt "shortcut window"
+#~ msgid "General"
+#~ msgstr "常规"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Save tagged Lines"
+#~ msgstr "保存已标记的行"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Copy selected text Lines"
+#~ msgstr "复制已选行"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Tag visibility"
+#~ msgstr "标签可见性"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Visibility"
+#~ msgstr "可见性"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Toggle first tag visibility"
+#~ msgstr "切换首条标签可见性"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Toggle second tag visibility"
+#~ msgstr "切换第二条标签可见性"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Toggle ninth tag visibility"
+#~ msgstr "切换第九条标签可见性"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Toggle tenth tag visibility"
+#~ msgstr "切换第十条标签可见性"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Show"
+#~ msgstr "显示"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Show only first tag"
+#~ msgstr "仅显示首条标签"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Show only second tag"
+#~ msgstr "仅显示第二条标签"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Show only ninth tag"
+#~ msgstr "仅显示第九条标签"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Tag Navigation"
+#~ msgstr "标签导航"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Quick jump"
+#~ msgstr "快速跳转"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Visual"
+#~ msgstr "视觉的"
+
+#~ msgid "Delete Tag"
+#~ msgstr "删除标签"
