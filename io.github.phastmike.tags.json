@@ -23,8 +23,7 @@
                 {
                     "type" : "git",
                     "url" : "https://github.com/phastmike/tags.git",
-                    "tag": "2.1",
-                    "commit" : "aa8fea85b865a2e73ea817f00384dc894c6d5a2a"
+                    "commit" : "bd152b343b69da60403491092eca127481ad69fd"
                 }
             ]
         }
