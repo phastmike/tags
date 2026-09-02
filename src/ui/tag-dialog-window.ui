@@ -10,6 +10,30 @@
           <object class="AdwPreferencesGroup">
             <property name="title" translatable="yes">Filter</property>
             <child>
+              <object class="GtkPopover" id="popover_add_top">
+                <child>
+                  <object class="GtkLabel">
+                    <!--<property name="justify">fill</property>-->
+                    <property name="label" translatable="yes">Adds the tag to the top which gives precedence over the other tag filters. Once a line is tagged it disregards other possible tags. The user can reorder tags with drag and drop at any time.</property>
+                    <property name="margin-bottom">8</property>
+                    <property name="margin-end">8</property>
+                    <property name="margin-start">8</property>
+                    <property name="margin-top">8</property>
+                    <property name="max-width-chars">36</property>
+                    <property name="wrap">true</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <!--
+            <child type="header-suffix">
+              <object class="GtkButton" id="button_copy_selection">
+                <property name="label" translatable="yes">Use selected Line</property>
+                <property name="visible">false</property>
+              </object>
+            </child>
+            -->
+            <child>
               <object class="AdwEntryRow" id="entry_tag_pattern">
                 <property name="title" translatable="yes">Pattern</property>
                 <style>
@@ -152,22 +176,6 @@
                 <property name="title" translatable="yes">Add</property>
                 <property name="visible">false</property>
                 <property name="sensitive">false</property>
-              </object>
-            </child>
-          </object>
-        </child>
-        <child>
-          <object class="GtkPopover" id="popover_add_top">
-            <child>
-              <object class="GtkLabel">
-                <!--<property name="justify">fill</property>-->
-                <property name="label" translatable="yes">Adds the tag to the top which gives precedence over the other tag filters. Once a line is tagged it disregards other possible tags. The user can reorder tags with drag and drop at any time.</property>
-                <property name="margin-bottom">8</property>
-                <property name="margin-end">8</property>
-                <property name="margin-start">8</property>
-                <property name="margin-top">8</property>
-                <property name="max-width-chars">36</property>
-                <property name="wrap">true</property>
               </object>
             </child>
           </object>

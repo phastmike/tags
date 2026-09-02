@@ -65,6 +65,22 @@
   <content_rating type="oars-1.1" />
   <releases>
 
+    <release version="2.5" date="2026-09-07">
+      <description translatable="yes">
+        <p>Tags 2.5 is out</p>
+        <p>What's new:</p>
+        <ul>
+          <li>Updated translations</li>
+          <li>Fixed Import tags dialog</li>
+          <li>Increased default window size</li>
+          <li>Fixed search issue when using zh_CN language</li>
+          <li>Changed all Adw.Windows to Adw.PreferencesDialogs</li>
+          <li>Changed Gtk.ShortcutsWindow to Adw.ShortcutsDialog</li>
+        </ul>
+        <p>Minor UX and UI changes</p>
+      </description>
+    </release>
+
     <release version="2.4" date="2026-08-27">
       <description translatable="no">
         <p>Tags 2.4 is out</p>
@@ -72,7 +88,7 @@
         <ul>
           <li>Added File Information Dialog</li>
           <li>Fixed missing translations</li>
-          <li>iFixed search issue when using zh_CN language</li>
+          <li>Fixed search issue when using zh_CN language</li>
         </ul>
         <p>Minor improvements</p>
       </description>
