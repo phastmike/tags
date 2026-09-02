@@ -11,15 +11,13 @@
 
 namespace Tags {
     [GtkTemplate (ui = "/io/github/phastmike/tags/ui/tag-dialog-window.ui")]
-    public class TagDialogWindow : Adw.Window {
+    public class TagDialog : Adw.PreferencesDialog {
         [GtkChild]
-        private unowned Gtk.Button button_ok;
+        private unowned Adw.ButtonRow row_btn_add_tag;
         [GtkChild]
-        private unowned Gtk.Button button_cancel;
+        private unowned Adw.ButtonRow row_btn_edit_tag;
         [GtkChild]
-        private unowned Gtk.Button button_delete;
-        [GtkChild]
-        private unowned Gtk.Button btn_delete_tag;
+        private unowned Adw.ButtonRow row_btn_delete_tag;
         [GtkChild]
         private unowned Gtk.ColorDialogButton button_fg_color;
         [GtkChild]
@@ -60,8 +58,6 @@ namespace Tags {
             dialog_bg_color.set_title (_("Select the background color"));
             button_bg_color.set_dialog (dialog_bg_color); 
 
-            button_cancel.clicked.connect (this.destroy);
-
             button_fg_color.notify["rgba"].connect (set_label_example_colors);
             button_bg_color.notify["rgba"].connect (set_label_example_colors);
             button_regenerate_cs.clicked.connect (set_random_color_scheme);
@@ -71,10 +67,10 @@ namespace Tags {
             });
         }
 
-        public TagDialogWindow (Gtk.Application app, string? text = null) {
-            Object(application: app, transient_for: app.active_window, modal: true);
+        public TagDialog (Gtk.Application app, string? text = null) {
 
-            button_ok.clicked.connect (() => {
+            row_btn_add_tag.set_visible (true);
+            row_btn_add_tag.activated.connect (() => {
                 var pattern = entry_tag_pattern.get_text ();
                 var description = entry_tag_name.get_text ();
                 var fg_color = button_fg_color.get_rgba ();
@@ -82,7 +78,7 @@ namespace Tags {
 
                 var color_scheme = new ColorScheme ("default", fg_color, bg_color);
                 var tag = new Tag (pattern, description, color_scheme); 
-                // Use a builder class
+                // Use a builder class ?
                 tag.is_regex = row_regex.get_active ();
                 tag.is_case_sensitive = row_case.get_active ();
 
@@ -90,7 +86,7 @@ namespace Tags {
 
                 added (tag, add_to_top);
 
-                this.destroy ();
+                close ();
             });
             
             entry_tag_pattern.changed.connect (validate_entries);
@@ -103,13 +99,10 @@ namespace Tags {
             }
         }
 
-        public TagDialogWindow.for_editing (Gtk.Application app, Tag tag) {
-            Object(application: app, transient_for: app.active_window, modal: true);
+        public TagDialog.for_editing (Gtk.Application app, Tag tag) {
 
-            button_ok.set_label (_("_Edit"));
-            button_ok.set_sensitive (true);
-
-            btn_delete_tag.set_visible (true);
+            row_btn_edit_tag.set_visible (true);
+            row_btn_delete_tag.set_visible (true);
 
             row_atop.set_visible (false);
 
@@ -118,7 +111,7 @@ namespace Tags {
             if (tag.colors.fg != null) button_fg_color.set_rgba (tag.colors.fg);
             if (tag.colors.bg != null ) button_bg_color.set_rgba (tag.colors.bg);
 
-            button_ok.clicked.connect (() => { 
+            row_btn_edit_tag.activated.connect (() => { 
                 tag.pattern = entry_tag_pattern.get_text ();
                 tag.description = entry_tag_name.get_text ();
                 tag.colors.fg = button_fg_color.get_rgba ();
@@ -126,18 +119,13 @@ namespace Tags {
                 tag.is_regex = row_regex.get_active ();
                 tag.is_case_sensitive = row_case.get_active ();
                 edited (tag);
-                this.destroy ();
+                close ();
             });
             
-            button_delete.clicked.connect (() => {
+            row_btn_delete_tag.activated.connect (() => {
                 deleted(tag);
             });
 
-            btn_delete_tag.clicked.connect (() => {
-                deleted(tag);
-            });
-            
-            
             entry_tag_pattern.changed.connect (validate_entries);
             entry_tag_name.changed.connect (validate_entries);
             set_label_example_colors ();
@@ -163,11 +151,11 @@ namespace Tags {
                     color: %s;
                     font-size: 0.8333em;
                 }
-            """.printf (TagDialogWindow.css_class, bg_web, fg_web);
+            """.printf (TagDialog.css_class, bg_web, fg_web);
 
             var provider = new Gtk.CssProvider ();
             provider.load_from_string (lstyle);
-            label_sample_example.add_css_class (TagDialogWindow.css_class);
+            label_sample_example.add_css_class (TagDialog.css_class);
             label_sample_example.add_css_class ("frame");
             Gtk.StyleContext.add_provider_for_display (Gdk.Display.get_default (), provider, Gtk.STYLE_PROVIDER_PRIORITY_USER);
         }
@@ -192,11 +180,15 @@ namespace Tags {
         }
 
         private void validate_entries () {
+            bool sensitive;
+
             if (entry_tag_pattern.get_text ().length != 0) {
-                button_ok.set_sensitive (true);
+                sensitive = true;
             } else {
-                button_ok.set_sensitive (false);
+                sensitive = false;
             }
+            row_btn_add_tag.set_sensitive (sensitive);
+            row_btn_edit_tag.set_sensitive (sensitive);
         }
     }
 }

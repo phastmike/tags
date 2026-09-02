@@ -126,7 +126,7 @@ namespace Tags {
                 }
                 var row = r as TagRow;
                 var tag = row.tag;
-                var tag_dialog =  new TagDialogWindow.for_editing (application, tag);
+                var tag_dialog =  new TagDialog.for_editing (application, tag);
                 tag_dialog.edited.connect ((t) => {
                     count_tag_hits ();
                     filter.update ();
@@ -153,7 +153,7 @@ namespace Tags {
                     });
                 });
 
-                tag_dialog.present ();
+                tag_dialog.present (this);
             });
 
             setup_lines_view ();
@@ -503,7 +503,7 @@ namespace Tags {
         }
 
         private void dialog_add_tag (string? pattern = null) {
-            var tag_dialog = new TagDialogWindow (this.application, pattern);
+            var tag_dialog = new TagDialog (this.application, pattern);
 
             tag_dialog.added.connect ((tag, add_to_top) => {
                 tag.changed.connect (() => {
@@ -519,7 +519,7 @@ namespace Tags {
                 minimap.set_array (Lines.model_to_array(lines_colview.lines));
             });
 
-            tag_dialog.present ();
+            tag_dialog.present (this);
         }
 
         private void action_add_tag_from_search () {
