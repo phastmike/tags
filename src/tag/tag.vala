@@ -10,12 +10,50 @@
 
 namespace Tags {
 
+    /*
+    public class TagBuilder {
+        private bool _enabled = true;
+        private string? _pattern = null;
+        private string? _description = null;
+        private bool _is_regex = false;
+        private bool _is_case_sensitive = false;
+
+        public TagBuilder () {
+
+        }
+
+        public TagBuilder set_enabled (bool enabled) {
+            _enabled = enabled;
+            return this;
+        }
+
+        public TagBuilder set_description (string? description) requires (description != null) {
+            _description = description;
+            return this;
+        }
+
+        public Tag build () {
+
+            Tag tag = new Tag ();
+            tag.enabled =  _enabled;
+
+            return tag;
+        }
+
+    }
+    */
+
     public class Tag : Object {
         private bool _enabled = true;
         private string? _pattern = null;
         private string? _description = null;
         private bool _is_regex = false;
         private bool _is_case_sensitive = false;
+
+        public ColorScheme colors { get; set; }
+        public uint hits { get; set; default = 0; } // Should decouple the counter
+
+        /* Setters / Getters */
 
         public bool enabled { 
             get {
@@ -68,16 +106,12 @@ namespace Tags {
             }
         }
 
-        public ColorScheme colors { get; set; }
-
-        public uint hits { get; set; default = 0; } // Should decouple the counter
-
         /* SIGNALS */
 
         public signal void changed ();
         public signal void enable_changed (bool enabled);
 
-        /* METHODS */
+        /* CONSTRUCTORS */
 
         public Tag (string pattern, string description, ColorScheme colors) {
             _pattern = pattern;
@@ -94,6 +128,8 @@ namespace Tags {
                 changed ();
             });
         }
+
+        /* METHODS */
 
         public bool applies_to (string? text = null) {
             if (text == null) return false;
