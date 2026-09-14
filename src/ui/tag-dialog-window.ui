@@ -3,6 +3,7 @@
   <requires lib="gtk" version="4.18"/>
   <requires lib="libadwaita" version="1.8"/>
   <template class="TagsTagDialog" parent="AdwPreferencesDialog">
+    <property name="search-enabled">true</property>
     <property name="title" translatable="yes">Tag</property>
     <child>
       <object class="AdwPreferencesPage">
