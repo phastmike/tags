@@ -20,6 +20,14 @@
       <li>Navigate through similarly tagged lines with ease</li>
     </ul>
   </description>
+  <supports>
+    <control>keyboard</control>
+    <control>pointing</control>
+    <control>touch</control>
+  </supports>
+  <requires>
+    <display_length compare="ge">360</display_length>
+  </requires>
   <branding>
     <!--<color type="primary" scheme_preference="light">#d1e3f0</color>-->
     <!--<color type="primary" scheme_preference="dark">#11466e</color>-->

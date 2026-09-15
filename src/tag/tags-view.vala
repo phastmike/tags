@@ -36,6 +36,9 @@ namespace Tags {
                     button_prev_hit.visible = false;
                     button_next_hit.visible = false;
                 } else {
+                    //MUST MONITOR TAG ENABLED CHANGES
+                    //button_prev_hit.set_sensitive(row.tag.enabled);
+                    //button_next_hit.set_sensitive(row.tag.enabled);
                     button_prev_hit.visible = true;
                     button_next_hit.visible = true;
                 }
