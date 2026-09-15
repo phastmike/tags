@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <template class="TagsTagsView" parent="GtkBox">
-    <property name="orientation">horizontal</property>
+  <template class="TagsTagsView" parent="AdwBin">
+    <!--<property name="orientation">horizontal</property>-->
     <child>
       <object class="AdwToolbarView">
         <property name="bottom_bar_style">flat</property>
         <child type="top">
           <object class="AdwHeaderBar">
             <child type="start">
+              <object class="GtkButton">
+                <property name="tooltip-text" translatable="yes">Add a Tag</property>
+                <property name="icon-name">list-add-symbolic</property>
+                <property name="action-name">win.action_add_tag</property>
+              </object>
+              <!--
               <object class="AdwSplitButton">
                 <property name="icon-name">list-add-symbolic</property>
                 <property name="popover">popover_menu_add_tag</property>
@@ -15,6 +21,7 @@
                 <property name="dropdown-tooltip" translatable="yes">More Options</property>
                 <property name="action-name">win.action_add_tag</property>
               </object>
+              -->
             </child>
             <child type="title">
               <object class="GtkLabel">

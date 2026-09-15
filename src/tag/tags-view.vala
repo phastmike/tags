@@ -10,7 +10,8 @@
 
 namespace Tags {
     [GtkTemplate (ui = "/io/github/phastmike/tags/ui/tags-view.ui")]
-    public class TagsView : Gtk.Box {
+    //public class TagsView : Gtk.Box {
+    public class TagsView : Adw.Bin {
         [GtkChild]
         public unowned Gtk.ScrolledWindow scrolled;
         [GtkChild]
