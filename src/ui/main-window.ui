@@ -6,13 +6,11 @@
     <property name="default-width">1000</property>
     <property name="default-height">800</property>
     <!--
-    <property name="default-width">700</property>
-    <property name="default-height">720</property>
     <property name="width-request">437</property>
-    -->
     <style>
-      <!--<class name="devel"/>-->
+      <class name="devel"/>
     </style>
+    -->
     <property name="content">
       <object class="AdwOverlaySplitView" id="oversplit">
         <property name="content">
@@ -20,12 +18,32 @@
             <property name="top_bar_style">flat</property>
             <child type="top">
               <object class="AdwHeaderBar">
+
+                <child type="start">
+                  <object class="GtkToggleButton" id="button_tags_lisa2t">
+                    <property name="visible">false</property>
+                    <property name="icon-name">sidebar-show</property>
+                    <property name="tooltip-text" translatable="yes" context="tooltip">Tag List</property>
+                    <property name="action-name">win.toggle_tags_view</property>
+                  </object>
+                </child>
+
+                <child type="start">
+                  <object class="GtkButton" id="button_open_file_small">
+                    <property name="visible">false</property>
+                    <property name="icon_name">document-open-symbolic</property>
+                    <property name="tooltip_text" translatable="yes">Open File</property>
+                    <property name="action-name">win.action_open_file</property>
+                  </object>
+                </child>
+
                 <child type="start">
                   <object class="GtkButton" id="button_open_file">
                     <property name="visible">true</property>
                     <property name="action-name">win.action_open_file</property>
                     <property name="child">
                       <object class="AdwButtonContent">
+                        <property name="can-shrink">true</property>
                         <property name="icon-name">document-open-symbolic</property>
                         <property name="label" translatable="yes" context="Open a file">_Open</property>
                         <property name="tooltip_text" translatable="yes" context="Open a file - tooltip">Select a File</property>

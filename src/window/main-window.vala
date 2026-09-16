@@ -27,6 +27,10 @@ namespace Tags {
         unowned Gtk.Stack title_stack;
         [GtkChild]
         unowned Gtk.SearchEntry search_entry;
+        [GtkChild]
+        unowned Gtk.Button button_open_file;
+        [GtkChild]
+        unowned Gtk.Button button_open_file_small;
 
         private const string DEFAULT_TAGS_FILE = "tags.tags";
 
@@ -199,6 +203,8 @@ namespace Tags {
             add_breakpoint (bp);
 
             bp.apply.connect ( () => {
+                button_open_file.set_visible (true);
+                button_open_file_small.set_visible (false);
                 oversplit.max_sidebar_width = 280;
                 oversplit.min_sidebar_width = 180;
                 if (oversplit.show_sidebar) {
@@ -210,6 +216,8 @@ namespace Tags {
             });
 
             bp.unapply.connect ( () => {
+                button_open_file.set_visible (false);
+                button_open_file_small.set_visible (true);
                 oversplit.max_sidebar_width = 180;
                 oversplit.min_sidebar_width = 180;
                 if (oversplit.show_sidebar) {
