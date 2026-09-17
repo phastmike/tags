@@ -26,14 +26,15 @@
  * José Miguel Fonte
  */
 
-public class Minimap : Gtk.Box {
+public class Minimap : Adw.Bin {
     private string[] lines = {};
 
-    private int line_height = 3;
-    private int padding = 4;
     private int width = 100;
-    private Gdk.RGBA highlight_color;
+    private int padding = 4;
+    private int line_height = 3;
+
     private Gdk.RGBA text_color;
+    private Gdk.RGBA highlight_color;
 
     public const string rgba_light_theme_hover  = "rgba (26, 26, 26, 0.25)";
     public const string rgba_light_theme_text   = "rgba (0, 0, 0, 0.15)";
@@ -70,11 +71,8 @@ public class Minimap : Gtk.Box {
     public delegate Gdk.RGBA? GetLineColorBgFunc (string? text);
     public GetLineColorBgFunc? get_default_text_color_bg_callback = null;
 
-    // Cnstructor
+    // Constructor
     public Minimap (Gtk.Adjustment? adj = null) {
-        Object (orientation: Gtk.Orientation.VERTICAL, spacing: 0);
-        set_vexpand (true);
-
         var sm = Adw.StyleManager.get_default ();
         sm.notify["dark"].connect ( () => {
             reset_colors ();
@@ -94,7 +92,7 @@ public class Minimap : Gtk.Box {
         scrolled_window.set_child (drawing_area);
         scrolled_window.set_vexpand (true);
     
-        append (scrolled_window);
+        set_child (scrolled_window);
         set_external_adj (adj);
     }
 

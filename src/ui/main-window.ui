@@ -19,14 +19,16 @@
             <child type="top">
               <object class="AdwHeaderBar">
 
+                <!--
                 <child type="start">
-                  <object class="GtkToggleButton" id="button_tags_lisa2t">
+                  <object class="GtkToggleButton" id="button_tags_list2">
                     <property name="visible">false</property>
                     <property name="icon-name">sidebar-show</property>
                     <property name="tooltip-text" translatable="yes" context="tooltip">Tag List</property>
                     <property name="action-name">win.toggle_tags_view</property>
                   </object>
                 </child>
+                -->
 
                 <child type="start">
                   <object class="GtkButton" id="button_open_file_small">

@@ -12,6 +12,10 @@ namespace Tags {
     [GtkTemplate (ui = "/io/github/phastmike/tags/ui/main-window.ui")]
     public class MainWindow : Adw.ApplicationWindow {
         [GtkChild]
+        unowned Gtk.Stack title_stack;
+        [GtkChild]
+        unowned Gtk.Label title_sidebar;
+        [GtkChild]
         unowned Adw.WindowTitle title_nosidebar;
         [GtkChild]
         unowned Gtk.ToggleButton button_hide_untagged;
@@ -20,11 +24,7 @@ namespace Tags {
         [GtkChild]
         unowned Adw.OverlaySplitView oversplit;
         [GtkChild]
-        unowned Gtk.Label title_sidebar;
-        [GtkChild]
         unowned Gtk.Button button_search;
-        [GtkChild]
-        unowned Gtk.Stack title_stack;
         [GtkChild]
         unowned Gtk.SearchEntry search_entry;
         [GtkChild]
@@ -48,21 +48,25 @@ namespace Tags {
             set { _search_mode = value; }
         }
 
-        private Adw.Toast toast_main;
+        private Lines lines;
+        private TagStore tags;
+        private TagStyleStore style_store;
+
+        private Filter filter;
+        private Filterer filterer;
+        private ModelMixer mmixer;
+
         private Gtk.Stack stack;
+        private Adw.Toast toast_main;
+
         private Gtk.Box main_box;
         private Minimap minimap;
-        private Gtk.Revealer revealer;
-        private Tags.ModelMixer mmixer;
-        private TagStyleStore style_store;
-        private TagStore tags;
+        private MinimapContainer map_view;
         private TagsView tags_view;
-        private Lines lines;
-        private Tags.Filter filter;
-        private Filterer filterer;
         private LinesColumnView lines_colview;
-        private File? file_opened = null;
+
         private File? file_tags = null;
+        private File? file_opened = null;
 
         private ActionEntry[] WINDOW_ACTIONS = {
             { "action_open_file", action_open_file },
@@ -299,7 +303,7 @@ namespace Tags {
 
             preferences.bind_property ("ln_visible", lines_colview.column_line_number, "visible", 
                 BindingFlags.SYNC_CREATE | BindingFlags.BIDIRECTIONAL);
-            preferences.bind_property ("minimap_visible", revealer, "reveal_child", 
+            preferences.bind_property ("minimap_visible", map_view, "reveal", 
                 BindingFlags.SYNC_CREATE | BindingFlags.BIDIRECTIONAL);
             preferences.bind_property ("wrap_nlines", lines_colview, "wrap_nlines", 
                 BindingFlags.SYNC_CREATE | BindingFlags.BIDIRECTIONAL);
@@ -354,7 +358,7 @@ namespace Tags {
         private void setup_minimap (Gtk.Adjustment adj) {
             minimap = new Minimap (adj);
             minimap.set_line_color_bg_callback (delegate_minimap_bgcolor_getter);
-            revealer = (new Tags.MinimapContainer (minimap)).revealer;
+            map_view = new Tags.MinimapContainer (minimap);
         }
 
         private void setup_search () {
@@ -449,7 +453,7 @@ namespace Tags {
         private void setup_main_box () {
             main_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
             main_box.append (lines_colview);
-            main_box.append (revealer);
+            main_box.append (map_view);
         }
 
         public void open_file (File file) {
@@ -765,7 +769,7 @@ namespace Tags {
         }
 
         private void action_toggle_minimap () {
-            revealer.set_reveal_child (!revealer.get_reveal_child ());
+            map_view.reveal = !map_view.reveal;
         }
 
         private void toggle_tags_view () {

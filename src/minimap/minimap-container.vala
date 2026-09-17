@@ -9,15 +9,24 @@
  */
 
 namespace Tags {
-    public class MinimapContainer :  Object {
-        public Gtk.Revealer revealer;
+    public class MinimapContainer : Adw.Bin {
+        private Gtk.Revealer revealer;
+        public bool reveal {
+            get {
+                return revealer.get_reveal_child ();
+            }
+            set {
+                revealer.set_reveal_child (value);
+            }
+        }
 
         public MinimapContainer (Minimap minimap) {
             revealer = new Gtk.Revealer ();
             revealer.set_child (minimap);
-            revealer.set_reveal_child (true);
             revealer.set_transition_duration (200);
             revealer.set_transition_type (Gtk.RevealerTransitionType.SLIDE_RIGHT);
+
+            set_child (revealer);
         }
     }
 }
