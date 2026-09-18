@@ -324,18 +324,26 @@ namespace Tags {
         private void setup_buttons () {
             close_request.connect ( () => {
                 if (tags.ntags > 0 && tags.have_changed) {
-                    var dialog = new Adw.AlertDialog (_("Tags changed"), _("There are unsaved changes, discards changes?"));
+                    var dialog = new Adw.AlertDialog (_("Tags changed"), _("There are unsaved changes"));
                     dialog.add_response ("cancel", _("_Cancel"));
                     dialog.add_response ("discard", _("_Discard"));
+                    dialog.add_response ("save", _("_Save"));
                     dialog.set_response_appearance ("discard",Adw.ResponseAppearance.DESTRUCTIVE);
+                    dialog.set_response_appearance ("save",Adw.ResponseAppearance.SUGGESTED);
                     dialog.set_default_response ("cancel");
                     dialog.set_close_response ("cancel");
-                    dialog.set_prefer_wide_layout (true);
+                    dialog.set_prefer_wide_layout (false);
+                    dialog.set_presentation_mode (Adw.DialogPresentationMode.AUTO);
                     dialog.present (this);
                     
                     dialog.response.connect ((response) => {
-                        if (response == "discard") {
-                            this.application.quit ();
+                        switch (response) {
+                            case "discard":
+                                this.application.quit ();
+                                break;
+                            case "save":
+                                action_save_tags ();
+                                break;
                         }
                     });
                     return true;
@@ -578,17 +586,25 @@ namespace Tags {
             }
 
             if (tags.have_changed) {
-                var dialog = new Adw.AlertDialog (_("Tags changed"), _("There are unsaved changes, discards changes?"));
+                var dialog = new Adw.AlertDialog (_("Tags changed"), _("There are unsaved changes"));
                 dialog.set_prefer_wide_layout (true);
                 dialog.add_response ("cancel", _("_Cancel"));
                 dialog.add_response ("discard", _("_Discard"));
+                dialog.add_response ("save", _("_Save"));
                 dialog.set_response_appearance ("discard", Adw.ResponseAppearance.DESTRUCTIVE);
+                dialog.set_response_appearance ("save", Adw.ResponseAppearance.SUGGESTED);
                 dialog.set_default_response ("cancel");
                 dialog.set_close_response ("cancel");
+                dialog.set_prefer_wide_layout (false);
                 dialog.present (this);
                 dialog.response.connect ((response) => {
-                    if (response == "discard") {
-                        tags_remove_all ();
+                    switch (response) {
+                        case "save":
+                            action_save_tags ();
+                            break;
+                        case "discard":
+                            tags_remove_all ();
+                            break;
                     }
                 });
             } else {
@@ -599,6 +615,7 @@ namespace Tags {
                 dialog.set_response_appearance ("remove", Adw.ResponseAppearance.DESTRUCTIVE);
                 dialog.set_default_response ("cancel");
                 dialog.set_close_response ("cancel");
+                dialog.set_prefer_wide_layout (false);
                 dialog.present (this);
                 dialog.response.connect ((response) => {
                     if (response == "remove") {
@@ -992,19 +1009,26 @@ namespace Tags {
             if (tags.ntags > 0 && tags.have_changed && Preferences.instance ().tags_autoload == true) {
                 var dialog = new Adw.AlertDialog (
                     _("Tags changed"),
-                    _("There are unsaved changes. Autoload is enabled and existing tags may be lost! Proceed?")
+                    _("There are unsaved changes")
                 );
                 dialog.add_response ("cancel", _("_Cancel"));
-                dialog.add_response ("proceed", _("_Proceed"));
-                dialog.set_response_appearance ("proceed",Adw.ResponseAppearance.DESTRUCTIVE);
+                dialog.add_response ("discard", _("_Discard"));
+                dialog.add_response ("save", _("_Save"));
+                dialog.set_response_appearance ("discard",Adw.ResponseAppearance.DESTRUCTIVE);
+                dialog.set_response_appearance ("save",Adw.ResponseAppearance.SUGGESTED);
                 dialog.set_default_response ("cancel");
                 dialog.set_close_response ("cancel");
-                dialog.set_prefer_wide_layout (true);
+                dialog.set_prefer_wide_layout (false);
                 dialog.present (this);
                 
                 dialog.response.connect ((response) => {
-                    if (response == "proceed" || response == "save") {
-                        dialog_open_file ();
+                    switch (response) {
+                        case "discard":
+                            dialog_open_file ();
+                            break;
+                        case "save":
+                            action_save_tags ();
+                            break;
                     }
                 });
             } else {
