@@ -139,10 +139,12 @@ namespace Tags {
                         
                         // FIXME: We need to generate a new UUID for the tag.
                         // Lacks persistence support
-                        tag.colors.name = Tags.Helpers.generate_uuid ();
+                        //tag.colors.name = Tags.Common.generate_uuid ();
+                        //message ("Color UUID: %s", tag.colors.name);
                         add_tag (tag);
+                        message ("Color UUID: %s", tag.get_uuid ());
                     });
-                if (preserve_load == false) have_changed = false;
+                    if (preserve_load == false) have_changed = false;
                 } else {
                     warning ("Oops!.. Something went wrong while decoding json data ...");
                 }

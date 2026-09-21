@@ -25,7 +25,6 @@ namespace Tags {
             revealer.set_child (minimap);
             revealer.set_transition_duration (200);
             revealer.set_transition_type (Gtk.RevealerTransitionType.SLIDE_LEFT);
-
             set_child (revealer);
         }
     }

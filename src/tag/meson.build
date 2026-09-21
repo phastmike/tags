@@ -1,6 +1,6 @@
 tags_sources += files(
 	'tag.vala',
-	'helpers.vala',
+	'common.vala',
 	'tag-row.vala',
 	'tag-store.vala',
 	'tag-style.vala',

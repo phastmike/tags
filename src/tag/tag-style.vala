@@ -14,6 +14,17 @@ namespace Tags {
         public unowned Tag tag;
         public Gtk.CssProvider provider;
 
+        public const string ROW_PREFIX = "row-";
+        public const string LINE_PREFIX = "tag-";
+
+        public static string get_style_name_for_row (Tag tag) requires (tag != null) {
+            return "%s%s".printf (ROW_PREFIX, tag.get_uuid ());
+        }
+
+        public static string get_style_name_for_tag (Tag tag) requires (tag != null) {
+            return "%s%s".printf (LINE_PREFIX, tag.get_uuid ());
+        }
+
         public TagStyle (Tag tag) {
             this.tag = tag;
             this.tag.colors.changed.connect (update_css);
@@ -26,6 +37,7 @@ namespace Tags {
         }
 
         private void update_css () {
+            // Used for Tags View
             string css_tag_row = 
 """
 .row-%s label {
@@ -35,12 +47,13 @@ font-size: 0.8333em;
 color: %s;
 background-color: %s;
 }
-""".printf (tag.colors.name,
-                tag.colors.name,
+""".printf (tag.get_uuid (),
+                tag.get_uuid (),
                 tag.colors.fg.to_string (),
                 tag.colors.bg.to_string ()
             );
 
+            // Used for Line View
             string css = 
 """
 .tag-%s {
@@ -54,13 +67,12 @@ background-color: %s;
   background-color: @theme_selected_bg_color;
   color: @theme_selected_fg_color;
 }
-"""
-            .printf (tag.colors.name,
-                tag.colors.bg.to_string (),
-                tag.colors.fg.to_string (),
-                tag.colors.name,
-                tag.colors.name
-            );
+""".printf (tag.get_uuid (),
+            tag.colors.bg.to_string (),
+            tag.colors.fg.to_string (),
+            tag.get_uuid (),
+            tag.get_uuid ()
+           );
             
             provider.load_from_string (css_tag_row + css);
         }

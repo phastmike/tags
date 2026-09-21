@@ -32,7 +32,7 @@ namespace Tags {
 
             this.tag = tag;
             // FIXME: Need to address these ui styles properly
-            style_class = "row-%s".printf (tag.colors.name);
+            style_class = TagStyle.get_style_name_for_row (tag);
 
             set_tooltip_text (tag.description);
 

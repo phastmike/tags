@@ -44,12 +44,15 @@ namespace Tags {
     */
 
     public class Tag : Object {
+        private string uuid;
+
         private bool _enabled = true;
         private string? _pattern = null;
         private string? _description = null;
         private bool _is_regex = false;
         private bool _is_case_sensitive = false;
 
+        //public string uuid {construct; get;}
         public ColorScheme colors { get; set; }
         public uint hits { get; set; default = 0; } // Should decouple the counter
 
@@ -112,6 +115,9 @@ namespace Tags {
         public signal void enable_changed (bool enabled);
 
         /* CONSTRUCTORS */
+        construct {
+            uuid = Tags.Common.generate_uuid ();
+        }
 
         public Tag (string pattern, string description, ColorScheme colors) {
             _pattern = pattern;
@@ -121,8 +127,8 @@ namespace Tags {
 
             this.colors = colors;
 
-            // Could decouple and pass it as argument or delegate
-            this.colors.name = Tags.Helpers.generate_uuid ();
+            // Just for uniqueness. Runtime dependency only.
+            //this.colors.name = Tags.Common.generate_uuid ();
 
             this.colors.changed.connect (() => {
                 changed ();
@@ -130,6 +136,10 @@ namespace Tags {
         }
 
         /* METHODS */
+
+        public string get_uuid () {
+            return uuid;
+        }
 
         public bool applies_to (string? text = null) {
             if (text == null) return false;

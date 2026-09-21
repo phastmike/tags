@@ -53,16 +53,7 @@ namespace Tags {
             this.lines = model;
             selection_model = new Gtk.MultiSelection (model);
             column_view.set_model (selection_model);
-
             wrap_lines = false;
-            
-            // Text height Hack
-            /*
-            int width, height;
-            var label = new Gtk.Label ("X");
-            label.get_layout().get_pixel_size (out width, out height);
-            _wrap_height = (height * ((int) _wrap_nlines)) + 1; 
-            */
 
             // Hide header hack
             var header = column_view.get_first_child ();
@@ -174,7 +165,7 @@ namespace Tags {
             var c = widget.parent;
             if (c.css_classes.length != 0) {
                 foreach (var css_class in c.css_classes) {
-                    if (css_class.has_prefix ("tag-")) {
+                    if (css_class.has_prefix (TagStyle.LINE_PREFIX)) {
                         c.remove_css_class (css_class);
                     }
                 }
