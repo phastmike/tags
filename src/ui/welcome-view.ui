@@ -1,14 +1,14 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <interface>
   <requires lib="gtk" version="4.0"/>
-  <template class="TagsWelcomePage" parent="GtkBox">
+  <template class="TagsWelcomeView" parent="AdwBin">
     <property name="margin-top">6</property>
     <property name="margin-bottom">6</property>
     <property name="margin-start">6</property>
     <property name="margin-end">6</property>
     <!--<property name="width_request">360</property>-->
     <property name="halign">fill</property>
-    <property name="orientation">vertical</property>
+    <!--<property name="orientation">vertical</property>-->
     <property name="valign">fill</property>
     <child>
       <object class="GtkScrolledWindow">

@@ -135,14 +135,7 @@ namespace Tags {
                     array = node.get_array ();
                     array.foreach_element ((array, index_, element_node) => {
                         var tag = Json.gobject_deserialize (typeof (Tag), element_node) as Tag;
-                        //store.append (tag);
-                        
-                        // FIXME: We need to generate a new UUID for the tag.
-                        // Lacks persistence support
-                        //tag.colors.name = Tags.Common.generate_uuid ();
-                        //message ("Color UUID: %s", tag.colors.name);
                         add_tag (tag);
-                        message ("Color UUID: %s", tag.get_uuid ());
                     });
                     if (preserve_load == false) have_changed = false;
                 } else {

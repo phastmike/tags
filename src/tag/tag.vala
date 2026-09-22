@@ -116,6 +116,7 @@ namespace Tags {
 
         /* CONSTRUCTORS */
         construct {
+            // Just for uniqueness. Runtime dependency only.
             uuid = Tags.Common.generate_uuid ();
         }
 
@@ -126,9 +127,6 @@ namespace Tags {
             _is_case_sensitive = false;
 
             this.colors = colors;
-
-            // Just for uniqueness. Runtime dependency only.
-            //this.colors.name = Tags.Common.generate_uuid ();
 
             this.colors.changed.connect (() => {
                 changed ();

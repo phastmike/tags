@@ -21,27 +21,15 @@ namespace Tags {
         public unowned Gtk.Label hitcounter;
 
         public Tag tag;
-        public string style_class {get; private set;}
-
-        public double drag_x;
-        public double drag_y;
+        public double drag_x = 0.0;
+        public double drag_y = 0.0;
 
         public TagRow (Tag tag) {
-            drag_x = 0.0;
-            drag_y = 0.0;
-
             this.tag = tag;
-            // FIXME: Need to address these ui styles properly
-            style_class = TagStyle.get_style_name_for_row (tag);
-
-            set_tooltip_text (tag.description);
-
             enabled.active = tag.enabled;
-            enabled.add_css_class (style_class);
-
+            enabled.add_css_class (TagStyle.get_style_name_for_row (tag));
             title.label = tag.description;
-            title.add_css_class(style_class);
-
+            set_tooltip_text (tag.description);
             subtitle.label = tag.pattern;
 
             hitcounter.label = "%u".printf (tag.hits);
@@ -72,7 +60,7 @@ namespace Tags {
         }
 
         ~TagRow () {
-            remove_css_class (style_class);
+            remove_css_class (TagStyle.get_style_name_for_row (tag));
         }
     }
 }

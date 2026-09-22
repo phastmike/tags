@@ -1,5 +1,5 @@
 tags_sources += files(
-	'welcome-page.vala',
+	'welcome-view.vala',
 	'main-window.vala',
 	'model-mixer.vala',
 	)

@@ -185,7 +185,7 @@ namespace Tags {
             });
 
             stack = new Gtk.Stack ();
-            stack.add_named (new WelcomePage (), "welcome");
+            stack.add_named (new WelcomeView (), "welcome");
             stack.add_named (main_box, "main");
             stack.set_visible_child_name ("welcome");
 

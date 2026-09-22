@@ -38,40 +38,42 @@ namespace Tags {
 
         private void update_css () {
             // Used for Tags View
-            string css_tag_row = 
+            string css_tag_row =
 """
-.row-%s label {
+.%s label {
 font-size: 0.8333em;
 }
-.row-%s check {
+.%s check {
 color: %s;
 background-color: %s;
 }
-""".printf (tag.get_uuid (),
-                tag.get_uuid (),
-                tag.colors.fg.to_string (),
-                tag.colors.bg.to_string ()
-            );
+""".printf (get_style_name_for_row (tag),
+        get_style_name_for_row (tag),
+        tag.colors.fg.to_string (),
+        tag.colors.bg.to_string ()
+    );
+
+
 
             // Used for Line View
             string css = 
 """
-.tag-%s {
+.%s {
    background-color: %s;
    color: %s;
 }
-.tag-%s:hover {
+.%s:hover {
     opacity: 0.65;
 }
-.tag-%s:selected {
+.%s:selected {
   background-color: @theme_selected_bg_color;
   color: @theme_selected_fg_color;
 }
-""".printf (tag.get_uuid (),
+""".printf (get_style_name_for_tag (tag),
             tag.colors.bg.to_string (),
             tag.colors.fg.to_string (),
-            tag.get_uuid (),
-            tag.get_uuid ()
+            get_style_name_for_tag (tag),
+            get_style_name_for_tag (tag)
            );
             
             provider.load_from_string (css_tag_row + css);

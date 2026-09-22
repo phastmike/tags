@@ -48,8 +48,7 @@
                 <property name="valign">center</property>
                 <child>
                   <object class="GtkLabel" id="hitcounter">
-                    <property name="css-classes">heading
-</property>
+                    <property name="css-classes">heading</property>
                   </object>
                 </child>
               </object>
