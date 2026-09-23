@@ -245,7 +245,7 @@
       </item>
       <item>
         <attribute name="label" translatable="yes">Save tagged</attribute>
-        <attribute name="action">win.save_tagged</attribute>
+        <attribute name="action">win.action_save_tagged</attribute>
         <attribute name="hidden-when">action-disabled</attribute>
       </item>
     </section> 
@@ -300,7 +300,7 @@
     <section>
       <item>
         <attribute name="label" translatable="yes">Save Tagged Lines</attribute>
-        <attribute name="action">win.save_tagged</attribute>
+        <attribute name="action">win.action_save_tagged</attribute>
       </item>
       <item>
         <attribute name="label" translatable="yes">File Information</attribute>

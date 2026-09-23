@@ -522,7 +522,7 @@ msgstr "_Cancelar"
 
 #: src/window/main-window.vala:148 src/window/main-window.vala:614
 msgid "_Remove"
-msgstr "A remover"
+msgstr "_Remover"
 
 #: src/window/main-window.vala:327 src/window/main-window.vala:589
 #: src/window/main-window.vala:1012

@@ -62,7 +62,7 @@
         <child>
           <object class="AdwShortcutsItem">
             <property name="title" translatable="yes" context="shortcut window">Save Tagged Lines</property>
-            <property name="action-name">win.save_tagged</property>
+            <property name="action-name">win.action_save_tagged</property>
           </object>
         </child>
         <child>

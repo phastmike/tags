@@ -77,7 +77,7 @@ namespace Tags {
             { "action_load_tags", action_load_tags },
             { "action_import_tags", action_import_tags },
             { "action_save_tags", action_save_tags },
-            { "save_tagged", save_tagged },
+            { "action_save_tagged", action_save_tagged },
             { "action_show_fileinfo", action_show_fileinfo },
             { "hide_untagged_lines", hide_untagged_lines, null, "false", null},
             { "toggle_tags_view", toggle_tags_view, null, "false", null},
@@ -248,7 +248,7 @@ namespace Tags {
             this.add_action_entries(this.WINDOW_ACTIONS, this);
             application.set_accels_for_action("win.action_toggle_line_number", {"<primary>l"});
             application.set_accels_for_action("win.action_add_tag", {"<primary>a"});
-            application.set_accels_for_action("win.save_tagged", {"<primary>s"});
+            application.set_accels_for_action("win.action_save_tagged", {"<primary>s"});
             application.set_accels_for_action("win.action_show_fileinfo", {"<primary>i"});
             application.set_accels_for_action("win.hide_untagged_lines", {"<primary>h"});
             application.set_accels_for_action("win.toggle_tags_view", {"F9"});
@@ -690,7 +690,7 @@ namespace Tags {
             });
         }
 
-        private void save_tagged () {
+        private void action_save_tagged () {
             bool revert_hide = false;
             string? suggested_filename = null;
 
@@ -724,11 +724,11 @@ namespace Tags {
         }
 
         private void save_tagged_enable () {
-            action_set_enable ("save_tagged", true);
+            action_set_enable ("action_save_tagged", true);
         }
 
         private void save_tagged_disable () {
-            action_set_enable ("save_tagged", false);
+            action_set_enable ("action_save_tagged", false);
         }
 
         private void show_fileinfo_enable () {
