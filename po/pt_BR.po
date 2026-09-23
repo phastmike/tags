@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.phastmike.tags 2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/phastmike/tags/issues\n"
-"POT-Creation-Date: 2026-09-23 18:07+0100\n"
+"POT-Creation-Date: 2026-09-23 18:35+0100\n"
 "PO-Revision-Date: 2026-01-18 20:08-0300\n"
 "Last-Translator: john peter sa <johnppetersa@gmail.com>\n"
 "Language-Team: \n"
@@ -549,7 +549,7 @@ msgstr "Encontrei '%s' na linha %u"
 
 #: src/window/main-window.vala:432
 msgid "Add search as Tag"
-msgstr "Adicionar uma tag"
+msgstr "Adicionar pesquisa como tag"
 
 #: src/window/main-window.vala:445
 #, c-format
