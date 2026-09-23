@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <template class="TagsLinesColumnView" parent="GtkBox">
-    <!--
-    <property name="hexpand">true</property>
-    <property name="vexpand">true</property>
-    -->
+  <template class="TagsLinesColumnView" parent="AdwBin">
     <child>
       <object class="GtkScrolledWindow" id="scrolled">
         <property name="kinetic-scrolling">true</property>

@@ -51,7 +51,7 @@
         <child>
           <object class="AdwShortcutsItem">
             <property name="title" translatable="yes" context="shortcut window">Show File Information</property>
-            <property name="action-name">win.show_fileinfo</property>
+            <property name="action-name">win.action_show_fileinfo</property>
           </object>
         </child>
       </object>

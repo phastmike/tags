@@ -3,7 +3,7 @@
   <requires lib="gtk" version="4.18"/>
   <requires lib="libadwaita" version="1.8"/>
   <template class="TagsTagDialog" parent="AdwPreferencesDialog">
-    <property name="search-enabled">true</property>
+    <property name="search-enabled">false</property>
     <property name="title" translatable="yes">Tag</property>
     <child>
       <object class="AdwPreferencesPage">
@@ -29,7 +29,8 @@
             <child type="header-suffix">
               <object class="GtkButton" id="button_use_selection">
                 <property name="label" translatable="yes">Use Selection</property>
-                <property name="tooltip-text">Fill with selected line</property>
+                <property name="can_focus">false</property>
+                <property name="tooltip_text">Fill with selected line</property>
                 <property name="visible">false</property>
                 <!--
                 <child>
@@ -43,6 +44,7 @@
             </child>
             <child>
               <object class="AdwEntryRow" id="entry_tag_pattern">
+                <property name="activates_default">true</property>
                 <property name="title" translatable="yes">Pattern</property>
                 <style>
                   <class name="monospace"/>

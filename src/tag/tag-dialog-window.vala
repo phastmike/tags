@@ -81,7 +81,7 @@ namespace Tags {
                 var bg_color = button_bg_color.get_rgba ();
 
                 var color_scheme = new ColorScheme ("default", fg_color, bg_color);
-                var tag = new Tag (pattern, description, color_scheme); 
+               var tag = new Tag (pattern, description, color_scheme); 
                 // Use a builder class ?
                 tag.is_regex = row_regex.get_active ();
                 tag.is_case_sensitive = row_case.get_active ();

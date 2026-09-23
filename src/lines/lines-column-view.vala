@@ -12,7 +12,7 @@
 
 namespace Tags {
     [GtkTemplate (ui = "/io/github/phastmike/tags/ui/lines-column-view.ui")]
-    public class LinesColumnView : Gtk.Box {
+    public class LinesColumnView : Adw.Bin {
         [GtkChild]
         public unowned Gtk.ColumnView column_view;
         [GtkChild]
@@ -55,7 +55,7 @@ namespace Tags {
             column_view.set_model (selection_model);
             wrap_lines = false;
 
-            // Hide header hack
+            // Hide ColumnView header hack
             var header = column_view.get_first_child ();
             header.set_visible (false);
         }
@@ -159,9 +159,7 @@ namespace Tags {
         }
 
         private void clear_all_tag_styles (Gtk.Widget widget) {
-            if (widget == null || widget.parent == null) {
-                return;
-            }
+            if (widget == null || widget.parent == null) { return; }
             var c = widget.parent;
             if (c.css_classes.length != 0) {
                 foreach (var css_class in c.css_classes) {

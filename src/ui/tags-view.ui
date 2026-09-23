@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <template class="TagsTagsView" parent="AdwBin">
-    <!--<property name="orientation">horizontal</property>-->
     <child>
       <object class="AdwToolbarView">
         <property name="bottom_bar_style">flat</property>

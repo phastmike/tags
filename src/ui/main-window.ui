@@ -304,7 +304,7 @@
       </item>
       <item>
         <attribute name="label" translatable="yes">File Information</attribute>
-        <attribute name="action">win.show_fileinfo</attribute>
+        <attribute name="action">win.action_show_fileinfo</attribute>
       </item>
     </section>  
     <section>

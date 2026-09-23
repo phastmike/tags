@@ -78,7 +78,7 @@ namespace Tags {
             { "action_import_tags", action_import_tags },
             { "action_save_tags", action_save_tags },
             { "save_tagged", save_tagged },
-            { "show_fileinfo", action_show_fileinfo },
+            { "action_show_fileinfo", action_show_fileinfo },
             { "hide_untagged_lines", hide_untagged_lines, null, "false", null},
             { "toggle_tags_view", toggle_tags_view, null, "false", null},
             { "action_toggle_minimap", action_toggle_minimap },
@@ -249,7 +249,7 @@ namespace Tags {
             application.set_accels_for_action("win.action_toggle_line_number", {"<primary>l"});
             application.set_accels_for_action("win.action_add_tag", {"<primary>a"});
             application.set_accels_for_action("win.save_tagged", {"<primary>s"});
-            application.set_accels_for_action("win.show_fileinfo", {"<primary>i"});
+            application.set_accels_for_action("win.action_show_fileinfo", {"<primary>i"});
             application.set_accels_for_action("win.hide_untagged_lines", {"<primary>h"});
             application.set_accels_for_action("win.toggle_tags_view", {"F9"});
             application.set_accels_for_action("win.action_toggle_minimap", {"<primary>m"});
@@ -690,16 +690,6 @@ namespace Tags {
             });
         }
 
-        private void save_tagged_enable () {
-            var action = (SimpleAction) lookup_action ("save_tagged");
-            action.set_enabled (true);
-        }
-
-        private void save_tagged_disable () {
-            var action = (SimpleAction) lookup_action ("save_tagged");
-            action.set_enabled (false);
-        }
-
         private void save_tagged () {
             bool revert_hide = false;
             string? suggested_filename = null;
@@ -728,14 +718,25 @@ namespace Tags {
             });
         }
 
+        private void action_set_enable (string action_name, bool enable) requires (action_name != null) {
+            var action = (SimpleAction) lookup_action (action_name);
+            if (action != null) action.set_enabled (enable);
+        }
+
+        private void save_tagged_enable () {
+            action_set_enable ("save_tagged", true);
+        }
+
+        private void save_tagged_disable () {
+            action_set_enable ("save_tagged", false);
+        }
+
         private void show_fileinfo_enable () {
-            var action = (SimpleAction) lookup_action ("show_fileinfo");
-            action.set_enabled (true);
+            action_set_enable ("action_show_fileinfo", true);
         }
 
         private void show_fileinfo_disable () {
-            var action = (SimpleAction) lookup_action ("show_fileinfo");
-            action.set_enabled (false);
+            action_set_enable ("action_show_fileinfo", false);
         }
 
         private void action_show_fileinfo () {

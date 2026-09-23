@@ -16,7 +16,7 @@
   </object>
   <template class="TagsPreferencesDialog" parent="AdwPreferencesDialog">
     <property name="title" translatable="yes">Preferences</property>
-    <property name="search-enabled">true</property>
+    <property name="search-enabled">false</property>
     <child>
       <object class="AdwPreferencesPage">
         <property name="margin-bottom">50</property>

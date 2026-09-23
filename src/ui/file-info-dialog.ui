@@ -3,7 +3,7 @@
   <requires lib="gtk" version="4.20"/>
   <requires lib="libadwaita" version="1.7"/>
   <template class="TagsFileInfoDialog" parent="AdwPreferencesDialog">
-    <property name="search-enabled">true</property>
+    <property name="search-enabled">false</property>
     <property name="title" translatable="yes">File Information</property>
     <!--
     <property name="default-height">440</property>
