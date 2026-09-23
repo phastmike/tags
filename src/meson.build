@@ -34,12 +34,13 @@ tags_resources = gnome.compile_resources(
 executable(
   'tags',
   tags_resources,
-  tags_sources,
+  [tags_sources, win_resources],
   config_file,
   c_args : [ '-DGETTEXT_PACKAGE="io.github.phastmike.tags"' ],
   vala_args: [
   '--target-glib=2.50',
   ],
   dependencies: tags_deps,
+  win_subsystem: 'windows',
   install: true,
 )

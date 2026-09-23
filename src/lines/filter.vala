@@ -12,7 +12,9 @@
 
 namespace Tags {
     public class Filter : Gtk.Filter {
-        public bool _active = false;
+        private bool _active = false;
+        private unowned GLib.ListModel tags;
+
         public bool active {
             get { return _active; }
             set {
@@ -22,8 +24,6 @@ namespace Tags {
                 }
             }
         }
-
-        private unowned GLib.ListModel tags;
 
         public Filter (GLib.ListModel tags) {
             this.tags = tags;

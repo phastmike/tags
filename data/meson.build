@@ -40,4 +40,12 @@ if compile_schemas.found()
   )
 endif
 
+# FOR WINDOWS BUILD
+windows = import('windows')
+win_resources = []
+if host_machine.system() == 'windows'
+    win_resources = windows.compile_resources('resources.rc')
+endif
+
+
 subdir('icons')
