@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.phastmike.tags 2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/phastmike/tags/issues\n"
-"POT-Creation-Date: 2026-09-02 15:22+0100\n"
+"POT-Creation-Date: 2026-09-23 18:07+0100\n"
 "PO-Revision-Date: 2026-01-18 20:08-0300\n"
 "Last-Translator: john peter sa <johnppetersa@gmail.com>\n"
 "Language-Team: \n"
@@ -147,88 +147,93 @@ msgctxt "shortcut window"
 msgid "Next Tag Hit"
 msgstr "Próxima ocorrência da tag"
 
-#: src/ui/main-window.ui:30
+#: src/ui/main-window.ui:37 src/window/main-window.vala:520
+#: src/window/main-window.vala:1003
+msgid "Open File"
+msgstr "Abrir arquivo"
+
+#: src/ui/main-window.ui:50
 msgctxt "Open a file"
 msgid "_Open"
 msgstr "Ab_rir"
 
-#: src/ui/main-window.ui:31
+#: src/ui/main-window.ui:51
 msgctxt "Open a file - tooltip"
 msgid "Select a File"
 msgstr "Selecione um arquivo"
 
-#: src/ui/main-window.ui:115
+#: src/ui/main-window.ui:135
 msgid "Search..."
 msgstr "Procurar"
 
-#: src/ui/main-window.ui:136
+#: src/ui/main-window.ui:156
 msgid "Main Menu"
 msgstr "Menu principal"
 
-#: src/ui/main-window.ui:160 src/ui/tags-view.ui:187
+#: src/ui/main-window.ui:180 src/ui/tags-view.ui:193
 msgctxt "tooltip"
 msgid "Hide untagged"
 msgstr "Ocultar sem tags"
 
-#: src/ui/main-window.ui:168
+#: src/ui/main-window.ui:188
 msgid "Search"
 msgstr "Procurar"
 
-#: src/ui/main-window.ui:177
+#: src/ui/main-window.ui:197
 msgctxt "tooltip"
 msgid "New Tag"
 msgstr "Nova tag"
 
-#: src/ui/main-window.ui:193
+#: src/ui/main-window.ui:213
 msgctxt "tooltip"
 msgid "Tag List"
 msgstr "Lista de tags"
 
-#: src/ui/main-window.ui:223
+#: src/ui/main-window.ui:243
 msgid "New tag"
 msgstr "Nova tag"
 
-#: src/ui/main-window.ui:227
+#: src/ui/main-window.ui:247
 msgid "Save tagged"
 msgstr "Salvar marcadas"
 
-#: src/ui/main-window.ui:234 src/ui/tags-view.ui:113
+#: src/ui/main-window.ui:254 src/ui/tags-view.ui:119
 msgid "Load tags"
 msgstr "Carregar tags"
 
-#: src/ui/main-window.ui:238
+#: src/ui/main-window.ui:258
 msgid "Save tags"
 msgstr "Salvar tags"
 
-#: src/ui/main-window.ui:242
+#: src/ui/main-window.ui:262
 msgid "Remove tags"
 msgstr "Remover tags"
 
-#: src/ui/main-window.ui:261
+#: src/ui/main-window.ui:281
 msgid "Hide untagged"
 msgstr "Ocultar sem tags"
 
-#: src/ui/main-window.ui:276
+#: src/ui/main-window.ui:296
 msgid "New Window"
 msgstr "Nova janela"
 
-#: src/ui/main-window.ui:282
+#: src/ui/main-window.ui:302
 msgid "Save Tagged Lines"
 msgstr "Salvar linhas marcadas"
 
-#: src/ui/main-window.ui:286 src/ui/file-info-dialog.ui:6
+#: src/ui/main-window.ui:306 src/ui/file-info-dialog.ui:7
 msgid "File Information"
 msgstr "Informações do arquivo"
 
-#: src/ui/main-window.ui:292 src/ui/preferences-dialog.ui:18
+#: src/ui/main-window.ui:312 src/ui/preferences-dialog.ui:18
 msgid "Preferences"
 msgstr "Preferências"
 
-#: src/ui/main-window.ui:296
+#: src/ui/main-window.ui:316
 msgid "Keyboard Shortcuts"
 msgstr "Atalhos de teclado"
 
-#: src/ui/main-window.ui:301
+#: src/ui/main-window.ui:321
 msgid "About Tags"
 msgstr "Sobre o Tags"
 
@@ -261,15 +266,15 @@ msgstr "Minimapa"
 msgid "Wrap Lines"
 msgstr "Quebra de linha"
 
-#: src/ui/preferences-dialog.ui:92 src/ui/tag-dialog-window.ui:78
+#: src/ui/preferences-dialog.ui:92 src/ui/tag-dialog-window.ui:112
 msgid "Foreground Color"
 msgstr "Cor do texto"
 
-#: src/ui/preferences-dialog.ui:105 src/ui/tag-dialog-window.ui:90
+#: src/ui/preferences-dialog.ui:105 src/ui/tag-dialog-window.ui:124
 msgid "Background Color"
 msgstr "Cor de fundo"
 
-#: src/ui/preferences-dialog.ui:118 src/ui/tag-dialog-window.ui:102
+#: src/ui/preferences-dialog.ui:118 src/ui/tag-dialog-window.ui:136
 msgid "Example"
 msgstr "Exemplo"
 
@@ -309,56 +314,16 @@ msgstr "Outros"
 msgid "Lines"
 msgstr "Linhas"
 
-#: src/ui/tag-dialog-window.ui:6
+#: src/ui/tag-dialog-window.ui:7
 msgid "Tag"
 msgstr "Tag"
 
-#: src/ui/tag-dialog-window.ui:11
+#: src/ui/tag-dialog-window.ui:12
 msgid "Filter"
 msgstr "Filtro"
 
-#: src/ui/tag-dialog-window.ui:14
-msgid "Pattern"
-msgstr "Padrão"
-
-#: src/ui/tag-dialog-window.ui:22
-msgid "Description"
-msgstr "Descrição"
-
-#: src/ui/tag-dialog-window.ui:27
-msgid "Regular Expression"
-msgstr "Expressão regular"
-
-#: src/ui/tag-dialog-window.ui:32
-msgid "Case Sensitive"
-msgstr "Diferenciar maiúsculas e minúsculas"
-
-#: src/ui/tag-dialog-window.ui:38
-msgid "Add to Top"
-msgstr "Adicionar ao topo"
-
-#: src/ui/tag-dialog-window.ui:70
-msgid "Color Scheme"
-msgstr "Esquema de cores"
-
-#: src/ui/tag-dialog-window.ui:73
-msgid "Regenerate"
-msgstr "Regenerar"
-
-#: src/ui/tag-dialog-window.ui:130
-msgid "Delete"
-msgstr "Excluir"
-
-#: src/ui/tag-dialog-window.ui:141
-msgid "Edit"
-msgstr "Editar"
-
-#: src/ui/tag-dialog-window.ui:152
-msgid "Add"
-msgstr "Adicionar"
-
 #. <property name="justify">fill</property>
-#: src/ui/tag-dialog-window.ui:164
+#: src/ui/tag-dialog-window.ui:18
 msgid ""
 "Adds the tag to the top which gives precedence over the other tag filters. "
 "Once a line is tagged it disregards other possible tags. The user can "
@@ -368,122 +333,162 @@ msgstr ""
 "tags. Uma vez que uma linha é marcada, ela ignora outras possíveis tags. O "
 "usuário pode reordenar as tags arrastando e soltando a qualquer momento"
 
-#: src/ui/tags-view.ui:14
-msgid "Load"
-msgstr "Carregar tags"
+#: src/ui/tag-dialog-window.ui:31
+msgid "Use Selection"
+msgstr "Usar seleção"
 
-#: src/ui/tags-view.ui:15
-msgid "More Options"
-msgstr "Mais opções"
+#: src/ui/tag-dialog-window.ui:48
+msgid "Pattern"
+msgstr "Padrão"
 
-#: src/ui/tags-view.ui:35
+#: src/ui/tag-dialog-window.ui:56
+msgid "Description"
+msgstr "Descrição"
+
+#: src/ui/tag-dialog-window.ui:61
+msgid "Regular Expression"
+msgstr "Expressão regular"
+
+#: src/ui/tag-dialog-window.ui:66
+msgid "Case Sensitive"
+msgstr "Diferenciar maiúsculas e minúsculas"
+
+#: src/ui/tag-dialog-window.ui:72
+msgid "Add to Top"
+msgstr "Adicionar ao topo"
+
+#: src/ui/tag-dialog-window.ui:104
+msgid "Color Scheme"
+msgstr "Esquema de cores"
+
+#: src/ui/tag-dialog-window.ui:107
+msgid "Regenerate"
+msgstr "Regenerar"
+
+#: src/ui/tag-dialog-window.ui:164
+msgid "Delete"
+msgstr "Excluir"
+
+#: src/ui/tag-dialog-window.ui:175
+msgid "Edit"
+msgstr "Editar"
+
+#: src/ui/tag-dialog-window.ui:186
+msgid "Add"
+msgstr "Adicionar"
+
+#: src/ui/tags-view.ui:11
+msgid "Add a Tag"
+msgstr "Adicionar uma tag"
+
+#: src/ui/tags-view.ui:41
 msgid "View more"
 msgstr "Ver mais"
 
-#: src/ui/tags-view.ui:84
+#: src/ui/tags-view.ui:90
 msgid "There are no tags to list"
 msgstr "Não há tags para listar"
 
-#: src/ui/tags-view.ui:98
+#: src/ui/tags-view.ui:104
 msgid "Add a tag"
 msgstr "Adicionar uma tag"
 
-#: src/ui/tags-view.ui:147
+#: src/ui/tags-view.ui:153
 msgctxt "tooltip"
 msgid "Edit Tags"
 msgstr "Editar tags"
 
-#: src/ui/tags-view.ui:160
+#: src/ui/tags-view.ui:166
 msgctxt "tooltip"
 msgid "Create tag from selected line"
 msgstr "Criar tag a partir da linha selecionada"
 
-#: src/ui/tags-view.ui:168
+#: src/ui/tags-view.ui:174
 msgctxt "tooltip"
 msgid "Previous hit"
 msgstr "Ocorrência anterior"
 
-#: src/ui/tags-view.ui:176
+#: src/ui/tags-view.ui:182
 msgctxt "tooltip"
 msgid "Next hit"
 msgstr "Próxima ocorrência"
 
-#: src/ui/tags-view.ui:207
+#: src/ui/tags-view.ui:213
 msgctxt "tooltip"
 msgid "Wrap Lines"
 msgstr "Quebra de linha"
 
-#: src/ui/tags-view.ui:216
+#: src/ui/tags-view.ui:222
 msgid "Wrap lines"
 msgstr "Quebra de linha"
 
-#: src/ui/tags-view.ui:226
+#: src/ui/tags-view.ui:232
 msgctxt "tooltip"
 msgid "Remove all"
 msgstr "Remover tudo"
 
-#: src/ui/tags-view.ui:249
+#: src/ui/tags-view.ui:255
 msgid "Load Tags"
 msgstr "Carregar tags"
 
-#: src/ui/tags-view.ui:254
+#: src/ui/tags-view.ui:260
 msgid "Import Tags"
 msgstr "Importar tags"
 
-#: src/ui/tags-view.ui:259
+#: src/ui/tags-view.ui:265
 msgid "Save Tags"
 msgstr "Salvar tags"
 
-#: src/ui/tags-view.ui:265
+#: src/ui/tags-view.ui:271
 msgid "Edit Tags"
 msgstr "Editar tags"
 
-#: src/ui/tags-view.ui:271
+#: src/ui/tags-view.ui:277
 msgid "Enable all Tags"
 msgstr "Habilitar todas as tags"
 
-#: src/ui/tags-view.ui:275
+#: src/ui/tags-view.ui:281
 msgid "Disable all Tags"
 msgstr "Desabilitar todas as tags"
 
-#: src/ui/tags-view.ui:281
+#: src/ui/tags-view.ui:287
 msgid "Remove All"
 msgstr "Remover tudo"
 
-#: src/ui/tags-view.ui:297
+#: src/ui/tags-view.ui:303
 msgid "Add from selected Line"
 msgstr "Adicionar da linha selecionada"
 
-#: src/ui/welcome-page.ui:36
+#: src/ui/welcome-view.ui:35
 msgid "Welcome to Tags"
-msgstr "Bem-vindo ao Tags"
+msgstr "Bem-vindo a Tags"
 
-#: src/ui/welcome-page.ui:51
+#: src/ui/welcome-view.ui:50
 msgid "Give color to your log files"
 msgstr "Dê cor aos seus arquivos de log"
 
-#: src/ui/welcome-page.ui:76
+#: src/ui/welcome-view.ui:75
 msgid "Open a text file and start using tags"
 msgstr "Abra um arquivo de log para começar a usar tags"
 
-#: src/ui/welcome-page.ui:93
+#: src/ui/welcome-view.ui:92
 msgid "Add a tag filter"
 msgstr "Adicionar um filtro de tag"
 
-#: src/ui/welcome-page.ui:110
+#: src/ui/welcome-view.ui:109
 msgid "Show Sidebar Tag list"
 msgstr "Mostrar lista de tags na barra lateral"
 
-#: src/ui/welcome-page.ui:126
+#: src/ui/welcome-view.ui:125
 msgctxt "Hit a key in keyboard"
 msgid "Hit"
 msgstr "Pressione"
 
-#: src/ui/welcome-page.ui:137
+#: src/ui/welcome-view.ui:136
 msgid "to hide untagged lines"
 msgstr "para ocultar linhas sem tags"
 
-#: src/ui/welcome-page.ui:150
+#: src/ui/welcome-view.ui:149
 msgid "Open a file to start coloring ..."
 msgstr "Abra um arquivo para começar a colorir ..."
 
@@ -491,129 +496,120 @@ msgstr "Abra um arquivo para começar a colorir ..."
 msgid "Text files"
 msgstr "Arquivos de texto"
 
-#: src/tag/tag-dialog-window.vala:52
+#: src/tag/tag-dialog-window.vala:54
 msgid "Select the foreground color"
 msgstr "Selecione a cor do texto"
 
-#: src/tag/tag-dialog-window.vala:58
+#: src/tag/tag-dialog-window.vala:60
 msgid "Select the background color"
 msgstr "Selecione a cor de fundo"
 
-#: src/window/main-window.vala:137
+#: src/window/main-window.vala:145
 msgid "Remove Tag"
 msgstr "Remover tag"
 
-#: src/window/main-window.vala:137
+#: src/window/main-window.vala:145
 msgid "Remove tag from the list?"
 msgstr "Remover tag da lista?"
 
-#: src/window/main-window.vala:139 src/window/main-window.vala:316
-#: src/window/main-window.vala:557 src/window/main-window.vala:571
-#: src/window/main-window.vala:943 src/window/main-window.vala:971
+#: src/window/main-window.vala:147 src/window/main-window.vala:328
+#: src/window/main-window.vala:591 src/window/main-window.vala:613
+#: src/window/main-window.vala:987 src/window/main-window.vala:1015
 msgid "_Cancel"
 msgstr "_Cancelar"
 
-#: src/window/main-window.vala:140 src/window/main-window.vala:572
+#: src/window/main-window.vala:148 src/window/main-window.vala:614
 msgid "_Remove"
 msgstr "_Remover"
 
-#: src/window/main-window.vala:315 src/window/main-window.vala:555
-#: src/window/main-window.vala:968
+#: src/window/main-window.vala:327 src/window/main-window.vala:589
+#: src/window/main-window.vala:1012
 msgid "Tags changed"
 msgstr "Tags alteradas"
 
-#: src/window/main-window.vala:315 src/window/main-window.vala:555
-msgid "There are unsaved changes, discards changes?"
-msgstr "Há alterações não salvas, descartar alterações?"
+#: src/window/main-window.vala:327 src/window/main-window.vala:589
+#: src/window/main-window.vala:1013
+msgid "There are unsaved changes"
+msgstr "Há alterações não salvas"
 
-#: src/window/main-window.vala:317 src/window/main-window.vala:558
+#: src/window/main-window.vala:329 src/window/main-window.vala:592
+#: src/window/main-window.vala:1016
 msgid "_Discard"
 msgstr "_Descartar"
 
-#: src/window/main-window.vala:410
+#: src/window/main-window.vala:330 src/window/main-window.vala:593
+#: src/window/main-window.vala:1017
+msgid "_Save"
+msgstr "_Salvar"
+
+#: src/window/main-window.vala:430
 #, c-format
 msgid "Found '%s' in line %u"
 msgstr "Encontrei '%s' na linha %u"
 
-#: src/window/main-window.vala:412
+#: src/window/main-window.vala:432
 msgid "Add search as Tag"
 msgstr "Adicionar uma tag"
 
-#: src/window/main-window.vala:425
+#: src/window/main-window.vala:445
 #, c-format
 msgid "No match for '%s'"
 msgstr "Nenhuma ocorrência para '%s'"
 
-#: src/window/main-window.vala:430 src/window/main-window.vala:897
-#: src/window/main-window.vala:937
+#: src/window/main-window.vala:450 src/window/main-window.vala:941
+#: src/window/main-window.vala:981
 #, c-format
 msgid "No more matches for '%s'"
 msgstr "Não há mais ocorrências para '%s'"
 
-#: src/window/main-window.vala:451
+#: src/window/main-window.vala:471
 #, c-format
 msgid "'%s' is not a regular file ..."
 msgstr "'%s' não é um arquivo comum ..."
 
-#: src/window/main-window.vala:500 src/window/main-window.vala:959
-msgid "Open File"
-msgstr "Abrir arquivo"
-
-#: src/window/main-window.vala:500
+#: src/window/main-window.vala:520
 msgid "_Close"
 msgstr "Fe_char"
 
-#: src/window/main-window.vala:537
+#: src/window/main-window.vala:571
 msgid "No line selected to create tag"
 msgstr "Nenhuma linha selecionada para criar tag"
 
-#: src/window/main-window.vala:548
+#: src/window/main-window.vala:582
 msgid "No tags to remove"
 msgstr "Nenhuma tag para remover"
 
-#: src/window/main-window.vala:569
+#: src/window/main-window.vala:611
 msgid "Remove Tags"
 msgstr "Remover tags"
 
-#: src/window/main-window.vala:569
+#: src/window/main-window.vala:611
 msgid "Remove all tags from the list?"
 msgstr "Remover todas as tags da lista?"
 
-#: src/window/main-window.vala:628
+#: src/window/main-window.vala:671
 msgid "No tags to save"
 msgstr "Nenhuma tag para salvar"
 
-#: src/window/main-window.vala:683
+#: src/window/main-window.vala:716
 msgid "Save File"
 msgstr "Salvar arquivo"
 
-#: src/window/main-window.vala:760
+#: src/window/main-window.vala:804
 #, c-format
 msgid "%d bytes copied"
 msgstr "%d bytes copiados"
 
-#: src/window/main-window.vala:887 src/window/main-window.vala:927
+#: src/window/main-window.vala:931 src/window/main-window.vala:971
 #, c-format
 msgid "Found in line %u"
 msgstr "Encontrado na linha %u"
 
-#: src/window/main-window.vala:959
+#: src/window/main-window.vala:1003
 msgid "Could not open file..."
 msgstr "Não foi possível abrir o arquivo..."
 
-#: src/window/main-window.vala:969
-msgid ""
-"There are unsaved changes. Autoload is enabled and existing tags may be "
-"lost! Proceed?"
-msgstr ""
-" Alterações não salvaguardadas. Autoload está activo e as alteraçõs podem"
-"ser perdidas! Proceder?"
-
-#: src/window/main-window.vala:972
-msgid "_Proceed"
-msgstr "_Proceder"
-
-#: src/window/main-window.vala:991
+#: src/window/main-window.vala:1042
 msgid "No tags to edit"
 msgstr "Nenhuma tag para editar"
 
@@ -628,6 +624,22 @@ msgstr "Ícone simbólico por www.wishforge.games em freeicons.io"
 #: src/application.vala:69
 msgid "translator-credits"
 msgstr "john peter sa <johnppetersa@gmail.com>"
+
+#~ msgid "Load"
+#~ msgstr "Carregar tags"
+
+#~ msgid "More Options"
+#~ msgstr "Mais opções"
+
+#~ msgid ""
+#~ "There are unsaved changes. Autoload is enabled and existing tags may be "
+#~ "lost! Proceed?"
+#~ msgstr ""
+#~ " Alterações não salvaguardadas. Autoload está activo e as alteraçõs "
+#~ "podemser perdidas! Proceder?"
+
+#~ msgid "_Proceed"
+#~ msgstr "_Proceder"
 
 #~ msgctxt "shortcut section title"
 #~ msgid "General"

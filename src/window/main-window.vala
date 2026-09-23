@@ -532,7 +532,7 @@ namespace Tags {
                 if (bs.is_empty () == false) {
                     var line = filterer.model.get_item (bs.get_nth ((uint) bs.get_size () - 1)) as Line;
                     text = line.text;
-                    message("selected_text = %s", text);
+                    //message("selected_text = %s", text);
                     from_selection = true;
                 }
             }

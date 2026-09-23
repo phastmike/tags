@@ -1,6 +1,8 @@
+# APPDATA FILES
 #data/io.github.phastmike.tags.desktop.in
 #data/io.github.phastmike.tags.appdata.xml.in
 #data/io.github.phastmike.tags.gschema.xml
+# UI FILES
 src/shortcuts-dialog.ui
 src/ui/lines-column-view.ui
 src/ui/main-window.ui
@@ -9,7 +11,8 @@ src/ui/file-info-dialog.ui
 src/ui/tag-dialog-window.ui
 src/ui/tag-row.ui
 src/ui/tags-view.ui
-src/ui/welcome-page.ui
+src/ui/welcome-view.ui
+# VALA FILES
 src/dialogs/ui-dialogs.vala
 src/dialogs/file-info-dialog.vala
 src/preferences/preferences-dialog.vala
