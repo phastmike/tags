@@ -25,7 +25,7 @@
                     <property name="visible">false</property>
                     <property name="icon-name">sidebar-show</property>
                     <property name="tooltip-text" translatable="yes" context="tooltip">Tag List</property>
-                    <property name="action-name">win.toggle_tags_view</property>
+                    <property name="action-name">win.action_toggle_tags_view</property>
                   </object>
                 </child>
                 -->
@@ -178,7 +178,7 @@
                     <property name="visible">false</property>
                     <property name="icon_name">view-conceal-symbolic</property>
                     <property name="tooltip-text" translatable="yes" context="tooltip">Hide untagged</property>
-                    <property name="action-name">win.hide_untagged_lines</property>
+                    <property name="action-name">win.action_hide_untagged_lines</property>
                   </object>
                 </child>
                 <child type="end">
@@ -211,7 +211,7 @@
                     <property name="visible">true</property>
                     <property name="icon-name">sidebar-show</property>
                     <property name="tooltip-text" translatable="yes" context="tooltip">Tag List</property>
-                    <property name="action-name">win.toggle_tags_view</property>
+                    <property name="action-name">win.action_toggle_tags_view</property>
                   </object>
                 </child>
 
@@ -274,12 +274,12 @@
       <!--
       <item>
         <attribute name="label" translatable="yes">Hide tags list</attribute>
-        <attribute name="action">win.toggle_tags_view</attribute>
+        <attribute name="action">win.action_toggle_tags_view</attribute>
       </item>
       -->
       <item>
         <attribute name="label" translatable="yes">Hide untagged</attribute>
-        <attribute name="action">win.hide_untagged_lines</attribute>
+        <attribute name="action">win.action_hide_untagged_lines</attribute>
       </item>
       <!--
       <item>

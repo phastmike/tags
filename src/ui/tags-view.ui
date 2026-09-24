@@ -172,7 +172,7 @@
                     <property name="icon_name">pan-up-symbolic</property>
                     <property name="visible">false</property>
                     <property name="tooltip-text" translatable="yes" context="tooltip">Previous hit</property>
-                    <property name="action-name">win.prev_hit</property>
+                    <property name="action-name">win.action_prev_hit</property>
                   </object>
                 </child>
                 <child>
@@ -180,7 +180,7 @@
                     <property name="icon_name">pan-down-symbolic</property>
                     <property name="visible">false</property>
                     <property name="tooltip-text" translatable="yes" context="tooltip">Next hit</property>
-                    <property name="action-name">win.next_hit</property>
+                    <property name="action-name">win.action_next_hit</property>
                   </object>
                 </child>
                 <child>
@@ -191,7 +191,7 @@
                     </style>
                     <property name="icon_name">view-conceal-symbolic</property>
                     <property name="tooltip-text" translatable="yes" context="tooltip">Hide untagged</property>
-                    <property name="action-name">win.hide_untagged_lines</property>
+                    <property name="action-name">win.action_hide_untagged_lines</property>
                   </object>
                 </child>
               </object>
@@ -275,11 +275,11 @@
     <section>
       <item>
         <attribute name="label" translatable="yes">Enable all Tags</attribute>
-        <attribute name="action">win.enable_all_tags</attribute>
+        <attribute name="action">win.action_enable_all_tags</attribute>
       </item>
       <item>
         <attribute name="label" translatable="yes">Disable all Tags</attribute>
-        <attribute name="action">win.disable_all_tags</attribute>
+        <attribute name="action">win.action_disable_all_tags</attribute>
       </item>
     </section>
     <section>

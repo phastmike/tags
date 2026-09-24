@@ -79,34 +79,34 @@ namespace Tags {
             { "action_save_tags", action_save_tags },
             { "action_save_tagged", action_save_tagged },
             { "action_show_fileinfo", action_show_fileinfo },
-            { "hide_untagged_lines", hide_untagged_lines, null, "false", null},
-            { "toggle_tags_view", toggle_tags_view, null, "false", null},
+            { "action_hide_untagged_lines", action_hide_untagged_lines, null, "false", null},
+            { "action_toggle_tags_view", action_toggle_tags_view, null, "false", null},
             { "action_toggle_minimap", action_toggle_minimap },
-            { "copy", copy },
-            { "toggle_tag_1", toggle_tag_1 },
-            { "toggle_tag_2", toggle_tag_2 },
-            { "toggle_tag_3", toggle_tag_3 },
-            { "toggle_tag_4", toggle_tag_4 },
-            { "toggle_tag_5", toggle_tag_5 },
-            { "toggle_tag_6", toggle_tag_6 },
-            { "toggle_tag_7", toggle_tag_7 },
-            { "toggle_tag_8", toggle_tag_8 },
-            { "toggle_tag_9", toggle_tag_9 },
-            { "toggle_tag_0", toggle_tag_0 },
-            { "only_tag_1", only_tag_1 },
-            { "only_tag_2", only_tag_2 },
-            { "only_tag_3", only_tag_3 },
-            { "only_tag_4", only_tag_4 },
-            { "only_tag_5", only_tag_5 },
-            { "only_tag_6", only_tag_6 },
-            { "only_tag_7", only_tag_7 },
-            { "only_tag_8", only_tag_8 },
-            { "only_tag_9", only_tag_9 },
-            { "only_tag_0", only_tag_0 },
-            { "enable_all_tags", enable_all_tags },
-            { "disable_all_tags", disable_all_tags },
-            { "prev_hit", prev_hit },
-            { "next_hit", next_hit },
+            { "action_copy", action_copy },
+            { "action_toggle_tag_1", action_toggle_tag_1 },
+            { "action_toggle_tag_2", action_toggle_tag_2 },
+            { "action_toggle_tag_3", action_toggle_tag_3 },
+            { "action_toggle_tag_4", action_toggle_tag_4 },
+            { "action_toggle_tag_5", action_toggle_tag_5 },
+            { "action_toggle_tag_6", action_toggle_tag_6 },
+            { "action_toggle_tag_7", action_toggle_tag_7 },
+            { "action_toggle_tag_8", action_toggle_tag_8 },
+            { "action_toggle_tag_9", action_toggle_tag_9 },
+            { "action_toggle_tag_0", action_toggle_tag_0 },
+            { "action_only_tag_1", action_only_tag_1 },
+            { "action_only_tag_2", action_only_tag_2 },
+            { "action_only_tag_3", action_only_tag_3 },
+            { "action_only_tag_4", action_only_tag_4 },
+            { "action_only_tag_5", action_only_tag_5 },
+            { "action_only_tag_6", action_only_tag_6 },
+            { "action_only_tag_7", action_only_tag_7 },
+            { "action_only_tag_8", action_only_tag_8 },
+            { "action_only_tag_9", action_only_tag_9 },
+            { "action_only_tag_0", action_only_tag_0 },
+            { "action_enable_all_tags", action_enable_all_tags },
+            { "action_disable_all_tags", action_disable_all_tags },
+            { "action_prev_hit", action_prev_hit },
+            { "action_next_hit", action_next_hit },
             { "action_toggle_edit_mode", action_toggle_edit_mode, null, "false", null},
             { "action_toggle_line_wrap", action_toggle_line_wrap, null, "false", null},
             { "action_wrap_nlines_inc", action_wrap_nlines_inc },
@@ -125,16 +125,11 @@ namespace Tags {
             tags = new TagStore (style_store);
             tags_view = new TagsView (tags.model);
 
-            var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
-            box.append (tags_view);
-
             tags_view.listbox.row_activated.connect ( (r) => {
-                if (!tags_edit_mode) {
-                    return;
-                }
-                var row = r as TagRow;
-                var tag = row.tag;
-                var tag_dialog =  new TagDialog.for_editing (application, tag);
+                if (!tags_edit_mode) { return; }
+                var tag = ((TagRow) r).tag;
+                var tag_dialog = new TagDialog.for_editing (application, tag);
+
                 tag_dialog.edited.connect ((t) => {
                     count_tag_hits ();
                     filter.update ();
@@ -190,7 +185,7 @@ namespace Tags {
             stack.set_visible_child_name ("welcome");
 
             oversplit.max_sidebar_width = 280;
-            oversplit.sidebar = box;
+            oversplit.sidebar = tags_view;
             oversplit.show_sidebar = false;
 
             oversplit.bind_property ("show-sidebar", title_nosidebar, "visible",
@@ -250,34 +245,34 @@ namespace Tags {
             application.set_accels_for_action("win.action_add_tag", {"<primary>a"});
             application.set_accels_for_action("win.action_save_tagged", {"<primary>s"});
             application.set_accels_for_action("win.action_show_fileinfo", {"<primary>i"});
-            application.set_accels_for_action("win.hide_untagged_lines", {"<primary>h"});
-            application.set_accels_for_action("win.toggle_tags_view", {"F9"});
+            application.set_accels_for_action("win.action_hide_untagged_lines", {"<primary>h"});
+            application.set_accels_for_action("win.action_toggle_tags_view", {"F9"});
             application.set_accels_for_action("win.action_toggle_minimap", {"<primary>m"});
-            application.set_accels_for_action("win.copy", {"<primary>c"});
-            application.set_accels_for_action("win.toggle_tag_1", {"<alt>1"});
-            application.set_accels_for_action("win.toggle_tag_2", {"<alt>2"});
-            application.set_accels_for_action("win.toggle_tag_3", {"<alt>3"});
-            application.set_accels_for_action("win.toggle_tag_4", {"<alt>4"});
-            application.set_accels_for_action("win.toggle_tag_5", {"<alt>5"});
-            application.set_accels_for_action("win.toggle_tag_6", {"<alt>6"});
-            application.set_accels_for_action("win.toggle_tag_7", {"<alt>7"});
-            application.set_accels_for_action("win.toggle_tag_8", {"<alt>8"});
-            application.set_accels_for_action("win.toggle_tag_9", {"<alt>9"});
-            application.set_accels_for_action("win.toggle_tag_0", {"<alt>0"});
-            application.set_accels_for_action("win.only_tag_1", {"<primary>1"});
-            application.set_accels_for_action("win.only_tag_2", {"<primary>2"});
-            application.set_accels_for_action("win.only_tag_3", {"<primary>3"});
-            application.set_accels_for_action("win.only_tag_4", {"<primary>4"});
-            application.set_accels_for_action("win.only_tag_5", {"<primary>5"});
-            application.set_accels_for_action("win.only_tag_6", {"<primary>6"});
-            application.set_accels_for_action("win.only_tag_7", {"<primary>7"});
-            application.set_accels_for_action("win.only_tag_8", {"<primary>8"});
-            application.set_accels_for_action("win.only_tag_9", {"<primary>9"});
-            application.set_accels_for_action("win.only_tag_0", {"<primary>0"});
-            application.set_accels_for_action("win.enable_all_tags", {"<alt>e"});
-            application.set_accels_for_action("win.disable_all_tags", {"<alt>d"});
-            application.set_accels_for_action("win.prev_hit", {"F2"});
-            application.set_accels_for_action("win.next_hit", {"F3"});
+            application.set_accels_for_action("win.action_copy", {"<primary>c"});
+            application.set_accels_for_action("win.action_toggle_tag_1", {"<alt>1"});
+            application.set_accels_for_action("win.action_toggle_tag_2", {"<alt>2"});
+            application.set_accels_for_action("win.action_toggle_tag_3", {"<alt>3"});
+            application.set_accels_for_action("win.action_toggle_tag_4", {"<alt>4"});
+            application.set_accels_for_action("win.action_toggle_tag_5", {"<alt>5"});
+            application.set_accels_for_action("win.action_toggle_tag_6", {"<alt>6"});
+            application.set_accels_for_action("win.action_toggle_tag_7", {"<alt>7"});
+            application.set_accels_for_action("win.action_toggle_tag_8", {"<alt>8"});
+            application.set_accels_for_action("win.action_toggle_tag_9", {"<alt>9"});
+            application.set_accels_for_action("win.action_toggle_tag_0", {"<alt>0"});
+            application.set_accels_for_action("win.action_only_tag_1", {"<primary>1"});
+            application.set_accels_for_action("win.action_only_tag_2", {"<primary>2"});
+            application.set_accels_for_action("win.action_only_tag_3", {"<primary>3"});
+            application.set_accels_for_action("win.action_only_tag_4", {"<primary>4"});
+            application.set_accels_for_action("win.action_only_tag_5", {"<primary>5"});
+            application.set_accels_for_action("win.action_only_tag_6", {"<primary>6"});
+            application.set_accels_for_action("win.action_only_tag_7", {"<primary>7"});
+            application.set_accels_for_action("win.action_only_tag_8", {"<primary>8"});
+            application.set_accels_for_action("win.action_only_tag_9", {"<primary>9"});
+            application.set_accels_for_action("win.action_only_tag_0", {"<primary>0"});
+            application.set_accels_for_action("win.action_enable_all_tags", {"<alt>e"});
+            application.set_accels_for_action("win.action_disable_all_tags", {"<alt>d"});
+            application.set_accels_for_action("win.action_prev_hit", {"F2"});
+            application.set_accels_for_action("win.action_next_hit", {"F3"});
             application.set_accels_for_action("win.action_toggle_edit_mode", {"<primary>e"});
             application.set_accels_for_action("win.action_toggle_line_wrap", {"<primary>w"});
             application.set_accels_for_action("win.action_wrap_nlines_inc", {"<primary>plus"});
@@ -703,12 +698,12 @@ namespace Tags {
                     var file = UIDialogs.file_save_lines.end (res);
                     if (file != null) {
                         if (filter.active == false) {
-                            hide_untagged_lines ();
+                            action_hide_untagged_lines ();
                             revert_hide = true;
                         }
 
                         filterer.to_file.begin (file, (obj, res) => {
-                            if (revert_hide == true) hide_untagged_lines ();
+                            if (revert_hide == true) action_hide_untagged_lines ();
                         });
                     }
                 } catch (Error e) {
@@ -767,12 +762,12 @@ namespace Tags {
             }
         }
 
-        private void hide_untagged_lines () {
+        private void action_hide_untagged_lines () {
             if (file_opened == null) { return; }
             filter.active = !filter.active;
 
             // Should bind this property !
-            var action = this.lookup_action ("hide_untagged_lines");
+            var action = this.lookup_action ("action_hide_untagged_lines");
             action.change_state (new Variant.boolean ((bool) filter.active));
 
             Timeout.add (500, () => {
@@ -790,13 +785,13 @@ namespace Tags {
             map_view.reveal = !map_view.reveal;
         }
 
-        private void toggle_tags_view () {
+        private void action_toggle_tags_view () {
             oversplit.show_sidebar = !oversplit.show_sidebar;
-            var action = this.lookup_action ("toggle_tags_view");
+            var action = this.lookup_action ("action_toggle_tags_view");
             action.change_state (new Variant.boolean (oversplit.show_sidebar));
         }
         
-        private void copy () {
+        private void action_copy () {
             var text = lines_colview.get_selected_lines_as_string (); 
             if (text.length > 0) {
                 get_clipboard ().set_text (text);
@@ -807,105 +802,105 @@ namespace Tags {
             }
         }
 
-        private void toggle_tag_1 () {
+        private void action_toggle_tag_1 () {
             tags.toggle_tag (0);
         }
 
-        private void toggle_tag_2 () {
+        private void action_toggle_tag_2 () {
             tags.toggle_tag (1);
         }
 
-        private void toggle_tag_3 () {
+        private void action_toggle_tag_3 () {
             tags.toggle_tag (2);
         }
 
-        private void toggle_tag_4 () {
+        private void action_toggle_tag_4 () {
             tags.toggle_tag (3);
         }
 
-        private void toggle_tag_5 () {
+        private void action_toggle_tag_5 () {
             tags.toggle_tag (4);
         }
 
-        private void toggle_tag_6 () {
+        private void action_toggle_tag_6 () {
             tags.toggle_tag (5);
         }
 
-        private void toggle_tag_7 () {
+        private void action_toggle_tag_7 () {
             tags.toggle_tag (6);
         }
 
-        private void toggle_tag_8 () {
+        private void action_toggle_tag_8 () {
             tags.toggle_tag (7);
         }
 
-        private void toggle_tag_9 () {
+        private void action_toggle_tag_9 () {
             tags.toggle_tag (8);
         }
 
-        private void toggle_tag_0 () {
+        private void action_toggle_tag_0 () {
             tags.toggle_tag (9);
         }
 
-        private void only_tag_1 () {
-            disable_all_tags ();
-            toggle_tag_1 ();
+        private void action_only_tag_1 () {
+            action_disable_all_tags ();
+            action_toggle_tag_1 ();
         }
 
-        private void only_tag_2 () {
-            disable_all_tags ();
-            toggle_tag_2 ();
+        private void action_only_tag_2 () {
+            action_disable_all_tags ();
+            action_toggle_tag_2 ();
         }
 
-        private void only_tag_3 () {
-            disable_all_tags ();
-            toggle_tag_3 ();
+        private void action_only_tag_3 () {
+            action_disable_all_tags ();
+            action_toggle_tag_3 ();
         }
 
-        private void only_tag_4 () {
-            disable_all_tags ();
-            toggle_tag_4 ();
+        private void action_only_tag_4 () {
+            action_disable_all_tags ();
+            action_toggle_tag_4 ();
         }
 
-        private void only_tag_5 () {
-            disable_all_tags ();
-            toggle_tag_5 ();
+        private void action_only_tag_5 () {
+            action_disable_all_tags ();
+            action_toggle_tag_5 ();
         }
 
-        private void only_tag_6 () {
-            disable_all_tags ();
-            toggle_tag_6 ();
+        private void action_only_tag_6 () {
+            action_disable_all_tags ();
+            action_toggle_tag_6 ();
         }
 
-        private void only_tag_7 () {
-            disable_all_tags ();
-            toggle_tag_7 ();
+        private void action_only_tag_7 () {
+            action_disable_all_tags ();
+            action_toggle_tag_7 ();
         }
 
-        private void only_tag_8 () {
-            disable_all_tags ();
-            toggle_tag_8 ();
+        private void action_only_tag_8 () {
+            action_disable_all_tags ();
+            action_toggle_tag_8 ();
         }
 
-        private void only_tag_9 () {
-            disable_all_tags ();
-            toggle_tag_9 ();
+        private void action_only_tag_9 () {
+            action_disable_all_tags ();
+            action_toggle_tag_9 ();
         }
 
-        private void only_tag_0 () {
-            disable_all_tags ();
-            toggle_tag_0 ();
+        private void action_only_tag_0 () {
+            action_disable_all_tags ();
+            action_toggle_tag_0 ();
         }
 
-        private void enable_all_tags () {
+        private void action_enable_all_tags () {
             tags.set_enable_all (true);
         }
 
-        private void disable_all_tags () {
+        private void action_disable_all_tags () {
             tags.set_enable_all (false);
         }
 
-        private void prev_hit () {
+        private void action_prev_hit () {
             uint index;
 
             var row = (TagRow) tags_view.listbox.get_selected_row ();
@@ -944,7 +939,7 @@ namespace Tags {
             overlay.add_toast (toast_main);
         }
 
-        private void next_hit () {
+        private void action_next_hit () {
             uint index;
 
             var row = (TagRow) tags_view.listbox.get_selected_row ();
