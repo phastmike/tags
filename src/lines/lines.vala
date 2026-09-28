@@ -20,7 +20,7 @@ namespace Tags {
             return result;
         }
 
-        public signal void loaded_from_file ();
+        //public signal void loaded_from_file ();
 
         public Lines () {
             model = new GLib.ListStore (typeof(Line));
@@ -41,14 +41,19 @@ namespace Tags {
                     while ((line = yield dis.read_line_async ()) != null) {
                         // NOTE: Bug in string.replace method when replacing \r (0x0d)
                         // WORKAROUND - Iterate and replace... (as below)
-                        //line = line.replace ("\r", " "); <-- This does not work as expected
+                        //line = line.replace ("\r", " ");// <-- This does not work as expected
                         for (int i = 0; i < line.length; i++) {
-                            if (line.data[i] == '\r') line.data[i] = 0x20;
+                            if (line.data[i] == '\r') line.data[i] = ' ';
                         }
                         // Use make_valid to clear unprintable characters and ensure valid UTF-8 encoding
                         temp_store.append (new Line (++count, line.make_valid ()));
                     }
 
+                    // FIXME: Intermediate array to hold lines before splicing into the model
+                    // Could eventually be replaced by model/store switching but
+                    // dependant objects would need to be updated to use the new model/store.
+                    // So we will keep the model, removing all items and splicing in the new ones but
+                    // Can be improved by using a model/store switch instead of splicing into the existing model.
                     uint size = temp_store.get_n_items();
                     Line[] array = new Line[size];
                     for (int i = 0; i < size; i++) {

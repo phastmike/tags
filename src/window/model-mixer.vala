@@ -52,7 +52,7 @@ namespace Tags {
                     queued_update = true;
                     return false;
                 }
-                //update_mixing_async.begin ();
+
                 update_mixing_async.begin ( (s, p) => {
                     update_mixing_async.end (p);
                     mix_updated ();
@@ -90,7 +90,8 @@ namespace Tags {
             line.tag = null;
             for (uint j = 0; j < tags.ntags; j++) {
                 var tag = tags.model.get_item (j) as Tag;
-                if (tag.applies_to (line.text) && tag.enabled) {
+                // Tag should be applied even with enabled = false
+                if (tag.applies_to (line.text)) { // && tag.enabled) {
                     line.tag = tag;
                     break;
                 }

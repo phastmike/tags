@@ -52,7 +52,6 @@ namespace Tags {
         private bool _is_regex = false;
         private bool _is_case_sensitive = false;
 
-        //public string uuid {construct; get;}
         public ColorScheme colors { get; set; }
         public uint hits { get; set; default = 0; } // Should decouple the counter
 

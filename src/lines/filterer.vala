@@ -12,8 +12,8 @@
 
 namespace Tags {
     public class Filterer : Object {
-        public unowned Lines lines;
-        public unowned Tags.Filter filter;
+        public Lines lines;
+        public Tags.Filter filter;
         public Gtk.FilterListModel model;
 
         public Filterer (Lines lines, Tags.Filter filter) {
