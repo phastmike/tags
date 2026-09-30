@@ -20,6 +20,8 @@ namespace Tags {
         [GtkChild]
         private unowned Adw.ActionRow row_lines_n;
         [GtkChild]
+        private unowned Gtk.Button button_copy;
+        [GtkChild]
         private unowned Gtk.Button button_browse;
 
         enum MULTIPLIERS {
@@ -47,19 +49,19 @@ namespace Tags {
         }
 
         public FileInfoDialog (Gtk.Application app, GLib.File file, Lines lines) {
-            //Object(application: app, transient_for: app.active_window, modal: true);
-
             row_filename.set_subtitle (file.get_basename ());
+            row_filename.set_tooltip_text (file.get_basename ());
             row_folder.set_subtitle (file.get_parent ().get_path ());
+            row_folder.set_tooltip_text (file.get_parent ().get_path ());
             var info = file.query_info ("standard::size", GLib.FileQueryInfoFlags.NONE, null);
 
             uint n = 0;
             double size = (double) info.get_size ();
-            MULTIPLIERS mult= MULTIPLIERS.B;
+            MULTIPLIERS mult = MULTIPLIERS.B;
 
             /*
-            Go figure,someone thinks that applying
-            base 10 rules to a base 2 number makes sense.
+            Go figure,someone thinks that mixing
+            base 10 with base 2 number makes sense.
             Should use 1024 as divider but for consistency sake...
             */
 
@@ -87,6 +89,14 @@ namespace Tags {
                 } catch (Error e) {
                     warning ("Failed to open folder: %s", e.message);
                 }
+            });
+
+            button_copy.clicked.connect (() => {
+                var text = file.get_path ();
+                get_clipboard ().set_text (text);
+                var toast = new Adw.Toast (_("%d bytes copied".printf (text.length)));
+                toast.set_timeout (2);
+                add_toast (toast);
             });
             
         }

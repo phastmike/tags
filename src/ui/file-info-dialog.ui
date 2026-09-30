@@ -5,20 +5,16 @@
   <template class="TagsFileInfoDialog" parent="AdwPreferencesDialog">
     <property name="search-enabled">false</property>
     <property name="title" translatable="yes">File Information</property>
-    <!--
-    <property name="default-height">440</property>
-    <property name="default-width">600</property>
-    -->
     <child>
       <object class="AdwPreferencesPage">
         <child>
           <object class="AdwPreferencesGroup">
             <property name="header-suffix">
-              <object class="GtkButton" id="button_browse">
+              <object class="GtkButton" id="button_browse2">
+                <property name="visible">false</property>
                 <property name="tooltip-text" translatable="yes">Browse folder</property>
                 <property name="child">
                   <object class="AdwButtonContent">
-                    <property name="can-focus">false</property>
                     <property name="icon-name">system-file-manager-symbolic</property>
                     <property name="label" translatable="yes">Browse</property>
                   </object>
@@ -35,13 +31,33 @@
             </child>
             <child>
               <object class="AdwActionRow" id="row_folder">
-                <property name="css-classes">property</property>
                 <property name="subtitle">---</property>
+                <property name="subtitle_lines">1</property>
+                <property name="css-classes">property</property>
                 <property name="title" translatable="yes">Folder</property>
+                <child type="suffix">
+                  <object class="GtkButton" id="button_copy">
+                    <property name="icon-name">edit-copy-symbolic</property>
+                    <property name="valign">center</property>
+                    <property name="halign">center</property>
+                    <property name="css-classes">flat</property>
+                    <property name="tooltip-text" translatable="yes">Copy path</property>
+                  </object>
+                </child>
+                <child type="suffix">
+                  <object class="GtkButton" id="button_browse">
+                    <property name="icon-name">folder-open-symbolic</property>
+                    <property name="valign">center</property>
+                    <property name="halign">center</property>
+                    <property name="css-classes">flat</property>
+                    <property name="tooltip-text" translatable="yes">Browse folder</property>
+                  </object>
+                </child>
               </object>
             </child>
             <child>
               <object class="AdwActionRow" id="row_size">
+                <property name="focusable">false</property>
                 <property name="css-classes">property</property>
                 <property name="subtitle">---</property>
                 <property name="title" translatable="yes">Size</property>
@@ -54,6 +70,7 @@
             <property name="title" translatable="yes">Other</property>
             <child>
               <object class="AdwActionRow" id="row_lines_n">
+                <property name="focusable">false</property>
                 <property name="css-classes">property</property>
                 <property name="subtitle">---</property>
                 <property name="title" translatable="yes">Lines</property>

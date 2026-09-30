@@ -360,7 +360,7 @@ namespace Tags {
 
         private void setup_minimap (Gtk.Adjustment adj) {
             minimap = new Minimap (adj);
-            minimap.set_line_color_bg_callback (delegate_minimap_bgcolor_getter);
+            minimap.set_line_color_callback (delegate_minimap_bgcolor_getter);
             map_view = new Tags.MinimapContainer (minimap);
         }
 

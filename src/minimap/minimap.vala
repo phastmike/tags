@@ -68,8 +68,8 @@ public class Minimap : Adw.Bin {
     }
 
     // Delegates
-    public delegate Gdk.RGBA? GetLineColorBgFunc (string? text);
-    public GetLineColorBgFunc? get_default_text_color_bg_callback = null;
+    public delegate Gdk.RGBA? GetLineColorFunc (string? text);
+    public GetLineColorFunc? get_line_color_callback = null;
 
     // Constructor
     public Minimap (Gtk.Adjustment? adj = null) {
@@ -221,8 +221,8 @@ public class Minimap : Adw.Bin {
                 continue;
             }
 
-            if (get_default_text_color_bg_callback != null) {
-                bg_color = get_default_text_color_bg_callback (lines[i]) ?? text_color;
+            if (get_line_color_callback != null) {
+                bg_color = get_line_color_callback (lines[i]) ?? text_color;
             } else {
                 bg_color = text_color;
             }
@@ -399,8 +399,8 @@ public class Minimap : Adw.Bin {
         return true;
     }
 
-    public void set_line_color_bg_callback (GetLineColorBgFunc? callback) {
-        get_default_text_color_bg_callback = (GetLineColorBgFunc?) callback;
+    public void set_line_color_callback (GetLineColorFunc? callback) {
+        get_line_color_callback = (GetLineColorFunc?) callback;
     }
 
     private void draw (Gtk.DrawingArea da, Cairo.Context cr, int width, int height) {
