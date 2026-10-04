@@ -1,40 +1,49 @@
 /* -*- Mode: Vala; indent-tabs-mode: nil; c-basic-offset: 4; tab-width: 4 -*- */
 /* vim: set tabstop=4 softtabstop=4 shiftwidth=4 expandtab :                  */
 /*
- * tag-style-store.vala
+ * tag-context.vala
  *
- * Class containing style providers for tags
+ * Tag context (view model) for tag 
  *
  * José Miguel Fonte
  */
 
 namespace Tags {
 
-    public class TagStyle : Object {
-        public unowned Tag tag;
-        public Gtk.CssProvider provider;
+    public class TagContext : Object {
+        public Tag              tag             { get; private set; }
+        public uint             hits            { get; set; default = 0; }
+        public Gtk.CssProvider  css_provider    { get; private set; }
 
-        public const string ROW_PREFIX = "row-";
-        public const string LINE_PREFIX = "tag-";
+        private const string STYLE_PREFIX_ROW  = "row-";
+        public  const string STYLE_PREFIX_LINE = "tag-";
 
         public static string get_style_name_for_row (Tag tag) requires (tag != null) {
-            return "%s%s".printf (ROW_PREFIX, tag.get_uuid ());
+            return "%s%s".printf (STYLE_PREFIX_ROW, tag.get_uuid ());
         }
 
         public static string get_style_name_for_tag (Tag tag) requires (tag != null) {
-            return "%s%s".printf (LINE_PREFIX, tag.get_uuid ());
+            return "%s%s".printf (STYLE_PREFIX_LINE, tag.get_uuid ());
         }
 
-        public TagStyle (Tag tag) {
+
+        /* CONSTRUCTOR */
+
+        public TagContext (Tag tag) requires (tag != null) {
             this.tag = tag;
-            this.tag.colors.changed.connect (update_css);
-            provider = new Gtk.CssProvider ();
+            css_provider = new Gtk.CssProvider ();
+
             update_css ();
+            this.tag.colors.changed.connect (update_css);
         }
 
-        ~TagStyle () {
+        /* DESTRUCTOR */
+
+        ~TagContext () {
             this.tag.colors.changed.disconnect (update_css);
         }
+
+        /* METHODS */
 
         private void update_css () {
             string css_row =
@@ -74,7 +83,7 @@ namespace Tags {
                             get_style_name_for_tag (tag)
                            );
             
-            provider.load_from_string (css_row + css_line);
+            css_provider.load_from_string (css_row + css_line);
         }
     }
 }

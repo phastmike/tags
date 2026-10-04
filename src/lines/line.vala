@@ -21,8 +21,8 @@ namespace Tags {
                 if (_tag != value) {
                     _tag = value;
                     if (value != null) {
-                        // FIXME: Her too
-                        this.actual_style = TagStyle.get_style_name_for_tag (tag);
+                        // FIXME: Here too
+                        this.actual_style = TagContext.get_style_name_for_tag (tag);
                     } else {
                         this.actual_style = null;
                     }

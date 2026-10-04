@@ -17,8 +17,6 @@ namespace Tags {
         private unowned Gtk.Switch switch_tags_autoload;
         [GtkChild]
         private unowned Adw.SwitchRow row_ln_visible;
-        //[GtkChild]
-        //private unowned Gtk.Label label_sample_example;
         [GtkChild]
         private unowned Adw.SwitchRow row_minimap_visible;
         [GtkChild]
@@ -26,8 +24,8 @@ namespace Tags {
 
         private const string css_class = "color_scheme_example";
 
-        public PreferencesDialog () {
-            var preferences = Preferences.instance ();
+        public PreferencesDialog (Preferences instance) {
+            var preferences = instance;
 
             row_autoload_tags.activated.connect (() => {
                 switch_tags_autoload.set_active(!switch_tags_autoload.get_active ());

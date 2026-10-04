@@ -10,7 +10,7 @@
  */
 
 namespace Tags {
-    [GtkTemplate (ui = "/io/github/phastmike/tags/ui/tag-dialog-window.ui")]
+    [GtkTemplate (ui = "/io/github/phastmike/tags/ui/tag-dialog.ui")]
     public class TagDialog : Adw.PreferencesDialog {
         [GtkChild]
         private unowned Adw.ButtonRow row_btn_add_tag;
@@ -41,6 +41,7 @@ namespace Tags {
         [GtkChild]
         private unowned Gtk.Button button_use_selection;
 
+        private Gtk.CssProvider provider;
         private const string css_class = "color_scheme_example";
 
         public signal void added (Tag tag, bool add_to_top);
@@ -70,10 +71,10 @@ namespace Tags {
         }
 
         public TagDialog (Gtk.Application app, string? text = null, bool from_selection = false) {
-
             if (from_selection == true) button_use_selection.set_visible (true);
 
             row_btn_add_tag.set_visible (true);
+
             row_btn_add_tag.activated.connect (() => {
                 var pattern = entry_tag_pattern.get_text ();
                 var description = entry_tag_name.get_text ();
@@ -81,7 +82,8 @@ namespace Tags {
                 var bg_color = button_bg_color.get_rgba ();
 
                 var color_scheme = new ColorScheme ("default", fg_color, bg_color);
-               var tag = new Tag (pattern, description, color_scheme); 
+                var tag = new Tag (pattern, description, color_scheme); 
+
                 // Use a builder class ?
                 tag.is_regex = row_regex.get_active ();
                 tag.is_case_sensitive = row_case.get_active ();
@@ -113,7 +115,6 @@ namespace Tags {
 
             row_btn_edit_tag.set_visible (true);
             row_btn_delete_tag.set_visible (true);
-
             row_atop.set_visible (false);
 
             if (tag.pattern != null) entry_tag_pattern.set_text (tag.pattern); 
@@ -144,6 +145,12 @@ namespace Tags {
             row_case.set_active(tag.is_case_sensitive);
         }
 
+        ~TagDialog () {
+            Gtk.StyleContext.remove_provider_for_display (Gdk.Display.get_default (), provider);
+            //button_fg_color.notify["rgba"].disconnect (set_label_example_colors);
+            //button_bg_color.notify["rgba"].disconnect (set_label_example_colors);
+        }
+
         private void set_label_example_colors () {
             var fg = button_fg_color.get_rgba ();
             var bg = button_bg_color.get_rgba ();
@@ -163,7 +170,7 @@ namespace Tags {
                 }
             """.printf (TagDialog.css_class, bg_web, fg_web);
 
-            var provider = new Gtk.CssProvider ();
+            //var provider = new Gtk.CssProvider ();
             provider.load_from_string (lstyle);
             label_sample_example.add_css_class (TagDialog.css_class);
             label_sample_example.add_css_class ("frame");

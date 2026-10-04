@@ -33,7 +33,8 @@ namespace Tags {
                 update_mixing ();
                 if (added > 0) {
                     for (uint i = position; i < position + added; i++) {
-                        var tag = tags.model.get_item (i) as Tag;
+                        var ctx = tags.model.get_item (i) as TagContext;
+                        var tag = ctx.tag;
                         tag.changed.connect (() => {
                             update_mixing ();
                             if (filterer != null) {
@@ -89,9 +90,11 @@ namespace Tags {
         public void update_mixing_for_line (Line line) {
             line.tag = null;
             for (uint j = 0; j < tags.ntags; j++) {
-                var tag = tags.model.get_item (j) as Tag;
+                var ctx = tags.model.get_item (j) as TagContext;
+                var tag = ctx.tag;
                 // Tag should be applied even with enabled = false
-                if (tag.applies_to (line.text)) { // && tag.enabled) {
+                //if (tag.applies_to (line.text)) { // && tag.enabled) {
+                if (tag.applies_to (line.text) && tag.enabled) {
                     line.tag = tag;
                     break;
                 }
@@ -104,7 +107,8 @@ namespace Tags {
                 var line = lines_model.get_item (i) as Line;
                 line.tag = null;
                 for (uint j = 0; j < tags.ntags; j++) {
-                    var tag = tags.model.get_item (j) as Tag;
+                    var ctx = tags.model.get_item (j) as TagContext;
+                    var tag = ctx.tag;
                     if (tag.applies_to (line.text) && tag.enabled) {
                         line.tag = tag;
                         break;

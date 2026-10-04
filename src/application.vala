@@ -75,7 +75,7 @@ namespace Tags {
         }
 
         private void on_preferences_action () {
-            new PreferencesDialog ().present (active_window);
+            new PreferencesDialog (Preferences.instance ()).present (active_window);
         }
 
         private void on_new_window () {

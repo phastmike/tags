@@ -50,7 +50,6 @@ namespace Tags {
 
         private Lines lines;
         private TagStore tags;
-        private TagStyleStore style_store;
 
         private Filter filter;
         private Filterer filterer;
@@ -121,13 +120,12 @@ namespace Tags {
             save_tagged_disable ();
             show_fileinfo_disable ();
 
-            style_store = new TagStyleStore ();
-            tags = new TagStore (style_store);
-            tags_view = new TagsView (tags.model);
+            tags = new TagStore ();
+            tags_view = new TagsView (tags);
 
             tags_view.listbox.row_activated.connect ( (r) => {
                 if (!tags_edit_mode) { return; }
-                var tag = ((TagRow) r).tag;
+                var tag = ((TagRow) r).context.tag;
                 var tag_dialog = new TagDialog.for_editing (application, tag);
 
                 tag_dialog.edited.connect ((t) => {
@@ -284,8 +282,8 @@ namespace Tags {
             if (text == null) return false;
 
             for (uint i = 0; i < tags.ntags; i++) {
-                var tag = tags.model.get_item (i) as Tag;
-                if (tag.applies_to (text) && tag.enabled == true) {
+                var ctx = tags.model.get_object (i) as TagContext; 
+                if (ctx.tag.enabled == true && ctx.tag.applies_to (text)) {
                     return true;
                 }
             }
@@ -350,9 +348,9 @@ namespace Tags {
 
         private Gdk.RGBA? delegate_minimap_bgcolor_getter (string? text) {
             for (uint i = 0; i < tags.model.get_n_items (); i++) {
-                var tag = tags.model.get_item (i) as Tag;
-                if (tag.enabled && tag.applies_to (text)) {
-                    return tag.colors.bg;
+                var ctx = tags.model.get_item (i) as TagContext;
+                if (ctx.tag.enabled && ctx.tag.applies_to (text)) {
+                    return ctx.tag.colors.bg;
                 }
             }
             return null;
@@ -644,7 +642,8 @@ namespace Tags {
         private void load_tags_from_file (File file, bool import = false) {
             tags.from_file.begin  (file, null, import, (obj, res) => {
                 for (int i = 0; i < tags.ntags; i++) {
-                    var tag = tags.model.get_object (i) as Tag;
+                    var ctx = tags.model.get_object (i) as TagContext;
+                    var tag = ctx.tag;
                     tag.changed.connect (() => {
                         filter.update ();
                         minimap.set_array (Lines.model_to_array(lines_colview.lines));
@@ -739,12 +738,13 @@ namespace Tags {
             new FileInfoDialog (this.application, file_opened, lines).present (this);
         }
 
-        private void count_hits_for_tag (Tag t) {
-            t.hits = 0;
+        private void count_hits_for_tag (Tag tag) {
+            var ctx = tags.get_context_for_tag (tag);
+            ctx.hits = 0;
             for (uint i = 0; i < lines.model.get_n_items (); i++) {
                 var line = lines.model.get_item (i) as Line;
-                if (t.applies_to (line.text)) {
-                    t.hits += 1;
+                if (tag.applies_to (line.text)) {
+                    ctx.hits += 1;
                 }
             }
         }
@@ -754,9 +754,10 @@ namespace Tags {
             for (uint i = 0; i < lines.model.get_n_items (); i++) {
                 var line = lines.model.get_item (i) as Line;
                 for (uint j = 0; j < tags.ntags; j++) {
-                    var tag = tags.model.get_item (j) as Tag;
+                    var ctx = tags.model.get_object (j) as TagContext;
+                    var tag = ctx.tag;
                     if (tag.applies_to (line.text)) {
-                        tag.hits += 1;
+                        ctx.hits += 1;
                     }
                 }
             }
@@ -905,8 +906,8 @@ namespace Tags {
 
             var row = (TagRow) tags_view.listbox.get_selected_row ();
             if (row == null) { return; }
-            var tag = row.tag;
-            if (tag.hits == 0 || tag.enabled == false) { return; }
+            var tag = row.context.tag;
+            if (row.context.hits == 0 || tag.enabled == false) { return; }
 
             var line_selection = lines_colview.selection_model;
             var bitset = line_selection.get_selection ();
@@ -944,8 +945,8 @@ namespace Tags {
 
             var row = (TagRow) tags_view.listbox.get_selected_row ();
             if (row == null) { return; }
-            var tag = row.tag;
-            if (tag.hits == 0 || tag.enabled == false) { return; }
+            var tag = row.context.tag;
+            if (row.context.hits == 0 || tag.enabled == false) { return; }
 
 
             var line_selection = lines_colview.selection_model;

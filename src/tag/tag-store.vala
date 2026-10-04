@@ -11,7 +11,6 @@
 namespace Tags {
     public class TagStore : Object {
         private ListStore store;
-        private TagStyleStore styles;
 
         public GLib.ListModel model {
             get {
@@ -27,34 +26,41 @@ namespace Tags {
 
         public bool have_changed { get; set; default = false; }
 
-        public TagStore (TagStyleStore? styles = null) {
-            store = new ListStore (typeof(Tag));
-            if (styles != null)
-                this.styles = styles;
-            else
-                this.styles = new TagStyleStore ();
+        //public TagStore (TagStyleStore? styles = null) {
+        public TagStore () {
+            store = new ListStore (typeof(TagContext));
         }
 
         public void hitcounter_reset_all () {
             for (uint j = 0; j < ntags; j++) {
-                var tag = model.get_item (j) as Tag;
-                tag.hits = 0;
+                var ctx = model.get_item (j) as TagContext;
+                ctx.hits = 0;
             }
         }
 
+        // Auxiliary method to toggle tags by number (0-9) for keyboard shortcuts
         public void toggle_tag (int nr) requires (nr >= 0 && nr <= 9) {
             if (nr >= ntags) return;
-            var tag = model.get_item (nr) as Tag;
+            var ctx = model.get_item (nr) as TagContext;
+            var tag = ctx.tag;
             tag.enabled = !tag.enabled;
         }
 
         public void add_tag (Tag tag, bool prepend = false) {
+            var ctx = new TagContext (tag);
+
             if (prepend == true) { 
-                store.insert (0, tag);
+                store.insert (0, ctx);
             } else {
-                store.append(tag);
+                store.append(ctx);
             }
-            styles.add_style_for_tag (tag);
+
+            Gtk.StyleContext.add_provider_for_display (
+                Gdk.Display.get_default (),
+                ctx.css_provider,
+                Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+            );
+
             have_changed = true;
             tag.changed.connect (() => {
                 have_changed = true;
@@ -63,36 +69,47 @@ namespace Tags {
 
         public void remove_tag (Tag to_remove) {
             for (var i = 0; i < store.get_n_items (); i++) {
-                var tag = store.get_object (i) as Tag;
+                //var tag = store.get_object (i) as Tag;
+                var ctx = store.get_object (i) as TagContext;
+                var tag = ctx.tag;
                 if (tag == to_remove) {
+                    //styles.remove_style_for_tag (to_remove);
+                    Gtk.StyleContext.remove_provider_for_display (
+                        Gdk.Display.get_default (), ctx.css_provider
+                    );
                     store.remove (i);
-                    styles.remove_style_for_tag (to_remove);
                     have_changed = true;
                     return;
                 }
             }
         }
 
+        public TagContext? get_context_for_tag (Tag tag) {
+            for (var i = 0; i < store.get_n_items (); i++) {
+                var ctx = store.get_object (i) as TagContext;
+                if (ctx.tag == tag) return ctx;
+            }
+            return null;
+        }
+
         public void remove_all () {
             store.remove_all ();
-            styles.remove_all_styles ();
             have_changed = false;
         }
 
         /* Enable/Disable all tags */
         public void set_enable_all (bool enable) {
-            Tag tag;
+            TagContext ctx;
             for (var i = 0; i < model.get_n_items (); i++) {
-                tag = model.get_object (i) as Tag;
-                tag.enabled = enable;
+                ctx = model.get_object (i) as TagContext;
+                ctx.tag.enabled = enable;
             }
         }
 
         public bool check_if_pattern_exists (string pattern) {
-            Tag tag;
             for (var i = 0; i < model.get_n_items (); i++) {
-                tag = model.get_object (i) as Tag;
-                if (pattern == tag.pattern) return true;
+                var ctx = model.get_object (i) as TagContext;
+                if (pattern == ctx.tag.pattern) return true;
             }
             return false;
         }
@@ -102,7 +119,8 @@ namespace Tags {
             Json.Array array = new Json.Array ();
 
             for (uint i = 0; i < store.get_n_items (); i++) {
-                var tag = model.get_object (i) as Tag;
+                var ctx = model.get_object (i) as TagContext;
+                var tag = ctx.tag;
                 Json.Node node = Json.gobject_serialize (tag);
                 array.add_element (node); 
             }
@@ -135,6 +153,8 @@ namespace Tags {
                     array = node.get_array ();
                     array.foreach_element ((array, index_, element_node) => {
                         var tag = Json.gobject_deserialize (typeof (Tag), element_node) as Tag;
+                        message ("from_file:tag: %s", tag.pattern);
+                        tag.dump_to_console ();
                         add_tag (tag);
                     });
                     if (preserve_load == false) have_changed = false;
@@ -147,5 +167,4 @@ namespace Tags {
         }
     }
 }
-
 

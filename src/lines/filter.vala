@@ -27,14 +27,18 @@ namespace Tags {
 
         public Filter (GLib.ListModel tags) {
             this.tags = tags;
-            //FIXME NOTE TODO It's a Hack it could be better
             this.tags.items_changed.connect ( (pos, add, removed) => {
-                var tag = tags.get_item (pos) as Tag; 
+                changed (Gtk.FilterChange.DIFFERENT);
+
+                /*
+                var ctx = tags.get_item (pos) as TagContext;
+                var tag = ctx.tag;
                 if (tag != null) {
                     tag.enable_changed.connect ( (v) => {
                         changed (Gtk.FilterChange.DIFFERENT);
                     });
                 }
+                */
             });
         }
 
@@ -43,15 +47,17 @@ namespace Tags {
         }
  
         public override bool match (Object? item) {
-            if (active == false) return true;
+            if (active == false) { return true; }
+            if (item == null) { return false; }
+
             Line line = (Line) item;
             for (uint i = 0; i < tags.get_n_items (); i++) {
-                var tag = tags.get_item (i) as Tag;
-                if (tag.enabled == true && tag.applies_to (line.text)) {
+                var ctx = tags.get_item (i) as TagContext;
+                if (ctx.tag.enabled == true && ctx.tag.applies_to (line.text)) {
                     return true;
                 }
             }
-            
+
             return false;
         }
 

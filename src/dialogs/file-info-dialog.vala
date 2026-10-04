@@ -24,7 +24,7 @@ namespace Tags {
         [GtkChild]
         private unowned Gtk.Button button_browse;
 
-        enum MULTIPLIERS {
+        enum MULTIPLIER {
             B = 0,
             kB = 1,
             MB = 2,
@@ -33,15 +33,15 @@ namespace Tags {
 
             public string to_string () {
                 switch (this) {
-                    case MULTIPLIERS.B:
+                    case MULTIPLIER.B:
                         return "Bytes";
-                    case MULTIPLIERS.kB:
+                    case MULTIPLIER.kB:
                         return "kB";
-                    case MULTIPLIERS.MB:
+                    case MULTIPLIER.MB:
                         return "MB";
-                    case MULTIPLIERS.GB:
+                    case MULTIPLIER.GB:
                         return "GB";
-                    case MULTIPLIERS.TB:
+                    case MULTIPLIER.TB:
                         return "TB";
                 }
                 return "";
@@ -53,52 +53,55 @@ namespace Tags {
             row_filename.set_tooltip_text (file.get_basename ());
             row_folder.set_subtitle (file.get_parent ().get_path ());
             row_folder.set_tooltip_text (file.get_parent ().get_path ());
-            var info = file.query_info ("standard::size", GLib.FileQueryInfoFlags.NONE, null);
+            try {
+                var info = file.query_info ("standard::size", GLib.FileQueryInfoFlags.NONE, null);
+                uint n = 0;
+                double size = (double) info.get_size ();
+                MULTIPLIER mult = MULTIPLIER.B;
 
-            uint n = 0;
-            double size = (double) info.get_size ();
-            MULTIPLIERS mult = MULTIPLIERS.B;
+                /*
+                Go figure,someone thinks that mixing
+                base 10 with base 2 number makes sense.
+                Should use 1024 as divider but for consistency sake...
+                */
 
-            /*
-            Go figure,someone thinks that mixing
-            base 10 with base 2 number makes sense.
-            Should use 1024 as divider but for consistency sake...
-            */
-
-            while (size > 1000) {
-                size /= 1000;
-                n++;
-            }
-
-            mult = n;
-            size = Math.round (size * 10) / 10.0;
-            
-            if (mult == MULTIPLIERS.B) {
-                row_size.set_subtitle ("%0.0f %s".printf(size, mult.to_string ()));
-            } else {
-                row_size.set_subtitle ("%0.1f %s".printf(size, mult.to_string ()));
-            }
-
-            row_lines_n.set_subtitle ("%s".printf(lines.model.get_n_items ().to_string ()));
-
-            button_browse.clicked.connect (() => {
-                try {
-                    var f = File.new_for_path (file.get_parent ().get_path ());
-                    var uri = f.get_uri();
-                    AppInfo.launch_default_for_uri (uri, null);
-                } catch (Error e) {
-                    warning ("Failed to open folder: %s", e.message);
+                while (size > 1000) {
+                    size /= 1000;
+                    n++;
                 }
-            });
 
-            button_copy.clicked.connect (() => {
-                var text = file.get_path ();
-                get_clipboard ().set_text (text);
-                var toast = new Adw.Toast (_("%d bytes copied".printf (text.length)));
-                toast.set_timeout (2);
-                add_toast (toast);
-            });
-            
+                mult = (MULTIPLIER) n;
+                size = Math.round (size * 10) / 10.0;
+                
+                if (mult == MULTIPLIER.B) {
+                    row_size.set_subtitle ("%0.0f %s".printf(size, mult.to_string ()));
+                } else {
+                    row_size.set_subtitle ("%0.1f %s".printf(size, mult.to_string ()));
+                }
+
+                row_lines_n.set_subtitle ("%s".printf(lines.model.get_n_items ().to_string ()));
+
+                button_browse.clicked.connect (() => {
+                    try {
+                        var f = File.new_for_path (file.get_parent ().get_path ());
+                        var uri = f.get_uri();
+                        AppInfo.launch_default_for_uri (uri, null);
+                    } catch (Error e) {
+                        warning ("Failed to open folder: %s", e.message);
+                    }
+                });
+
+                button_copy.clicked.connect (() => {
+                    var text = file.get_path ();
+                    get_clipboard ().set_text (text);
+                    var toast = new Adw.Toast (_("%d bytes copied".printf (text.length)));
+                    toast.set_timeout (2);
+                    add_toast (toast);
+                });
+            } catch (Error e) {
+                warning ("Failed to get file info: %s", e.message);
+                return;
+            }
         }
     }
 }

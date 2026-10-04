@@ -3,9 +3,7 @@ tags_sources += files(
 	'common.vala',
 	'tag-row.vala',
 	'tag-store.vala',
-	'tag-style.vala',
-	'tag-style-store.vala',
 	'tags-view.vala',
-	#'tags-column-view.vala',
-	'tag-dialog-window.vala',
+	'tag-dialog.vala',
+	'tag-context.vala',
 	)

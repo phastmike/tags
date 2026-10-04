@@ -163,7 +163,7 @@ namespace Tags {
             var c = widget.parent;
             if (c.css_classes.length != 0) {
                 foreach (var css_class in c.css_classes) {
-                    if (css_class.has_prefix (TagStyle.LINE_PREFIX)) {
+                    if (css_class.has_prefix (TagContext.STYLE_PREFIX_LINE)) {
                         c.remove_css_class (css_class);
                     }
                 }

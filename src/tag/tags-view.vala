@@ -12,45 +12,44 @@ namespace Tags {
     [GtkTemplate (ui = "/io/github/phastmike/tags/ui/tags-view.ui")]
     public class TagsView : Adw.Bin {
         [GtkChild]
-        public unowned Gtk.ScrolledWindow scrolled;
+        public unowned Gtk.ScrolledWindow   scrolled;
         [GtkChild]
-        public unowned Gtk.ListBox listbox;
+        public unowned Gtk.ListBox          listbox;
         [GtkChild]
-        public unowned Gtk.ProgressBar progress;
+        public unowned Gtk.ProgressBar      progress;
         [GtkChild]
-        public unowned Gtk.ToggleButton button_incremental;
+        public unowned Gtk.ToggleButton     button_incremental;
         [GtkChild]
-        public unowned Gtk.Button button_prev_hit;
+        public unowned Gtk.Button           button_prev_hit;
         [GtkChild]
-        public unowned Gtk.Button button_next_hit;
+        public unowned Gtk.Button           button_next_hit;
 
-        public GLib.ListModel model;
+        private GLib.ListModel model;
 
-        public TagsView (GLib.ListModel model) {
-            this.model = model;
+        //public TagsView (GLib.ListModel model) {
+        public TagsView (TagStore tags) {
+            this.model = tags.model;
 
             listbox.selected_rows_changed.connect ( () => {
-                var row = (TagRow) listbox.get_selected_row ();
+                var row = (TagRow?) listbox.get_selected_row ();
                 if (row == null) {
                     button_prev_hit.visible = false;
                     button_next_hit.visible = false;
                 } else {
-                    //MUST MONITOR TAG ENABLED CHANGES
-                    //button_prev_hit.set_sensitive(row.tag.enabled);
-                    //button_next_hit.set_sensitive(row.tag.enabled);
+                    //NOTE:MUST MONITOR TAG ENABLED CHANGES
                     button_prev_hit.visible = true;
                     button_next_hit.visible = true;
                 }
             });
 
-            // FIXME: check need to toggle drag feature
+            // NOTE: Drag by default or toggleable
             Gtk.DropTarget drop_target;
             drop_target = new Gtk.DropTarget (typeof (TagRow), Gdk.DragAction.MOVE);
             listbox.add_controller (drop_target);
 
             drop_target.drop.connect ((drop, value, x, y) => {
-                var value_row = value.get_object () as TagRow?;
-                Gtk.ListBoxRow? target_row = listbox.get_row_at_y ((int) y);
+                TagRow? value_row = value.get_object () as TagRow?;
+                TagRow? target_row = (TagRow?) listbox.get_row_at_y ((int) y);
                 if (value_row == null || target_row == null) {
                     return false;
                 }
@@ -59,8 +58,10 @@ namespace Tags {
 
                 var store = model as GLib.ListStore;
                 if (store != null) {
+                    // NOTE: Hold a reference during removal
+                    var ctx = value_row.context;
                     store.remove (value_row.get_index ());
-                    store.insert (target_index, value_row.tag);
+                    store.insert (target_index, ctx);
                     target_row.set_state_flags (Gtk.StateFlags.NORMAL, true);
                     return true;
                 } else {
@@ -70,8 +71,8 @@ namespace Tags {
             });
 
             listbox.bind_model (this.model, (obj) => {
-                var tag = obj as Tag;
-                var row = new TagRow (tag);
+                var ctx = obj as TagContext;
+                var row = new TagRow (ctx);
 
                 var drop_controller = new Gtk.DropControllerMotion ();
                 var drag_source = new Gtk.DragSource () {
@@ -97,7 +98,7 @@ namespace Tags {
                     drag_widget.set_size_request(row.get_width (), row.get_height ());
                     drag_widget.add_css_class ("boxed-list");
 
-                    var drag_row = new TagRow (row.tag);
+                    var drag_row = new TagRow (row.context);
                     drag_row.add_css_class ("dimmed");
 
                     drag_widget.append (drag_row);

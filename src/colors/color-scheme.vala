@@ -44,6 +44,12 @@ namespace Tags {
             _bg = bg;
         }
 
+        public void dump_to_console () {
+            stdout.printf ("ColorScheme: %s\n", _name);
+            stdout.printf ("  fg: %s\n", _fg.to_string ());
+            stdout.printf ("  bg: %s\n", _bg.to_string ());
+        }
+
         /* Json.Serializable methods */
 
         public override Json.Node serialize_property (string property_name, Value @value, ParamSpec pspec) {

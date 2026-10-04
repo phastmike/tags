@@ -20,31 +20,33 @@ namespace Tags {
         [GtkChild]
         public unowned Gtk.Label hitcounter;
 
-        public Tag tag;
+        public unowned TagContext context;
         public double drag_x = 0.0;
         public double drag_y = 0.0;
 
-        public TagRow (Tag tag) {
-            this.tag = tag;
+
+        public TagRow (TagContext context) {
+            this.context = context;
+            var tag = context.tag;
             enabled.active = tag.enabled;
-            enabled.add_css_class (TagStyle.get_style_name_for_row (tag));
+            enabled.add_css_class (TagContext.get_style_name_for_row (tag));
             title.label = tag.description;
             set_tooltip_text (tag.description);
             subtitle.label = tag.pattern;
 
-            hitcounter.label = "%u".printf (tag.hits);
+            hitcounter.label = "%u".printf (context.hits);
 
             if (tag.description.length == 0) {
                 title.visible = false;
             }
 
-            this.tag.bind_property ("enabled",
+            tag.bind_property ("enabled",
                  enabled,  "active", BindingFlags.SYNC_CREATE | BindingFlags.BIDIRECTIONAL);
-            this.tag.bind_property ("description",
+            tag.bind_property ("description",
                  title, "label", BindingFlags.SYNC_CREATE);
-            this.tag.bind_property ("pattern",
+            tag.bind_property ("pattern",
                  subtitle, "label", BindingFlags.SYNC_CREATE);
-            this.tag.bind_property ("hits",
+            context.bind_property ("hits",
                  hitcounter, "label", BindingFlags.SYNC_CREATE,
                  (binding, source_value, ref target_value) => {
                     target_value.set_string (source_value.get_uint ().to_string ());
@@ -65,7 +67,7 @@ namespace Tags {
         }
 
         ~TagRow () {
-            remove_css_class (TagStyle.get_style_name_for_row (tag));
+            remove_css_class (TagContext.get_style_name_for_row (context.tag));
         }
     }
 }
