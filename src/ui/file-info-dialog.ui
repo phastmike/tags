@@ -62,7 +62,6 @@
                 <property name="css-classes">property</property>
                 <property name="subtitle">---</property>
                 <property name="title" translatable="yes">Size</property>
-                </child>
               </object>
             </child>
           </object>
