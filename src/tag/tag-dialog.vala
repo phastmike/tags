@@ -49,6 +49,13 @@ namespace Tags {
         public signal void deleted (Tag tag);
 
         construct {
+            provider = new Gtk.CssProvider ();
+            Gtk.StyleContext.add_provider_for_display (
+                Gdk.Display.get_default (),
+                provider,
+                Gtk.STYLE_PROVIDER_PRIORITY_USER
+            );
+
             var dialog_fg_color = new Gtk.ColorDialog ();
             dialog_fg_color.set_modal (true);
             dialog_fg_color.set_with_alpha (false);
@@ -61,19 +68,24 @@ namespace Tags {
             dialog_bg_color.set_title (_("Select the background color"));
             button_bg_color.set_dialog (dialog_bg_color); 
 
-            button_fg_color.notify["rgba"].connect (set_label_example_colors);
-            button_bg_color.notify["rgba"].connect (set_label_example_colors);
+            button_fg_color.notify["rgba"].connect (update_css);
+            button_bg_color.notify["rgba"].connect (update_css);
             button_regenerate_cs.clicked.connect (set_random_color_scheme);
 
             row_atop.activated.connect (() => {
                 switch_atop.set_active(!switch_atop.get_active ());
             });
+
+            label_sample_example.add_css_class (TagDialog.css_class);
+            label_sample_example.add_css_class ("frame");
         }
 
-        public TagDialog (Gtk.Application app, string? text = null, bool from_selection = false) {
-            if (from_selection == true) button_use_selection.set_visible (true);
-
+        public TagDialog (string? text = null, bool from_selection = false) {
             row_btn_add_tag.set_visible (true);
+
+            if (from_selection == true) {
+                button_use_selection.set_visible (true);
+            }
 
             row_btn_add_tag.activated.connect (() => {
                 var pattern = entry_tag_pattern.get_text ();
@@ -111,7 +123,7 @@ namespace Tags {
             }
         }
 
-        public TagDialog.for_editing (Gtk.Application app, Tag tag) {
+        public TagDialog.for_editing (Tag tag) {
 
             row_btn_edit_tag.set_visible (true);
             row_btn_delete_tag.set_visible (true);
@@ -139,7 +151,7 @@ namespace Tags {
 
             entry_tag_pattern.changed.connect (validate_entries);
             entry_tag_name.changed.connect (validate_entries);
-            set_label_example_colors ();
+            update_css ();
 
             row_regex.set_active(tag.is_regex);
             row_case.set_active(tag.is_case_sensitive);
@@ -147,11 +159,9 @@ namespace Tags {
 
         ~TagDialog () {
             Gtk.StyleContext.remove_provider_for_display (Gdk.Display.get_default (), provider);
-            //button_fg_color.notify["rgba"].disconnect (set_label_example_colors);
-            //button_bg_color.notify["rgba"].disconnect (set_label_example_colors);
         }
 
-        private void set_label_example_colors () {
+        private void update_css () {
             var fg = button_fg_color.get_rgba ();
             var bg = button_bg_color.get_rgba ();
             
@@ -170,11 +180,7 @@ namespace Tags {
                 }
             """.printf (TagDialog.css_class, bg_web, fg_web);
 
-            //var provider = new Gtk.CssProvider ();
             provider.load_from_string (lstyle);
-            label_sample_example.add_css_class (TagDialog.css_class);
-            label_sample_example.add_css_class ("frame");
-            Gtk.StyleContext.add_provider_for_display (Gdk.Display.get_default (), provider, Gtk.STYLE_PROVIDER_PRIORITY_USER);
         }
 
         private void set_random_color_scheme () {

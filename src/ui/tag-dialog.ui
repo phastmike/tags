@@ -2,6 +2,20 @@
 <interface>
   <requires lib="gtk" version="4.18"/>
   <requires lib="libadwaita" version="1.8"/>
+  <object class="GtkPopover" id="popover_add_top">
+    <child>
+      <object class="GtkLabel">
+        <!--<property name="justify">fill</property>-->
+        <property name="margin-bottom">8</property>
+        <property name="margin-end">8</property>
+        <property name="margin-start">8</property>
+        <property name="margin-top">8</property>
+        <property name="max-width-chars">36</property>
+        <property name="wrap">true</property>
+        <property name="label" translatable="yes">Gives precedence over the other tags. Once a line is tagged it disregards other possible tags. The user can reorder tags with drag and drop at any time.</property>
+      </object>
+    </child>
+  </object>
   <template class="TagsTagDialog" parent="AdwPreferencesDialog">
     <property name="search-enabled">false</property>
     <property name="title" translatable="yes">Tag</property>
@@ -10,22 +24,6 @@
         <child>
           <object class="AdwPreferencesGroup">
             <property name="title" translatable="yes">Filter</property>
-            <child>
-              <object class="GtkPopover" id="popover_add_top">
-                <child>
-                  <object class="GtkLabel">
-                    <!--<property name="justify">fill</property>-->
-                    <property name="label" translatable="yes">Adds the tag to the top which gives precedence over the other tag filters. Once a line is tagged it disregards other possible tags. The user can reorder tags with drag and drop at any time.</property>
-                    <property name="margin-bottom">8</property>
-                    <property name="margin-end">8</property>
-                    <property name="margin-start">8</property>
-                    <property name="margin-top">8</property>
-                    <property name="max-width-chars">36</property>
-                    <property name="wrap">true</property>
-                  </object>
-                </child>
-              </object>
-            </child>
             <child type="header-suffix">
               <object class="GtkButton" id="button_use_selection">
                 <property name="label" translatable="yes">Use Selection</property>

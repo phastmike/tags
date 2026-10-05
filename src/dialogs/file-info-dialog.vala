@@ -48,7 +48,7 @@ namespace Tags {
             }
         }
 
-        public FileInfoDialog (Gtk.Application app, GLib.File file, Lines lines) {
+        public FileInfoDialog (GLib.File file, Lines lines) {
             row_filename.set_subtitle (file.get_basename ());
             row_filename.set_tooltip_text (file.get_basename ());
             row_folder.set_subtitle (file.get_parent ().get_path ());

@@ -126,7 +126,7 @@ namespace Tags {
             tags_view.listbox.row_activated.connect ( (r) => {
                 if (!tags_edit_mode) { return; }
                 var tag = ((TagRow) r).context.tag;
-                var tag_dialog = new TagDialog.for_editing (application, tag);
+                var tag_dialog = new TagDialog.for_editing (tag);
 
                 tag_dialog.edited.connect ((t) => {
                     count_tag_hits ();
@@ -525,12 +525,11 @@ namespace Tags {
                 if (bs.is_empty () == false) {
                     var line = filterer.model.get_item (bs.get_nth ((uint) bs.get_size () - 1)) as Line;
                     text = line.text;
-                    //message("selected_text = %s", text);
                     from_selection = true;
                 }
             }
 
-            tag_dialog = new TagDialog (this.application, text, from_selection);
+            tag_dialog = new TagDialog (text, from_selection);
 
             tag_dialog.added.connect ((tag, add_to_top) => {
                 tag.changed.connect (() => {
@@ -735,7 +734,7 @@ namespace Tags {
 
         private void action_show_fileinfo () {
             if (file_opened == null) { return; }
-            new FileInfoDialog (this.application, file_opened, lines).present (this);
+            new FileInfoDialog (file_opened, lines).present (this);
         }
 
         private void count_hits_for_tag (Tag tag) {

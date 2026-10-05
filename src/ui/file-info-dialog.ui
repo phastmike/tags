@@ -27,14 +27,6 @@
                 <property name="css-classes">property</property>
                 <property name="subtitle">---</property>
                 <property name="title" translatable="yes">Name</property>
-              </object>
-            </child>
-            <child>
-              <object class="AdwActionRow" id="row_folder">
-                <property name="subtitle">---</property>
-                <property name="subtitle_lines">1</property>
-                <property name="css-classes">property</property>
-                <property name="title" translatable="yes">Folder</property>
                 <child type="suffix">
                   <object class="GtkButton" id="button_copy">
                     <property name="icon-name">edit-copy-symbolic</property>
@@ -44,6 +36,15 @@
                     <property name="tooltip-text" translatable="yes">Copy path</property>
                   </object>
                 </child>
+              </object>
+            </child>
+            <child>
+              <object class="AdwActionRow" id="row_folder">
+                <property name="subtitle">---</property>
+                <property name="subtitle_lines">3</property>
+                <property name="subtitle-selectable">true</property>
+                <property name="css-classes">property</property>
+                <property name="title" translatable="yes">Folder</property>
                 <child type="suffix">
                   <object class="GtkButton" id="button_browse">
                     <property name="icon-name">folder-open-symbolic</property>
@@ -61,6 +62,7 @@
                 <property name="css-classes">property</property>
                 <property name="subtitle">---</property>
                 <property name="title" translatable="yes">Size</property>
+                </child>
               </object>
             </child>
           </object>
