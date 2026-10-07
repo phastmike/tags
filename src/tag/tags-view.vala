@@ -26,7 +26,6 @@ namespace Tags {
 
         private GLib.ListModel model;
 
-        //public TagsView (GLib.ListModel model) {
         public TagsView (TagStore tags) {
             this.model = tags.model;
 

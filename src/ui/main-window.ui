@@ -5,12 +5,6 @@
     <property name="title" translatable="no">Tags</property>
     <property name="default-width">1000</property>
     <property name="default-height">800</property>
-    <!--
-    <property name="width-request">437</property>
-    <style>
-      <class name="devel"/>
-    </style>
-    -->
     <property name="content">
       <object class="AdwOverlaySplitView" id="oversplit">
         <property name="content">
@@ -57,7 +51,6 @@
 
                 <child type="title">
                   <object class="GtkStack" id="title_stack">
-                    <!--<property name="transition-type">slide-left-right</property>-->
                     <property name="transition-type">crossfade</property>
                     <property name="halign">fill</property>
                     <property name="valign">fill</property>

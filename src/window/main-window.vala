@@ -58,6 +58,7 @@ namespace Tags {
         private Gtk.Stack stack;
         private Adw.Toast toast_main;
 
+        private Adw.Banner main_banner;
         private Gtk.Box main_box;
         private Minimap minimap;
         private MinimapContainer map_view;
@@ -452,8 +453,18 @@ namespace Tags {
         }
 
         private void setup_main_box () {
+            main_banner = new Adw.Banner (_("No lines to display"));
+            main_banner.set_revealed (false);
+            main_banner.set_button_label (_("Unhide lines"));
+            main_banner.set_button_style (Adw.BannerButtonStyle.DEFAULT);
+            main_banner.set_action_name ("win.action_hide_untagged_lines");
+
+            var main_vbox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+            main_vbox.append (main_banner);
+            main_vbox.append (lines_colview);
+
             main_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
-            main_box.append (lines_colview);
+            main_box.append (main_vbox);
             main_box.append (map_view);
         }
 
@@ -765,6 +776,15 @@ namespace Tags {
         private void action_hide_untagged_lines () {
             if (file_opened == null) { return; }
             filter.active = !filter.active;
+
+            /*
+            if (filter.active) {
+                main_banner.set_revealed (true);
+                main_banner.set_title (_("Untagged lines are hidden"));
+            } else {
+                main_banner.set_revealed (false);
+            }
+            */
 
             // Should bind this property !
             var action = this.lookup_action ("action_hide_untagged_lines");

@@ -39,6 +39,7 @@ namespace Tags {
 
         /* DESTRUCTOR */
 
+        /* NOTE: NEEDED ? */
         ~TagContext () {
             this.tag.colors.changed.disconnect (update_css);
         }

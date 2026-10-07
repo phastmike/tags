@@ -45,7 +45,7 @@ namespace Tags {
 
     public class Tag : Object {
         private string uuid;
-        public uint hits;
+        //public uint hits;
 
         private bool _enabled = true;
         private string? _pattern = null;
@@ -54,9 +54,8 @@ namespace Tags {
         private bool _is_case_sensitive = false;
 
         public ColorScheme colors { get; set; }
-        //public uint hits { get; set; default = 0; } // Should decouple the counter
 
-        /* Setters / Getters */
+        /* SETTERS / GETTERS */
 
         public bool enabled { 
             get {
@@ -115,9 +114,10 @@ namespace Tags {
         public signal void enable_changed (bool enabled);
 
         /* CONSTRUCTORS */
+
         construct {
             // Just for uniqueness. Runtime dependency only.
-            hits = 0;
+            //hits = 0;
             uuid = Tags.Common.generate_uuid ();
         }
 

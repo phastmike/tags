@@ -26,7 +26,6 @@ namespace Tags {
 
         public bool have_changed { get; set; default = false; }
 
-        //public TagStore (TagStyleStore? styles = null) {
         public TagStore () {
             store = new ListStore (typeof(TagContext));
         }
@@ -69,11 +68,9 @@ namespace Tags {
 
         public void remove_tag (Tag to_remove) {
             for (var i = 0; i < store.get_n_items (); i++) {
-                //var tag = store.get_object (i) as Tag;
                 var ctx = store.get_object (i) as TagContext;
                 var tag = ctx.tag;
                 if (tag == to_remove) {
-                    //styles.remove_style_for_tag (to_remove);
                     Gtk.StyleContext.remove_provider_for_display (
                         Gdk.Display.get_default (), ctx.css_provider
                     );
