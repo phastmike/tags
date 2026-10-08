@@ -19,11 +19,11 @@ namespace Tags {
         public  const string STYLE_PREFIX_LINE = "tag-";
 
         public static string get_style_name_for_row (Tag tag) requires (tag != null) {
-            return "%s%s".printf (STYLE_PREFIX_ROW, tag.get_uuid ());
+            return "%s%s".printf (STYLE_PREFIX_ROW, tag.uuid);
         }
 
         public static string get_style_name_for_tag (Tag tag) requires (tag != null) {
-            return "%s%s".printf (STYLE_PREFIX_LINE, tag.get_uuid ());
+            return "%s%s".printf (STYLE_PREFIX_LINE, tag.uuid);
         }
 
 

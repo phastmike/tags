@@ -44,18 +44,15 @@ namespace Tags {
     */
 
     public class Tag : Object {
-        private string uuid;
-        //public uint hits;
 
-        private bool _enabled = true;
-        private string? _pattern = null;
-        private string? _description = null;
-        private bool _is_regex = false;
-        private bool _is_case_sensitive = false;
+        private bool    _enabled            = true;
+        private string? _pattern            = null;
+        private string? _description        = null;
+        private bool    _is_regex           = false;
+        private bool    _is_case_sensitive  = false;
 
-        public ColorScheme colors { get; set; }
-
-        /* SETTERS / GETTERS */
+        public string       uuid    { get; private set; }
+        public ColorScheme  colors  { get; set; }
 
         public bool enabled { 
             get {
@@ -116,8 +113,6 @@ namespace Tags {
         /* CONSTRUCTORS */
 
         construct {
-            // Just for uniqueness. Runtime dependency only.
-            //hits = 0;
             uuid = Tags.Common.generate_uuid ();
         }
 
@@ -144,10 +139,6 @@ namespace Tags {
             stdout.printf ("Is Case Sensitive: %s\n", is_case_sensitive ? "true" : "false");
             stdout.printf ("Colors:\n");
             colors.dump_to_console ();
-        }
-
-        public string get_uuid () {
-            return uuid;
         }
 
         public bool applies_to (string? text = null) {

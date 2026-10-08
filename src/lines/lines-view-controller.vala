@@ -28,6 +28,7 @@ namespace Tags {
             setup_listeners ();
         }
 
+        // FIXME:we just need once or remove before adding another
         private void setup_listeners () {
             tags.model.items_changed.connect ((position, removed, added) => {
                 update_mixing ();
