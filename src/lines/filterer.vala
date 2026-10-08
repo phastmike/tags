@@ -12,11 +12,11 @@
 
 namespace Tags {
     public class Filterer : Object {
-        public Lines lines;
+        public LineStore lines;
         public Tags.Filter filter;
         public Gtk.FilterListModel model;
 
-        public Filterer (Lines lines, Tags.Filter filter) {
+        public Filterer (LineStore lines, Tags.Filter filter) {
             this.lines = lines;
             this.filter = filter;
             model = new Gtk.FilterListModel (lines.model, filter); 

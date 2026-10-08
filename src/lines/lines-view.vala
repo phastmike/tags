@@ -1,18 +1,21 @@
 /* -*- Mode: Vala; indent-tabs-mode: nil; c-basic-offset: 4; tab-width: 4 -*- */
 /* vim: set tabstop=4 softtabstop=4 shiftwidth=4 expandtab :                  */
 /*
- * lines-column-view.vala
+ * lines-view.vala
  *
- * The Column view containing the document lines
+ * The view containing the document lines
  * Two ColumnViewColumns, line number and text.
- * No headers, Multiple line selection ...
+ * - Table with no headers, (hacc),
+ * - Single/Multiple line selection
+ *
+ *  Adw.Bin > Gtk.ScrolledWindow > Gtk.ColumnView 
  *
  * José Miguel Fonte
  */
 
 namespace Tags {
     [GtkTemplate (ui = "/io/github/phastmike/tags/ui/lines-column-view.ui")]
-    public class LinesColumnView : Adw.Bin {
+    public class LinesView : Adw.Bin {
         [GtkChild]
         public unowned Gtk.ColumnView column_view;
         [GtkChild]
@@ -49,7 +52,7 @@ namespace Tags {
             }
         }
 
-        public LinesColumnView (GLib.ListModel model) {
+        public LinesView (GLib.ListModel model) {
             this.lines = model;
             selection_model = new Gtk.MultiSelection (model);
             column_view.set_model (selection_model);

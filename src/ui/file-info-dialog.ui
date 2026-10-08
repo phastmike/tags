@@ -26,6 +26,8 @@
               <object class="AdwActionRow" id="row_filename">
                 <property name="css-classes">property</property>
                 <property name="subtitle">---</property>
+                <!--<property name="subtitle_lines">1</property>-->
+                <property name="subtitle-selectable">true</property>
                 <property name="title" translatable="yes">Name</property>
                 <child type="suffix">
                   <object class="GtkButton" id="button_copy">
@@ -41,7 +43,7 @@
             <child>
               <object class="AdwActionRow" id="row_folder">
                 <property name="subtitle">---</property>
-                <property name="subtitle_lines">3</property>
+                <!--<property name="subtitle_lines">1</property>-->
                 <property name="subtitle-selectable">true</property>
                 <property name="css-classes">property</property>
                 <property name="title" translatable="yes">Folder</property>

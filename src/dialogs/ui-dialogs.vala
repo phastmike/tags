@@ -4,8 +4,8 @@
  * ui-dialogs.vala
  *
  * Class to provide static methods for: 
- * - Open/Save file dialogs for document files - Lines
- * - Open/Save file dialogs for tag files - Tags 
+ * - Open/Save file dialogs for document files - Lines (LineStore)
+ * - Open/Save file dialogs for tag files - Tags (TagStore)
  *
  * José Miguel Fonte
  */

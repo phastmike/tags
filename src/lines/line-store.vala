@@ -1,14 +1,14 @@
 /* -*- Mode: Vala; indent-tabs-mode: nil; c-basic-offset: 4; tab-width: 4 -*- */
 /* vim: set tabstop=4 softtabstop=4 shiftwidth=4 expandtab :                  */
 /*
- * lines.vala
+ * line-store.vala
  *
  * Contains multiple lines.
  * Class wrapper for GLib.ListStore/ListModel.
  */
 
 namespace Tags {
-    public class Lines : Object {
+    public class LineStore : Object {
         public GLib.ListModel model;
 
         public static  string[] model_to_array (GLib.ListModel model) {
@@ -22,7 +22,7 @@ namespace Tags {
 
         //public signal void loaded_from_file ();
 
-        public Lines () {
+        public LineStore () {
             model = new GLib.ListStore (typeof(Line));
         }
 

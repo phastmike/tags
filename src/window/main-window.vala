@@ -48,12 +48,12 @@ namespace Tags {
             set { _search_mode = value; }
         }
 
-        private Lines lines;
+        private LineStore lines;
         private TagStore tags;
 
         private Filter filter;
         private Filterer filterer;
-        private ModelMixer mmixer;
+        private LinesViewController lines_view_controller;
 
         private Gtk.Stack stack;
         private Adw.Toast toast_main;
@@ -63,7 +63,7 @@ namespace Tags {
         private Minimap minimap;
         private MinimapContainer map_view;
         private TagsView tags_view;
-        private LinesColumnView lines_colview;
+        private LinesView lines_view;
 
         private File? file_tags = null;
         private File? file_opened = null;
@@ -132,7 +132,7 @@ namespace Tags {
                 tag_dialog.edited.connect ((t) => {
                     count_tag_hits ();
                     filter.update ();
-                    minimap.set_array (Lines.model_to_array (lines_colview.lines));
+                    minimap.set_array (LineStore.model_to_array (lines_view.lines));
                 });
 
                 tag_dialog.deleted.connect ((tag) => {
@@ -150,7 +150,7 @@ namespace Tags {
                             tag_dialog.destroy ();
                             tags.remove_tag (tag);
                             filter.update ();
-                            minimap.set_array (Lines.model_to_array(lines_colview.lines));
+                            minimap.set_array (LineStore.model_to_array(lines_view.lines));
                         }
                     });
                 });
@@ -159,18 +159,18 @@ namespace Tags {
             });
 
             setup_lines_view ();
-            setup_minimap (lines_colview.scrolled.get_vadjustment ());
+            setup_minimap (lines_view.scrolled.get_vadjustment ());
             setup_search ();
             setup_main_box ();
             setup_buttons ();
 
-            mmixer = new Tags.ModelMixer (lines.model, tags, filterer);
+            lines_view_controller = new Tags.LinesViewController (lines.model, tags, filterer);
 
-            mmixer.mix_updated.connect ( () => {
-                minimap.set_array (Lines.model_to_array(lines_colview.lines));
+            lines_view_controller.mix_updated.connect ( () => {
+                minimap.set_array (LineStore.model_to_array(lines_view.lines));
             });
 
-            mmixer.mixing_progress_update.connect ( (fraction) => {
+            lines_view_controller.mixing_progress_update.connect ( (fraction) => {
                 if (fraction < 0.0 || fraction >= 1.0) {
                     tags_view.progress.set_fraction (0.0);
                 } else {
@@ -295,22 +295,22 @@ namespace Tags {
         private void setup_preferences () {
             var preferences = Preferences.instance ();
 
-            preferences.bind_property ("ln_visible", lines_colview.column_line_number, "visible", 
+            preferences.bind_property ("ln_visible", lines_view.column_line_number, "visible", 
                 BindingFlags.SYNC_CREATE | BindingFlags.BIDIRECTIONAL);
             preferences.bind_property ("minimap_visible", map_view, "reveal", 
                 BindingFlags.SYNC_CREATE | BindingFlags.BIDIRECTIONAL);
-            preferences.bind_property ("wrap_nlines", lines_colview, "wrap_nlines", 
+            preferences.bind_property ("wrap_nlines", lines_view, "wrap_nlines", 
                 BindingFlags.SYNC_CREATE | BindingFlags.BIDIRECTIONAL);
         }
 
         private void setup_lines_view () {
-            lines = new Lines ();
+            lines = new LineStore ();
             filter = new Tags.Filter (tags.model);
             filterer = new Filterer (lines, filter);
-            lines_colview = new LinesColumnView (filterer.model);
+            lines_view = new LinesView (filterer.model);
 
-            lines_colview.column_view.activate.connect ( (p) => {
-                var line = lines_colview.lines.get_item (p) as Line;
+            lines_view.column_view.activate.connect ( (p) => {
+                var line = lines_view.lines.get_item (p) as Line;
                 dialog_add_tag (line.text);
             });
         }
@@ -395,7 +395,7 @@ namespace Tags {
                     search_entry.grab_focus ();
                     action.change_state (new Variant.boolean (true));
                 }
-                lines_colview.selection_model.unselect_all ();
+                lines_view.selection_model.unselect_all ();
                 search_entry.remove_css_class ("error");
                 search_entry.remove_css_class ("warning");
                 search_entry.remove_css_class ("success");
@@ -405,7 +405,7 @@ namespace Tags {
                 if (search_entry.text.length <= 0) { return; }
 
                 uint index;
-                var line_selection = lines_colview.selection_model;
+                var line_selection = lines_view.selection_model;
                 var bitset = line_selection.get_selection ();
                 if (bitset.get_size () == 0) {
                     index = 0;
@@ -419,7 +419,7 @@ namespace Tags {
                     if (line.text.up ().contains (search_entry.text.up ())) {
                         line_selection.unselect_all ();
                         line_selection.select_item (i, true);
-                        lines_colview.column_view.scroll_to (i, null, Gtk.ListScrollFlags.SELECT, null);
+                        lines_view.column_view.scroll_to (i, null, Gtk.ListScrollFlags.SELECT, null);
                         toast_main.set_timeout (3);
                         toast_main.set_title (_("Found '%s' in line %u").printf (search_entry.text, line.number));
                         if (tags.check_if_pattern_exists (search_entry.text) == false) {
@@ -461,7 +461,7 @@ namespace Tags {
 
             var main_vbox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
             main_vbox.append (main_banner);
-            main_vbox.append (lines_colview);
+            main_vbox.append (lines_view);
 
             main_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
             main_box.append (main_vbox);
@@ -515,12 +515,12 @@ namespace Tags {
                         }
                     }
 
-                    mmixer.update_mixing ();
+                    lines_view_controller.update_mixing ();
                     filter.update ();
                     count_tag_hits ();
-                    minimap.set_array (Lines.model_to_array(lines_colview.lines));
+                    minimap.set_array (LineStore.model_to_array(lines_view.lines));
                 } else {
-                    lines_colview.set_visible (true);
+                    lines_view.set_visible (true);
                     show_dialog (_("Open File"), err_msg, _("_Close"));
                 }
             });
@@ -532,7 +532,7 @@ namespace Tags {
             bool from_selection = false;
 
             if (pattern == null) {
-                var bs = lines_colview.selection_model.get_selection ();
+                var bs = lines_view.selection_model.get_selection ();
                 if (bs.is_empty () == false) {
                     var line = filterer.model.get_item (bs.get_nth ((uint) bs.get_size () - 1)) as Line;
                     text = line.text;
@@ -544,16 +544,16 @@ namespace Tags {
 
             tag_dialog.added.connect ((tag, add_to_top) => {
                 tag.changed.connect (() => {
-                    mmixer.update_mixing ();
+                    lines_view_controller.update_mixing ();
                     filter.update ();
                     count_hits_for_tag (tag);
-                    minimap.set_array (Lines.model_to_array(lines_colview.lines));
+                    minimap.set_array (LineStore.model_to_array(lines_view.lines));
                 });
 
                 tags.add_tag (tag, add_to_top);
                 count_hits_for_tag (tag);
                 filter.update ();
-                minimap.set_array (Lines.model_to_array(lines_colview.lines));
+                minimap.set_array (LineStore.model_to_array(lines_view.lines));
             });
 
             tag_dialog.present (this);
@@ -569,7 +569,7 @@ namespace Tags {
         }
 
         public void action_add_tag_from_line () {
-            var bs = lines_colview.selection_model.get_selection ();
+            var bs = lines_view.selection_model.get_selection ();
             if (bs.is_empty ()) {
                 var toast = new Adw.Toast (_("No line selected to create tag"));
                 toast.set_timeout (3);
@@ -632,7 +632,7 @@ namespace Tags {
             file_tags = null;
             tags.remove_all ();
             filter.update ();
-            minimap.set_array (Lines.model_to_array(lines_colview.lines));
+            minimap.set_array (LineStore.model_to_array(lines_view.lines));
         }
 
         private void action_load_tags () {
@@ -656,11 +656,11 @@ namespace Tags {
                     var tag = ctx.tag;
                     tag.changed.connect (() => {
                         filter.update ();
-                        minimap.set_array (Lines.model_to_array(lines_colview.lines));
+                        minimap.set_array (LineStore.model_to_array(lines_view.lines));
                     });
                 }
                 filter.update ();
-                minimap.set_array (Lines.model_to_array (lines_colview.lines));
+                minimap.set_array (LineStore.model_to_array (lines_view.lines));
                 count_tag_hits ();
             });
         }
@@ -791,7 +791,7 @@ namespace Tags {
             action.change_state (new Variant.boolean ((bool) filter.active));
 
             Timeout.add (500, () => {
-                minimap.set_array (Lines.model_to_array(lines_colview.lines));
+                minimap.set_array (LineStore.model_to_array(lines_view.lines));
                 return false;
             });
 
@@ -812,7 +812,7 @@ namespace Tags {
         }
         
         private void action_copy () {
-            var text = lines_colview.get_selected_lines_as_string (); 
+            var text = lines_view.get_selected_lines_as_string (); 
             if (text.length > 0) {
                 get_clipboard ().set_text (text);
                 toast_main.set_button_label ("");
@@ -928,7 +928,7 @@ namespace Tags {
             var tag = row.context.tag;
             if (row.context.hits == 0 || tag.enabled == false) { return; }
 
-            var line_selection = lines_colview.selection_model;
+            var line_selection = lines_view.selection_model;
             var bitset = line_selection.get_selection ();
             if (bitset.get_size () == 0) {
                 index = filterer.model.get_n_items () - 1;
@@ -942,7 +942,7 @@ namespace Tags {
                 if (tag.applies_to (line.text)) {
                     line_selection.unselect_all ();
                     line_selection.select_item (i, true);
-                    lines_colview.column_view.scroll_to (i, null, Gtk.ListScrollFlags.SELECT, null);
+                    lines_view.column_view.scroll_to (i, null, Gtk.ListScrollFlags.SELECT, null);
                     toast_main.set_title (_("Found in line %u").printf (line.number));
                     toast_main.set_timeout (3);
                     toast_main.set_button_label (null);
@@ -968,7 +968,7 @@ namespace Tags {
             if (row.context.hits == 0 || tag.enabled == false) { return; }
 
 
-            var line_selection = lines_colview.selection_model;
+            var line_selection = lines_view.selection_model;
             var bitset = line_selection.get_selection ();
             if (bitset.get_size () == 0) {
                 index = 0;
@@ -982,7 +982,7 @@ namespace Tags {
                 if (tag.applies_to (line.text)) {
                     line_selection.unselect_all ();
                     line_selection.select_item (i, true);
-                    lines_colview.column_view.scroll_to (i, null, Gtk.ListScrollFlags.SELECT, null);
+                    lines_view.column_view.scroll_to (i, null, Gtk.ListScrollFlags.SELECT, null);
                     toast_main.set_title (_("Found in line %u").printf (line.number));
                     toast_main.set_timeout (3);
                     toast_main.set_button_label (null);
@@ -1066,21 +1066,21 @@ namespace Tags {
         }
 
         private void action_toggle_line_wrap () {
-            lines_colview.wrap_lines = !lines_colview.wrap_lines;
+            lines_view.wrap_lines = !lines_view.wrap_lines;
             var action = this.lookup_action ("action_toggle_line_wrap");
             //bind property !
-            action.change_state (new Variant.boolean (lines_colview.wrap_lines));
+            action.change_state (new Variant.boolean (lines_view.wrap_lines));
         }
 
         private void action_wrap_nlines_inc () {
-            if (lines_colview.wrap_nlines < 10) {
-                lines_colview.wrap_nlines += 1;
+            if (lines_view.wrap_nlines < 10) {
+                lines_view.wrap_nlines += 1;
             }
         }
 
         private void action_wrap_nlines_dec () {
-            if (lines_colview.wrap_nlines > 2) {
-                lines_colview.wrap_nlines -= 1;
+            if (lines_view.wrap_nlines > 2) {
+                lines_view.wrap_nlines -= 1;
             }
         }
 

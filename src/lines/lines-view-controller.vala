@@ -1,7 +1,7 @@
 /* -*- Mode: Vala; indent-tabs-mode: nil; c-basic-offset: 4; tab-width: 4 -*- */
 /* vim: set tabstop=4 softtabstop=4 shiftwidth=4 expandtab :                  */
 /*
- * model-mixer.vala
+ * lines-view-controller.vala
  *
  * Mixer/Controller for Lines and Tags models
  *
@@ -9,7 +9,7 @@
  */
 
 namespace Tags {
-    public class ModelMixer : GLib.Object {
+    public class LinesViewController : GLib.Object {
         public TagStore tags;
         public Filterer? filterer;
         public GLib.ListModel lines_model;
@@ -20,7 +20,7 @@ namespace Tags {
         public signal void mix_updated ();
         public signal void mixing_progress_update (double progress);
 
-        public ModelMixer (GLib.ListModel lines_model, TagStore tags, Filterer? filterer = null) {
+        public LinesViewController (GLib.ListModel lines_model, TagStore tags, Filterer? filterer = null) {
             this.lines_model = lines_model;
             this.tags = tags;
             this.filterer = filterer;
