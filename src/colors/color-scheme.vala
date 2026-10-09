@@ -19,7 +19,7 @@ namespace Tags {
 
         public string name {
             get { return _name; }
-            set { _name = value; changed (); }
+            set { _name = value; /*changed ();*/ }
         }
             
         public Gdk.RGBA? fg {

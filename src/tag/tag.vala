@@ -10,38 +10,54 @@
 
 namespace Tags {
 
-    /*
     public class TagBuilder {
-        private bool _enabled = true;
-        private string? _pattern = null;
-        private string? _description = null;
-        private bool _is_regex = false;
-        private bool _is_case_sensitive = false;
+        public ColorScheme  colors;
+        public bool         enabled             = true;
+        public string?      pattern             = null;
+        public string?      description         = null;
+        public bool         is_regex            = false;
+        public bool         is_case_sensitive   = false;
 
-        public TagBuilder () {
-
+        public TagBuilder (ColorScheme colors) {
+            this.colors = colors;
         }
 
-        public TagBuilder set_enabled (bool enabled) {
-            _enabled = enabled;
+        /* FIXME: We should be be able to instantiate a TagBuilder without a pattern */
+        public TagBuilder set_pattern (string pattern) requires (pattern != null) {
+            this.pattern = pattern;
             return this;
         }
 
-        public TagBuilder set_description (string? description) requires (description != null) {
-            _description = description;
+        public TagBuilder set_description (string? description) {
+            this.description = description;
+            return this;
+        }
+
+        public TagBuilder set_enabled (bool enabled) {
+            this.enabled = enabled;
+            return this;
+        }
+
+        public TagBuilder set_is_regex (bool is_regex) {
+            this.is_regex = is_regex;
+            return this;
+        }
+
+        public TagBuilder set_is_case_sensitive (bool is_case_sensitive) {
+            this.is_case_sensitive = is_case_sensitive;
+            return this;
+        }
+
+        public TagBuilder set_colors (ColorScheme colors) {
+            this.colors = colors;
             return this;
         }
 
         public Tag build () {
-
-            Tag tag = new Tag ();
-            tag.enabled =  _enabled;
-
-            return tag;
+            return new Tag (this);
         }
 
     }
-    */
 
     public class Tag : Object {
 
@@ -75,7 +91,7 @@ namespace Tags {
             }
         }
 
-        public string? description{
+        public string? description {
             get {
                 return _description;
             }
@@ -83,7 +99,7 @@ namespace Tags {
                 _description = value;
                 changed ();
             }
-        } 
+        }
 
         public bool is_regex {
             get {
@@ -116,13 +132,14 @@ namespace Tags {
             uuid = Tags.Common.generate_uuid ();
         }
 
-        public Tag (string pattern, string description, ColorScheme colors) {
-            _pattern = pattern;
-            _description = description;
-            _is_regex = false;
-            _is_case_sensitive = false;
+        public Tag (TagBuilder builder) {
+            _pattern = builder.pattern;
+            _description = builder.description;
+            _enabled = builder.enabled;
+            _is_regex = builder.is_regex;
+            _is_case_sensitive = builder.is_case_sensitive;
 
-            this.colors = colors;
+            this.colors = builder.colors;
 
             this.colors.changed.connect (() => {
                 changed ();
@@ -156,5 +173,6 @@ namespace Tags {
                 return is_case_sensitive ? text.contains (pattern) : text.up ().contains (pattern.up ());
             }
         }
+
     }
 }

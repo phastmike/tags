@@ -88,17 +88,17 @@ namespace Tags {
             }
 
             row_btn_add_tag.activated.connect (() => {
-                var pattern = entry_tag_pattern.get_text ();
-                var description = entry_tag_name.get_text ();
-                var fg_color = button_fg_color.get_rgba ();
-                var bg_color = button_bg_color.get_rgba ();
+                var tag_builder = new TagBuilder (
+                            new ColorScheme ("default",
+                            button_fg_color.get_rgba (),
+                            button_bg_color.get_rgba ())
+                    ).
+                    set_pattern (entry_tag_pattern.get_text ()).
+                    set_description (entry_tag_name.get_text ()).
+                    set_is_regex (row_regex.get_active ()).
+                    set_is_case_sensitive (row_case.get_active ());
 
-                var color_scheme = new ColorScheme ("default", fg_color, bg_color);
-                var tag = new Tag (pattern, description, color_scheme); 
-
-                // Use a builder class ?
-                tag.is_regex = row_regex.get_active ();
-                tag.is_case_sensitive = row_case.get_active ();
+                var tag = tag_builder.build ();
 
                 bool add_to_top = switch_atop.get_active ();
 
@@ -106,7 +106,7 @@ namespace Tags {
 
                 close ();
             });
-            
+
             entry_tag_pattern.changed.connect (validate_entries);
             entry_tag_name.changed.connect (validate_entries);
 
