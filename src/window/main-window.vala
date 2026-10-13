@@ -255,44 +255,37 @@ namespace Tags {
         }
 
         private void setup_tags_view () {
+            /* MODEL/STORE */
             tags = new TagStore ();
+
+            tags.added.connect ( (tag) => {
+                tag.changed.connect (() => {
+                    lines_view_controller.update_mixing ();
+                    filter.update ();
+                    lines_view_controller.count_hits_for_tag (tag);
+                    minimap.set_array (LineStore.model_to_array(lines_view.lines));
+                });
+
+                lines_view_controller.count_hits_for_tag (tag);
+                filter.update ();
+                minimap.set_array (LineStore.model_to_array(lines_view.lines));
+            });
+
+            tags.deleted.connect ( (tag) => {
+                lines_view_controller.update_mixing ();
+                filter.update ();
+                minimap.set_array (LineStore.model_to_array(lines_view.lines));
+            });
+
+            /* VIEW */
             tags_view = new TagsView (tags);
 
             tags_view.listbox.row_activated.connect ( (r) => {
                 if (!tags_edit_mode) { return; }
                 var tag = ((TagRow) r).context.tag;
-                var tag_dialog = new TagDialog.for_editing (tag);
-
-                tag_dialog.edit_tag.connect ((t) => {
-                    count_tag_hits ();
-                    filter.update ();
-                    minimap.set_array (LineStore.model_to_array (lines_view.lines));
-                });
-
-                tag_dialog.delete_tag.connect ((tag) => {
-                    var dialog = new Adw.AlertDialog (_("Remove Tag"), _("Remove tag from the list?"));
-                    dialog.set_prefer_wide_layout (true);
-                    dialog.add_response ("cancel", _("_Cancel"));
-                    dialog.add_response ("remove", _("_Remove"));
-                    dialog.set_response_appearance ("remove", Adw.ResponseAppearance.DESTRUCTIVE);
-                    dialog.set_default_response ("cancel");
-                    dialog.set_close_response ("cancel");
-                    dialog.present (tag_dialog);
-                    dialog.response.connect ((response) => {
-                        if (response == "remove") {
-                            tag_dialog.close ();
-                            tag_dialog.destroy ();
-                            tags.remove_tag (tag);
-
-                            filter.update ();
-                            minimap.set_array (LineStore.model_to_array(lines_view.lines));
-
-                        }
-                    });
-                });
-
-                tag_dialog.present (this);
+                dialog_edit_tag (tag);
             });
+
         }
 
         private void setup_lines_view () {
@@ -523,7 +516,7 @@ namespace Tags {
 
                     lines_view_controller.update_mixing ();
                     filter.update ();
-                    count_tag_hits ();
+                    lines_view_controller.count_tag_hits ();
                     minimap.set_array (LineStore.model_to_array(lines_view.lines));
                 } else {
                     lines_view.set_visible (true);
@@ -549,17 +542,44 @@ namespace Tags {
             tag_dialog = new TagDialog (text, from_selection);
 
             tag_dialog.add_tag.connect ((tag, add_to_top) => {
-                tag.changed.connect (() => {
-                    lines_view_controller.update_mixing ();
-                    filter.update ();
-                    count_hits_for_tag (tag);
-                    minimap.set_array (LineStore.model_to_array(lines_view.lines));
-                });
-
                 tags.add_tag (tag, add_to_top);
-                count_hits_for_tag (tag);
+            });
+
+            tag_dialog.present (this);
+        }
+
+        private void dialog_edit_tag (Tag tag) {
+            var tag_dialog = new TagDialog.for_editing (tag);
+
+            /*
+            tag_dialog.edit_tag.connect ((t) => {
+                lines_view_controller.count_tag_hits ();
                 filter.update ();
-                minimap.set_array (LineStore.model_to_array(lines_view.lines));
+                minimap.set_array (LineStore.model_to_array (lines_view.lines));
+            });
+            */
+
+            tag_dialog.delete_tag.connect ((tag) => {
+                var dialog = new Adw.AlertDialog (_("Remove Tag"), _("Remove tag from the list?"));
+                dialog.set_prefer_wide_layout (true);
+                dialog.add_response ("cancel", _("_Cancel"));
+                dialog.add_response ("remove", _("_Remove"));
+                dialog.set_response_appearance ("remove", Adw.ResponseAppearance.DESTRUCTIVE);
+                dialog.set_default_response ("cancel");
+                dialog.set_close_response ("cancel");
+                dialog.present (tag_dialog);
+                dialog.response.connect ((response) => {
+                    if (response == "remove") {
+                        tag_dialog.close ();
+                        tag_dialog.destroy ();
+                        tags.remove_tag (tag);
+
+                        /*
+                        filter.update ();
+                        minimap.set_array (LineStore.model_to_array(lines_view.lines));
+                        */
+                    }
+                });
             });
 
             tag_dialog.present (this);
@@ -667,7 +687,7 @@ namespace Tags {
                 }
                 filter.update ();
                 minimap.set_array (LineStore.model_to_array (lines_view.lines));
-                count_tag_hits ();
+                lines_view_controller.count_tag_hits ();
             });
         }
 
@@ -752,32 +772,6 @@ namespace Tags {
         private void action_show_fileinfo () {
             if (file_opened == null) { return; }
             new FileInfoDialog (file_opened, lines).present (this);
-        }
-
-        /* FIXME: This needs to be optimized */
-        private void count_hits_for_tag (Tag tag) {
-            var ctx = tags.get_context_for_tag (tag);
-            ctx.hit_counter.reset ();
-            for (uint i = 0; i < lines.model.get_n_items (); i++) {
-                var line = lines.model.get_item (i) as Line;
-                if (tag.applies_to (line.text)) {
-                    ctx.hit_counter.increment ();
-                }
-            }
-        }
-
-        private void count_tag_hits () {
-            tags.hitcounter_reset_all ();
-            for (uint i = 0; i < lines.model.get_n_items (); i++) {
-                var line = lines.model.get_item (i) as Line;
-                for (uint j = 0; j < tags.n_items; j++) {
-                    var ctx = tags.model.get_object (j) as TagContext;
-                    var tag = ctx.tag;
-                    if (tag.applies_to (line.text)) {
-                        ctx.hit_counter.increment ();
-                    }
-                }
-            }
         }
 
         private void action_hide_untagged_lines () {

@@ -130,6 +130,7 @@ namespace Tags {
             if (tag.colors.bg != null ) button_bg_color.set_rgba (tag.colors.bg);
 
             row_btn_edit_tag.activated.connect (() => { 
+                /* FIXME: Here we trigger many signals, but we should only trigger one signal with the new tag data. */
                 tag.pattern = entry_tag_pattern.get_text ();
                 tag.description = entry_tag_name.get_text ();
                 tag.colors.fg = button_fg_color.get_rgba ();

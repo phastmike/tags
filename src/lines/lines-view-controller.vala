@@ -118,6 +118,31 @@ namespace Tags {
             }
         }
 
+        public void count_hits_for_tag (Tag tag) {
+            var ctx = tags.get_context_for_tag (tag);
+            ctx.hit_counter.reset ();
+            for (uint i = 0; i < lines_model.get_n_items (); i++) {
+                var line = lines_model.get_item (i) as Line;
+                if (tag.applies_to (line.text)) {
+                    ctx.hit_counter.increment ();
+                }
+            }
+        }
+
+        public void count_tag_hits () {
+            tags.hitcounter_reset_all ();
+            for (uint i = 0; i < lines_model.get_n_items (); i++) {
+                var line = lines_model.get_item (i) as Line;
+                for (uint j = 0; j < tags.n_items; j++) {
+                    var ctx = tags.model.get_object (j) as TagContext;
+                    var tag = ctx.tag;
+                    if (tag.applies_to (line.text)) {
+                        ctx.hit_counter.increment ();
+                    }
+                }
+            }
+        }
+
     }
 }
 

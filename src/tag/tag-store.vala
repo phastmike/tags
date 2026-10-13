@@ -43,8 +43,8 @@ namespace Tags {
 
         public void hitcounter_reset_all () {
             for (uint j = 0; j < n_items; j++) {
-                var ctx = model.get_item (j) as TagContext;
-                ctx.hit_counter.reset();
+                var tag_ctx = model.get_item (j) as TagContext;
+                tag_ctx.hit_counter.reset();
             }
         }
 
@@ -171,7 +171,6 @@ namespace Tags {
                     array = node.get_array ();
                     array.foreach_element ((array, index_, element_node) => {
                         var tag = Json.gobject_deserialize (typeof (Tag), element_node) as Tag;
-                        //tag.dump_to_console ();
                         add_tag (tag);
                     });
                     if (preserve_load == false) have_changed = false;
