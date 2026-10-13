@@ -27,6 +27,8 @@ namespace Tags {
 
         public Filter (GLib.ListModel tags) {
             this.tags = tags;
+
+            /* This only covers additions and removals, not changes to the tag itself */
             this.tags.items_changed.connect ( (pos, add, removed) => {
                 changed (Gtk.FilterChange.DIFFERENT);
 

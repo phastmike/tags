@@ -90,7 +90,7 @@ namespace Tags {
 
         public void update_mixing_for_line (Line line) {
             line.tag = null;
-            for (uint j = 0; j < tags.ntags; j++) {
+            for (uint j = 0; j < tags.n_items; j++) {
                 var ctx = tags.model.get_item (j) as TagContext;
                 var tag = ctx.tag;
                 // Tag should be applied even with enabled = false
@@ -107,7 +107,7 @@ namespace Tags {
             for (uint i = 0; i < lines_model.get_n_items (); i++) {
                 var line = lines_model.get_item (i) as Line;
                 line.tag = null;
-                for (uint j = 0; j < tags.ntags; j++) {
+                for (uint j = 0; j < tags.n_items; j++) {
                     var ctx = tags.model.get_item (j) as TagContext;
                     var tag = ctx.tag;
                     if (tag.applies_to (line.text) && tag.enabled) {

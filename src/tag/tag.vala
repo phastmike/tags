@@ -59,6 +59,10 @@ namespace Tags {
 
     }
 
+    /*************************************************************************/
+    /* TAG CLASS                                                             */
+    /*************************************************************************/
+
     public class Tag : Object {
 
         private bool    _enabled            = true;
@@ -75,6 +79,7 @@ namespace Tags {
                 return _enabled;
             }
             set {
+                if (_enabled == value) return;
                 _enabled = value;
                 changed ();
                 enable_changed (enabled);
@@ -86,6 +91,7 @@ namespace Tags {
                 return _pattern;
             }
             set {
+                if (_pattern == value) return;
                 _pattern = value;
                 changed ();
             }
@@ -96,6 +102,7 @@ namespace Tags {
                 return _description;
             }
             set {
+                if (_description == value) return;
                 _description = value;
                 changed ();
             }
@@ -106,6 +113,7 @@ namespace Tags {
                 return _is_regex;
             }
             set {
+                if (_is_regex == value) return;
                 _is_regex = value;
                 changed ();
             }
@@ -116,6 +124,7 @@ namespace Tags {
                 return _is_case_sensitive;
             }
             set {
+                if (_is_case_sensitive == value) return;
                 _is_case_sensitive = value;
                 changed ();
             }
@@ -147,16 +156,6 @@ namespace Tags {
         }
 
         /* METHODS */
-
-        public void dump_to_console () {
-            stdout.printf ("Tag: %s\n", pattern);
-            stdout.printf ("Description: %s\n", description);
-            stdout.printf ("Enabled: %s\n", enabled ? "true" : "false");
-            stdout.printf ("Is Regex: %s\n", is_regex ? "true" : "false");
-            stdout.printf ("Is Case Sensitive: %s\n", is_case_sensitive ? "true" : "false");
-            stdout.printf ("Colors:\n");
-            colors.dump_to_console ();
-        }
 
         public bool applies_to (string? text = null) {
             if (text == null) return false;

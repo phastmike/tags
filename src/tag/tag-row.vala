@@ -34,7 +34,7 @@ namespace Tags {
             set_tooltip_text (tag.description);
             subtitle.label = tag.pattern;
 
-            hitcounter.label = "%u".printf (context.hits);
+            hitcounter.label = "%u".printf (context.hit_counter.count);
 
             if (tag.description.length == 0) {
                 title.visible = false;
@@ -46,7 +46,7 @@ namespace Tags {
                  title, "label", BindingFlags.SYNC_CREATE);
             tag.bind_property ("pattern",
                  subtitle, "label", BindingFlags.SYNC_CREATE);
-            context.bind_property ("hits",
+            context.hit_counter.bind_property ("count",
                  hitcounter, "label", BindingFlags.SYNC_CREATE,
                  (binding, source_value, ref target_value) => {
                     target_value.set_string (source_value.get_uint ().to_string ());

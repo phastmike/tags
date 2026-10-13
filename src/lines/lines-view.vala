@@ -29,8 +29,8 @@ namespace Tags {
         public Gtk.MultiSelection selection_model;
 
         private bool _wrap_lines = false;
-        private const int _wrap_height = 18;
         private uint _wrap_nlines = 2;
+        private const int _wrap_height = 18;
 
         public  bool wrap_lines {
             get { return _wrap_lines; }

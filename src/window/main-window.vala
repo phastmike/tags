@@ -121,62 +121,13 @@ namespace Tags {
             save_tagged_disable ();
             show_fileinfo_disable ();
 
-            tags = new TagStore ();
-            tags_view = new TagsView (tags);
-
-            tags_view.listbox.row_activated.connect ( (r) => {
-                if (!tags_edit_mode) { return; }
-                var tag = ((TagRow) r).context.tag;
-                var tag_dialog = new TagDialog.for_editing (tag);
-
-                tag_dialog.edited.connect ((t) => {
-                    count_tag_hits ();
-                    filter.update ();
-                    minimap.set_array (LineStore.model_to_array (lines_view.lines));
-                });
-
-                tag_dialog.deleted.connect ((tag) => {
-                    var dialog = new Adw.AlertDialog (_("Remove Tag"), _("Remove tag from the list?"));
-                    dialog.set_prefer_wide_layout (true);
-                    dialog.add_response ("cancel", _("_Cancel"));
-                    dialog.add_response ("remove", _("_Remove"));
-                    dialog.set_response_appearance ("remove", Adw.ResponseAppearance.DESTRUCTIVE);
-                    dialog.set_default_response ("cancel");
-                    dialog.set_close_response ("cancel");
-                    dialog.present (tag_dialog);
-                    dialog.response.connect ((response) => {
-                        if (response == "remove") {
-                            tag_dialog.close ();
-                            tag_dialog.destroy ();
-                            tags.remove_tag (tag);
-                            filter.update ();
-                            minimap.set_array (LineStore.model_to_array(lines_view.lines));
-                        }
-                    });
-                });
-
-                tag_dialog.present (this);
-            });
-
+            setup_tags_view ();
             setup_lines_view ();
             setup_minimap (lines_view.scrolled.get_vadjustment ());
             setup_search ();
             setup_main_box ();
             setup_buttons ();
 
-            lines_view_controller = new Tags.LinesViewController (lines.model, tags, filterer);
-
-            lines_view_controller.mix_updated.connect ( () => {
-                minimap.set_array (LineStore.model_to_array(lines_view.lines));
-            });
-
-            lines_view_controller.mixing_progress_update.connect ( (fraction) => {
-                if (fraction < 0.0 || fraction >= 1.0) {
-                    tags_view.progress.set_fraction (0.0);
-                } else {
-                    tags_view.progress.set_fraction (fraction);
-                }
-            });
 
             stack = new Gtk.Stack ();
             stack.add_named (new WelcomeView (), "welcome");
@@ -282,7 +233,7 @@ namespace Tags {
         public bool delegate_line_filter_callback (string? text) {
             if (text == null) return false;
 
-            for (uint i = 0; i < tags.ntags; i++) {
+            for (uint i = 0; i < tags.n_items; i++) {
                 var ctx = tags.model.get_object (i) as TagContext; 
                 if (ctx.tag.enabled == true && ctx.tag.applies_to (text)) {
                     return true;
@@ -303,6 +254,47 @@ namespace Tags {
                 BindingFlags.SYNC_CREATE | BindingFlags.BIDIRECTIONAL);
         }
 
+        private void setup_tags_view () {
+            tags = new TagStore ();
+            tags_view = new TagsView (tags);
+
+            tags_view.listbox.row_activated.connect ( (r) => {
+                if (!tags_edit_mode) { return; }
+                var tag = ((TagRow) r).context.tag;
+                var tag_dialog = new TagDialog.for_editing (tag);
+
+                tag_dialog.edit_tag.connect ((t) => {
+                    count_tag_hits ();
+                    filter.update ();
+                    minimap.set_array (LineStore.model_to_array (lines_view.lines));
+                });
+
+                tag_dialog.delete_tag.connect ((tag) => {
+                    var dialog = new Adw.AlertDialog (_("Remove Tag"), _("Remove tag from the list?"));
+                    dialog.set_prefer_wide_layout (true);
+                    dialog.add_response ("cancel", _("_Cancel"));
+                    dialog.add_response ("remove", _("_Remove"));
+                    dialog.set_response_appearance ("remove", Adw.ResponseAppearance.DESTRUCTIVE);
+                    dialog.set_default_response ("cancel");
+                    dialog.set_close_response ("cancel");
+                    dialog.present (tag_dialog);
+                    dialog.response.connect ((response) => {
+                        if (response == "remove") {
+                            tag_dialog.close ();
+                            tag_dialog.destroy ();
+                            tags.remove_tag (tag);
+
+                            filter.update ();
+                            minimap.set_array (LineStore.model_to_array(lines_view.lines));
+
+                        }
+                    });
+                });
+
+                tag_dialog.present (this);
+            });
+        }
+
         private void setup_lines_view () {
             lines = new LineStore ();
             filter = new Tags.Filter (tags.model);
@@ -313,11 +305,25 @@ namespace Tags {
                 var line = lines_view.lines.get_item (p) as Line;
                 dialog_add_tag (line.text);
             });
+
+            lines_view_controller = new Tags.LinesViewController (lines.model, tags, filterer);
+
+            lines_view_controller.mix_updated.connect ( () => {
+                minimap.set_array (LineStore.model_to_array(lines_view.lines));
+            });
+
+            lines_view_controller.mixing_progress_update.connect ( (fraction) => {
+                if (fraction < 0.0 || fraction >= 1.0) {
+                    tags_view.progress.set_fraction (0.0);
+                } else {
+                    tags_view.progress.set_fraction (fraction);
+                }
+            });
         }
 
         private void setup_buttons () {
             close_request.connect ( () => {
-                if (tags.ntags > 0 && tags.have_changed) {
+                if (tags.n_items > 0 && tags.have_changed) {
                     var dialog = new Adw.AlertDialog (_("Tags changed"), _("There are unsaved changes"));
                     dialog.add_response ("cancel", _("_Cancel"));
                     dialog.add_response ("discard", _("_Discard"));
@@ -542,7 +548,7 @@ namespace Tags {
 
             tag_dialog = new TagDialog (text, from_selection);
 
-            tag_dialog.added.connect ((tag, add_to_top) => {
+            tag_dialog.add_tag.connect ((tag, add_to_top) => {
                 tag.changed.connect (() => {
                     lines_view_controller.update_mixing ();
                     filter.update ();
@@ -581,7 +587,7 @@ namespace Tags {
         }
 
         private void action_remove_all_tags () {
-            if (tags.ntags == 0) {
+            if (tags.n_items == 0) {
                 var toast = new Adw.Toast (_("No tags to remove"));
                 toast.set_timeout (3);
                 overlay.add_toast (toast);
@@ -651,7 +657,7 @@ namespace Tags {
 
         private void load_tags_from_file (File file, bool import = false) {
             tags.from_file.begin  (file, null, import, (obj, res) => {
-                for (int i = 0; i < tags.ntags; i++) {
+                for (int i = 0; i < tags.n_items; i++) {
                     var ctx = tags.model.get_object (i) as TagContext;
                     var tag = ctx.tag;
                     tag.changed.connect (() => {
@@ -671,7 +677,7 @@ namespace Tags {
         }
 
         private void action_save_tags () {
-            if (tags.ntags == 0) {
+            if (tags.n_items == 0) {
                 var toast = new Adw.Toast (_("No tags to save"));
                 toast.set_timeout (3);
                 overlay.add_toast (toast);
@@ -748,13 +754,14 @@ namespace Tags {
             new FileInfoDialog (file_opened, lines).present (this);
         }
 
+        /* FIXME: This needs to be optimized */
         private void count_hits_for_tag (Tag tag) {
             var ctx = tags.get_context_for_tag (tag);
-            ctx.hits = 0;
+            ctx.hit_counter.reset ();
             for (uint i = 0; i < lines.model.get_n_items (); i++) {
                 var line = lines.model.get_item (i) as Line;
                 if (tag.applies_to (line.text)) {
-                    ctx.hits += 1;
+                    ctx.hit_counter.increment ();
                 }
             }
         }
@@ -763,11 +770,11 @@ namespace Tags {
             tags.hitcounter_reset_all ();
             for (uint i = 0; i < lines.model.get_n_items (); i++) {
                 var line = lines.model.get_item (i) as Line;
-                for (uint j = 0; j < tags.ntags; j++) {
+                for (uint j = 0; j < tags.n_items; j++) {
                     var ctx = tags.model.get_object (j) as TagContext;
                     var tag = ctx.tag;
                     if (tag.applies_to (line.text)) {
-                        ctx.hits += 1;
+                        ctx.hit_counter.increment ();
                     }
                 }
             }
@@ -926,7 +933,7 @@ namespace Tags {
             var row = (TagRow) tags_view.listbox.get_selected_row ();
             if (row == null) { return; }
             var tag = row.context.tag;
-            if (row.context.hits == 0 || tag.enabled == false) { return; }
+            if (row.context.hit_counter.is_zero () || tag.enabled == false) { return; }
 
             var line_selection = lines_view.selection_model;
             var bitset = line_selection.get_selection ();
@@ -965,7 +972,7 @@ namespace Tags {
             var row = (TagRow) tags_view.listbox.get_selected_row ();
             if (row == null) { return; }
             var tag = row.context.tag;
-            if (row.context.hits == 0 || tag.enabled == false) { return; }
+            if (row.context.hit_counter.is_zero () || tag.enabled == false) { return; }
 
 
             var line_selection = lines_view.selection_model;
@@ -1022,7 +1029,7 @@ namespace Tags {
         }
 
         private void action_open_file () {
-            if (tags.ntags > 0 && tags.have_changed && Preferences.instance ().tags_autoload == true) {
+            if (tags.n_items > 0 && tags.have_changed && Preferences.instance ().tags_autoload == true) {
                 var dialog = new Adw.AlertDialog (
                     _("Tags changed"),
                     _("There are unsaved changes")
@@ -1053,7 +1060,7 @@ namespace Tags {
         }
 
         private void action_toggle_edit_mode () {
-            if (tags.ntags == 0) {
+            if (tags.n_items == 0) {
                 var toast = new Adw.Toast (_("No tags to edit"));
                 toast.set_timeout (3);
                 overlay.add_toast (toast);

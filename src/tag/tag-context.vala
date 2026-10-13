@@ -4,16 +4,45 @@
  * tag-context.vala
  *
  * Tag context (view model) for tag 
+ * Also contains a counter class for the hit counter.
  *
  * José Miguel Fonte
  */
 
 namespace Tags {
 
+    public class Counter : Object {
+        public uint count { get; private set; default = 0; }
+
+        public Counter () {
+            reset ();
+        }
+
+        public void increment () {
+            if (count < uint.MAX) {
+                count++;
+            }
+        }
+
+        public void decrement () {
+            if (count > 0) {
+                count--;
+            }
+        }
+
+        public void reset () {
+            count = 0;
+        }
+
+        public bool is_zero () {
+            return count == 0;
+        }
+    }
+
     public class TagContext : Object {
         public Tag              tag             { get; private set; }
-        public uint             hits            { get; set; default = 0; }
-        public Gtk.CssProvider  css_provider    { get; private set; }
+        public Counter          hit_counter     { get; private set; default = new Counter (); }
+        public Gtk.CssProvider  css_provider    { get; private set; default = new Gtk.CssProvider (); }
 
         private const string STYLE_PREFIX_ROW  = "row-";
         public  const string STYLE_PREFIX_LINE = "tag-";
@@ -31,8 +60,6 @@ namespace Tags {
 
         public TagContext (Tag tag) requires (tag != null) {
             this.tag = tag;
-            css_provider = new Gtk.CssProvider ();
-
             update_css ();
             this.tag.colors.changed.connect (update_css);
         }
@@ -83,7 +110,7 @@ namespace Tags {
                             get_style_name_for_tag (tag),
                             get_style_name_for_tag (tag)
                            );
-            
+
             css_provider.load_from_string (css_row + css_line);
         }
     }

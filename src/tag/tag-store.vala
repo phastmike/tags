@@ -4,6 +4,8 @@
  * tag-store.vala
  *
  * Class containing tags - the TagStore 
+ * A wrapper around a ListStore containing TagContext objects
+ * Persisted tag instantiation via deserialization from a JSON file
  *
  * José Miguel Fonte
  */
@@ -18,7 +20,7 @@ namespace Tags {
             }
         }
 
-        public uint ntags {
+        public uint n_items {
             get {
                 return model.get_n_items ();
             }
@@ -26,20 +28,29 @@ namespace Tags {
 
         public bool have_changed { get; set; default = false; }
 
+        /* SIGNALS */
+
+        public signal void added   (Tag tag);
+        public signal void deleted (Tag tag);
+
+        /* CONSTRUCTOR */
+
         public TagStore () {
             store = new ListStore (typeof(TagContext));
         }
 
+        /* METHODS */
+
         public void hitcounter_reset_all () {
-            for (uint j = 0; j < ntags; j++) {
+            for (uint j = 0; j < n_items; j++) {
                 var ctx = model.get_item (j) as TagContext;
-                ctx.hits = 0;
+                ctx.hit_counter.reset();
             }
         }
 
         // Auxiliary method to toggle tags by number (0-9) for keyboard shortcuts
         public void toggle_tag (int nr) requires (nr >= 0 && nr <= 9) {
-            if (nr >= ntags) return;
+            if (nr >= n_items) return;
             var ctx = model.get_item (nr) as TagContext;
             var tag = ctx.tag;
             tag.enabled = !tag.enabled;
@@ -61,9 +72,12 @@ namespace Tags {
             );
 
             have_changed = true;
+
             tag.changed.connect (() => {
                 have_changed = true;
             });
+
+            added (tag);
         }
 
         public void remove_tag (Tag to_remove) {
@@ -71,6 +85,7 @@ namespace Tags {
                 var ctx = store.get_object (i) as TagContext;
                 var tag = ctx.tag;
                 if (tag == to_remove) {
+                    deleted (tag); /* RUN FIRST: emit signal before removing */
                     Gtk.StyleContext.remove_provider_for_display (
                         Gdk.Display.get_default (), ctx.css_provider
                     );
@@ -90,6 +105,12 @@ namespace Tags {
         }
 
         public void remove_all () {
+            for (var i = 0; i < store.get_n_items (); i++) {
+                var ctx = store.get_object (i) as TagContext;
+                Gtk.StyleContext.remove_provider_for_display (
+                    Gdk.Display.get_default (), ctx.css_provider
+                );
+            }
             store.remove_all ();
             have_changed = false;
         }

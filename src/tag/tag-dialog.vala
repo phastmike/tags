@@ -44,9 +44,9 @@ namespace Tags {
         private Gtk.CssProvider provider;
         private const string css_class = "color_scheme_example";
 
-        public signal void added (Tag tag, bool add_to_top);
-        public signal void edited (Tag tag);
-        public signal void deleted (Tag tag);
+        public signal void add_tag (Tag tag, bool add_to_top);
+        public signal void edit_tag (Tag tag);
+        public signal void delete_tag (Tag tag);
 
         construct {
             provider = new Gtk.CssProvider ();
@@ -98,12 +98,7 @@ namespace Tags {
                     set_is_regex (row_regex.get_active ()).
                     set_is_case_sensitive (row_case.get_active ());
 
-                var tag = tag_builder.build ();
-
-                bool add_to_top = switch_atop.get_active ();
-
-                added (tag, add_to_top);
-
+                add_tag (tag_builder.build (), switch_atop.get_active ());
                 close ();
             });
 
@@ -141,12 +136,12 @@ namespace Tags {
                 tag.colors.bg = button_bg_color.get_rgba ();
                 tag.is_regex = row_regex.get_active ();
                 tag.is_case_sensitive = row_case.get_active ();
-                edited (tag);
+                edit_tag (tag);
                 close ();
             });
             
             row_btn_delete_tag.activated.connect (() => {
-                deleted(tag);
+                delete_tag (tag);
             });
 
             entry_tag_pattern.changed.connect (validate_entries);

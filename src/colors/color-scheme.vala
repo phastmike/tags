@@ -19,19 +19,34 @@ namespace Tags {
 
         public string name {
             get { return _name; }
-            set { _name = value; /*changed ();*/ }
+            set {
+                if (_name != value) {
+                    _name = value;
+                    changed ();
+                }
+            }
         }
             
         public Gdk.RGBA? fg {
             get { return _fg; }
-            set { _fg = value; changed (); }
+            set {
+                if (_fg != value) {
+                    _fg = value;
+                     changed ();
+                }
+            }
         }
 
         public Gdk.RGBA? bg {
             get { return _bg; }
-            set { _bg = value; changed (); }
+            set {
+                if (_bg != value) {
+                    _bg = value;
+                     changed ();
+                }
+            }
         }
-        
+
         /* SIGNALS */
 
         public signal void changed ();
@@ -42,12 +57,6 @@ namespace Tags {
             _name = name;
             _fg = fg;
             _bg = bg;
-        }
-
-        public void dump_to_console () {
-            stdout.printf ("ColorScheme: %s\n", _name);
-            stdout.printf ("  fg: %s\n", _fg.to_string ());
-            stdout.printf ("  bg: %s\n", _bg.to_string ());
         }
 
         /* Json.Serializable methods */
