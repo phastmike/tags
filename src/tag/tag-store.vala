@@ -77,6 +77,21 @@ namespace Tags {
                 have_changed = true;
             });
 
+            tag.enable_changed.connect (() => {
+                if (tag.enabled) {
+                    Gtk.StyleContext.add_provider_for_display (
+                        Gdk.Display.get_default (),
+                        ctx.css_provider,
+                        Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+                    );
+                } else {
+                    Gtk.StyleContext.remove_provider_for_display (
+                        Gdk.Display.get_default (),
+                        ctx.css_provider
+                    );
+                }
+            });
+
             added (tag);
         }
 

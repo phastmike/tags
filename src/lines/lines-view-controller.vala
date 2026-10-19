@@ -25,11 +25,13 @@ namespace Tags {
             this.tags = tags;
             this.filterer = filterer;
 
-            setup_listeners ();
+            //setup_listeners ();
         }
 
-        // FIXME: we just need once or remove before adding another
+        // FIXME: NOT NEEDED -> REMOVE AFTER REFACTORING IF NOT USED
+        /*
         private void setup_listeners () {
+            return;
             tags.model.items_changed.connect ((position, removed, added) => {
                 update_mixing ();
                 if (added > 0) {
@@ -47,6 +49,7 @@ namespace Tags {
                 }
             });
         }
+        */
 
         public void update_mixing () {
             Idle.add (() => {
@@ -65,13 +68,13 @@ namespace Tags {
 
         async void update_mixing_async ()  {
             updating = true;
+            tags.hitcounter_reset_all ();
             SourceFunc callback = update_mixing_async.callback;
             for (uint i = 0; i < lines_model.get_n_items (); i++) {
                 var line = lines_model.get_item (i) as Line;
                 Idle.add_once (() => {
                     update_mixing_for_line (line);
                     Idle.add ((owned) callback);
-                    //return false;
                 });
                 callback = update_mixing_async.callback;
                 yield;
@@ -93,32 +96,19 @@ namespace Tags {
             for (uint j = 0; j < tags.n_items; j++) {
                 var ctx = tags.model.get_item (j) as TagContext;
                 var tag = ctx.tag;
-                // Tag should be applied even with enabled = false
-                //if (tag.applies_to (line.text)) { // && tag.enabled) {
-                if (tag.applies_to (line.text) && tag.enabled) {
-                    line.tag = tag;
+                // FIXME: Tag should be applied even with enabled = false
+                if (tag.applies_to (line.text)) {
+                    ctx.hit_counter.increment ();
+                    if (tag.enabled) {
+                        line.tag = tag;
+                    }
                     break;
                 }
             }
         }
 
-        public void update_mixing_sync () {
-            // FIXME: optimize this
-            for (uint i = 0; i < lines_model.get_n_items (); i++) {
-                var line = lines_model.get_item (i) as Line;
-                line.tag = null;
-                for (uint j = 0; j < tags.n_items; j++) {
-                    var ctx = tags.model.get_item (j) as TagContext;
-                    var tag = ctx.tag;
-                    if (tag.applies_to (line.text) && tag.enabled) {
-                        line.tag = tag;
-                        break;
-                    }
-                }
-            }
-        }
-
         public void count_hits_for_tag (Tag tag) {
+        return; ////////////////////////////////////////////////////////////////////////////////////
             var ctx = tags.get_context_for_tag (tag);
             ctx.hit_counter.reset ();
             for (uint i = 0; i < lines_model.get_n_items (); i++) {
@@ -130,6 +120,7 @@ namespace Tags {
         }
 
         public void count_tag_hits () {
+        return; ////////////////////////////////////////////////////////////////////////////////////
             tags.hitcounter_reset_all ();
             for (uint i = 0; i < lines_model.get_n_items (); i++) {
                 var line = lines_model.get_item (i) as Line;

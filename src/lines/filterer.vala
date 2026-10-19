@@ -20,7 +20,9 @@ namespace Tags {
             this.lines = lines;
             this.filter = filter;
             model = new Gtk.FilterListModel (lines.model, filter); 
-            // FIXME: Retriggers Selection to the top which isnt nice
+            // NOTE:
+            // incremental mode retriggers Selection to the top
+            // which isnt nice in our particular case, but some may like it.
             // Minimap needs to be delayed, otherwise it's empty at start
             // False (Late) True (Early - Restarts selection)
             model.set_incremental (false);

@@ -81,7 +81,7 @@ namespace Tags {
             set {
                 if (_enabled == value) return;
                 _enabled = value;
-                changed ();
+                //changed ();
                 enable_changed (enabled);
             }
         }
@@ -104,7 +104,7 @@ namespace Tags {
             set {
                 if (_description == value) return;
                 _description = value;
-                changed ();
+                //changed ();
             }
         }
 

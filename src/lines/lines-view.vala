@@ -58,6 +58,11 @@ namespace Tags {
             column_view.set_model (selection_model);
             wrap_lines = false;
 
+            selection_model.selection_changed.connect ((pos, n_items) => {
+                var line = selection_model.get_item (pos) as Line;
+                message ("Selection changed: %u, %s | TAG: %s".printf (pos, line.text, line.tag != null ? line.tag.pattern : "null"));
+            });
+
             // Hide ColumnView header hack
             var header = column_view.get_first_child ();
             header.set_visible (false);
@@ -77,6 +82,7 @@ namespace Tags {
             for (uint i = 0; i < bitset.get_size (); i++) {
                 var line = selection_model.get_item (bitset.get_nth (i)) as Line;
                 str.append (line.text);
+                //clear_all_tag_styles (label);
                 str.append ("\n");
             }
             return str.str;
@@ -128,23 +134,30 @@ namespace Tags {
                 label.set_tooltip_text (null);
             }
 
-            if (line.tag == null) {
-                clear_all_tag_styles (label);
-            } else {
-                update_line_tag_style (label, line);
-            }
+            update_line_tag_style (label, line);
 
-            if (line.sighandler == 0) {
+            /*
+            if (line.sighandler == 0 && line.tag != null) {
+                line.sighandler = line.tag.enable_changed.connect (() => {
+                    if (label != null && line != null) {
+                        update_line_tag_style (label, line);
+                    }
+                });
+
+                line.sighandler = line.tag.changed.connect (() => {
+                    if (label != null && line != null) {
+                        update_line_tag_style (label, line);
+                    }
+                });
+
+                
                 line.sighandler = line.tag_changed.connect (() => {
                     if (label != null && line != null) {
-                        if (line.tag == null) {
-                            clear_all_tag_styles (label);
-                        } else {
-                            update_line_tag_style (label, line);
-                        }
+                        update_line_tag_style (label, line);
                     }
                 });
             }
+            */
         }
 
         [GtkCallback]
@@ -155,10 +168,12 @@ namespace Tags {
 
             clear_all_tag_styles (label);
 
+            /*
             if (line.sighandler != 0) {
                 line.disconnect (line.sighandler);
                 line.sighandler = 0;
             }
+            */
         }
 
         private void clear_all_tag_styles (Gtk.Widget widget) {
@@ -174,12 +189,16 @@ namespace Tags {
         }
 
         private void update_line_tag_style (Gtk.Label label, Line line) { 
+            if (line == null || label == null) { return; }
+
             if (line.tag != null) {
                 if (line.tag.enabled) {
-                    label.parent.add_css_class (line.actual_style);
+                    label.parent.add_css_class (TagContext.get_style_name_for_tag (line.tag));
                 } else {
-                    label.parent.remove_css_class (line.actual_style);
+                    label.parent.remove_css_class (TagContext.get_style_name_for_tag (line.tag));
                 }
+            } else {
+                clear_all_tag_styles (label);
             } 
         }
     }

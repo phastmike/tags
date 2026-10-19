@@ -11,8 +11,9 @@ namespace Tags {
     public class Line : Object {
         private Tag? _tag = null;
 
-        public uint number {get;  private set; default = 0;}
-        public string? text {get; private set; default = null;}
+        public uint     number  { get; construct; }
+        public string?  text    { get; construct; }
+
         public Tag? tag {
             get  {
                 return _tag;
@@ -20,26 +21,17 @@ namespace Tags {
             set {
                 if (_tag != value) {
                     _tag = value;
-                    if (value != null) {
-                        // FIXME: Here too
-                        this.actual_style = TagContext.get_style_name_for_tag (tag);
-                    } else {
-                        this.actual_style = null;
-                    }
                     tag_changed ();
                 }
             }
         } 
         public ulong sighandler = 0;
-        public string? actual_style = null;
 
         public signal void tag_changed ();
 
         public Line (uint number, string? text, Tag? tag = null) {
-            this.number = number;
-            this.text = text;
+            Object (number: number, text: text);
             this.tag = tag;
-            actual_style = null;
         }
     }
 }

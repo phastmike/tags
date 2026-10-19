@@ -259,6 +259,13 @@ namespace Tags {
             tags = new TagStore ();
 
             tags.added.connect ( (tag) => {
+                tag.enable_changed.connect ((enabled) => {
+                    //lines_view_controller.update_mixing ();
+                    filter.update ();
+                    lines_view.queue_draw ();
+                    minimap.set_array (LineStore.model_to_array(lines_view.lines));
+                });
+
                 tag.changed.connect (() => {
                     lines_view_controller.update_mixing ();
                     filter.update ();
@@ -266,6 +273,7 @@ namespace Tags {
                     minimap.set_array (LineStore.model_to_array(lines_view.lines));
                 });
 
+                lines_view_controller.update_mixing ();
                 lines_view_controller.count_hits_for_tag (tag);
                 filter.update ();
                 minimap.set_array (LineStore.model_to_array(lines_view.lines));
@@ -479,6 +487,13 @@ namespace Tags {
 
             var cancel_open = new Cancellable ();
 
+                    if (Preferences.instance ().tags_autoload == true) {
+                        file_tags = File.new_for_path (file.get_path () + ".tags");
+                        if (file_tags.query_exists ()) {
+                            load_tags_from_file (file_tags);
+                        }
+                    }
+
             lines.from_file.begin (file, cancel_open, (obj, res) => {
                 string? err_msg = lines.from_file.end (res);
                 if (err_msg == null) {
@@ -507,12 +522,14 @@ namespace Tags {
                     title_sidebar.set_label (file.get_basename ());
                     title_sidebar.set_tooltip_text (file.get_path ());
 
+                    /*
                     if (Preferences.instance ().tags_autoload == true) {
                         file_tags = File.new_for_path (file.get_path () + ".tags");
                         if (file_tags.query_exists ()) {
                             load_tags_from_file (file_tags);
                         }
                     }
+                    */
 
                     lines_view_controller.update_mixing ();
                     filter.update ();
@@ -530,6 +547,7 @@ namespace Tags {
             string? text = pattern;
             bool from_selection = false;
 
+            /* Check selection */
             if (pattern == null) {
                 var bs = lines_view.selection_model.get_selection ();
                 if (bs.is_empty () == false) {
@@ -540,7 +558,6 @@ namespace Tags {
             }
 
             tag_dialog = new TagDialog (text, from_selection);
-
             tag_dialog.add_tag.connect ((tag, add_to_top) => {
                 tags.add_tag (tag, add_to_top);
             });
@@ -573,11 +590,6 @@ namespace Tags {
                         tag_dialog.close ();
                         tag_dialog.destroy ();
                         tags.remove_tag (tag);
-
-                        /*
-                        filter.update ();
-                        minimap.set_array (LineStore.model_to_array(lines_view.lines));
-                        */
                     }
                 });
             });
