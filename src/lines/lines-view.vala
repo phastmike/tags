@@ -58,11 +58,6 @@ namespace Tags {
             column_view.set_model (selection_model);
             wrap_lines = false;
 
-            selection_model.selection_changed.connect ((pos, n_items) => {
-                var line = selection_model.get_item (pos) as Line;
-                message ("Selection changed: %u, %s | TAG: %s".printf (pos, line.text, line.tag != null ? line.tag.pattern : "null"));
-            });
-
             // Hide ColumnView header hack
             var header = column_view.get_first_child ();
             header.set_visible (false);
@@ -136,7 +131,6 @@ namespace Tags {
 
             update_line_tag_style (label, line);
 
-            /*
             if (line.sighandler == 0 && line.tag != null) {
                 line.sighandler = line.tag.enable_changed.connect (() => {
                     if (label != null && line != null) {
@@ -144,6 +138,7 @@ namespace Tags {
                     }
                 });
 
+            /*
                 line.sighandler = line.tag.changed.connect (() => {
                     if (label != null && line != null) {
                         update_line_tag_style (label, line);
@@ -156,8 +151,8 @@ namespace Tags {
                         update_line_tag_style (label, line);
                     }
                 });
+                */
             }
-            */
         }
 
         [GtkCallback]
@@ -176,6 +171,7 @@ namespace Tags {
             */
         }
 
+        // NOTE: Should be quick, just iterate over tags to remove the styleclasses
         private void clear_all_tag_styles (Gtk.Widget widget) {
             if (widget == null || widget.parent == null) { return; }
             var c = widget.parent;
@@ -191,6 +187,14 @@ namespace Tags {
         private void update_line_tag_style (Gtk.Label label, Line line) { 
             if (line == null || label == null) { return; }
 
+            clear_all_tag_styles (label);
+
+            var tag = line.get_active_tag ();
+            if (tag != null) {
+                label.parent.add_css_class (TagContext.get_style_name_for_tag (tag));
+            }
+
+            /*
             if (line.tag != null) {
                 if (line.tag.enabled) {
                     label.parent.add_css_class (TagContext.get_style_name_for_tag (line.tag));
@@ -200,6 +204,7 @@ namespace Tags {
             } else {
                 clear_all_tag_styles (label);
             } 
+            */
         }
     }
 }

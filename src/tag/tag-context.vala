@@ -11,34 +11,6 @@
 
 namespace Tags {
 
-    public class Counter : Object {
-        public uint count { get; private set; default = 0; }
-
-        public Counter () {
-            reset ();
-        }
-
-        public void increment () {
-            if (count < uint.MAX) {
-                count++;
-            }
-        }
-
-        public void decrement () {
-            if (count > 0) {
-                count--;
-            }
-        }
-
-        public void reset () {
-            count = 0;
-        }
-
-        public bool is_zero () {
-            return count == 0;
-        }
-    }
-
     public class TagContext : Object {
         public Tag              tag             { get; private set; }
         public Counter          hit_counter     { get; private set; default = new Counter (); }
@@ -46,6 +18,8 @@ namespace Tags {
 
         private const string STYLE_PREFIX_ROW  = "row-";
         public  const string STYLE_PREFIX_LINE = "tag-";
+
+        /* CLASS METHODS */
 
         public static string get_style_name_for_row (Tag tag) requires (tag != null) {
             return "%s%s".printf (STYLE_PREFIX_ROW, tag.uuid);
@@ -55,11 +29,11 @@ namespace Tags {
             return "%s%s".printf (STYLE_PREFIX_LINE, tag.uuid);
         }
 
-
         /* CONSTRUCTOR */
 
         public TagContext (Tag tag) requires (tag != null) {
-            this.tag = tag;
+            Object (tag: tag);
+
             update_css ();
             this.tag.colors.changed.connect (update_css);
         }

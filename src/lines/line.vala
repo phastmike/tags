@@ -25,13 +25,25 @@ namespace Tags {
                 }
             }
         } 
-        public ulong sighandler = 0;
+
+        public List<Tag> matching_tags;
+        public ulong sighandler = 0;    // NOTE: Placeholder for signal handler ID. Keep/Remove?
 
         public signal void tag_changed ();
 
         public Line (uint number, string? text, Tag? tag = null) {
             Object (number: number, text: text);
+            matching_tags = new List<Tag> ();
             this.tag = tag;
+        }
+
+        public Tag? get_active_tag () {
+            foreach (var tag in matching_tags) {
+                if (tag.enabled) {
+                    return tag;
+                }
+            }
+            return null;
         }
     }
 }

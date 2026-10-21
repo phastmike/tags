@@ -93,16 +93,20 @@ namespace Tags {
 
         public void update_mixing_for_line (Line line) {
             line.tag = null;
+            line.matching_tags = null;
             for (uint j = 0; j < tags.n_items; j++) {
                 var ctx = tags.model.get_item (j) as TagContext;
                 var tag = ctx.tag;
                 // FIXME: Tag should be applied even with enabled = false
                 if (tag.applies_to (line.text)) {
                     ctx.hit_counter.increment ();
-                    if (tag.enabled) {
+                    line.matching_tags.append (tag);
+                    /*
+                    if (line.tag == null) {
                         line.tag = tag;
                     }
-                    break;
+                    */
+                    //break;
                 }
             }
         }
