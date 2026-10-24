@@ -12,7 +12,7 @@
 namespace Tags {
 
     public class TagContext : Object {
-        public Tag              tag             { get; private set; }
+        public Tag              tag             { get; construct set; }
         public Counter          hit_counter     { get; private set; default = new Counter (); }
         public Gtk.CssProvider  css_provider    { get; private set; default = new Gtk.CssProvider (); }
 
@@ -33,14 +33,13 @@ namespace Tags {
 
         public TagContext (Tag tag) requires (tag != null) {
             Object (tag: tag);
-
             update_css ();
             this.tag.colors.changed.connect (update_css);
         }
 
         /* DESTRUCTOR */
 
-        /* NOTE: NEEDED ? */
+        /* NOTE: REMOVE THIS! */
         ~TagContext () {
             this.tag.colors.changed.disconnect (update_css);
         }
@@ -86,6 +85,16 @@ namespace Tags {
                            );
 
             css_provider.load_from_string (css_row + css_line);
+        }
+
+        /* WRAPPERS FOR CLASS METHODS */
+
+        public string get_style_name_row () {
+            return get_style_name_for_row (tag);
+        }
+
+        public string get_style_name_tag () {
+            return get_style_name_for_tag (tag);
         }
     }
 }

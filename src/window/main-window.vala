@@ -490,12 +490,15 @@ namespace Tags {
                     if (Preferences.instance ().tags_autoload == true) {
                         file_tags = File.new_for_path (file.get_path () + ".tags");
                         if (file_tags.query_exists ()) {
+                            message ("Autoloading tags from '%s'".printf (file_tags.get_basename ()));
                             load_tags_from_file (file_tags);
                         }
                     }
 
             lines.from_file.begin (file, cancel_open, (obj, res) => {
+                message ("Opened file '%s'".printf (file.get_basename ()));
                 string? err_msg = lines.from_file.end (res);
+                message ("File '%s' loaded".printf (file.get_basename ()));
                 if (err_msg == null) {
                     stack.set_visible_child_name ("main");
 

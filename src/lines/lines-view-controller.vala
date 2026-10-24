@@ -52,6 +52,7 @@ namespace Tags {
         */
 
         public void update_mixing () {
+            message ("LinesViewController.update_mixing ()");
             Idle.add (() => {
                 if (updating) {
                     queued_update = true;
@@ -86,6 +87,7 @@ namespace Tags {
                 queued_update = false;
                 update_mixing_async.begin ( (s, p) => {
                     update_mixing_async.end (p);
+                    message ("LinesViewController.update_mixing () - mix_upated");
                     mix_updated ();
                 });
             }
