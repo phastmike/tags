@@ -63,14 +63,6 @@ namespace Tags {
             header.set_visible (false);
         }
 
-        public void show_line_numbers (bool show) {
-            if (show) {
-                column_line_number.visible = true;
-            } else {
-                column_line_number.visible = false;
-            }
-        }
-
         public string get_selected_lines_as_string () {
             var str = new StringBuilder ();
             var bitset = selection_model.get_selection ();
@@ -131,27 +123,31 @@ namespace Tags {
 
             update_line_tag_style (label, line);
 
-            if (line.sighandler == 0 && line.tag != null) {
-                line.sighandler = line.tag.enable_changed.connect (() => {
+            if (line.get_data <ulong?> ("tag-enabled-changed-handlerid") == null) {
+                ulong handlerid = line.tag.enable_changed.connect (() => {
                     if (label != null && line != null) {
                         update_line_tag_style (label, line);
                     }
                 });
+                line.set_data ("tag-enabled-changed-handlerid", (ulong) handlerid);
+            }
 
-            /*
-                line.sighandler = line.tag.changed.connect (() => {
+            if (line.get_data <ulong?> ("tag-changed-handlerid") == null) {
+                ulong handlerid = line.tag.changed.connect (() => {
                     if (label != null && line != null) {
                         update_line_tag_style (label, line);
                     }
                 });
+                line.set_data ("tag-changed-handlerid", (ulong) handlerid);
+            }
 
-                
-                line.sighandler = line.tag_changed.connect (() => {
+            if (line.get_data <ulong?> ("line-tag-changed-handlerid") == null) {
+                ulong handlerid = line.tag_changed.connect (() => {
                     if (label != null && line != null) {
                         update_line_tag_style (label, line);
                     }
                 });
-                */
+                line.set_data ("line-tag-changed-handlerid", (ulong) handlerid);
             }
         }
 
@@ -163,12 +159,23 @@ namespace Tags {
 
             clear_all_tag_styles (label);
 
-            /*
-            if (line.sighandler != 0) {
-                line.disconnect (line.sighandler);
-                line.sighandler = 0;
+            var handlerid = line.get_data <ulong?> ("tag-enabled-changed-handlerid");
+            if (handlerid != null) {
+                line.disconnect (handlerid);
+                line.set_data <ulong?> ("tag-enabled-changed-handlerid", null);
             }
-            */
+
+            handlerid = line.get_data <ulong?> ("tag-changed-handlerid");
+            if (handlerid != null) {
+                line.disconnect (handlerid);
+                line.set_data <ulong?> ("tag-changed-handlerid", null);
+            }
+
+            handlerid = line.get_data <ulong?> ("line-tag-changed-handlerid");
+            if (handlerid != null) {
+                line.disconnect (handlerid);
+                line.set_data <ulong?> ("line-tag-changed-handlerid", null);
+            }
         }
 
         // NOTE: Should be quick, just iterate over tags to remove the styleclasses
