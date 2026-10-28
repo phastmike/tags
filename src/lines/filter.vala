@@ -36,7 +36,7 @@ namespace Tags {
                 var ctx = tags.get_item (pos) as TagContext;
                 var tag = ctx.tag;
                 if (tag != null) {
-                    tag.enable_changed.connect ( (v) => {
+                    tag.enabled_changed.connect ( (v) => {
                         changed (Gtk.FilterChange.DIFFERENT);
                     });
                 }

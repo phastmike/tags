@@ -24,35 +24,10 @@ namespace Tags {
             this.lines_model = lines_model;
             this.tags = tags;
             this.filterer = filterer;
-
-            //setup_listeners ();
         }
-
-        // FIXME: NOT NEEDED -> REMOVE AFTER REFACTORING IF NOT USED
-        /*
-        private void setup_listeners () {
-            return;
-            tags.model.items_changed.connect ((position, removed, added) => {
-                update_mixing ();
-                if (added > 0) {
-                    for (uint i = position; i < position + added; i++) {
-                        var ctx = tags.model.get_item (i) as TagContext;
-                        var tag = ctx.tag;
-                        tag.changed.connect (() => {
-                            update_mixing ();
-                            if (filterer != null) {
-                                if (filterer.filter.active)
-                                    filterer.filter.update ();
-                            }
-                        });
-                    }
-                }
-            });
-        }
-        */
 
         public void update_mixing () {
-            message ("LinesViewController.update_mixing ()");
+            message ("LinesViewController.update_mixing_async.begin ()");
             Idle.add (() => {
                 if (updating) {
                     queued_update = true;
@@ -61,6 +36,7 @@ namespace Tags {
 
                 update_mixing_async.begin ( (s, p) => {
                     update_mixing_async.end (p);
+                    message ("LinesViewController.update_mixing_async.ednded ()");
                     mix_updated ();
                 });
                 return false;
@@ -95,14 +71,14 @@ namespace Tags {
 
         public void update_mixing_for_line (Line line) {
             line.tag = null;
-            line.matching_tags = null;
+            line.clear_matching_tags ();
             for (uint j = 0; j < tags.n_items; j++) {
                 var ctx = tags.model.get_item (j) as TagContext;
                 var tag = ctx.tag;
                 // FIXME: Tag should be applied even with enabled = false
                 if (tag.applies_to (line.text)) {
                     ctx.hit_counter.increment ();
-                    line.matching_tags.append (tag);
+                    line.add_matching_tag (tag);
                     /*
                     if (line.tag == null) {
                         line.tag = tag;

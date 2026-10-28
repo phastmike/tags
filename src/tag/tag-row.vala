@@ -53,7 +53,7 @@ namespace Tags {
                     return true;
                  }, null);
 
-            tag.enable_changed.connect ( (enabled) => {
+            tag.enabled_changed.connect ( (enabled) => {
                 if (enabled == true) {
                     remove_css_class ("dimmed");
                 } else {

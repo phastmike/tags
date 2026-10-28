@@ -6,5 +6,6 @@ tags_sources += files(
 	'tag-store.vala',
 	'tags-view.vala',
 	'tag-dialog.vala',
+	'tag-builder.vala',
 	'tag-context.vala',
 	)

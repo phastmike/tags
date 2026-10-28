@@ -77,7 +77,7 @@ namespace Tags {
                 have_changed = true;
             });
 
-            tag.enable_changed.connect (() => {
+            tag.enabled_changed.connect (() => {
                 if (tag.enabled) {
                     Gtk.StyleContext.add_provider_for_display (
                         Gdk.Display.get_default (),

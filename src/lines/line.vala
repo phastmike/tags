@@ -10,9 +10,14 @@
 namespace Tags {
     public class Line : Object {
         private Tag? _tag = null;
+        private List<Tag> matching_tags;
 
-        public uint     number  { get; construct; }
+        private ulong handlerid_tag_changed = 0;
+        private ulong handlerid_tag_enabled_changed = 0;
+
+        public uint     number  { get; construct; }     // Is this high enough :) ?
         public string?  text    { get; construct; }
+        public ulong    hid     = 0;
 
         public Tag? tag {
             get  {
@@ -26,18 +31,16 @@ namespace Tags {
             }
         } 
 
-        public List<Tag> matching_tags;
-
-        public ulong sighandler1 = 0;    // NOTE: Placeholder for signal handler ID. Keep/Remove?
-        public ulong sighandler2 = 0;    // NOTE: Placeholder for signal handler ID. Keep/Remove?
-        public ulong sighandler3 = 0;    // NOTE: Placeholder for signal handler ID. Keep/Remove?
-
         public signal void tag_changed ();
+
+        /* CONTRUCTOR */
 
         public Line (uint number, string? text) {
             Object (number: number, text: text);
             matching_tags = new List<Tag> ();
         }
+
+        /* METHODS */
 
         public Tag? get_active_tag () {
             foreach (var tag in matching_tags) {
@@ -46,6 +49,51 @@ namespace Tags {
                 }
             }
             return null;
+        }
+
+        public void add_matching_tag (Tag tag) requires (tag != null) {
+            if (matching_tags.find (tag) == null) {
+
+                matching_tags.append (tag);
+
+                handlerid_tag_changed = tag.changed.connect (() => {
+                    message ("Line %u: tag match criteria changed : %s", this.number, tag.pattern);
+                    this.tag = get_active_tag ();
+                    tag_changed ();
+                });
+
+                handlerid_tag_enabled_changed = tag.enabled_changed.connect (() => {
+                    message ("Line %u: tag enabled changed : %s", this.number, tag.pattern);
+                    this.tag = get_active_tag ();
+                    tag_changed ();
+                });
+            }
+        }
+
+        public void remove_matching_tag (Tag tag) requires (tag != null) {
+            if (matching_tags.find (tag) != null) {
+
+                if (handlerid_tag_changed != 0) tag.disconnect (handlerid_tag_changed);
+                if (handlerid_tag_enabled_changed != 0) tag.disconnect (handlerid_tag_enabled_changed);
+
+                matching_tags.remove (tag);
+
+                this.tag = get_active_tag ();
+
+                tag_changed ();
+
+                message ("Line %u: tag %s removed from matching tags", this.number, tag.pattern);
+                return;
+            } else {
+                warning ("Line %u: tag %s not found in matching tags", this.number, tag.pattern);
+                return;
+            }
+        }
+
+        public void clear_matching_tags () {
+            foreach (var tag in matching_tags) {
+                remove_matching_tag (tag);
+            } 
         }
     }
 }

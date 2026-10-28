@@ -123,32 +123,16 @@ namespace Tags {
 
             update_line_tag_style (label, line);
 
-            if (line.get_data <ulong?> ("tag-enabled-changed-handlerid") == null) {
-                ulong handlerid = line.tag.enable_changed.connect (() => {
+            if (line != null) {
+                line.tag_changed.connect (() => {
                     if (label != null && line != null) {
                         update_line_tag_style (label, line);
                     }
                 });
-                line.set_data ("tag-enabled-changed-handlerid", (ulong) handlerid);
+            } else {
+                clear_all_tag_styles (label);
             }
 
-            if (line.get_data <ulong?> ("tag-changed-handlerid") == null) {
-                ulong handlerid = line.tag.changed.connect (() => {
-                    if (label != null && line != null) {
-                        update_line_tag_style (label, line);
-                    }
-                });
-                line.set_data ("tag-changed-handlerid", (ulong) handlerid);
-            }
-
-            if (line.get_data <ulong?> ("line-tag-changed-handlerid") == null) {
-                ulong handlerid = line.tag_changed.connect (() => {
-                    if (label != null && line != null) {
-                        update_line_tag_style (label, line);
-                    }
-                });
-                line.set_data ("line-tag-changed-handlerid", (ulong) handlerid);
-            }
         }
 
         [GtkCallback]
@@ -158,23 +142,8 @@ namespace Tags {
             var line = listitem.item as Line;
 
             clear_all_tag_styles (label);
-
-            var handlerid = line.get_data <ulong?> ("tag-enabled-changed-handlerid");
-            if (handlerid != null) {
-                line.disconnect (handlerid);
-                line.set_data <ulong?> ("tag-enabled-changed-handlerid", null);
-            }
-
-            handlerid = line.get_data <ulong?> ("tag-changed-handlerid");
-            if (handlerid != null) {
-                line.disconnect (handlerid);
-                line.set_data <ulong?> ("tag-changed-handlerid", null);
-            }
-
-            handlerid = line.get_data <ulong?> ("line-tag-changed-handlerid");
-            if (handlerid != null) {
-                line.disconnect (handlerid);
-                line.set_data <ulong?> ("line-tag-changed-handlerid", null);
+            if (line.tag != null && line.hid != 0) {
+                line.disconnect (line.hid);
             }
         }
 

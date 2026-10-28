@@ -259,8 +259,8 @@ namespace Tags {
             tags = new TagStore ();
 
             tags.added.connect ( (tag) => {
-                tag.enable_changed.connect ((enabled) => {
-                    lines_view_controller.update_mixing ();
+                tag.enabled_changed.connect ((enabled) => {
+                    //lines_view_controller.update_mixing ();
                     filter.update ();
                     //lines_view.queue_draw ();
                     minimap.set_array (LineStore.model_to_array(lines_view.lines));
