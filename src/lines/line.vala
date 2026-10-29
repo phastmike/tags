@@ -34,6 +34,9 @@ namespace Tags {
         public signal void tag_changed ();
 
         /* CONTRUCTOR */
+        construct {
+            tag = null;
+        }
 
         public Line (uint number, string? text) {
             Object (number: number, text: text);

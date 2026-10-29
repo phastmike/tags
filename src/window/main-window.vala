@@ -487,13 +487,14 @@ namespace Tags {
 
             var cancel_open = new Cancellable ();
 
-                    if (Preferences.instance ().tags_autoload == true) {
-                        file_tags = File.new_for_path (file.get_path () + ".tags");
-                        if (file_tags.query_exists ()) {
-                            message ("Autoloading tags from '%s'".printf (file_tags.get_basename ()));
-                            load_tags_from_file (file_tags);
-                        }
-                    }
+            // LOAD TAGS FIRST
+            if (Preferences.instance ().tags_autoload == true) {
+                file_tags = File.new_for_path (file.get_path () + ".tags");
+                if (file_tags.query_exists ()) {
+                    message ("Autoloading tags from '%s'".printf (file_tags.get_basename ()));
+                    load_tags_from_file (file_tags);
+                }
+            }
 
             lines.from_file.begin (file, cancel_open, (obj, res) => {
                 message ("Opened file '%s'".printf (file.get_basename ()));
@@ -524,15 +525,6 @@ namespace Tags {
                     title_nosidebar.set_tooltip_text (file.get_path ());
                     title_sidebar.set_label (file.get_basename ());
                     title_sidebar.set_tooltip_text (file.get_path ());
-
-                    /*
-                    if (Preferences.instance ().tags_autoload == true) {
-                        file_tags = File.new_for_path (file.get_path () + ".tags");
-                        if (file_tags.query_exists ()) {
-                            load_tags_from_file (file_tags);
-                        }
-                    }
-                    */
 
                     lines_view_controller.update_mixing ();
                     filter.update ();
@@ -692,6 +684,8 @@ namespace Tags {
 
         private void load_tags_from_file (File file, bool import = false) {
             tags.from_file.begin  (file, null, import, (obj, res) => {
+                //tags.from_file.end (res);
+                /*
                 for (int i = 0; i < tags.n_items; i++) {
                     var ctx = tags.model.get_object (i) as TagContext;
                     var tag = ctx.tag;
@@ -699,7 +693,12 @@ namespace Tags {
                         filter.update ();
                         minimap.set_array (LineStore.model_to_array(lines_view.lines));
                     });
+                    tag.enabled_changed.connect (() => {
+                        filter.update ();
+                        minimap.set_array (LineStore.model_to_array(lines_view.lines));
+                    });
                 }
+                */
                 filter.update ();
                 minimap.set_array (LineStore.model_to_array (lines_view.lines));
                 lines_view_controller.count_tag_hits ();
