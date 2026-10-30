@@ -47,6 +47,7 @@ namespace Tags {
 
         public Tag? get_active_tag () {
             foreach (var tag in matching_tags) {
+                message ("Line %u Tag [%s] enabled: %s", number, tag.pattern, tag.enabled.to_string ());
                 if (tag.enabled) {
                     return tag;
                 }
@@ -55,6 +56,7 @@ namespace Tags {
         }
 
         public void add_matching_tag (Tag tag) requires (tag != null) {
+            message ("Add matching_tag (%s) to line %u", tag.pattern, number);
             if (matching_tags.find (tag) == null) {
 
                 matching_tags.append (tag);

@@ -167,7 +167,8 @@ namespace Tags {
 
             var tag = line.get_active_tag ();
             if (tag != null) {
-                label.parent.add_css_class (TagContext.get_style_name_for_tag (tag));
+                if (tag.applies_to (line.text)) 
+                    label.parent.add_css_class (TagContext.get_style_name_for_tag (tag));
             }
 
             /*
