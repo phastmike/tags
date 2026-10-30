@@ -81,6 +81,7 @@ namespace Tags {
 
         public signal void changed ();
         public signal void enabled_changed (bool enabled);
+        public signal void to_be_deleted ();
 
         /* CONSTRUCTORS */
 

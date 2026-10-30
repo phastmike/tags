@@ -124,11 +124,11 @@ namespace Tags {
             update_line_tag_style (label, line);
 
             if (line != null) {
-                line.tag_changed.connect (() => {
-                    if (label != null && line != null) {
+                if (line.tag != null && line.hid == 0) {
+                    line.hid = line.tag_changed.connect (() => {
                         update_line_tag_style (label, line);
-                    }
-                });
+                    });
+                }
             } else {
                 clear_all_tag_styles (label);
             }
@@ -142,9 +142,13 @@ namespace Tags {
             var line = listitem.item as Line;
 
             clear_all_tag_styles (label);
-            if (line.tag != null && line.hid != 0) {
-                line.disconnect (line.hid);
+            /*
+            if (line.tag != null) {
+                if (line.hid != 0) {
+                    line.disconnect (line.hid);
+                }
             }
+            */
         }
 
         // NOTE: Should be quick, just iterate over tags to remove the styleclasses
@@ -162,13 +166,15 @@ namespace Tags {
 
         private void update_line_tag_style (Gtk.Label label, Line line) { 
             if (line == null || label == null) { return; }
-
             clear_all_tag_styles (label);
 
-            var tag = line.get_active_tag ();
+            var tag = line.tag;
             if (tag != null) {
+                message ("update_line_tag_style: %s".printf (line.text));
                 if (tag.applies_to (line.text)) 
+                    message ("Tag applies to line: %s".printf (line.text));
                     label.parent.add_css_class (TagContext.get_style_name_for_tag (tag));
+                    label.queue_draw ();
             }
 
             /*

@@ -96,16 +96,19 @@ namespace Tags {
         }
 
         public void remove_tag (Tag to_remove) {
+            message ("TagStore:remove_tag: %s", to_remove.pattern);
             for (var i = 0; i < store.get_n_items (); i++) {
                 var ctx = store.get_object (i) as TagContext;
                 var tag = ctx.tag;
                 if (tag == to_remove) {
+                    tag.to_be_deleted ();
                     deleted (tag); /* RUN FIRST: emit signal before removing */
                     Gtk.StyleContext.remove_provider_for_display (
                         Gdk.Display.get_default (), ctx.css_provider
                     );
                     store.remove (i);
                     have_changed = true;
+                    message ("TagStore:remove_tag: %s removed", to_remove.pattern);
                     return;
                 }
             }

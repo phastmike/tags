@@ -13,8 +13,12 @@
 namespace Tags.Common {
 
     private static string generate_uuid () {
-        string random_input = "%u-%u-%u".
-            printf(GLib.Random.next_int (), GLib.Random.next_int (), GLib.Random.next_int ());
+        string random_input = "%u-%u-%u".printf (
+            GLib.Random.next_int (),
+            GLib.Random.next_int (),
+            GLib.Random.next_int ()
+        );
+
         var checksum = new Checksum (ChecksumType.SHA256);
         checksum.update (random_input.data, random_input.length);
         return checksum.get_string ();

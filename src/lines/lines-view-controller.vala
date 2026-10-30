@@ -27,6 +27,9 @@ namespace Tags {
         }
 
         public void update_mixing () {
+            if (lines_model.get_n_items () == 0 || tags.n_items == 0) {
+                return;
+            }
             message ("LinesViewController.update_mixing_async.begin ()");
             Idle.add (() => {
                 if (updating) {
@@ -36,7 +39,7 @@ namespace Tags {
 
                 update_mixing_async.begin ( (s, p) => {
                     update_mixing_async.end (p);
-                    message ("LinesViewController.update_mixing_async.ednded ()");
+                    message ("LinesViewController.update_mixing_async.ended ()");
                     mix_updated ();
                 });
                 return false;

@@ -13,9 +13,10 @@ namespace Tags {
         private List<Tag> matching_tags;
 
         private ulong handlerid_tag_changed = 0;
+        private ulong handlerid_to_be_deleted = 0;
         private ulong handlerid_tag_enabled_changed = 0;
 
-        public uint     number  { get; construct; }     // Is this high enough :) ?
+        public uint     number  { get; construct; }
         public string?  text    { get; construct; }
         public ulong    hid     = 0;
 
@@ -46,12 +47,14 @@ namespace Tags {
         /* METHODS */
 
         public Tag? get_active_tag () {
+            message ("get_active_tag: Line %u matching_tags count: %u", number, matching_tags.length ());
             foreach (var tag in matching_tags) {
-                message ("Line %u Tag [%s] enabled: %s", number, tag.pattern, tag.enabled.to_string ());
+                message ("\t-Line %u Tag [%s] enabled: %s", number, tag.pattern, tag.enabled.to_string ());
                 if (tag.enabled) {
                     return tag;
                 }
             }
+            message ("get_active_tag: Line %u no active tag found", number);
             return null;
         }
 
@@ -61,6 +64,7 @@ namespace Tags {
 
                 matching_tags.append (tag);
 
+                // PER TAG, NOT ONE BUT MANY
                 handlerid_tag_changed = tag.changed.connect (() => {
                     message ("Line %u: tag match criteria changed : %s", this.number, tag.pattern);
                     this.tag = get_active_tag ();
@@ -68,7 +72,14 @@ namespace Tags {
                 });
 
                 handlerid_tag_enabled_changed = tag.enabled_changed.connect (() => {
-                    message ("Line %u: tag enabled changed : %s", this.number, tag.pattern);
+                    message ("Line %u: tag enabled_changed : %s", this.number, tag.pattern);
+                    this.tag = get_active_tag ();
+                    tag_changed ();
+                });
+
+                handlerid_to_be_deleted = tag.to_be_deleted.connect (() => {
+                    message ("Line %u: tag to_be_removed : %s", this.number, tag.pattern);
+                    remove_matching_tag (tag);
                     this.tag = get_active_tag ();
                     tag_changed ();
                 });
@@ -80,18 +91,14 @@ namespace Tags {
 
                 if (handlerid_tag_changed != 0) tag.disconnect (handlerid_tag_changed);
                 if (handlerid_tag_enabled_changed != 0) tag.disconnect (handlerid_tag_enabled_changed);
-
-                matching_tags.remove (tag);
-
-                this.tag = get_active_tag ();
-
-                tag_changed ();
+                if (handlerid_to_be_deleted != 0) tag.disconnect (handlerid_to_be_deleted);
 
                 message ("Line %u: tag %s removed from matching tags", this.number, tag.pattern);
-                return;
+                matching_tags.remove (tag);
+                this.tag = get_active_tag ();
+                tag_changed ();
             } else {
                 warning ("Line %u: tag %s not found in matching tags", this.number, tag.pattern);
-                return;
             }
         }
 

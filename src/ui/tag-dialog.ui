@@ -102,7 +102,8 @@
             <property name="title" translatable="yes">Color Scheme</property>
             <child type="header-suffix">
               <object class="GtkButton" id="button_regenerate_cs">
-                <property name="label" translatable="yes">Regenerate</property>
+                <property name="label" translatable="yes">_Regenerate</property>
+                <property name="use-underline">true</property>
               </object>
             </child>
             <child>
@@ -159,8 +160,9 @@
                   <class name="destructive-action"/>
                 </style>
                 <property name="start-icon-name">user-trash-symbolic</property>
-                <property name="title" translatable="yes">Delete</property>
+                <property name="title" translatable="yes">_Delete</property>
                 <property name="visible">false</property>
+                <property name="use-underline">true</property>
               </object>
             </child>
             <child>
@@ -170,8 +172,9 @@
                   <class name="suggested-action"/>
                 </style>
                 <property name="start-icon-name">document-edit-symbolic</property>
-                <property name="title" translatable="yes">Edit</property>
+                <property name="title" translatable="yes">_Edit</property>
                 <property name="visible">false</property>
+                <property name="use-underline">true</property>
               </object>
             </child>
             <child>
@@ -181,9 +184,10 @@
                   <class name="suggested-action"/>
                 </style>
                 <property name="start-icon-name">list-add</property>
-                <property name="title" translatable="yes">Add</property>
+                <property name="title" translatable="yes">_Add</property>
                 <property name="visible">false</property>
                 <property name="sensitive">false</property>
+                <property name="use-underline">true</property>
               </object>
             </child>
           </object>
