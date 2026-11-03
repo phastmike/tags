@@ -33,8 +33,11 @@ namespace Tags {
             message ("LinesViewController.update_mixing_async.begin ()");
             Idle.add (() => {
                 if (updating) {
+                    message ("LinesViewController.update_mixing_async.begin () - queued");
                     queued_update = true;
                     return false;
+                } else {
+                    message ("LinesViewController.update_mixing_async.begin () - Not queued");
                 }
 
                 update_mixing_async.begin ( (s, p) => {
@@ -79,7 +82,7 @@ namespace Tags {
                 var ctx = tags.model.get_item (j) as TagContext;
                 var tag = ctx.tag;
                 // FIXME: Tag should be applied even with enabled = false
-                if (tag.applies_to (line.text)) {
+                if (tag.matches (line.text)) {
                     ctx.hit_counter.increment ();
                     line.add_matching_tag (tag);
                     /*
@@ -98,7 +101,7 @@ namespace Tags {
             ctx.hit_counter.reset ();
             for (uint i = 0; i < lines_model.get_n_items (); i++) {
                 var line = lines_model.get_item (i) as Line;
-                if (tag.applies_to (line.text)) {
+                if (tag.matches (line.text)) {
                     ctx.hit_counter.increment ();
                 }
             }
@@ -112,7 +115,7 @@ namespace Tags {
                 for (uint j = 0; j < tags.n_items; j++) {
                     var ctx = tags.model.get_object (j) as TagContext;
                     var tag = ctx.tag;
-                    if (tag.applies_to (line.text)) {
+                    if (tag.matches (line.text)) {
                         ctx.hit_counter.increment ();
                     }
                 }

@@ -11,7 +11,7 @@ namespace Tags {
     public class LineStore : Object {
         public GLib.ListModel model;
 
-        public static  string[] model_to_array (GLib.ListModel model) {
+        public static string[] model_to_array (GLib.ListModel model) {
             var result = new string[model.get_n_items()];
             for (int i = 0; i < model.get_n_items(); i++) {
                 var line = model.get_item(i) as Line;

@@ -8,13 +8,66 @@
  */
 
 namespace Tags {
+    public class MatchingTag : Object {
+        public Tag tag {get; construct;}
+        public List<ulong> handlerids;
+
+        public static int matching_tag_compare (MatchingTag a, MatchingTag b) {
+            MatchingTag mta = (MatchingTag) a;
+            MatchingTag mtb = (MatchingTag) b;
+            if (mta.tag == mtb.tag)
+                return 0;
+            else
+                return -1;
+        }
+
+        construct {
+            handlerids = new List<ulong> ();
+        }
+
+        public MatchingTag (Tag tag) {
+            Object (tag: tag);
+        }
+
+        public bool handlerid_append (ulong handlerid) {
+            message ("MatchingTag: Tag: %s handlerid_append: %lu", tag.pattern, handlerid);
+            if (handlerid != 0) {
+                message ("MatchingTag: Tag: %s handlerid_append [OK]: %lu", tag.pattern, handlerid);
+                // NOTE: Update the List HEAD
+                handlerids.append (handlerid);
+                return true;
+            }
+
+            message ("MatchingTag: Tag: %s handlerid_append [FAILED]: %lu", tag.pattern, handlerid);
+            return false;
+        }
+
+        public void handlerid_remove (ulong handlerid) {
+            message ("MatchingTag: Tag: %s handlerid_remove: %lu", tag.pattern, handlerid);
+            if (handlerids.find (handlerid) != null && handlerid != 0) {
+                message ("MatchingTag: Tag: %s handlerid_remove [DISCONNECT OK]: %lu", tag.pattern, handlerid);
+                tag.disconnect (handlerid);
+            }
+            message ("MatchingTag: Tag: %s handlerid_remove [OK]: %lu", tag.pattern, handlerid);
+            handlerids.remove (handlerid);
+        }
+
+        public void disconnect_all () {
+            // NOTE: Don't use foreach here, because we are
+            // modifying the list while iterating over it
+            for (uint i = 0; i < handlerids.length (); i++) {
+                handlerid_remove (handlerids.nth_data (i));
+            }
+        }
+
+        ~MatchingTag () {
+            message ("MatchingTag: Tag: %s destroyed", tag.pattern);
+        }
+    }
+
     public class Line : Object {
         private Tag? _tag = null;
-        private List<Tag> matching_tags;
-
-        private ulong handlerid_tag_changed = 0;
-        private ulong handlerid_to_be_deleted = 0;
-        private ulong handlerid_tag_enabled_changed = 0;
+        private List<MatchingTag> matching_tags;
 
         public uint     number  { get; construct; }
         public string?  text    { get; construct; }
@@ -41,71 +94,80 @@ namespace Tags {
 
         public Line (uint number, string? text) {
             Object (number: number, text: text);
-            matching_tags = new List<Tag> ();
+            matching_tags = new List<MatchingTag> ();
         }
 
         /* METHODS */
 
-        public Tag? get_active_tag () {
-            message ("get_active_tag: Line %u matching_tags count: %u", number, matching_tags.length ());
-            foreach (var tag in matching_tags) {
-                message ("\t-Line %u Tag [%s] enabled: %s", number, tag.pattern, tag.enabled.to_string ());
-                if (tag.enabled) {
-                    return tag;
+        private reset_active_tag () {
+            foreach (var mtag in matching_tags) {
+                if (mtag.tag.enabled) {
+                    this.tag = mtag.tag;
+                    return this.tag;
                 }
             }
-            message ("get_active_tag: Line %u no active tag found", number);
+            //message ("get_active_tag: Line %u no active tag found", number);
             return null;
         }
 
-        public void add_matching_tag (Tag tag) requires (tag != null) {
+        public void add_matching_tag (Tag tag) {
             message ("Add matching_tag (%s) to line %u", tag.pattern, number);
-            if (matching_tags.find (tag) == null) {
+            var matching_tag = new MatchingTag (tag);
+            if (matching_tags.find_custom (matching_tag, MatchingTag.matching_tag_compare) == null) {
 
-                matching_tags.append (tag);
+                matching_tag.handlerid_append (tag.changed.connect (() => {
+                    message ("Line %u: tag changed : %s", this.number, tag.pattern);
+                    get_active_tag ();
+                }));
 
-                // PER TAG, NOT ONE BUT MANY
-                handlerid_tag_changed = tag.changed.connect (() => {
-                    message ("Line %u: tag match criteria changed : %s", this.number, tag.pattern);
-                    this.tag = get_active_tag ();
-                    tag_changed ();
-                });
-
-                handlerid_tag_enabled_changed = tag.enabled_changed.connect (() => {
+                matching_tag.handlerid_append (tag.enabled_changed.connect (() => {;
                     message ("Line %u: tag enabled_changed : %s", this.number, tag.pattern);
-                    this.tag = get_active_tag ();
-                    tag_changed ();
-                });
+                    get_active_tag ();
+                }));
 
-                handlerid_to_be_deleted = tag.to_be_deleted.connect (() => {
+                matching_tag.handlerid_append (tag.to_be_deleted.connect (() => {
                     message ("Line %u: tag to_be_removed : %s", this.number, tag.pattern);
-                    remove_matching_tag (tag);
-                    this.tag = get_active_tag ();
-                    tag_changed ();
-                });
+                    remove_matching_tag (matching_tag);
+                    get_active_tag ();
+                }));
+
+                matching_tags.append (matching_tag);
+                get_active_tag ();
             }
         }
 
-        public void remove_matching_tag (Tag tag) requires (tag != null) {
-            if (matching_tags.find (tag) != null) {
-
-                if (handlerid_tag_changed != 0) tag.disconnect (handlerid_tag_changed);
-                if (handlerid_tag_enabled_changed != 0) tag.disconnect (handlerid_tag_enabled_changed);
-                if (handlerid_to_be_deleted != 0) tag.disconnect (handlerid_to_be_deleted);
-
+        public void remove_matching_tag (MatchingTag mtag) {
+            if (matching_tags.find_custom (mtag, MatchingTag.matching_tag_compare) != null) {
+                mtag.disconnect_all ();
                 message ("Line %u: tag %s removed from matching tags", this.number, tag.pattern);
-                matching_tags.remove (tag);
-                this.tag = get_active_tag ();
-                tag_changed ();
+                matching_tags.remove (mtag);
+                get_active_tag ();
             } else {
                 warning ("Line %u: tag %s not found in matching tags", this.number, tag.pattern);
             }
         }
 
         public void clear_matching_tags () {
-            foreach (var tag in matching_tags) {
-                remove_matching_tag (tag);
+            // NOTE: Don't use foreach here, because we are
+            // modifying the list while iterating over it
+            for (uint i = 0; i < matching_tags.length (); i++) {
+                var mtag = matching_tags.nth_data (i);
+                remove_matching_tag (mtag);
+            }
+            /*
+            foreach (var mtag in matching_tags) {
+                remove_matching_tag (mtag);
             } 
+            */
+        }
+
+        public void dump_to_console () {
+            message ("Line %u: text: %s", number, text);
+            message ("\tActive tag: %s", tag != null ? tag.pattern : "null");
+            message ("\tMatching tags count: %u", matching_tags.length ());
+            foreach (var mtag in matching_tags) {
+                message ("\t\tTag [%s] enabled: %s", mtag.tag.pattern, mtag.tag.enabled.to_string ());
+            }
         }
     }
 }

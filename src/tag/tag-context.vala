@@ -25,7 +25,7 @@ namespace Tags {
             return "%s%s".printf (STYLE_PREFIX_ROW, tag.uuid);
         }
 
-        public static string get_style_name_for_tag (Tag tag) requires (tag != null) {
+        public static string get_style_name_for_line (Tag tag) requires (tag != null) {
             return "%s%s".printf (STYLE_PREFIX_LINE, tag.uuid);
         }
 
@@ -41,6 +41,8 @@ namespace Tags {
 
         /* NOTE: REMOVE THIS! */
         ~TagContext () {
+            // ColorScheme will get destroyed. We don't need to disconnect from the signal
+            message ("TagContext: %s destroyed, disconnect from ColorScheme ...".printf (tag.pattern));
             this.tag.colors.changed.disconnect (update_css);
         }
 
@@ -77,11 +79,11 @@ namespace Tags {
                     background-color: @theme_selected_bg_color;
                     color: @theme_selected_fg_color;
                 }
-                """.printf (get_style_name_for_tag (tag),
+                """.printf (get_style_name_for_line (tag),
                             tag.colors.bg.to_string (),
                             tag.colors.fg.to_string (),
-                            get_style_name_for_tag (tag),
-                            get_style_name_for_tag (tag)
+                            get_style_name_for_line (tag),
+                            get_style_name_for_line (tag)
                            );
 
             css_provider.load_from_string (css_row + css_line);
@@ -93,8 +95,8 @@ namespace Tags {
             return get_style_name_for_row (tag);
         }
 
-        public string get_style_name_tag () {
-            return get_style_name_for_tag (tag);
+        public string get_style_name_line () {
+            return get_style_name_for_line (tag);
         }
     }
 }

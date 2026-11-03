@@ -65,13 +65,12 @@ namespace Tags {
                 store.append(ctx);
             }
 
+            // Tag is enabled by default
             Gtk.StyleContext.add_provider_for_display (
                 Gdk.Display.get_default (),
                 ctx.css_provider,
                 Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
             );
-
-            have_changed = true;
 
             tag.changed.connect (() => {
                 have_changed = true;
@@ -93,6 +92,7 @@ namespace Tags {
             });
 
             added (tag);
+            have_changed = true;
         }
 
         public void remove_tag (Tag to_remove) {

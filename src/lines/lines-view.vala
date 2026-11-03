@@ -44,7 +44,7 @@ namespace Tags {
         public uint wrap_nlines {
             get { return (uint) _wrap_nlines; }
             set {
-                    if (value > 0 && value < 11) {
+                if (value > 0 && value < 11) {
                     _wrap_nlines = value;
                     column_view.set_model (null);
                     column_view.set_model (selection_model); 
@@ -170,19 +170,17 @@ namespace Tags {
 
             var tag = line.tag;
             if (tag != null) {
-                message ("update_line_tag_style: %s".printf (line.text));
-                if (tag.applies_to (line.text)) 
-                    message ("Tag applies to line: %s".printf (line.text));
-                    label.parent.add_css_class (TagContext.get_style_name_for_tag (tag));
+                if (tag.matches (line.text)) 
+                    label.parent.add_css_class (TagContext.get_style_name_for_line (tag));
                     label.queue_draw ();
             }
 
             /*
             if (line.tag != null) {
                 if (line.tag.enabled) {
-                    label.parent.add_css_class (TagContext.get_style_name_for_tag (line.tag));
+                    label.parent.add_css_class (TagContext.get_style_name_for_line (line.tag));
                 } else {
-                    label.parent.remove_css_class (TagContext.get_style_name_for_tag (line.tag));
+                    label.parent.remove_css_class (TagContext.get_style_name_for_line (line.tag));
                 }
             } else {
                 clear_all_tag_styles (label);

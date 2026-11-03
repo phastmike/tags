@@ -105,7 +105,7 @@ namespace Tags {
 
         /* METHODS */
 
-        public bool applies_to (string? text = null) {
+        public bool matches (string? text = null) {
             if (text == null) return false;
 
             if (this.is_regex) {

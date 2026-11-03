@@ -235,7 +235,7 @@ namespace Tags {
 
             for (uint i = 0; i < tags.n_items; i++) {
                 var ctx = tags.model.get_object (i) as TagContext; 
-                if (ctx.tag.enabled == true && ctx.tag.applies_to (text)) {
+                if (ctx.tag.enabled == true && ctx.tag.matches (text)) {
                     return true;
                 }
             }
@@ -262,7 +262,6 @@ namespace Tags {
                 tag.enabled_changed.connect ((enabled) => {
                     //lines_view_controller.update_mixing ();
                     filter.update ();
-                    //lines_view.queue_draw ();
                     minimap.set_array (LineStore.model_to_array(lines_view.lines));
                 });
 
@@ -304,6 +303,7 @@ namespace Tags {
 
             lines_view.column_view.activate.connect ( (p) => {
                 var line = lines_view.lines.get_item (p) as Line;
+                line.dump_to_console ();
                 dialog_add_tag (line.text);
             });
 
@@ -357,7 +357,7 @@ namespace Tags {
         private Gdk.RGBA? delegate_minimap_bgcolor_getter (string? text) {
             for (uint i = 0; i < tags.model.get_n_items (); i++) {
                 var ctx = tags.model.get_item (i) as TagContext;
-                if (ctx.tag.enabled && ctx.tag.applies_to (text)) {
+                if (ctx.tag.enabled && ctx.tag.matches (text)) {
                     return ctx.tag.colors.bg;
                 }
             }
@@ -491,7 +491,9 @@ namespace Tags {
             if (Preferences.instance ().tags_autoload == true) {
                 file_tags = File.new_for_path (file.get_path () + ".tags");
                 if (file_tags.query_exists ()) {
-                    message ("Autoloading tags from '%s'".printf (file_tags.get_basename ()));
+                    message ("Autoload: tags file exists: '%s'".printf (file_tags.get_basename ()));
+                    // FIXME: Should query user if they want to load the tags file 
+                    // It's a preference but if tag exists, should ask user if they want to load it or not
                     load_tags_from_file (file_tags);
                 }
             }
@@ -683,6 +685,7 @@ namespace Tags {
         }
 
         private void load_tags_from_file (File file, bool import = false) {
+            message ("load_tags_from_file: '%s'".printf (file.get_basename ()));
             tags.from_file.begin  (file, null, import, (obj, res) => {
                 //tags.from_file.end (res);
                 /*
@@ -954,7 +957,7 @@ namespace Tags {
             var model = filterer.model; 
             for (int i = (int) index; i >= 0; i--) {
                 var line = model.get_item (i) as Line;
-                if (tag.applies_to (line.text)) {
+                if (tag.matches (line.text)) {
                     line_selection.unselect_all ();
                     line_selection.select_item (i, true);
                     lines_view.column_view.scroll_to (i, null, Gtk.ListScrollFlags.SELECT, null);
@@ -994,7 +997,7 @@ namespace Tags {
             var model = filterer.model; 
             for (uint i = index; i < filterer.model.get_n_items (); i++) {
                 var line = model.get_item (i) as Line;
-                if (tag.applies_to (line.text)) {
+                if (tag.matches (line.text)) {
                     line_selection.unselect_all ();
                     line_selection.select_item (i, true);
                     lines_view.column_view.scroll_to (i, null, Gtk.ListScrollFlags.SELECT, null);
@@ -1028,8 +1031,9 @@ namespace Tags {
                 try {
                     File? file = UIDialogs.file_open_lines.end (res);
                     if (file != null) open_file (file);
-                } catch (Error e) {
-                    if (e.code != 2) {
+                } catch (Error error) {
+                    if (error.code != 2) {
+                        warning (error.message);
                         show_dialog (_("Open File"), _("Could not open file..."));
                     }
                 }
