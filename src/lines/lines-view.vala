@@ -107,8 +107,10 @@ namespace Tags {
         private void line_text_bind_handler (Gtk.SignalListItemFactory factory, GLib.Object listitemm) {
             Gtk.ListItem listitem = (Gtk.ListItem) listitemm;
             var label = listitem.child as Gtk.Label;
-
             var line = listitem.item as Line;
+
+            message ("line_text_bind_handler: binding line %u".printf (line.number));
+
             label.set_text (line.text);
 
             if (_wrap_lines == true) {
@@ -123,15 +125,24 @@ namespace Tags {
 
             update_line_tag_style (label, line);
 
-            if (line != null) {
-                if (line.tag != null && line.hid == 0) {
+            var tag = line.get_tag ();
+            if (line.hid != 0) {
+                    line.disconnect (line.hid);
+            }
+            line.hid = line.tag_changed.connect (() => {
+                message ("line_text_bind_handler: tag_changed signal received for line %u".printf (line.number));
+                    update_line_tag_style (label, line);
+            });
+                /*
+                if (line.get_tag () != null && line.hid == 0) {
                     line.hid = line.tag_changed.connect (() => {
                         update_line_tag_style (label, line);
                     });
                 }
-            } else {
-                clear_all_tag_styles (label);
-            }
+                */
+            //} else {
+            //    clear_all_tag_styles (label);
+            //}
 
         }
 
@@ -141,19 +152,16 @@ namespace Tags {
             var label = listitem.child as Gtk.Label;
             var line = listitem.item as Line;
 
-            clear_all_tag_styles (label);
-            /*
-            if (line.tag != null) {
-                if (line.hid != 0) {
+            message ("line_text_unbind_handler: unbinding line %u".printf (line.number));
+
+            //clear_all_tag_styles (label);
+            if (line.get_tag () != null && line.hid != 0) {
                     line.disconnect (line.hid);
-                }
             }
-            */
         }
 
         // NOTE: Should be quick, just iterate over tags to remove the styleclasses
         private void clear_all_tag_styles (Gtk.Widget widget) {
-            if (widget == null || widget.parent == null) { return; }
             var c = widget.parent;
             if (c.css_classes.length != 0) {
                 foreach (var css_class in c.css_classes) {
@@ -165,15 +173,14 @@ namespace Tags {
         }
 
         private void update_line_tag_style (Gtk.Label label, Line line) { 
-            if (line == null || label == null) { return; }
-            clear_all_tag_styles (label);
-
-            var tag = line.tag;
+            message ("update_line_tag_style: updating line %u".printf (line.number));
+            var tag = line.get_tag ();
             if (tag != null) {
-                if (tag.matches (line.text)) 
-                    label.parent.add_css_class (TagContext.get_style_name_for_line (tag));
-                    label.queue_draw ();
-            }
+                label.parent.add_css_class (TagContext.get_style_name_for_line (tag));
+            } /* else {
+                clear_all_tag_styles (label);
+            }*/
+            label.parent.queue_draw ();
 
             /*
             if (line.tag != null) {

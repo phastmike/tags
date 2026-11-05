@@ -296,10 +296,10 @@ namespace Tags {
         }
 
         private void setup_lines_view () {
-            lines = new LineStore ();
-            filter = new Tags.Filter (tags.model);
-            filterer = new Filterer (lines, filter);
-            lines_view = new LinesView (filterer.model);
+            lines       = new LineStore ();
+            filter      = new Tags.Filter (tags.model);
+            filterer    = new Filterer (lines, filter);
+            lines_view  = new LinesView (filterer.model);
 
             lines_view.column_view.activate.connect ( (p) => {
                 var line = lines_view.lines.get_item (p) as Line;
