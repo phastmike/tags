@@ -15,7 +15,7 @@ namespace Tags {
         public static int matching_tag_compare (MatchingTag a, MatchingTag b) {
             MatchingTag mta = (MatchingTag) a;
             MatchingTag mtb = (MatchingTag) b;
-            message ("MatchingTag: matching_tag_compare: a.tag: %s, b.tag: %s", mta.tag.pattern, mtb.tag.pattern);
+            //message ("MatchingTag: matching_tag_compare: a.tag: %s, b.tag: %s", mta.tag.pattern, mtb.tag.pattern);
             if (mta.tag == mtb.tag)
                 return 0;
             else
@@ -57,7 +57,7 @@ namespace Tags {
         }
 
         ~MatchingTag () {
-            message ("MatchingTag: Tag: %s destroyed", tag.pattern);
+            //message ("MatchingTag: Tag: %s destroyed", tag.pattern);
         }
 
         public void dump_to_console () {
@@ -87,6 +87,10 @@ namespace Tags {
             matching_tags = new List<MatchingTag> ();
         }
 
+        ~Line () {
+            clear_matching_tags ();
+        }
+
         /* METHODS */
 
         public Tag? get_tag () {
@@ -94,58 +98,72 @@ namespace Tags {
         }
 
         private void update_active_tag () {
-            // If the current tag is enabled, we don't need to do anything
-            message ("Line %u: update_active_tag called", number);
-
-            if (mtag != null && mtag.tag.enabled) {
-                message ("Line %u: current tag %s is enabled, no need to update active tag", number, mtag.tag.pattern);
-                tag_changed ();
-                return;
-            }
-
             // Check if we have any enabled matching tags
             bool found = false;
-            foreach (var tag in matching_tags) {
-                if (tag.tag.enabled) {
-                    found = true;
-                    mtag = tag;
+            if (number == 59) {
+                message ("Line %u: update_active_tag: checking for enabled matching tags", number);
+                message ("Line %u: update_active_tag: matching_tags count: %u", number, matching_tags.length ());
+            }
+            for (uint i = 0; i < matching_tags.length (); i++) {
+                //message ("Line %u: update_active_tag: checking matching tag %u", number, i);
+                var mtag = matching_tags.nth_data (i);
+                if (mtag.tag.enabled) {
+                    if (mtag.tag == this.mtag?.tag) {
+                        // Nothing to do, the current tag is already the active tag
+                        if (number == 59) message ("Line %u: update_active_tag: current tag is already the active tag: %s", number, mtag.tag.pattern);
+                        found = true;
+                        break;
+                    }
+                    if (number == 59) message ("Line %u: update_active_tag: setting active tag to: %s", number, mtag.tag.pattern);
+                    this.mtag = mtag;
                     tag_changed ();
-                    message ("Line %u: found enabled matching tag %s, setting as active tag", number, tag.tag.pattern);
+                    found = true;
                     break;
                 }
             }
+            /*
+            foreach (var tag in matching_tags) {
+                if (tag.tag.enabled) {
+                    if (tag.tag == mtag?.tag) {
+                        // Nothing to do, the current tag is already the active tag
+                        return;
+                    }
+                    found = true;
+                    mtag = tag;
+                    tag_changed ();
+                    break;
+                }
+            }
+            */
 
             if (!found && _mtag != null) {
-                message ("Line %u: no enabled matching tags found, clearing active tag", number);
+                // No enabled matching tags found, clear the active tag
+                if (number == 59) {
+                    message ("Line %u: update_active_tag: no enabled matching tags found, clearing active tag", number);
+                }
                 mtag = null;
                 tag_changed ();
             }
         }
 
         public void add_matching_tag (Tag tag) {
-            message ("Add matching_tag (%s) to line %u", tag.pattern, number);
             var matching_tag = new MatchingTag (tag);
             if (matching_tags.find_custom (matching_tag, MatchingTag.matching_tag_compare) == null) {
-                message ("Line %u: tag %s does not exist in matching tags", this.number, tag.pattern);
                 matching_tag.handlerid_append (tag.changed.connect (() => {
-                    message ("Line %u: tag changed : %s", this.number, tag.pattern);
                     update_active_tag ();
                 }));
 
                 matching_tag.handlerid_append (tag.enabled_changed.connect (() => {;
-                    message ("Line %u: tag enabled_changed : %s", this.number, tag.pattern);
                     update_active_tag ();
                 }));
 
                 matching_tag.handlerid_append (tag.to_be_deleted.connect (() => {
-                    message ("Line %u: tag to_be_removed : %s", this.number, tag.pattern);
                     remove_matching_tag (matching_tag);
                     update_active_tag ();
                 }));
 
                 matching_tags.append (matching_tag);
                 update_active_tag ();
-                message ("Line %u: tag %s added to matching tags", this.number, tag.pattern);
             }
         }
 
@@ -153,7 +171,6 @@ namespace Tags {
             if (matching_tags.find_custom (mtag, MatchingTag.matching_tag_compare) != null) {
                 mtag.disconnect_all (); 
                 matching_tags.remove (mtag);
-                message ("Line %u: tag %s removed from matching tags", this.number, mtag.tag.pattern);
                 update_active_tag ();
             } else {
                 warning ("Line %u: tag %s not found in matching tags", this.number, mtag.tag.pattern);

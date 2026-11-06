@@ -69,7 +69,6 @@ namespace Tags {
             for (uint i = 0; i < bitset.get_size (); i++) {
                 var line = selection_model.get_item (bitset.get_nth (i)) as Line;
                 str.append (line.text);
-                //clear_all_tag_styles (label);
                 str.append ("\n");
             }
             return str.str;
@@ -109,7 +108,6 @@ namespace Tags {
             var label = listitem.child as Gtk.Label;
             var line = listitem.item as Line;
 
-            message ("line_text_bind_handler: binding line %u".printf (line.number));
 
             label.set_text (line.text);
 
@@ -125,38 +123,22 @@ namespace Tags {
 
             update_line_tag_style (label, line);
 
-            var tag = line.get_tag ();
-            if (line.hid != 0) {
-                    line.disconnect (line.hid);
-            }
+            if (line.hid != 0) line.disconnect (line.hid);
             line.hid = line.tag_changed.connect (() => {
-                message ("line_text_bind_handler: tag_changed signal received for line %u".printf (line.number));
-                    update_line_tag_style (label, line);
+                //message ("line_text_bind_handler: tag_changed signal received for line %u".printf (line.number));
+                clear_all_tag_styles (label);
+                update_line_tag_style (label, line);
             });
-                /*
-                if (line.get_tag () != null && line.hid == 0) {
-                    line.hid = line.tag_changed.connect (() => {
-                        update_line_tag_style (label, line);
-                    });
-                }
-                */
-            //} else {
-            //    clear_all_tag_styles (label);
-            //}
-
         }
 
         [GtkCallback]
         private void line_text_unbind_handler (Gtk.SignalListItemFactory factory, GLib.Object listitemm) {
             Gtk.ListItem listitem = (Gtk.ListItem) listitemm;
-            var label = listitem.child as Gtk.Label;
             var line = listitem.item as Line;
 
-            message ("line_text_unbind_handler: unbinding line %u".printf (line.number));
-
-            //clear_all_tag_styles (label);
-            if (line.get_tag () != null && line.hid != 0) {
-                    line.disconnect (line.hid);
+            if (line.hid != 0) {
+                line.disconnect (line.hid);
+                line.hid = 0;
             }
         }
 
@@ -173,26 +155,13 @@ namespace Tags {
         }
 
         private void update_line_tag_style (Gtk.Label label, Line line) { 
-            message ("update_line_tag_style: updating line %u".printf (line.number));
+            clear_all_tag_styles (label);
             var tag = line.get_tag ();
             if (tag != null) {
                 label.parent.add_css_class (TagContext.get_style_name_for_line (tag));
-            } /* else {
+            }/*  else {
                 clear_all_tag_styles (label);
             }*/
-            label.parent.queue_draw ();
-
-            /*
-            if (line.tag != null) {
-                if (line.tag.enabled) {
-                    label.parent.add_css_class (TagContext.get_style_name_for_line (line.tag));
-                } else {
-                    label.parent.remove_css_class (TagContext.get_style_name_for_line (line.tag));
-                }
-            } else {
-                clear_all_tag_styles (label);
-            } 
-            */
         }
     }
 }

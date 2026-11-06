@@ -76,7 +76,7 @@ namespace Tags {
         }
 
         public void update_mixing_for_line (Line line) {
-            message ("LinesViewController.update_mixing_for_line () for line: %u", line.number);
+            //message ("LinesViewController.update_mixing_for_line () for line: %u", line.number);
             line.clear_matching_tags ();
             for (uint j = 0; j < tags.n_items; j++) {
                 var ctx = tags.model.get_item (j) as TagContext;

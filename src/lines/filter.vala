@@ -53,11 +53,6 @@ namespace Tags {
             if (item == null) { return false; }
 
             Line line = (Line) item;
-            /*
-            if (line.tag != null) {
-                return line.tag.enabled == true;
-            }
-            */ 
             for (uint i = 0; i < tags.get_n_items (); i++) {
                 var ctx = tags.get_item (i) as TagContext;
                 if (ctx.tag.enabled == true && ctx.tag.matches (line.text)) {
