@@ -20,6 +20,14 @@ namespace Tags {
         [GtkChild]
         private unowned Adw.ActionRow row_lines_n;
         [GtkChild]
+        private unowned Adw.ActionRow row_lines_highlighted_n;
+        [GtkChild]
+        private unowned Gtk.ProgressBar progress_highlighted;
+        [GtkChild]
+        private unowned Adw.ActionRow row_lines_tagged_n;
+        [GtkChild]
+        private unowned Gtk.ProgressBar progress_tagged;
+        [GtkChild]
         private unowned Gtk.Button button_copy;
         [GtkChild]
         private unowned Gtk.Button button_browse;
@@ -79,7 +87,16 @@ namespace Tags {
                     row_size.set_subtitle ("%0.1f %s".printf(size, mult.to_string ()));
                 }
 
-                row_lines_n.set_subtitle ("%s".printf(lines.model.get_n_items ().to_string ()));
+                var total   = lines.model.get_n_items ();
+                row_lines_n.set_subtitle ("%s".printf (total.to_string ()));
+
+                var highlighted = lines.nr_lines_highlighted ();
+                row_lines_highlighted_n.set_subtitle ("%s".printf (highlighted.to_string ()));
+                progress_highlighted.set_fraction ((double) highlighted / (double) total);
+
+                var tagged  = lines.nr_lines_tagged ();
+                row_lines_tagged_n.set_subtitle ("%s".printf (tagged.to_string ()));
+                progress_tagged.set_fraction ((double) tagged / (double) total);
 
                 button_browse.clicked.connect (() => {
                     try {

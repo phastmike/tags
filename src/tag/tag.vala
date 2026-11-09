@@ -28,7 +28,6 @@ namespace Tags {
             set {
                 if (_enabled == value) return;
                 _enabled = value;
-                //changed ();
                 enabled_changed (enabled);
             }
         }
@@ -86,6 +85,7 @@ namespace Tags {
         /* CONSTRUCTORS */
 
         construct {
+            _enabled = false;
             uuid = Tags.Common.generate_uuid ();
         }
 
@@ -121,5 +121,16 @@ namespace Tags {
             }
         }
 
+        public void dump_to_console () {
+            stdout.printf ("Tag:\n");
+            stdout.printf ("  Pattern:  %s\n", this.pattern);
+            stdout.printf ("  Description: %s\n", this.description);
+            stdout.printf ("  Enabled: %s\n", this.enabled ? "true" : "false");
+            stdout.printf ("  Is Regex: %s\n", this.is_regex ? "true" : "false");
+            stdout.printf ("  Is Case Sensitive: %s\n", this.is_case_sensitive ? "true" : "false");
+            stdout.printf ("  Colors:\n");
+            stdout.printf ("    Foreground: %s\n", this.colors.fg != null ? this.colors.fg.to_string () : "null");
+            stdout.printf ("    Background: %s\n", this.colors.bg != null ?  this.colors.bg.to_string () : "null");
+        }
     }
 }

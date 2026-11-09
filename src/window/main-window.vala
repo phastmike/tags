@@ -305,7 +305,7 @@ namespace Tags {
 
             lines_view.column_view.activate.connect ( (p) => {
                 var line = lines_view.lines.get_item (p) as Line;
-                line.dump_to_console ();
+                //line.dump_to_console ();
                 dialog_add_tag (line.text);
             });
 
@@ -488,6 +488,12 @@ namespace Tags {
             }
 
             var cancel_open = new Cancellable ();
+            lines.remove_all ();
+
+            title_nosidebar.set_subtitle (file.get_basename ());
+            title_nosidebar.set_tooltip_text (file.get_path ());
+            title_sidebar.set_label (file.get_basename ());
+            title_sidebar.set_tooltip_text (file.get_path ());
 
             // LOAD TAGS FIRST
             if (Preferences.instance ().tags_autoload == true) {
@@ -501,8 +507,8 @@ namespace Tags {
             }
 
             stack.set_visible_child_name ("loading");
+            message ("Opening file '%s'".printf (file.get_basename ()));
             lines.from_file.begin (file, cancel_open, (obj, res) => {
-                message ("Opened file '%s'".printf (file.get_basename ()));
                 string? err_msg = lines.from_file.end (res);
                 message ("File '%s' loaded".printf (file.get_basename ()));
                 if (err_msg == null) {
@@ -691,7 +697,7 @@ namespace Tags {
         private void load_tags_from_file (File file, bool import = false) {
             message ("load_tags_from_file: '%s'".printf (file.get_basename ()));
             tags.from_file.begin  (file, null, import, (obj, res) => {
-                //tags.from_file.end (res);
+                tags.from_file.end (res);
                 /*
                 for (int i = 0; i < tags.n_items; i++) {
                     var ctx = tags.model.get_object (i) as TagContext;

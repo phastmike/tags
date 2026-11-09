@@ -79,6 +79,38 @@
                 <property name="title" translatable="yes">Lines</property>
               </object>
             </child>
+            <child>
+              <object class="AdwActionRow" id="row_lines_highlighted_n">
+                <property name="focusable">false</property>
+                <property name="css-classes">property</property>
+                <property name="subtitle">---</property>
+                <property name="title" translatable="yes">Highlighted</property>
+                <child type="suffix">
+                  <object class="GtkProgressBar" id="progress_highlighted">
+                    <property name="valign">center</property>
+                    <property name="halign">center</property>
+                    <property name="show-text">true</property>
+                    <property name="tooltip-text" translatable="yes">Highlighted lines</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="AdwActionRow" id="row_lines_tagged_n">
+                <property name="focusable">false</property>
+                <property name="css-classes">property</property>
+                <property name="subtitle">---</property>
+                <property name="title" translatable="yes">Tagged</property>
+                <child type="suffix">
+                  <object class="GtkProgressBar" id="progress_tagged">
+                    <property name="valign">center</property>
+                    <property name="halign">center</property>
+                    <property name="show-text">true</property>
+                    <property name="tooltip-text" translatable="yes">Tagged lines</property>
+                  </object>
+                </child>
+              </object>
+            </child>
           </object>
         </child>
       </object>

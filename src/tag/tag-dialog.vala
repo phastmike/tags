@@ -93,6 +93,7 @@ namespace Tags {
                             button_fg_color.get_rgba (),
                             button_bg_color.get_rgba ())
                     ).
+                    set_enabled (true).
                     set_pattern (entry_tag_pattern.get_text ()).
                     set_description (entry_tag_name.get_text ()).
                     set_is_regex (row_regex.get_active ()).

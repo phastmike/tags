@@ -29,13 +29,16 @@ namespace Tags {
             this.context = context;
             var tag = context.tag;
             enabled.active = tag.enabled;
-            enabled.add_css_class (TagContext.get_style_name_for_row (tag));
+            //enabled.add_css_class (TagContext.get_style_name_for_row (tag));
             title.label = tag.description;
             set_tooltip_text (tag.description);
             subtitle.label = tag.pattern;
 
             hitcounter.label = "%u".printf (context.hit_counter.count);
 
+            if (tag.description == null) {
+                tag.description = "";
+            } else
             if (tag.description.length == 0) {
                 title.visible = false;
             }
@@ -53,8 +56,15 @@ namespace Tags {
                     return true;
                  }, null);
 
+            if (tag.enabled != true) {
+                add_css_class ("dimmed");
+            } else {
+                enabled.add_css_class (TagContext.get_style_name_for_row (tag));
+            }
+
             tag.enabled_changed.connect ( (enabled) => {
                 if (enabled == true) {
+                    this.enabled.add_css_class (TagContext.get_style_name_for_row (tag));
                     remove_css_class ("dimmed");
                 } else {
                     add_css_class ("dimmed");

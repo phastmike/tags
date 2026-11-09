@@ -96,7 +96,6 @@ namespace Tags {
         }
 
         public void remove_tag (Tag to_remove) {
-            message ("TagStore:remove_tag: %s", to_remove.pattern);
             for (var i = 0; i < store.get_n_items (); i++) {
                 var ctx = store.get_object (i) as TagContext;
                 var tag = ctx.tag;
@@ -189,6 +188,7 @@ namespace Tags {
                     array = node.get_array ();
                     array.foreach_element ((array, index_, element_node) => {
                         var tag = Json.gobject_deserialize (typeof (Tag), element_node) as Tag;
+                        //tag.dump_to_console ();
                         add_tag (tag);
                     });
                     if (preserve_load == false) have_changed = false;

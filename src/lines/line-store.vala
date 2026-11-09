@@ -20,10 +20,44 @@ namespace Tags {
             return result;
         }
 
-        //public signal void loaded_from_file ();
+        // Constructor
 
         public LineStore () {
             model = new GLib.ListStore (typeof(Line));
+        }
+
+        // Methods
+
+        public void remove_all () {
+            // Splice the model with an empty array to remove all items
+            var store = model as GLib.ListStore;
+            store.splice (0, model.get_n_items(), new Line[0]);
+        }
+
+        public uint nr_lines () {
+            return model.get_n_items();
+        }
+
+        public uint nr_lines_tagged () {
+            uint count = 0;
+            for (int i = 0; i < model.get_n_items(); i++) {
+                var line = model.get_item(i) as Line;
+                if (line.is_tagged ()) {
+                    count++;
+                }
+            }
+            return count;
+        }
+
+        public uint nr_lines_highlighted () {
+            uint count = 0;
+            for (int i = 0; i < model.get_n_items(); i++) {
+                var line = model.get_item(i) as Line;
+                if (line.get_tag () != null) {
+                    count++;
+                }
+            }
+            return count;
         }
 
         public async string? from_file (File file, Cancellable cancellable) {

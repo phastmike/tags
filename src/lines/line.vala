@@ -97,6 +97,10 @@ namespace Tags {
             return mtag != null ? mtag.tag : null;
         }
 
+        public bool is_tagged () {
+            return matching_tags.length () > 0;
+        }
+
         private void update_active_tag () {
             // Check if we have any enabled matching tags
             bool found = false;

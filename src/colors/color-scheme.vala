@@ -53,6 +53,12 @@ namespace Tags {
 
         /* METHODS */
 
+        construct {
+             // Fix non existing fg or bg colors when deserializing from json
+            _fg = Gdk.RGBA ();
+            _bg = Gdk.RGBA ();
+        }
+
         public ColorScheme (string name, Gdk.RGBA? fg, Gdk.RGBA? bg) {
             _name = name;
             _fg = fg;

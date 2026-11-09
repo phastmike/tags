@@ -42,7 +42,7 @@ namespace Tags {
         /* NOTE: REMOVE THIS! */
         ~TagContext () {
             // ColorScheme will get destroyed. We don't need to disconnect from the signal
-            message ("TagContext: %s destroyed, disconnect from ColorScheme ...".printf (tag.pattern));
+            //message ("TagContext: %s destroyed, disconnect from ColorScheme ...".printf (tag.pattern));
             this.tag.colors.changed.disconnect (update_css);
         }
 

@@ -12,7 +12,7 @@ namespace Tags {
 
     public class TagBuilder {
         public ColorScheme  colors;
-        public bool         enabled             = true;
+        public bool         enabled             = false;
         public string?      pattern             = null;
         public string?      description         = null;
         public bool         is_regex            = false;
