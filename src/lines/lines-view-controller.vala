@@ -30,19 +30,19 @@ namespace Tags {
             if (lines_model.get_n_items () == 0 || tags.n_items == 0) {
                 return;
             }
-            message ("LinesViewController.update_mixing_async.begin ()");
+
             Idle.add (() => {
                 if (updating) {
-                    message ("LinesViewController.update_mixing_async.begin () - queued");
+                    //message ("LinesViewController.update_mixing_async.begin () - queued");
                     queued_update = true;
                     return false;
                 } else {
-                    message ("LinesViewController.update_mixing_async.begin () - Not queued");
+                    //message ("LinesViewController.update_mixing_async.begin () - Not queued");
                 }
 
                 update_mixing_async.begin ( (s, p) => {
                     update_mixing_async.end (p);
-                    message ("LinesViewController.update_mixing_async.ended ()");
+                    //message ("LinesViewController.update_mixing_async.ended ()");
                     mix_updated ();
                 });
                 return false;
@@ -69,7 +69,7 @@ namespace Tags {
                 queued_update = false;
                 update_mixing_async.begin ( (s, p) => {
                     update_mixing_async.end (p);
-                    message ("LinesViewController.update_mixing () - mix_upated");
+                    //message ("LinesViewController.update_mixing () - mix_upated");
                     mix_updated ();
                 });
             }

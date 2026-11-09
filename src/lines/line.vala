@@ -100,21 +100,15 @@ namespace Tags {
         private void update_active_tag () {
             // Check if we have any enabled matching tags
             bool found = false;
-            if (number == 59) {
-                message ("Line %u: update_active_tag: checking for enabled matching tags", number);
-                message ("Line %u: update_active_tag: matching_tags count: %u", number, matching_tags.length ());
-            }
             for (uint i = 0; i < matching_tags.length (); i++) {
                 //message ("Line %u: update_active_tag: checking matching tag %u", number, i);
                 var mtag = matching_tags.nth_data (i);
                 if (mtag.tag.enabled) {
                     if (mtag.tag == this.mtag?.tag) {
                         // Nothing to do, the current tag is already the active tag
-                        if (number == 59) message ("Line %u: update_active_tag: current tag is already the active tag: %s", number, mtag.tag.pattern);
                         found = true;
                         break;
                     }
-                    if (number == 59) message ("Line %u: update_active_tag: setting active tag to: %s", number, mtag.tag.pattern);
                     this.mtag = mtag;
                     tag_changed ();
                     found = true;
@@ -138,9 +132,6 @@ namespace Tags {
 
             if (!found && _mtag != null) {
                 // No enabled matching tags found, clear the active tag
-                if (number == 59) {
-                    message ("Line %u: update_active_tag: no enabled matching tags found, clearing active tag", number);
-                }
                 mtag = null;
                 tag_changed ();
             }

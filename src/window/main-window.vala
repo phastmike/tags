@@ -130,7 +130,9 @@ namespace Tags {
 
 
             stack = new Gtk.Stack ();
+            stack.set_transition_type (Gtk.StackTransitionType.CROSSFADE);
             stack.add_named (new WelcomeView (), "welcome");
+            stack.add_named (new LoadingView (), "loading");
             stack.add_named (main_box, "main");
             stack.set_visible_child_name ("welcome");
 
@@ -498,6 +500,7 @@ namespace Tags {
                 }
             }
 
+            stack.set_visible_child_name ("loading");
             lines.from_file.begin (file, cancel_open, (obj, res) => {
                 message ("Opened file '%s'".printf (file.get_basename ()));
                 string? err_msg = lines.from_file.end (res);
@@ -530,7 +533,7 @@ namespace Tags {
 
                     lines_view_controller.update_mixing ();
                     filter.update ();
-                    lines_view_controller.count_tag_hits ();
+                    //lines_view_controller.count_tag_hits ();
                     minimap.set_array (LineStore.model_to_array(lines_view.lines));
                 } else {
                     lines_view.set_visible (true);
@@ -565,13 +568,14 @@ namespace Tags {
         private void dialog_edit_tag (Tag tag) {
             var tag_dialog = new TagDialog.for_editing (tag);
 
-            /*
+            // FIXME: Can be handled via dialog or via instance change
+            // Should rematch the tagging
             tag_dialog.edit_tag.connect ((t) => {
-                lines_view_controller.count_tag_hits ();
+                lines_view_controller.update_mixing ();
+                //lines_view_controller.count_tag_hits ();
                 filter.update ();
                 minimap.set_array (LineStore.model_to_array (lines_view.lines));
             });
-            */
 
             tag_dialog.delete_tag.connect ((tag) => {
                 var dialog = new Adw.AlertDialog (_("Remove Tag"), _("Remove tag from the list?"));
@@ -808,6 +812,7 @@ namespace Tags {
             var action = this.lookup_action ("action_hide_untagged_lines");
             action.change_state (new Variant.boolean ((bool) filter.active));
 
+            // FIXME: Should not be static. Should be dynamic
             Timeout.add (500, () => {
                 minimap.set_array (LineStore.model_to_array(lines_view.lines));
                 return false;
