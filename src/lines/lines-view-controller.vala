@@ -33,18 +33,15 @@ namespace Tags {
 
             Idle.add (() => {
                 if (updating) {
-                    //message ("LinesViewController.update_mixing_async.begin () - queued");
                     queued_update = true;
                     return false;
-                } else {
-                    //message ("LinesViewController.update_mixing_async.begin () - Not queued");
                 }
 
                 update_mixing_async.begin ( (s, p) => {
                     update_mixing_async.end (p);
-                    //message ("LinesViewController.update_mixing_async.ended ()");
                     mix_updated ();
                 });
+
                 return false;
             });
         }
@@ -69,34 +66,24 @@ namespace Tags {
                 queued_update = false;
                 update_mixing_async.begin ( (s, p) => {
                     update_mixing_async.end (p);
-                    //message ("LinesViewController.update_mixing () - mix_upated");
                     mix_updated ();
                 });
             }
         }
 
         public void update_mixing_for_line (Line line) {
-            //message ("LinesViewController.update_mixing_for_line () for line: %u", line.number);
             line.clear_matching_tags ();
             for (uint j = 0; j < tags.n_items; j++) {
                 var ctx = tags.model.get_item (j) as TagContext;
                 var tag = ctx.tag;
-                // FIXME: Tag should be applied even with enabled = false
                 if (tag.matches (line.text)) {
                     ctx.hit_counter.increment ();
                     line.add_matching_tag (tag);
-                    /*
-                    if (line.tag == null) {
-                        line.tag = tag;
-                    }
-                    */
-                    //break;
                 }
             }
         }
 
         public void count_hits_for_tag (Tag tag) {
-        return; ////////////////////////////////////////////////////////////////////////////////////
             var ctx = tags.get_context_for_tag (tag);
             ctx.hit_counter.reset ();
             for (uint i = 0; i < lines_model.get_n_items (); i++) {
@@ -108,7 +95,6 @@ namespace Tags {
         }
 
         public void count_tag_hits () {
-        return; ////////////////////////////////////////////////////////////////////////////////////
             tags.hitcounter_reset_all ();
             for (uint i = 0; i < lines_model.get_n_items (); i++) {
                 var line = lines_model.get_item (i) as Line;

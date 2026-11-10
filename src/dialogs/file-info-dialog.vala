@@ -87,16 +87,18 @@ namespace Tags {
                     row_size.set_subtitle ("%0.1f %s".printf(size, mult.to_string ()));
                 }
 
-                var total   = lines.model.get_n_items ();
+                var total   = lines.nr_lines ();
                 row_lines_n.set_subtitle ("%s".printf (total.to_string ()));
 
                 var highlighted = lines.nr_lines_highlighted ();
                 row_lines_highlighted_n.set_subtitle ("%s".printf (highlighted.to_string ()));
                 progress_highlighted.set_fraction ((double) highlighted / (double) total);
+                progress_highlighted.set_tooltip_text ("%.00f%%".printf (((double) highlighted / (double) total) * 100.0));
 
                 var tagged  = lines.nr_lines_tagged ();
                 row_lines_tagged_n.set_subtitle ("%s".printf (tagged.to_string ()));
                 progress_tagged.set_fraction ((double) tagged / (double) total);
+                progress_tagged.set_tooltip_text ("%.00f%%".printf (((double) tagged / (double) total) * 100.0));
 
                 button_browse.clicked.connect (() => {
                     try {

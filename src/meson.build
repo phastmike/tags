@@ -5,6 +5,7 @@ tags_sources = [
 
 subdir('tag')
 subdir('lines')
+subdir('views')
 subdir('colors')
 subdir('window')
 subdir('minimap')

@@ -107,7 +107,7 @@ namespace Tags {
                     );
                     store.remove (i);
                     have_changed = true;
-                    message ("TagStore:remove_tag: %s removed", to_remove.pattern);
+                    //message ("TagStore:remove_tag: %s removed", to_remove.pattern);
                     return;
                 }
             }
@@ -168,7 +168,7 @@ namespace Tags {
                 generator.to_file (file.get_path ());
                 have_changed = false;
             } catch (Error e) {
-                error ("to_file:error: %s", e.message);
+                warning ("to_file:error: %s", e.message);
             }
         }
 

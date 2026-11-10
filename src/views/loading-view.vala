@@ -4,6 +4,7 @@
  * loading-view.vala
  *
  * Loading view (Open file...)
+ * Shows a spinner and a Label with the text "Loading..."
  *
  * José Miguel Fonte
  */

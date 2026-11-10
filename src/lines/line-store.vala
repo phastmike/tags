@@ -12,8 +12,8 @@ namespace Tags {
         public GLib.ListModel model;
 
         public static string[] model_to_array (GLib.ListModel model) {
-            var result = new string[model.get_n_items()];
-            for (int i = 0; i < model.get_n_items(); i++) {
+            var result = new string[model.get_n_items ()];
+            for (int i = 0; i < model.get_n_items (); i++) {
                 var line = model.get_item(i) as Line;
                 result[i] = line?.text ?? "";
             }
@@ -31,17 +31,17 @@ namespace Tags {
         public void remove_all () {
             // Splice the model with an empty array to remove all items
             var store = model as GLib.ListStore;
-            store.splice (0, model.get_n_items(), new Line[0]);
+            store.splice (0, model.get_n_items (), new Line[0]);
         }
 
         public uint nr_lines () {
-            return model.get_n_items();
+            return model.get_n_items ();
         }
 
         public uint nr_lines_tagged () {
             uint count = 0;
             for (int i = 0; i < model.get_n_items(); i++) {
-                var line = model.get_item(i) as Line;
+                var line = model.get_item (i) as Line;
                 if (line.is_tagged ()) {
                     count++;
                 }
@@ -52,7 +52,7 @@ namespace Tags {
         public uint nr_lines_highlighted () {
             uint count = 0;
             for (int i = 0; i < model.get_n_items(); i++) {
-                var line = model.get_item(i) as Line;
+                var line = model.get_item (i) as Line;
                 if (line.get_tag () != null) {
                     count++;
                 }
@@ -88,7 +88,7 @@ namespace Tags {
                     // dependant objects would need to be updated to use the new model/store.
                     // So we will keep the model, removing all items and splicing in the new ones but
                     // Can be improved by using a model/store switch instead of splicing into the existing model.
-                    uint size = temp_store.get_n_items();
+                    uint size = temp_store.get_n_items ();
                     Line[] array = new Line[size];
                     for (int i = 0; i < size; i++) {
                         var line_obj = temp_store.get_item(i) as Line;

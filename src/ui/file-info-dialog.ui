@@ -89,8 +89,13 @@
                   <object class="GtkProgressBar" id="progress_highlighted">
                     <property name="valign">center</property>
                     <property name="halign">center</property>
-                    <property name="show-text">true</property>
+                    <property name="show-text">false</property>
                     <property name="tooltip-text" translatable="yes">Highlighted lines</property>
+                    <!--
+                    <style>
+                      <class name="accent"/>
+                    </style>
+                    -->
                   </object>
                 </child>
               </object>
@@ -105,8 +110,13 @@
                   <object class="GtkProgressBar" id="progress_tagged">
                     <property name="valign">center</property>
                     <property name="halign">center</property>
-                    <property name="show-text">true</property>
+                    <property name="show-text">false</property>
                     <property name="tooltip-text" translatable="yes">Tagged lines</property>
+                    <!--
+                    <style>
+                      <class name="accent"/>
+                    </style>
+                    -->
                   </object>
                 </child>
               </object>

@@ -54,7 +54,7 @@ namespace Tags.UIDialogs {
             var file = yield file_dialog.save (parent_window, null);
             return file;
         } catch (Error e) {
-            message (e.message);
+            warning (e.message);
             throw e;
         }
     }
@@ -89,7 +89,7 @@ namespace Tags.UIDialogs {
             file = yield file_dialog.open (parent_window, cancellable); 
             return file;
         } catch (Error e) {
-            message ("Error message: %s".printf (e.message));
+            warning ("Error message: %s".printf (e.message));
         }
         return null;
     }
@@ -124,7 +124,7 @@ namespace Tags.UIDialogs {
             file = yield file_dialog.open (parent_window, cancellable);
             return file;
         } catch (Error e) {
-            message ("Error message: %s".printf (e.message));
+            warning ("Error message: %s".printf (e.message));
         }
         return null;
     }
@@ -145,7 +145,7 @@ namespace Tags.UIDialogs {
             file = yield file_dialog.save (parent_window, cancellable);
             return file;
         } catch (Error e) {
-            message ("Error message: %s".printf (e.message));
+            warning ("Error message: %s".printf (e.message));
         }
         
         return null;

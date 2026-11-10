@@ -257,12 +257,10 @@ namespace Tags {
         }
 
         private void setup_tags_view () {
-            /* MODEL/STORE */
             tags = new TagStore ();
 
             tags.added.connect ( (tag) => {
                 tag.enabled_changed.connect ((enabled) => {
-                    //lines_view_controller.update_mixing ();
                     filter.update ();
                     minimap.set_array (LineStore.model_to_array(lines_view.lines));
                 });
@@ -270,12 +268,10 @@ namespace Tags {
                 tag.changed.connect (() => {
                     lines_view_controller.update_mixing ();
                     filter.update ();
-                    lines_view_controller.count_hits_for_tag (tag);
                     minimap.set_array (LineStore.model_to_array(lines_view.lines));
                 });
 
                 lines_view_controller.update_mixing ();
-                lines_view_controller.count_hits_for_tag (tag);
                 filter.update ();
                 minimap.set_array (LineStore.model_to_array(lines_view.lines));
             });
@@ -286,12 +282,13 @@ namespace Tags {
                 minimap.set_array (LineStore.model_to_array(lines_view.lines));
             });
 
-            /* VIEW */
+            /* MODEL VIEW */
+
             tags_view = new TagsView (tags);
 
-            tags_view.listbox.row_activated.connect ( (r) => {
+            tags_view.listbox.row_activated.connect ((row) => {
                 if (!tags_edit_mode) { return; }
-                var tag = ((TagRow) r).context.tag;
+                var tag = ((TagRow) row).context.tag;
                 dialog_edit_tag (tag);
             });
 
@@ -499,7 +496,7 @@ namespace Tags {
             if (Preferences.instance ().tags_autoload == true) {
                 file_tags = File.new_for_path (file.get_path () + ".tags");
                 if (file_tags.query_exists ()) {
-                    message ("Autoload: tags file exists: '%s'".printf (file_tags.get_basename ()));
+                    //message ("Tags Autoload: '%s'".printf (file_tags.get_basename ()));
                     // FIXME: Should query user if they want to load the tags file 
                     // It's a preference but if tag exists, should ask user if they want to load it or not
                     load_tags_from_file (file_tags);
@@ -507,10 +504,10 @@ namespace Tags {
             }
 
             stack.set_visible_child_name ("loading");
-            message ("Opening file '%s'".printf (file.get_basename ()));
+            //message ("Opening file '%s'".printf (file.get_basename ()));
             lines.from_file.begin (file, cancel_open, (obj, res) => {
                 string? err_msg = lines.from_file.end (res);
-                message ("File '%s' loaded".printf (file.get_basename ()));
+                //message ("File '%s' loaded".printf (file.get_basename ()));
                 if (err_msg == null) {
                     stack.set_visible_child_name ("main");
 
@@ -575,10 +572,9 @@ namespace Tags {
             var tag_dialog = new TagDialog.for_editing (tag);
 
             // FIXME: Can be handled via dialog or via instance change
-            // Should rematch the tagging
+            // Should rematch the tagging if criteria changed
             tag_dialog.edit_tag.connect ((t) => {
                 lines_view_controller.update_mixing ();
-                //lines_view_controller.count_tag_hits ();
                 filter.update ();
                 minimap.set_array (LineStore.model_to_array (lines_view.lines));
             });
@@ -695,23 +691,9 @@ namespace Tags {
         }
 
         private void load_tags_from_file (File file, bool import = false) {
-            message ("load_tags_from_file: '%s'".printf (file.get_basename ()));
+            //message ("load_tags_from_file: '%s'".printf (file.get_basename ()));
             tags.from_file.begin  (file, null, import, (obj, res) => {
                 tags.from_file.end (res);
-                /*
-                for (int i = 0; i < tags.n_items; i++) {
-                    var ctx = tags.model.get_object (i) as TagContext;
-                    var tag = ctx.tag;
-                    tag.changed.connect (() => {
-                        filter.update ();
-                        minimap.set_array (LineStore.model_to_array(lines_view.lines));
-                    });
-                    tag.enabled_changed.connect (() => {
-                        filter.update ();
-                        minimap.set_array (LineStore.model_to_array(lines_view.lines));
-                    });
-                }
-                */
                 filter.update ();
                 minimap.set_array (LineStore.model_to_array (lines_view.lines));
                 lines_view_controller.count_tag_hits ();

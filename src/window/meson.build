@@ -1,5 +1,3 @@
 tags_sources += files(
-	'welcome-view.vala',
-	'loading-view.vala',
 	'main-window.vala',
 	)
