@@ -536,7 +536,6 @@ namespace Tags {
 
                     lines_view_controller.update_mixing ();
                     filter.update ();
-                    //lines_view_controller.count_tag_hits ();
                     minimap.set_array (LineStore.model_to_array(lines_view.lines));
                 } else {
                     lines_view.set_visible (true);
@@ -696,7 +695,6 @@ namespace Tags {
                 tags.from_file.end (res);
                 filter.update ();
                 minimap.set_array (LineStore.model_to_array (lines_view.lines));
-                lines_view_controller.count_tag_hits ();
             });
         }
 
