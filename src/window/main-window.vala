@@ -467,7 +467,7 @@ namespace Tags {
         }
 
         private void setup_main_box () {
-            main_banner = new Adw.Banner (_("No lines to display"));
+            main_banner = new Adw.Banner (_("No tagged lines! Enable a tag with hits or show all lines."));
             main_banner.set_revealed (false);
             main_banner.set_button_label (_("Show all"));
             main_banner.set_button_style (Adw.BannerButtonStyle.DEFAULT);

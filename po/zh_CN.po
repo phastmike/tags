@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.phastmike.tags 2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/phastmike/tags/issues\n"
-"POT-Creation-Date: 2026-09-23 18:35+0100\n"
+"POT-Creation-Date: 2026-11-15 22:11+0000\n"
 "PO-Revision-Date: 2026-04-01 23:09+0800\n"
 "Last-Translator: yu Qin <imqin_yu@outlook.com>\n"
 "Language-Team: Chinese (China)\n"
@@ -149,93 +149,93 @@ msgctxt "shortcut window"
 msgid "Next Tag Hit"
 msgstr "下一个匹配标签"
 
-#: src/ui/main-window.ui:37 src/window/main-window.vala:520
-#: src/window/main-window.vala:1003
+#: src/ui/main-window.ui:31 src/window/main-window.vala:550
+#: src/window/main-window.vala:1039
 msgid "Open File"
 msgstr "打开文件"
 
-#: src/ui/main-window.ui:50
+#: src/ui/main-window.ui:44
 msgctxt "Open a file"
 msgid "_Open"
 msgstr "打开(_O)"
 
-#: src/ui/main-window.ui:51
+#: src/ui/main-window.ui:45
 msgctxt "Open a file - tooltip"
 msgid "Select a File"
 msgstr "选择文件"
 
-#: src/ui/main-window.ui:135
+#: src/ui/main-window.ui:128
 msgid "Search..."
 msgstr "搜索..."
 
-#: src/ui/main-window.ui:156
+#: src/ui/main-window.ui:149
 msgid "Main Menu"
 msgstr "主菜单"
 
-#: src/ui/main-window.ui:180 src/ui/tags-view.ui:193
+#: src/ui/main-window.ui:173 src/ui/tags-view.ui:193
 msgctxt "tooltip"
 msgid "Hide untagged"
 msgstr "隐藏未标记条目"
 
-#: src/ui/main-window.ui:188
+#: src/ui/main-window.ui:181
 msgid "Search"
 msgstr "搜索"
 
-#: src/ui/main-window.ui:197
+#: src/ui/main-window.ui:190
 msgctxt "tooltip"
 msgid "New Tag"
 msgstr "新建标签"
 
-#: src/ui/main-window.ui:213
+#: src/ui/main-window.ui:206
 msgctxt "tooltip"
 msgid "Tag List"
 msgstr "标签列表"
 
-#: src/ui/main-window.ui:243
+#: src/ui/main-window.ui:236
 msgid "New tag"
 msgstr "新建标签"
 
-#: src/ui/main-window.ui:247
+#: src/ui/main-window.ui:240
 msgid "Save tagged"
 msgstr "保存已标记条目"
 
-#: src/ui/main-window.ui:254 src/ui/tags-view.ui:119
+#: src/ui/main-window.ui:247 src/ui/tags-view.ui:119
 msgid "Load tags"
 msgstr "加载标签"
 
-#: src/ui/main-window.ui:258
+#: src/ui/main-window.ui:251
 msgid "Save tags"
 msgstr "保存标签"
 
-#: src/ui/main-window.ui:262
+#: src/ui/main-window.ui:255
 msgid "Remove tags"
 msgstr "删除标签"
 
-#: src/ui/main-window.ui:281
+#: src/ui/main-window.ui:274
 msgid "Hide untagged"
 msgstr "隐藏未标记条目"
 
-#: src/ui/main-window.ui:296
+#: src/ui/main-window.ui:289
 msgid "New Window"
 msgstr "新建窗口"
 
-#: src/ui/main-window.ui:302
+#: src/ui/main-window.ui:295
 msgid "Save Tagged Lines"
 msgstr "保存已标记的行"
 
-#: src/ui/main-window.ui:306 src/ui/file-info-dialog.ui:7
+#: src/ui/main-window.ui:299 src/ui/file-info-dialog.ui:7
 msgid "File Information"
 msgstr "文件信息"
 
-#: src/ui/main-window.ui:312 src/ui/preferences-dialog.ui:18
+#: src/ui/main-window.ui:305 src/ui/preferences-dialog.ui:18
 msgid "Preferences"
 msgstr "首选项"
 
-#: src/ui/main-window.ui:316
+#: src/ui/main-window.ui:309
 msgid "Keyboard Shortcuts"
 msgstr "键盘快捷键"
 
-#: src/ui/main-window.ui:321
+#: src/ui/main-window.ui:314
 msgid "About Tags"
 msgstr "关于 Tags"
 
@@ -267,15 +267,15 @@ msgstr "概览图"
 msgid "Wrap Lines"
 msgstr "自动换行"
 
-#: src/ui/preferences-dialog.ui:92 src/ui/tag-dialog-window.ui:112
+#: src/ui/preferences-dialog.ui:92 src/ui/tag-dialog.ui:111
 msgid "Foreground Color"
 msgstr "前景色"
 
-#: src/ui/preferences-dialog.ui:105 src/ui/tag-dialog-window.ui:124
+#: src/ui/preferences-dialog.ui:105 src/ui/tag-dialog.ui:123
 msgid "Background Color"
 msgstr "背景色"
 
-#: src/ui/preferences-dialog.ui:118 src/ui/tag-dialog-window.ui:136
+#: src/ui/preferences-dialog.ui:118 src/ui/tag-dialog.ui:135
 msgid "Example"
 msgstr "示例"
 
@@ -283,99 +283,118 @@ msgstr "示例"
 msgid "Visible"
 msgstr "可见"
 
-#: src/ui/file-info-dialog.ui:18
+#: src/ui/file-info-dialog.ui:15 src/ui/file-info-dialog.ui:56
 msgid "Browse folder"
 msgstr "浏览文件夹"
 
-#: src/ui/file-info-dialog.ui:23
+#: src/ui/file-info-dialog.ui:19
 msgid "Browse"
 msgstr "浏览"
 
-#: src/ui/file-info-dialog.ui:28
+#: src/ui/file-info-dialog.ui:24
 msgid "File"
 msgstr "打开文件"
 
-#: src/ui/file-info-dialog.ui:33
+#: src/ui/file-info-dialog.ui:31
 msgid "Name"
 msgstr "名称"
 
-#: src/ui/file-info-dialog.ui:40
+#: src/ui/file-info-dialog.ui:38
+msgid "Copy path"
+msgstr "复制路径"
+
+#: src/ui/file-info-dialog.ui:49
 msgid "Folder"
 msgstr "文件夹"
 
-#: src/ui/file-info-dialog.ui:47
+#: src/ui/file-info-dialog.ui:66
 msgid "Size"
 msgstr "大小"
 
-#: src/ui/file-info-dialog.ui:54
+#: src/ui/file-info-dialog.ui:73
 msgid "Other"
 msgstr "其他"
 
-#: src/ui/file-info-dialog.ui:59
+#: src/ui/file-info-dialog.ui:79
 msgid "Lines"
 msgstr "自动换行"
 
-#: src/ui/tag-dialog-window.ui:7
-msgid "Tag"
-msgstr "标签"
+#: src/ui/file-info-dialog.ui:87
+msgid "Highlighted"
+msgstr "已高亮"
 
-#: src/ui/tag-dialog-window.ui:12
-msgid "Filter"
-msgstr "过滤器"
+#: src/ui/file-info-dialog.ui:94
+msgid "Highlighted lines"
+msgstr "高亮行"
 
-#. <property name="justify">fill</property>
-#: src/ui/tag-dialog-window.ui:18
+#: src/ui/file-info-dialog.ui:109
+msgid "Tagged"
+msgstr "已标记"
+
+#: src/ui/file-info-dialog.ui:115
+msgid "Tagged lines"
+msgstr "带标签的线条"
+
+#: src/ui/tag-dialog.ui:15
 msgid ""
-"Adds the tag to the top which gives precedence over the other tag filters. "
-"Once a line is tagged it disregards other possible tags. The user can "
-"reorder tags with drag and drop at any time."
+"Gives precedence over the other tags. Once a line is tagged it disregards "
+"other possible tags. The user can reorder tags with drag and drop at any "
+"time."
 msgstr ""
 "将标签添加到顶部，这样它的优先级高于其他标签过滤器。一旦一行被标记，它会忽略"
 "其他可能的标签。您以随时通过拖放来重新排序标签。"
 
-#: src/ui/tag-dialog-window.ui:31
+#: src/ui/tag-dialog.ui:21
+msgid "Tag"
+msgstr "标签"
+
+#: src/ui/tag-dialog.ui:26
+msgid "Filter"
+msgstr "过滤器"
+
+#: src/ui/tag-dialog.ui:29
 msgid "Use Selection"
 msgstr "使用选择"
 
-#: src/ui/tag-dialog-window.ui:48
+#: src/ui/tag-dialog.ui:46
 msgid "Pattern"
 msgstr "模式"
 
-#: src/ui/tag-dialog-window.ui:56
+#: src/ui/tag-dialog.ui:54
 msgid "Description"
 msgstr "描述"
 
-#: src/ui/tag-dialog-window.ui:61
+#: src/ui/tag-dialog.ui:59
 msgid "Regular Expression"
 msgstr "正则表达式"
 
-#: src/ui/tag-dialog-window.ui:66
+#: src/ui/tag-dialog.ui:64
 msgid "Case Sensitive"
 msgstr "大小写敏感"
 
-#: src/ui/tag-dialog-window.ui:72
+#: src/ui/tag-dialog.ui:70
 msgid "Add to Top"
 msgstr "添加到顶部"
 
-#: src/ui/tag-dialog-window.ui:104
+#: src/ui/tag-dialog.ui:102
 msgid "Color Scheme"
 msgstr "颜色主题"
 
-#: src/ui/tag-dialog-window.ui:107
-msgid "Regenerate"
-msgstr "重新生成"
+#: src/ui/tag-dialog.ui:105
+msgid "_Regenerate"
+msgstr "重新生成(_R)"
 
-#: src/ui/tag-dialog-window.ui:164
-msgid "Delete"
-msgstr "删除"
+#: src/ui/tag-dialog.ui:163
+msgid "_Delete"
+msgstr "删除(_D)"
 
-#: src/ui/tag-dialog-window.ui:175
-msgid "Edit"
-msgstr "编辑"
+#: src/ui/tag-dialog.ui:175
+msgid "_Edit"
+msgstr "编辑(_E)"
 
-#: src/ui/tag-dialog-window.ui:186
-msgid "Add"
-msgstr "新建"
+#: src/ui/tag-dialog.ui:187
+msgid "_Add"
+msgstr "添加(_A)"
 
 #: src/ui/tags-view.ui:11
 msgid "Add a Tag"
@@ -496,120 +515,128 @@ msgstr "打开一个文件以开始着色 ..."
 msgid "Text files"
 msgstr "文本文件"
 
-#: src/tag/tag-dialog-window.vala:54
-msgid "Select the foreground color"
-msgstr "选择前景色"
-
-#: src/tag/tag-dialog-window.vala:60
-msgid "Select the background color"
-msgstr "选择背景色"
-
-#: src/window/main-window.vala:145
-msgid "Remove Tag"
-msgstr "删除标签"
-
-#: src/window/main-window.vala:145
-msgid "Remove tag from the list?"
-msgstr "确定要从列表中删除标签吗？"
-
-#: src/window/main-window.vala:147 src/window/main-window.vala:328
-#: src/window/main-window.vala:591 src/window/main-window.vala:613
-#: src/window/main-window.vala:987 src/window/main-window.vala:1015
-msgid "_Cancel"
-msgstr "取消(_C)"
-
-#: src/window/main-window.vala:148 src/window/main-window.vala:614
-msgid "_Remove"
-msgstr "删除(_R)"
-
-#: src/window/main-window.vala:327 src/window/main-window.vala:589
-#: src/window/main-window.vala:1012
-msgid "Tags changed"
-msgstr "标签已改变"
-
-#: src/window/main-window.vala:327 src/window/main-window.vala:589
-#: src/window/main-window.vala:1013
-msgid "There are unsaved changes"
-msgstr "存在未保存的更改"
-
-#: src/window/main-window.vala:329 src/window/main-window.vala:592
-#: src/window/main-window.vala:1016
-msgid "_Discard"
-msgstr "放弃(_D)"
-
-#: src/window/main-window.vala:330 src/window/main-window.vala:593
-#: src/window/main-window.vala:1017
-msgid "_Save"
-msgstr "保存(_S)"
-
-#: src/window/main-window.vala:430
-#, c-format
-msgid "Found '%s' in line %u"
-msgstr "行找到 '%s '在第 %u "
-
-#: src/window/main-window.vala:432
-msgid "Add search as Tag"
-msgstr "新建标签"
-
-#: src/window/main-window.vala:445
-#, c-format
-msgid "No match for '%s'"
-msgstr "'%s' 没有匹配项"
-
-#: src/window/main-window.vala:450 src/window/main-window.vala:941
-#: src/window/main-window.vala:981
-#, c-format
-msgid "No more matches for '%s'"
-msgstr "'%s' 没有更多匹配项"
-
-#: src/window/main-window.vala:471
-#, c-format
-msgid "'%s' is not a regular file ..."
-msgstr "'%s' 不是一个有效文件 ..."
-
-#: src/window/main-window.vala:520
-msgid "_Close"
-msgstr "关闭(_C)"
-
-#: src/window/main-window.vala:571
-msgid "No line selected to create tag"
-msgstr "未选择用于创建标签的行"
-
-#: src/window/main-window.vala:582
-msgid "No tags to remove"
-msgstr "没有可删除标签"
-
-#: src/window/main-window.vala:611
-msgid "Remove Tags"
-msgstr "删除标签"
-
-#: src/window/main-window.vala:611
-msgid "Remove all tags from the list?"
-msgstr "要删除列表中的所有标签吗？"
-
-#: src/window/main-window.vala:671
-msgid "No tags to save"
-msgstr "没有可保存的标签"
-
-#: src/window/main-window.vala:716
-msgid "Save File"
-msgstr "保存文件"
-
-#: src/window/main-window.vala:804
+#: src/dialogs/file-info-dialog.vala:116 src/window/main-window.vala:839
 #, c-format
 msgid "%d bytes copied"
 msgstr "%d 字节已复制"
 
-#: src/window/main-window.vala:931 src/window/main-window.vala:971
+#: src/tag/tag-dialog.vala:62
+msgid "Select the foreground color"
+msgstr "选择前景色"
+
+#: src/tag/tag-dialog.vala:68
+msgid "Select the background color"
+msgstr "选择背景色"
+
+#: src/window/main-window.vala:335 src/window/main-window.vala:643
+#: src/window/main-window.vala:1048
+msgid "Tags changed"
+msgstr "标签已改变"
+
+#: src/window/main-window.vala:335 src/window/main-window.vala:643
+#: src/window/main-window.vala:1049
+msgid "There are unsaved changes"
+msgstr "存在未保存的更改"
+
+#: src/window/main-window.vala:336 src/window/main-window.vala:595
+#: src/window/main-window.vala:645 src/window/main-window.vala:667
+#: src/window/main-window.vala:1022 src/window/main-window.vala:1051
+msgid "_Cancel"
+msgstr "取消(_C)"
+
+#: src/window/main-window.vala:337 src/window/main-window.vala:646
+#: src/window/main-window.vala:1052
+msgid "_Discard"
+msgstr "放弃(_D)"
+
+#: src/window/main-window.vala:338 src/window/main-window.vala:647
+#: src/window/main-window.vala:1053
+msgid "_Save"
+msgstr "保存(_S)"
+
+#: src/window/main-window.vala:438
+#, c-format
+msgid "Found '%s' in line %u"
+msgstr "行找到 '%s '在第 %u "
+
+#: src/window/main-window.vala:440
+msgid "Add search as Tag"
+msgstr "新建标签"
+
+#: src/window/main-window.vala:453
+#, c-format
+msgid "No match for '%s'"
+msgstr "'%s' 没有匹配项"
+
+#: src/window/main-window.vala:458 src/window/main-window.vala:976
+#: src/window/main-window.vala:1016
+#, c-format
+msgid "No more matches for '%s'"
+msgstr "'%s' 没有更多匹配项"
+
+#: src/window/main-window.vala:470
+msgid "No tagged lines! Enable a tag with hits or show all lines."
+msgstr "没有已标记的行！请启用匹配项标记功能，或显示所有行。"
+
+#: src/window/main-window.vala:472
+msgid "Show all"
+msgstr "显示全部"
+
+#: src/window/main-window.vala:489
+#, c-format
+msgid "'%s' is not a regular file ..."
+msgstr "'%s' 不是一个有效文件 ..."
+
+#: src/window/main-window.vala:550
+msgid "_Close"
+msgstr "关闭(_C)"
+
+#: src/window/main-window.vala:593
+msgid "Remove Tag"
+msgstr "删除标签"
+
+#: src/window/main-window.vala:593
+msgid "Remove tag from the list?"
+msgstr "确定要从列表中删除标签吗？"
+
+#: src/window/main-window.vala:596 src/window/main-window.vala:668
+msgid "_Remove"
+msgstr "删除(_R)"
+
+#: src/window/main-window.vala:625
+msgid "No line selected to create tag"
+msgstr "未选择用于创建标签的行"
+
+#: src/window/main-window.vala:636
+msgid "No tags to remove"
+msgstr "没有可删除标签"
+
+#: src/window/main-window.vala:665
+msgid "Remove Tags"
+msgstr "删除标签"
+
+#: src/window/main-window.vala:665
+msgid "Remove all tags from the list?"
+msgstr "要删除列表中的所有标签吗？"
+
+#: src/window/main-window.vala:719
+msgid "No tags to save"
+msgstr "没有可保存的标签"
+
+#: src/window/main-window.vala:764
+msgid "Save File"
+msgstr "保存文件"
+
+#: src/window/main-window.vala:966 src/window/main-window.vala:1006
 #, c-format
 msgid "Found in line %u"
 msgstr "在第 %u 行找到"
 
-#: src/window/main-window.vala:1003
+#: src/window/main-window.vala:1039
 msgid "Could not open file..."
 msgstr "无法打开文件..."
 
-#: src/window/main-window.vala:1042
+#: src/window/main-window.vala:1078
 msgid "No tags to edit"
 msgstr "无可编辑标签"
 
@@ -624,6 +651,9 @@ msgstr "符号图标由来自 freeicons.io 的 www.wishforge.games 提供"
 #: src/application.vala:69
 msgid "translator-credits"
 msgstr "yu Qin <imqin_yu@outlook.com>"
+
+#~ msgid "Add"
+#~ msgstr "新建"
 
 #~ msgid "Load"
 #~ msgstr "加载标签"
@@ -678,10 +708,6 @@ msgstr "yu Qin <imqin_yu@outlook.com>"
 #~ msgctxt "shortcut window"
 #~ msgid "Toggle tenth tag visibility"
 #~ msgstr "切换第十条标签可见性"
-
-#~ msgctxt "shortcut window"
-#~ msgid "Show"
-#~ msgstr "显示"
 
 #~ msgctxt "shortcut window"
 #~ msgid "Show only first tag"
