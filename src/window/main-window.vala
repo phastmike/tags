@@ -300,6 +300,14 @@ namespace Tags {
             filterer    = new Filterer (lines, filter);
             lines_view  = new LinesView (filterer.model);
 
+            filterer.model.items_changed.connect ( () => {
+                if (filterer.model.get_n_items () == 0) {
+                    main_banner.set_revealed (true);
+                } else {
+                    main_banner.set_revealed (false);
+                }
+            });
+
             lines_view.column_view.activate.connect ( (p) => {
                 var line = lines_view.lines.get_item (p) as Line;
                 //line.dump_to_console ();
@@ -461,17 +469,17 @@ namespace Tags {
         private void setup_main_box () {
             main_banner = new Adw.Banner (_("No lines to display"));
             main_banner.set_revealed (false);
-            main_banner.set_button_label (_("Unhide lines"));
+            main_banner.set_button_label (_("Show all"));
             main_banner.set_button_style (Adw.BannerButtonStyle.DEFAULT);
             main_banner.set_action_name ("win.action_hide_untagged_lines");
 
-            var main_vbox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-            main_vbox.append (main_banner);
-            main_vbox.append (lines_view);
+            var main_hbox = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
+            main_hbox.append (lines_view);
+            main_hbox.append (map_view);
 
-            main_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
-            main_box.append (main_vbox);
-            main_box.append (map_view);
+            main_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+            main_box.append (main_banner);
+            main_box.append (main_hbox);
         }
 
         public void open_file (File file) {
@@ -573,6 +581,9 @@ namespace Tags {
             // FIXME: Can be handled via dialog or via instance change
             // Should rematch the tagging if criteria changed
             tag_dialog.edit_tag.connect ((t) => {
+                // RESET COUNTER 
+                var ctx = tags.get_context_for_tag (t);
+                if (ctx != null) ctx.hit_counter.reset ();
                 lines_view_controller.update_mixing ();
                 filter.update ();
                 minimap.set_array (LineStore.model_to_array (lines_view.lines));
@@ -693,8 +704,8 @@ namespace Tags {
             //message ("load_tags_from_file: '%s'".printf (file.get_basename ()));
             tags.from_file.begin  (file, null, import, (obj, res) => {
                 tags.from_file.end (res);
-                filter.update ();
-                minimap.set_array (LineStore.model_to_array (lines_view.lines));
+                //filter.update ();
+                //minimap.set_array (LineStore.model_to_array (lines_view.lines));
             });
         }
 
@@ -798,11 +809,11 @@ namespace Tags {
             var action = this.lookup_action ("action_hide_untagged_lines");
             action.change_state (new Variant.boolean ((bool) filter.active));
 
-            // FIXME: Should not be static. Should be dynamic
-            Timeout.add (500, () => {
+            // FIXME: 
+            //Timeout.add (500, () => {
                 minimap.set_array (LineStore.model_to_array(lines_view.lines));
-                return false;
-            });
+            //    return false;
+            //});
 
             action = this.lookup_action ("action_toggle_search");
             if (action.get_state ().get_boolean () == true) {

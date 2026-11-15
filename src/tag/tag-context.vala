@@ -16,8 +16,8 @@ namespace Tags {
         public Counter          hit_counter     { get; private set; default = new Counter (); }
         public Gtk.CssProvider  css_provider    { get; private set; default = new Gtk.CssProvider (); }
 
-        private const string STYLE_PREFIX_ROW  = "row-";
-        public  const string STYLE_PREFIX_LINE = "tag-";
+        public const string STYLE_PREFIX_ROW  = "row-";
+        public const string STYLE_PREFIX_LINE = "tag-";
 
         /* CLASS METHODS */
 
@@ -35,6 +35,11 @@ namespace Tags {
             Object (tag: tag);
             update_css ();
             this.tag.colors.changed.connect (update_css);
+            /*
+            this.tag.changed.connect (() => {
+                this.hit_counter.reset ();
+            });
+            */
         }
 
         /* DESTRUCTOR */
@@ -43,10 +48,14 @@ namespace Tags {
         ~TagContext () {
             // ColorScheme will get destroyed. We don't need to disconnect from the signal
             //message ("TagContext: %s destroyed, disconnect from ColorScheme ...".printf (tag.pattern));
-            this.tag.colors.changed.disconnect (update_css);
+            //this.tag.colors.changed.disconnect (update_css);
         }
 
         /* METHODS */
+
+        public void set_locked (bool locked) {
+            hit_counter.locked = locked;
+        }
 
         private void update_css () {
             string css_row =

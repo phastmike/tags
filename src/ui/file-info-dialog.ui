@@ -87,6 +87,7 @@
                 <property name="title" translatable="yes">Highlighted</property>
                 <child type="suffix">
                   <object class="GtkProgressBar" id="progress_highlighted">
+                    <property name="visible">false</property>
                     <property name="valign">center</property>
                     <property name="halign">center</property>
                     <property name="show-text">false</property>

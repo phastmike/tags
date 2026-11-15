@@ -12,19 +12,22 @@
 namespace Tags {
 
     public class Counter : Object {
-        public uint count { get; private set; default = 0; }
+        public uint count   { get; private set; default = 0; }
+        public bool locked  { get; set; default = false; }
 
         public Counter () {
             reset ();
         }
 
         public void increment () {
+            if (locked) return;
             if (count < uint.MAX) {
                 count++;
             }
         }
 
         public void decrement () {
+            if (locked) return;
             if (count > 0) {
                 count--;
             }
@@ -32,6 +35,7 @@ namespace Tags {
 
         public void reset () {
             count = 0;
+            locked = false;
         }
 
         public bool is_zero () {

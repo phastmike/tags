@@ -63,6 +63,7 @@ namespace Tags {
                     store.insert (target_index, ctx);
                     target_row.set_state_flags (Gtk.StateFlags.NORMAL, true);
 
+                    // FIXME: Needs a better trigger
                     ctx.tag.changed ();
                     //ctx.tag.enabled_changed (ctx.tag.enabled); // Needs reoder of the list to be reflected in the view
 

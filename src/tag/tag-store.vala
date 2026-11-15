@@ -149,6 +149,13 @@ namespace Tags {
             return false;
         }
 
+        public void hitcounter_lock_all () {
+            for (var i = 0; i < model.get_n_items (); i++) {
+                var ctx = model.get_object (i) as TagContext;
+                ctx.hit_counter.locked = true;
+            }
+        }
+
         public void to_file (File file) {
             Json.Node root = new Json.Node (Json.NodeType.ARRAY);
             Json.Array array = new Json.Array ();

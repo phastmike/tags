@@ -98,9 +98,11 @@ namespace Tags {
 
             this.colors = builder.colors;
 
+            /*
             this.colors.changed.connect (() => {
                 changed ();
             });
+            */
         }
 
         /* METHODS */

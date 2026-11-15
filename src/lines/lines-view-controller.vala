@@ -40,6 +40,7 @@ namespace Tags {
                 update_mixing_async.begin ( (s, p) => {
                     update_mixing_async.end (p);
                     mix_updated ();
+                    tags.hitcounter_lock_all ();
                 });
 
                 return false;
@@ -48,7 +49,7 @@ namespace Tags {
 
         async void update_mixing_async ()  {
             updating = true;
-            tags.hitcounter_reset_all ();
+            //tags.hitcounter_reset_all ();
             SourceFunc callback = update_mixing_async.callback;
             for (uint i = 0; i < lines_model.get_n_items (); i++) {
                 var line = lines_model.get_item (i) as Line;
@@ -67,6 +68,7 @@ namespace Tags {
                 update_mixing_async.begin ( (s, p) => {
                     update_mixing_async.end (p);
                     mix_updated ();
+                    tags.hitcounter_lock_all ();
                 });
             }
         }
