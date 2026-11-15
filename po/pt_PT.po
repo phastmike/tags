@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.phastmike.tags 2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/phastmike/tags/issues\n"
-"POT-Creation-Date: 2026-11-15 22:11+0000\n"
+"POT-Creation-Date: 2026-11-15 22:31+0000\n"
 "PO-Revision-Date: 2026-01-26 09:14+0000\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -490,20 +490,20 @@ msgstr "Dê cor aos seus ficheiros de log"
 
 #: src/ui/welcome-view.ui:75
 msgid "Open a text file and start using tags"
-msgstr "Abra um ficheiro de texto para começar"
+msgstr "Abre um ficheiro de texto para começar"
 
 #: src/ui/welcome-view.ui:92
 msgid "Add a tag filter"
-msgstr "Adicione uma etiqueta"
+msgstr "Adiciona uma etiqueta"
 
 #: src/ui/welcome-view.ui:109
 msgid "Show Sidebar Tag list"
-msgstr "Mostrar a barra lateral de etiquetas"
+msgstr "Mostra a barra lateral de etiquetas"
 
 #: src/ui/welcome-view.ui:125
 msgctxt "Hit a key in keyboard"
 msgid "Hit"
-msgstr "Pressione"
+msgstr "Pressiona"
 
 #: src/ui/welcome-view.ui:136
 msgid "to hide untagged lines"
@@ -577,7 +577,7 @@ msgid "No more matches for '%s'"
 msgstr "Não há mais ocorrências para '%s'"
 
 #: src/window/main-window.vala:470
-msgid "No tagged lines! Enable a tag with hits or show all lines."
+msgid "No tagged lines! Enable a tag with hits or show all lines"
 msgstr "Sem linhas! Habilite uma etiqueta com hits ou veja todas as linhas"
 
 #: src/window/main-window.vala:472

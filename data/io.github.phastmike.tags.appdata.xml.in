@@ -73,6 +73,19 @@
   <content_rating type="oars-1.1" />
   <releases>
 
+    <release version="2.6" date="2026-11-15">
+      <description translatable="yes">
+        <p>Tags 2.6 is out</p>
+        <p>What's new:</p>
+        <ul>
+          <li>Updated translations</li>
+          <li>Performance improvements</li>
+          <li>UX improvements</li>
+        </ul>
+        <p>Minor fixes</p>
+      </description>
+    </release>
+
     <release version="2.5" date="2026-09-07">
       <description translatable="yes">
         <p>Tags 2.5 is out</p>

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.phastmike.tags 2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/phastmike/tags/issues\n"
-"POT-Creation-Date: 2026-11-15 22:11+0000\n"
+"POT-Creation-Date: 2026-11-15 22:31+0000\n"
 "PO-Revision-Date: 2026-01-18 20:08-0300\n"
 "Last-Translator: john peter sa <johnppetersa@gmail.com>\n"
 "Language-Team: \n"
@@ -575,7 +575,7 @@ msgid "No more matches for '%s'"
 msgstr "Não há mais ocorrências para '%s'"
 
 #: src/window/main-window.vala:470
-msgid "No tagged lines! Enable a tag with hits or show all lines."
+msgid "No tagged lines! Enable a tag with hits or show all lines"
 msgstr "Sem linhas! Habilite uma tag com hits ou veja todas as linhas"
 
 #: src/window/main-window.vala:472
