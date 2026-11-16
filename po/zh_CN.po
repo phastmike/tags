@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.phastmike.tags 2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/phastmike/tags/issues\n"
-"POT-Creation-Date: 2026-11-15 22:31+0000\n"
+"POT-Creation-Date: 2026-11-16 00:24+0000\n"
 "PO-Revision-Date: 2026-04-01 23:09+0800\n"
 "Last-Translator: yu Qin <imqin_yu@outlook.com>\n"
 "Language-Team: Chinese (China)\n"
@@ -511,6 +511,10 @@ msgstr "隐藏未标记的行"
 msgid "Open a file to start coloring ..."
 msgstr "打开一个文件以开始着色 ..."
 
+#: src/ui/loading-view.ui:26
+msgid "Loading"
+msgstr "加载"
+
 #: src/dialogs/ui-dialogs.vala:18
 msgid "Text files"
 msgstr "文本文件"
@@ -654,9 +658,6 @@ msgstr "yu Qin <imqin_yu@outlook.com>"
 
 #~ msgid "Add"
 #~ msgstr "新建"
-
-#~ msgid "Load"
-#~ msgstr "加载标签"
 
 #~ msgid "More Options"
 #~ msgstr "更多选项"

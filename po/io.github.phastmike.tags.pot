@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: io.github.phastmike.tags 2.5\n"
+"Project-Id-Version: io.github.phastmike.tags 2.6\n"
 "Report-Msgid-Bugs-To: https://github.com/phastmike/tags/issues\n"
-"POT-Creation-Date: 2026-11-15 22:31+0000\n"
+"POT-Creation-Date: 2026-11-16 00:24+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -501,6 +501,10 @@ msgstr ""
 
 #: src/ui/welcome-view.ui:149
 msgid "Open a file to start coloring ..."
+msgstr ""
+
+#: src/ui/loading-view.ui:26
+msgid "Loading"
 msgstr ""
 
 #: src/dialogs/ui-dialogs.vala:18

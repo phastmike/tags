@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.phastmike.tags 2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/phastmike/tags/issues\n"
-"POT-Creation-Date: 2026-11-15 22:31+0000\n"
+"POT-Creation-Date: 2026-11-16 00:24+0000\n"
 "PO-Revision-Date: 2026-01-18 20:08-0300\n"
 "Last-Translator: john peter sa <johnppetersa@gmail.com>\n"
 "Language-Team: \n"
@@ -511,6 +511,10 @@ msgstr "para ocultar linhas sem tags"
 msgid "Open a file to start coloring ..."
 msgstr "Abra um arquivo para começar a colorir ..."
 
+#: src/ui/loading-view.ui:26
+msgid "Loading"
+msgstr "A Carregar"
+
 #: src/dialogs/ui-dialogs.vala:18
 msgid "Text files"
 msgstr "Arquivos de texto"
@@ -654,9 +658,6 @@ msgstr "john peter sa <johnppetersa@gmail.com>"
 
 #~ msgid "Add"
 #~ msgstr "Adicionar"
-
-#~ msgid "Load"
-#~ msgstr "Carregar tags"
 
 #~ msgid "More Options"
 #~ msgstr "Mais opções"

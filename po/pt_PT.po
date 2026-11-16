@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.phastmike.tags 2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/phastmike/tags/issues\n"
-"POT-Creation-Date: 2026-11-15 22:31+0000\n"
+"POT-Creation-Date: 2026-11-16 00:24+0000\n"
 "PO-Revision-Date: 2026-01-26 09:14+0000\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -513,6 +513,10 @@ msgstr "para ocultar linhas"
 msgid "Open a file to start coloring ..."
 msgstr "Abra um ficheiro para começar a colorir ..."
 
+#: src/ui/loading-view.ui:26
+msgid "Loading"
+msgstr "A Carregar"
+
 #: src/dialogs/ui-dialogs.vala:18
 msgid "Text files"
 msgstr "Ficheiros de texto"
@@ -656,9 +660,6 @@ msgstr "José Miguel Fonte"
 
 #~ msgid "Add"
 #~ msgstr "Adicionar"
-
-#~ msgid "Load"
-#~ msgstr "Abrir"
 
 #~ msgid "More Options"
 #~ msgstr "Mais Opções"
