@@ -542,6 +542,7 @@ namespace Tags {
                     title_sidebar.set_label (file.get_basename ());
                     title_sidebar.set_tooltip_text (file.get_path ());
 
+                    tags.hitcounter_reset_all ();
                     lines_view_controller.update_mixing ();
                     filter.update ();
                     minimap.set_array (LineStore.model_to_array(lines_view.lines));
