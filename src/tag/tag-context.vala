@@ -22,11 +22,11 @@ namespace Tags {
         /* CLASS METHODS */
 
         public static string get_style_name_for_row (Tag tag) requires (tag != null) {
-            return "%s%s".printf (STYLE_PREFIX_ROW, tag.uuid);
+            return "%s%s".printf (STYLE_PREFIX_ROW, tag.get_uuid ());
         }
 
         public static string get_style_name_for_line (Tag tag) requires (tag != null) {
-            return "%s%s".printf (STYLE_PREFIX_LINE, tag.uuid);
+            return "%s%s".printf (STYLE_PREFIX_LINE, tag.get_uuid ());
         }
 
         /* CONSTRUCTOR */
@@ -35,20 +35,6 @@ namespace Tags {
             Object (tag: tag);
             update_css ();
             this.tag.colors.changed.connect (update_css);
-            /*
-            this.tag.changed.connect (() => {
-                this.hit_counter.reset ();
-            });
-            */
-        }
-
-        /* DESTRUCTOR */
-
-        /* NOTE: REMOVE THIS! */
-        ~TagContext () {
-            // ColorScheme will get destroyed. We don't need to disconnect from the signal
-            //message ("TagContext: %s destroyed, disconnect from ColorScheme ...".printf (tag.pattern));
-            //this.tag.colors.changed.disconnect (update_css);
         }
 
         /* METHODS */

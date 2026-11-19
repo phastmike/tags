@@ -11,6 +11,7 @@
 namespace Tags {
 
     public class Tag : Object {
+        private string   _uuid;
 
         private bool    _enabled            = true;
         private string? _pattern            = null;
@@ -18,7 +19,6 @@ namespace Tags {
         private bool    _is_regex           = false;
         private bool    _is_case_sensitive  = false;
 
-        public string       uuid    { get; private set; }
         public ColorScheme  colors  { get; set; }
 
         public bool enabled { 
@@ -86,7 +86,7 @@ namespace Tags {
 
         construct {
             _enabled = false;
-            uuid = Tags.Common.generate_uuid ();
+            _uuid = Tags.Common.generate_uuid ();
         }
 
         public Tag (TagBuilder builder) {
@@ -97,15 +97,13 @@ namespace Tags {
             _is_case_sensitive = builder.is_case_sensitive;
 
             this.colors = builder.colors;
-
-            /*
-            this.colors.changed.connect (() => {
-                changed ();
-            });
-            */
         }
 
         /* METHODS */
+
+        public string get_uuid () {
+            return _uuid;
+        }
 
         public bool matches (string? text = null) {
             if (text == null) return false;
