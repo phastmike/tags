@@ -310,7 +310,6 @@ namespace Tags {
 
             lines_view.column_view.activate.connect ( (p) => {
                 var line = lines_view.lines.get_item (p) as Line;
-                //line.dump_to_console ();
                 dialog_add_tag (line.text);
             });
 

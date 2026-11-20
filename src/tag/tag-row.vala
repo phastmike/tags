@@ -29,7 +29,6 @@ namespace Tags {
             this.context = context;
             var tag = context.tag;
             enabled.active = tag.enabled;
-            //enabled.add_css_class (TagContext.get_style_name_for_row (tag));
             title.label = tag.description;
             set_tooltip_text (tag.description);
             subtitle.label = tag.pattern;

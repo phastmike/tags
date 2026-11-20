@@ -16,8 +16,8 @@ namespace Tags {
         public Counter          hit_counter     { get; private set; default = new Counter (); }
         public Gtk.CssProvider  css_provider    { get; private set; default = new Gtk.CssProvider (); }
 
-        public const string STYLE_PREFIX_ROW  = "row-";
-        public const string STYLE_PREFIX_LINE = "tag-";
+        public const string     STYLE_PREFIX_ROW  = "row-";
+        public const string     STYLE_PREFIX_LINE = "tag-";
 
         /* CLASS METHODS */
 

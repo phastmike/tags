@@ -34,9 +34,8 @@ namespace Tags.UIDialogs {
         try {
             var file = yield file_dialog.open (parent_window, cancellable);
             return file;
-        } catch (Error e) {
-            //warning (e.message);
-            throw e;
+        } catch (Error err) {
+            throw err;
         }
     }
 

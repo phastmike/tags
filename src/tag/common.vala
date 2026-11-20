@@ -19,7 +19,9 @@ namespace Tags.Common {
             GLib.Random.next_int ()
         );
 
-        var checksum = new Checksum (ChecksumType.SHA256);
+        // Using MD5 to save some bytes
+        // Available checksum types: MD5, SHA1, SHA256, SHA512
+        var checksum = new Checksum (ChecksumType.MD5);
         checksum.update (random_input.data, random_input.length);
         return checksum.get_string ();
     }

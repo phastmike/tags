@@ -125,7 +125,6 @@ namespace Tags {
 
             if (line.hid != 0) line.disconnect (line.hid);
             line.hid = line.tag_changed.connect (() => {
-                //message ("line_text_bind_handler: tag_changed signal received for line %u".printf (line.number));
                 clear_all_tag_styles (label);
                 update_line_tag_style (label, line);
             });
@@ -159,9 +158,7 @@ namespace Tags {
             var tag = line.get_tag ();
             if (tag != null) {
                 label.parent.add_css_class (TagContext.get_style_name_for_line (tag));
-            }/*  else {
-                clear_all_tag_styles (label);
-            }*/
+            }
         }
     }
 }

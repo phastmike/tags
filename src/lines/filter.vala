@@ -31,23 +31,28 @@ namespace Tags {
             // This only covers additions and removals,
             // not changes to the tag itself
             this.tags.items_changed.connect ( (pos, add, removed) => {
-                changed (Gtk.FilterChange.DIFFERENT);
+                changed (Gtk.FilterChange.DIFFERENT_REWATCH);
             });
         }
 
         public override Gtk.FilterMatch get_strictness () {
             return Gtk.FilterMatch.SOME;
         }
- 
+
         public override bool match (Object? item) {
             if (active == false) { return true; }
             if (item == null) { return false; }
 
             Line line = (Line) item;
 
-            // FIXME: WHY THIS LAGS BEHIND (ONE ACTION ?)
+            // NOTE: FIXME ?
+            // Using line.mtag fails and doesnot update correctly.
+            // Late updates to the line.mtag are not reflected in the filter.
+
             /*
-            if (line.mtag != null) return true;
+            if (line.mtag != null) {
+                return true;
+            }
             */
 
             for (uint i = 0; i < tags.get_n_items (); i++) {

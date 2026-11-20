@@ -42,11 +42,11 @@ namespace Tags {
         private unowned Gtk.Button button_use_selection;
 
         private Gtk.CssProvider provider;
-        private const string css_class = "color_scheme_example";
+        private const string    css_class = "color_scheme_example";
 
-        public signal void add_tag (Tag tag, bool add_to_top);
-        public signal void edit_tag (Tag tag);
-        public signal void delete_tag (Tag tag);
+        public signal void      add_tag     (Tag tag, bool add_to_top);
+        public signal void      edit_tag    (Tag tag);
+        public signal void      delete_tag  (Tag tag);
 
         construct {
             provider = new Gtk.CssProvider ();

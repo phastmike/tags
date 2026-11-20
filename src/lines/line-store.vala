@@ -20,13 +20,13 @@ namespace Tags {
             return result;
         }
 
-        // Constructor
+        // CONSTRUCTOR
 
         public LineStore () {
             model = new GLib.ListStore (typeof(Line));
         }
 
-        // Methods
+        // METHODS
 
         public void remove_all () {
             // Splice the model with an empty array to remove all items

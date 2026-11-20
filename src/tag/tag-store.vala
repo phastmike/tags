@@ -195,7 +195,6 @@ namespace Tags {
                     array = node.get_array ();
                     array.foreach_element ((array, index_, element_node) => {
                         var tag = Json.gobject_deserialize (typeof (Tag), element_node) as Tag;
-                        //tag.dump_to_console ();
                         add_tag (tag);
                     });
                     if (preserve_load == false) have_changed = false;

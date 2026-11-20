@@ -122,7 +122,7 @@ namespace Tags {
         }
 
         public void dump_to_console () {
-            stdout.printf ("Tag:\n");
+            stdout.printf ("[Tag: %s]\n", this._uuid);
             stdout.printf ("  Pattern:  %s\n", this.pattern);
             stdout.printf ("  Description: %s\n", this.description);
             stdout.printf ("  Enabled: %s\n", this.enabled ? "true" : "false");
