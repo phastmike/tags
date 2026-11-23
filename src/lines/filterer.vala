@@ -26,7 +26,8 @@ namespace Tags {
             // Minimap needs to be delayed, otherwise it's empty at start
             // False (Late) True (Early - Restarts selection)
             model.set_incremental (false);
-            model.set_watch_items (true);
+            // Can't see any impact for both values
+            model.set_watch_items (false);
         }
 
         public async void to_file (File file) {
